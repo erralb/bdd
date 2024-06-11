@@ -1,54 +1,39 @@
-# Starlight Starter Kit: Basics
+## Objectif de ce cours
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+> Se former à l’utilisation et à la conception de Bases de Données au sein d’un système d’information
 
-```
-npm create astro@latest -- --template starlight
-```
+## Introduction
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/starlight/tree/main/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/starlight/tree/main/examples/basics)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwithastro%2Fstarlight%2Ftree%2Fmain%2Fexamples%2Fbasics&project-name=my-starlight-docs&repository-name=my-starlight-docs)
+Les bases de données sont un élément essentiel de la technologie moderne. 
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Elles permettent de stocker, organiser et gérer de grandes quantités de données de manière efficace. Que ce soit pour gérer les informations d'une entreprise, stocker des données personnelles ou alimenter des applications web, les bases de données jouent un rôle crucial.
 
-## 🚀 Project Structure
+Ce cours complet sur les bases de données vous fournira les connaissances nécessaires pour comprendre les différents types de bases de données, leur conception, leur utilisation et les requêtes qui permettent d'extraire des informations. 
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+Que vous soyez débutant ou que vous ayez déjà une certaine expérience dans le domaine, ce cours vous aidera à approfondir vos compétences et à devenir un expert en bases de données.
 
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   ├── docs/
-│   │   └── config.ts
-│   └── env.d.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
-```
+Dans ce cours, nous allons aborder :
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+- Les concepts des bases de données : **tables, lignes, colonnes, identifiants**
+- Les **dépendances fonctionelles** et la **normatlisation** : 1NF, 2NF, 3NF, BCNF
+- **L'algèbre relationnelle**, qui est un langage formel pour interroger les bases de données relationnelles
+- Le langage **SQL (Structured Query Language)**, qui est le langage standard pour interroger les bases de données relationnelles :
+	- Syntaxe de base
+	- Requêtes simples et complexes
+	- Jointures
+	- Sous-requêtes
+	- Agrégation
+- La **conception** de bases de données relationnelles : 
+	- Modélisation conceptuelle
+	- Modélisation logique
+	- Modélisation physique
+-  Nous explorerons également les **bases de données NoSQL**, qui offrent une approche plus flexible et évolutive pour le stockage des données.
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
 
-Static assets, like favicons, can be placed in the `public/` directory.
+## Compétences visées
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+* Connaître les principes des bases de données relationnelles
+* Maîtriser les principes de l’algèbre relationnelle
+* Savoir écrire des requêtes de manipulation de données en SQL
+* Savoir concevoir et normaliser un modèle conceptuel de données à partir d’un cahier des charges
+* Savoir dériver un schéma relationnel de bases de données à partir d’un modèle de données
