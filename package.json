@@ -1,0 +1,21 @@
+{
+  "name": "bdd",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.7.0",
+    "@astrojs/starlight": "^0.24.1",
+    "astro": "^4.8.6",
+    "astro-expressive-code": "^0.35.3",
+    "remark-mermaidjs": "^6.0.0",
+    "sharp": "^0.32.5",
+    "typescript": "^5.4.5"
+  }
+}
