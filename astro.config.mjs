@@ -39,25 +39,25 @@ export default defineConfig({
 						{
 							label: 'Concepts',
 							autogenerate: {
-								directory: '1-concepts'
+								directory: '01-concepts'
 							}
 						},
 						{
 							label: 'Algèbre Relationnelle',
 							autogenerate: {
-								directory: '2-algebre'
+								directory: '02-algebre'
 							}
 						},
 						{
 							label: 'SQL DML',
 							autogenerate: {
-								directory: '3-sql-dml'
+								directory: '03-sql-dml'
 							}
 						},
 						{
 							label: 'SQL DDL',
 							autogenerate: {
-								directory: '4-sql-ddl'
+								directory: '04-sql-ddl'
 							}
 						},
 
@@ -70,25 +70,25 @@ export default defineConfig({
 						{
 							label: 'Introduction',
 							autogenerate: {
-								directory: '5-introduction'
+								directory: '05-introduction'
 							}
 						},
 						{
 							label: 'MCD - Modèle Conceptuel de Données',
 							autogenerate: {
-								directory: '6-mcd'
+								directory: '06-mcd'
 							}
 						},
 						{
 							label: 'Schéma Conceptuel',
 							autogenerate: {
-								directory: '7-schema'
+								directory: '07-schema'
 							}
 						},
 						{
 							label: 'MLD - Modèle Logique de Données',
 							autogenerate: {
-								directory: '8-mld'
+								directory: '08-mld'
 							}
 						},
 
@@ -97,7 +97,7 @@ export default defineConfig({
 				{
 					label: 'BDD NoSQL',
 					autogenerate: {
-						directory: '9-nosql'
+						directory: '09-nosql'
 					}
 				}
 			]
