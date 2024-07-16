@@ -9,7 +9,7 @@ export default defineConfig({
 	site: import.meta.env.SITE,
 	integrations: [
 		starlight({
-			title: 'Bases de données',
+			title: 'Bases de données (BDD)',
 			logo: {
 			  src: './src/assets/logo.svg',
 			},

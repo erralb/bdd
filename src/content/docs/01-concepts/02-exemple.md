@@ -15,18 +15,19 @@ On peut identifier des données spécifiques à des **entités** distinctes :
 
 ### Décomposition en tables
 
-Les bases de données relationnelles sont composées de **tables** (pour le moment, vous pouvez les imaginer comme des tableaux Excel).
+Les bases de données relationnelles sont composées de **tables** (autrement dit des tableaux).
 
-Essayons de décomposer ce bon de commande en tableaux, en fonction des entités identifiées précédemment (Données commande, client, détail). On obtiendrait :
+Essayons de décomposer ce bon de commande en tables, en fonction des entités identifiées précédemment (Données de la commande, donnéees du client, données d'un détail). 
+On obtiendrait :
 
 <table>
-    <tr><th colspan="3">Commande</th></tr>
+    <tr><th colspan="3">Commandes</th></tr>
     <tr><th>numéro</th><th>date</th><th>total</th></tr>
     <tr><td>30188</td><td>2/1/2009</td><td>97200</td></tr>
 </table>
 
 <table>
-    <tr><th colspan="4">Client</th></tr>
+    <tr><th colspan="4">Clients</th></tr>
   <tr><th>numéro</th><th>nom</th><th>adresse</th><th>localité</th></tr>
   <tr><td>B512</td><td>GILLET</td><td>14, r. de l'Eté</td><td>Toulouse</td></tr>
 </table>
@@ -46,22 +47,22 @@ Essayons de décomposer ce bon de commande en tableaux, en fonction des entités
 * En l’état il est **impossible de reconstruire le document initial**
     * Comment récupérer le client d’une commande puisque nous avons extrait et rangé ailleurs le fragment décrivant ce client ?
     * Comment identifier la commande de laquelle nous avons extrait un détail ?
-        * il manque des **données de références** pour effectuer des **liaisons entre les données**
+> il manque des **données de références** pour effectuer des **liaisons entre les données**
 * Certaines données sont calculées, e.g., le total de la commande et les sous-totaux des détails
-    * il n’est pas nécessaire de les stocker
+> il n’est pas nécessaire de les stocker
 
 Mettons à jour nos tables en prenons ces remarques en considération.
-On va aussi ajouter un bon de commande supplémentaire (soit une commande, un client et des détails en plus) :
+On va aussi ajouter un bon de commande supplémentaire (soit une commande, un client et des détails en plus) pour étoffer notre exemple :
 
 <table>
-    <tr><th colspan="3">Commande</th></tr>
+    <tr><th colspan="3">Commandes</th></tr>
     <tr><th>numéro</th><th>date</th><th>numéro client</th></tr>
     <tr><td>30188</td><td>2/1/2009</td><td>B512</td></tr>
     <tr><td>30179</td><td>22/12/2008</td><td>C400</td></tr>
 </table>
 
 <table>
-    <tr><th colspan="4">Client</th></tr>
+    <tr><th colspan="4">Clients</th></tr>
   <tr><th>numéro</th><th>nom</th><th>adresse</th><th>localité</th></tr>
   <tr><td>B512</td><td>GILLET</td><td>14, r. de l'Eté</td><td>Toulouse</td></tr>
   <tr><td>C400</td><td>FERARD</td><td>65, r. du Tertre</td><td>Poitiers</td></tr>
@@ -86,14 +87,14 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 * Il serait plus pertinent de construire une 4ème table pour stocker de manière unique les informations relatives aux produits
 
 <table>
-    <tr><th colspan="3">Commande</th></tr>
+    <tr><th colspan="3">Commandes</th></tr>
     <tr><th>numéro</th><th>date</th><th>numéro client</th></tr>
     <tr><td>30188</td><td>2/1/2009</td><td>B512</td></tr>
     <tr><td>30179</td><td>22/12/2008</td><td>C400</td></tr>
 </table>
 
 <table>
-    <tr><th colspan="4">Client</th></tr>
+    <tr><th colspan="4">Clients</th></tr>
   <tr><th>numéro</th><th>nom</th><th>adresse</th><th>localité</th></tr>
   <tr><td>B512</td><td>GILLET</td><td>14, r. de l'Eté</td><td>Toulouse</td></tr>
   <tr><td>C400</td><td>FERARD</td><td>65, r. du Tertre</td><td>Poitiers</td></tr>
@@ -123,82 +124,22 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 
 #### Ce résultat est satisfaisant !
 
-* Aucune données n'est dupliquée, hormis les données qui font références à d'autres tables.
+* Aucune donnée n'est dupliquée, hormis les données qui font références à d'autres tables.
 * On peut reconstruire les bons de commandes originaux en utilisant les références (numéros de clients, de commandes et de produits) et en calculant les totaux en multipliant les quantités commandées par les prix des produits
 
 
-### Schémas
-
-Les bases de données sont représentées sous formes textuelles, de schémas conceptuels, et de schémas logiques.
-Ces représentations n'incluent pas les données : schéma ≠ instance
-
-#### Représentation textuelle
-
-**Clients** (Numero, Nom, Adresse, Localite)
-**Commandes** (Numero, Date, NumeroClient*)
-**Produits** (Numero, Libelle, Prix)
-**Details** (NumeroCommande*, NumeroProduit*, Quantité)
-
-#### Schéma conceptuel (Diagramme Entités-Associations)
-
-(Digrammes EA ou Entity-Relationship (ER) en anglais)
-
-Les entités sont :
-
-- Client
-- Produit
-- Commande
-- Détail
-
-Les associations sont :
-
-- Un Client passe une Commande
-- La Commande est comosée de Detail
-- Les Detail spécifient des quantités de Produit
-
-En schéma **Entité-Association**, ce bon de commande serait représenté de la sorte :
-
-```mermaid
-erDiagram
-  Client ||--o{  Commande : "passe une"
-  Commande ||--o{ Detail : "est composée de"
-  Detail ||--o{ Produit : "spécifie une quantité de"
-
-```
-
-### Schéma logique
 
 
-```mermaid
-classDiagram
 
-    class Client {
-        text Numero PK
-        text Nom
-        text Adress
-        text Localite
-    }
+### Premières conclusions
 
-    class Commande {
-        int numero PK
-        date date
-    }
-
-    class Detail {
-        int numeroCommande PK, FK
-        int numeroProduit PK, FK
-        int quantite
-    }
-
-    class Produit {
-        int numero PK
-        int libelle
-        decimal prix
-    }
-
-  Client --  Commande : "passe une"
-  Commande -- Detail : "est composée de"
-  Detail -- Produit : "spécifie une quantité de"
-
-
-```
+* Une **base de données** est constituée d’un **ensemble de tables** 
+* Chaque **table** contient les données relatives à des **entités** de même nature 
+* Chaque **ligne** d’une table reprend les données relatives à une **entité** 
+* Chaque **colonne** d’une table décrit une **propriété** commune des **entités** 
+* Les **lignes** d’une table sont **distinctes** 
+* Le jeux de colonnes dont les valeurs sont uniques constitue un **identifiant** ou **clé primaire** de la table 
+* Les lignes d’une table peuvent faire **référence** chacune à une ligne d’une autre table. On parle alors de **clé étrangère** 
+* On évite de stocker les informations qui peuvent être calculées 
+* On ne conserve pas dans une même table des informations relatives plusieurs entités 
+* Il est nécessaire d’avoir un langage d’interrogation de la base de données
