@@ -1,6 +1,6 @@
 ## Objectif de ce cours
 
-> Se former à l’utilisation et à la conception de Bases de Données au sein d’un système d’information
+> Se former à l'utilisation et à la conception de Bases de Données au sein d'un système d'information
 
 ## Introduction
 
@@ -33,7 +33,7 @@ Dans ce cours, nous allons aborder :
 ## Compétences visées
 
 * Connaître les principes des bases de données relationnelles
-* Maîtriser les principes de l’algèbre relationnelle
+* Maîtriser les principes de l'algèbre relationnelle
 * Savoir écrire des requêtes de manipulation de données en SQL
-* Savoir concevoir et normaliser un modèle conceptuel de données à partir d’un cahier des charges
-* Savoir dériver un schéma relationnel de bases de données à partir d’un modèle de données
+* Savoir concevoir et normaliser un modèle conceptuel de données à partir d'un cahier des charges
+* Savoir dériver un schéma relationnel de bases de données à partir d'un modèle de données

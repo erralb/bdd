@@ -9,16 +9,16 @@ description: Comment remédier au problème de redondance des données
     <tr></tr>
 </table>
 
-* Problème : Lorsqu’un livre existe en plusieurs exemplaires, les informations (TITRE, AUTEUR, ISBN) sont dupliquées 
-* Cette situation va à l’encontre du principe fondateur des bases de données : tout fait pertinent du domaine d’application doit être enregistré une et une seule fois
+* Problème : Lorsqu'un livre existe en plusieurs exemplaires, les informations (TITRE, AUTEUR, ISBN) sont dupliquées 
+* Cette situation va à l'encontre du principe fondateur des bases de données : tout fait pertinent du domaine d'application doit être enregistré une et une seule fois
 
 ## Inconvénients de la redondance 
 * La table occupe un espace excessif et inutile
-* Les modifications sont coûteuses puisqu’il faut mettre à jour toutes les données dupliquées 
+* Les modifications sont coûteuses puisqu'il faut mettre à jour toutes les données dupliquées 
 * Comment garantir que les données dupliquées restent identiques et cohérentes ? 
 * Exemples : 
-    * Si le premier ajout d’un livre se fait librement, les ajouts d’un autre exemplaire doivent se faire conformément aux informations déjà saisies 
-    * L’effacement du seul exemplaire d’un livre supprimerait définitivement les informations concernant son titre et son auteur 
+    * Si le premier ajout d'un livre se fait librement, les ajouts d'un autre exemplaire doivent se faire conformément aux informations déjà saisies 
+    * L'effacement du seul exemplaire d'un livre supprimerait définitivement les informations concernant son titre et son auteur 
 
 ## Dépendances fonctionnelles
 
@@ -29,7 +29,7 @@ Les dépendances fonctionnelles determinent les dépendances des certaines colon
     * ISBN est le **déterminant** et (TITRE, AUTEUR) les **déterminés** 
     * Autrement dit, si on possède une valeur isbn, on peut nécessairement déterminer le titre et l'auteur du livre
 * Pour éviter le phénomène de redondance :
-    * les dépendances fonctionnelles doivent être évitées au sein d’une même table
+    * les dépendances fonctionnelles doivent être évitées au sein d'une même table
     * On va donc garder uniquement le déterminant isbn dans la table livre, et déplacer les détérminés titre et auteur dans une nouvelle table
 
 ## Décomposition de la table
@@ -49,8 +49,8 @@ Column A | Column B | Column C
  A2 | B2 | C2
  A3 | B3 | C3
 
-* On a solutionné le problème de redondance en créant une deuxième table et en utilisant l’ISBN comme clé étrangère dans la table EXEMPLAIRE.
-* Le procédé permettant d’éviter les redondances interne s’appelle normalisation
+* On a solutionné le problème de redondance en créant une deuxième table et en utilisant l'ISBN comme clé étrangère dans la table EXEMPLAIRE.
+* Le procédé permettant d'éviter les redondances interne s'appelle normalisation
 
 ## Comment décomposer une table ?
 

@@ -6,12 +6,12 @@ description: Identifiants (clés primaires) et clés étrangères des bases de d
 ### Identifiants
 * Toutes les colonnes ne jouent pas le même rôle dans une table
 * Il faut être en mesure de désigner de manière univoque une ligne décrivant une entité
-* On appelle **identifiant** de la table la colonne qui l’identifie de manière unique
+* On appelle **identifiant** de la table la colonne qui l'identifie de manière unique
 * L'identifiant est aussi appelé **clé primaire**
 
 Remarque
 > Un identifiant peut être composé de plusieurs colonnes
-> Rien n’interdit d’imposer plus d’un identifiant par table
+> Rien n'interdit d'imposer plus d'un identifiant par table
 
 Reprenons notre exemple précédent en colorant les identifiants (clés primaires) en rouge :
 
@@ -55,9 +55,9 @@ Reprenons notre exemple précédent en colorant les identifiants (clés primaire
 
 * Le terme anglais de clé primaire est **primary key**
 * Toutes les tables possèdent un identifiant primaire qui peut être composite (plusieurs colonnes) 
-* Toutes les entités d’une table possèdent au moins un identifiant
-* Pour jouer son rôle d’identification, l’identifiant doit être unique
-    * Cette propriété s’appelle contrainte d’unicité
+* Toutes les entités d'une table possèdent au moins un identifiant
+* Pour jouer son rôle d'identification, l'identifiant doit être unique
+    * Cette propriété s'appelle contrainte d'unicité
     * Elle est garantie par le SGBD au moment des ajouts dans la table
 * Les identifiants doivent être renseignés
 
@@ -94,14 +94,14 @@ Ces deux colonnes forment aussi la clé primaire de la table **Détails**. Un co
 
 #### Contrainte référentielle
 
-* Il est nécessaire que l’ensemble des valeurs d’une clé étrangère soit un sous-ensemble des valeurs de l’identifiant cible (autrement dit de la clé primaire ciblée par la clé étrangère)
-> Cette contrainte s’appelle **contrainte référentielle**
+* Il est nécessaire que l'ensemble des valeurs d'une clé étrangère soit un sous-ensemble des valeurs de l'identifiant cible (autrement dit de la clé primaire ciblée par la clé étrangère)
+> Cette contrainte s'appelle **contrainte référentielle**
 
 Par exemple, on ne pourrait pas créer une commande pour un numéro de client qui n'existe pas
 
 
 ### Deuxièmes conclusions
 
-* Les clés primaires et étrangères permettent d’assurer l’intégrité des bases de données relationnelles
-* Elles définissent des contraintes d’intégrité, qui permettront aux SGBD de détecter des erreurs lors des opérations sur la base
+* Les clés primaires et étrangères permettent d'assurer l'intégrité des bases de données relationnelles
+* Elles définissent des contraintes d'intégrité, qui permettront aux SGBD de détecter des erreurs lors des opérations sur la base
 * Ce sont ces clés qui permettent de créer des relations entre les tables

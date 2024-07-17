@@ -5,7 +5,7 @@ description: Règles de décomposition des tables de bases de données
 
 ## Objectifs de la normalisation
 
-> Définir des règles pour décomposer les relations tout en préservant les DF (Dépendances Fonctionnelles), sans perdre d’informations afin de représenter les objets et les associations canoniques du monde réel
+> Définir des règles pour décomposer les relations tout en préservant les DF (Dépendances Fonctionnelles), sans perdre d'informations afin de représenter les objets et les associations canoniques du monde réel
 * Éviter les anomalies de mises à jour
 * Éviter les réponses erronées
 * Outils :
@@ -16,10 +16,10 @@ description: Règles de décomposition des tables de bases de données
 
 ## La normalisation
 
-> La décomposition d’une relation (d'une table) est le remplacement d’une relation R par un ensemble de relations R1,..., Rn tel que :
-> * Les attributs de R sont égaux à l’union de tous les attributs des Ri
+> La décomposition d'une relation (d'une table) est le remplacement d'une relation R par un ensemble de relations R1,..., Rn tel que :
+> * Les attributs de R sont égaux à l'union de tous les attributs des Ri
 > * Ri est obtenu à partir de R par projection sur les attributs de Ri
-> * Décomposition sans perte de sorte que l’on puisse retrouver exactement l’information de départ
+> * Décomposition sans perte de sorte que l'on puisse retrouver exactement l'information de départ
 > * Une décomposition est sans perte si et seulement si elle préserve les dépendances fonctionnelles
 
 ## 1ère forme normale (1FN ou 1NF)
@@ -37,9 +37,9 @@ Column A | Column B | Column C
  A3 | B3 | C3
 
 
-La relation PILOT n’est pas en première forme normale (1FN ou 1NF)
+La relation PILOT n'est pas en première forme normale (1FN ou 1NF)
 elle possède une clé 
-mais l’attribut AVIONS n’est pas atomique
+mais l'attribut AVIONS n'est pas atomique
 
 Exemple de 1ère forme normale : 
 
@@ -48,7 +48,7 @@ Exemple de 1ère forme normale :
 
 > Une relation est en deuxième forme normale (2FN ou 2NF) ssi :
 > 1. Elle est en première forme normale
-> 2. Tout attribut non clé ne dépend pas d’une partie de clé
+> 2. Tout attribut non clé ne dépend pas d'une partie de clé
 
 Exemple
 
@@ -58,7 +58,7 @@ Avec les dépendances fonctionnelles suivantes :
 * ID -> NOM
 * LICENCE -> DATE_OBTENTION
 
-La relation PILOTE n’est pas en deuxième forme normale car
+La relation PILOTE n'est pas en deuxième forme normale car
 
 Une telle relation doit être décomposée en
 * PILOT (ID, NOM, LICENCE)
@@ -72,11 +72,11 @@ IMAGE
 
 > Une relation est en troisième forme ssi :
 > 1. Elle est en deuxième forme normale
-> 2. Tout attribut n'appartenant pas à une clé, ne dépend pas d’un autre attribut non clé
+> 2. Tout attribut n'appartenant pas à une clé, ne dépend pas d'un autre attribut non clé
 
 Exemple
 AVION (ID, CONSTRUCTEUR, TYPE, PUISSANCE, AUTONOMIE)
-n’est pas en troisième forme normale car
+n'est pas en troisième forme normale car
 ID --> CONSTRUCTEUR, TYPE
 TYPE --> PUISSANCE, AUTONOMIE
 Une telle relation doit être décomposée en
@@ -90,7 +90,7 @@ IMAGE
 ### La troisième forme normale :
 
 * Retire les redondances dues aux dépendances transitives
-* Permet de ne pas perdre d’information
+* Permet de ne pas perdre d'information
 * Permet de ne pas perdre des dépendances
 
 
@@ -98,7 +98,7 @@ IMAGE
 
 La troisième forme normale est la plus utilisée du fait de son équilibre entre redondance et performance.
 
-On pourra remarquer que pour certains systèmes (surtout distribués, e.g. pour certaines bases NoSQL), la redondance n’est pas un problème. 
+On pourra remarquer que pour certains systèmes (surtout distribués, e.g. pour certaines bases NoSQL), la redondance n'est pas un problème. 
 Dans ces cas, on pourra se passer de la normalisation pour augmenter les performances.
 
 ### Forme normale de Boyce-Codd (FNBC ou BCNF)
@@ -129,17 +129,17 @@ Simplicité : La BCNF est la forme normale la plus facile à appréhender intuit
 
 Attention : Une décomposition en BCNF ne préserve pas toujours les DF.
 
-## La normalisation… Quand est-ce qu'on s’arrête ?
+## La normalisation… Quand est-ce qu'on s'arrête ?
 
-* Il existe les 4, 5 et 6ème formes normales. Elles évitent principalement la redondance d’information et sont plus précises
+* Il existe les 4, 5 et 6ème formes normales. Elles évitent principalement la redondance d'information et sont plus précises
 * En pratique, la 3FN est suffisante
 * En effet, les projections et les jointures sont coûteuses pour le système, ainsi une trop forte normalisation diminue fortement les performances
 
 ## Conclusion
 
-Tant que l’ensemble des attributs n’est pas vide, on doit successivement :
+Tant que l'ensemble des attributs n'est pas vide, on doit successivement :
 
-1. Choisir un attribut X qui n’est le but d’aucune dépendance fonctionnelle
+1. Choisir un attribut X qui n'est le but d'aucune dépendance fonctionnelle
 2. Construire une relation dont X est la clé et qui comporte tous les attributs qui sont déterminés fonctionnellement par X
-3. Renouveler cette opération pour toutes les dépendances complexes auxquelles l’attribut X participe
-4. Supprimer toutes les dépendances qui ont été prises en compte, ainsi que tous les attributs figurant dans ces dépendances et qui ne sont eux-mêmes sources d’aucune nouvelle dépendance (attributs isolés)
+3. Renouveler cette opération pour toutes les dépendances complexes auxquelles l'attribut X participe
+4. Supprimer toutes les dépendances qui ont été prises en compte, ainsi que tous les attributs figurant dans ces dépendances et qui ne sont eux-mêmes sources d'aucune nouvelle dépendance (attributs isolés)

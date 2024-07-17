@@ -5,7 +5,7 @@ description: A guide in my new Starlight docs site.
 
 <!-- <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRAH6-YtNH7DKH6jk127wotWXtNwiCuG8v1Zs0jIhqQoqQOvyFnzcD-mvQeJd-Uiy8KyV6ZZpPbkweL/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" style="min-height:488px"></iframe> -->
 
-## Qu’est-ce qu’une Base De Données (BDD) ?
+## Qu'est-ce qu'une Base De Données (BDD) ?
 
 > Même si vous n'avez jamais utilisé de système de gestion de bases de données (SGBD), vous avez probablement déjà une idée de ce qu'est une base de données 
 
@@ -18,7 +18,7 @@ description: A guide in my new Starlight docs site.
   - Abonnement à un club de sport
   - Comptes en banque
   - Réservation de billets de train
-  - Études à l’université
+  - Études à l'université
   - etc
 
 :::note[À retenir]
@@ -29,8 +29,8 @@ Une base de données **informatique** doit être **interrogeable**
 
 - Gérer la **Multiplicité** des types de données :
   - Données textuelles, multimédias (images, vidéo, musique), géographiques, dates, etc.
-- L’**information incorrecte** et incomplète
-  - Comment produire de l’information correcte à partir de données imprécises ou erronées ?
+- L'**information incorrecte** et incomplète
+  - Comment produire de l'information correcte à partir de données imprécises ou erronées ?
 - Permettre un accès aisé par des non-informaticiens
 - Permettre la maintenance et l'évolution sans perte de données
 - Gérer des  **données distribuées** et nomades
@@ -40,7 +40,7 @@ Une base de données **informatique** doit être **interrogeable**
 - Offrir une norme d'accès aux données pour les applications (Programmes informatiques pour interagir avec les bases de données)
   - Par exemple : Hibernate, EJB, ORM, etc.
 
-## Qu’est-ce qu’un SGBD ?
+## Qu'est-ce qu'un SGBD ?
 
 - Un **Système de Gestion de Bases de Données (SGBD)** est un **logiciel** destiné au stockage et à la manipulation de bases de données
 - Tous les traitements des données se font obligatoirement par son intermédiaire :
@@ -59,7 +59,7 @@ Une base de données **informatique** doit être **interrogeable**
 ## Pourquoi a-t-on développé les SGBD ?
 
 - Pour permettre l'indépendance entre les données et les applications
-- Pour garantir la sûreté d’accès aux données entre le SGBD et les applications
+- Pour garantir la sûreté d'accès aux données entre le SGBD et les applications
 - Pour réduire le temps de développement des applications
 - Pour réduire les coûts de développement
 - Pour garantir l'intégrité des données et sécuriser les accès
@@ -72,7 +72,7 @@ Une base de données **informatique** doit être **interrogeable**
 ### Intégrité et unicité des données
 
 - **Intégrité** :
-  - les données contenues dans une BD forment un tout cohérent répondant à des contraintes d’intégrités vérifiées à tout moment par le SGBD
+  - les données contenues dans une BD forment un tout cohérent répondant à des contraintes d'intégrités vérifiées à tout moment par le SGBD
   - Exemples :
     - Tout électeur a un âge > 18 ans
     - A tout instant la somme des crédits = la somme des débits
@@ -80,35 +80,35 @@ Une base de données **informatique** doit être **interrogeable**
   - Cohérence des données
     - Si une donnée est dupliquée, laquelle est la bonne ?
 - Facilité de mise à jour et de recherche
-  - Est-on sûr d’avoir mis à jour toutes les copies d’une même donnée ?
+  - Est-on sûr d'avoir mis à jour toutes les copies d'une même donnée ?
 
 ### Confidentialité et sûreté des traitements
 
 - **Confidentialité**
-  - Gestion des autorisations d’accès à tout ou partie de la BD aux différentes personnes de l’organisation
+  - Gestion des autorisations d'accès à tout ou partie de la BD aux différentes personnes de l'organisation
 - **Concurrence**
   - Les données sont accédées simultanément par plusieurs utilisateurs
     - Éviter les conflits qui dégraderaient la cohérence de la BD
-  - Chaque utilisateur à l’impression d’être le seul à travailler sur la BD
+  - Chaque utilisateur à l'impression d'être le seul à travailler sur la BD
     - verrouillage, transaction
 - **Sécurité**
-  - Remise de la BD dans l’état cohérent le plus récent après une panne
+  - Remise de la BD dans l'état cohérent le plus récent après une panne
   - Idée : Garder un journal ou log (historique) de toutes les actions élémentaires de mise à jour et de validation réalisées par le SGBD :
-    - Avant qu’un changement ne soit réalisé, l’action est tracée dans un fichier de log
-    - Après un crash, l’effet des transactions non abouties est annulé à l’aide du fichier de log
+    - Avant qu'un changement ne soit réalisé, l'action est tracée dans un fichier de log
+    - Après un crash, l'effet des transactions non abouties est annulé à l'aide du fichier de log
 
 ### Indépendance des données
 
 - L'indépendance des applications par rapport au modèle physique autorise :
-  - de modifier l’organisation physique sans modifier le schéma logique ni les applications
-    - d’ajout d’index
-    - de changer de méthode d’accès, par exemple, chaînage vs. hachage
+  - de modifier l'organisation physique sans modifier le schéma logique ni les applications
+    - d'ajout d'index
+    - de changer de méthode d'accès, par exemple, chaînage vs. hachage
 - Indépendance logique des données
-  - Chaque application ou groupe d’utilisateurs peut :
+  - Chaque application ou groupe d'utilisateurs peut :
     - assembler différemment les données
-    - ne voir qu’une partie des données (Schémas externes)
+    - ne voir qu'une partie des données (Schémas externes)
   - Permet de modifier le schéma logique sans modifier les applications
-    - Ajout/suppression d’une entité
+    - Ajout/suppression d'une entité
 
 ### Description des données
 
@@ -120,15 +120,15 @@ Pour une base de données particulière, il existe **un seul schéma interne** e
 
 En revanche, il existe en général **plusieurs schémas externes**.
 
-Les 3 types de schéma des bases de donnée sont :
+Les 3 types de schéma des bases de données sont :
 
 - **Schémas externes** aussi appelés **vues**
-  - Structure des données telle que perçue par chaque groupe de travail de l’organisation
-  - tous les utilisateurs n’ont pas à connaître le schéma logique dans son ensemble
-    - données inutiles à l’utilisateur
+  - Structure des données telle que perçue par chaque groupe de travail de l'organisation
+  - tous les utilisateurs n'ont pas à connaître le schéma logique dans son ensemble
+    - données inutiles à l'utilisateur
     - sécurité, confidentialité
 - **Schéma conceptuel** aussi appelé schéma logique
-  - Structure et sémantique des données d’une organisation sans soucis d’implémentation.
+  - Structure et sémantique des données d'une organisation sans soucis d'implémentation.
   - Par exemple :
     - Type de données élémentaires des attributs des objets
     - Règles régissant les données
@@ -136,7 +136,7 @@ Les 3 types de schéma des bases de donnée sont :
   - Structure de stockage des données en machine
     - fichiers (nom, organisation, localisation)
     - article des fichiers (longueur, champs, placement)
-    - chemin d’accès aux données (index, chaînage, hachage)
+    - chemin d'accès aux données (index, chaînage, hachage)
 
 <br/>
 
@@ -168,7 +168,7 @@ Lors de la conception d'une base de données, les schémas précédemment évoqu
     * Présente les concepts des schémas
 * Le **Modèle Logique des Données (MLD)**
     * Langage de description de données (LDD)
-    * Langage supportant un modèle et permettant de décrire les données d’une BD d’une manière assimilable par une machine
+    * Langage supportant un modèle et permettant de décrire les données d'une BD d'une manière assimilable par une machine
     * Exemples :
         * SQL (modèle relationnel)
     * Présente l'implémentation des schémas

@@ -1,9 +1,9 @@
 ---
 title: Exemple
-description: Place aux concepts au travers d’un exemple
+description: Place aux concepts au travers d'un exemple
 ---
 
-## Place aux concepts au travers d’un exemple
+## Place aux concepts au travers d'un exemple
 
 Considérons le bon de commande suivant :
 
@@ -44,12 +44,12 @@ On obtiendrait :
 #### Cette première décomposition n'est pas satisfaisante :
 
 
-* En l’état il est **impossible de reconstruire le document initial**
-    * Comment récupérer le client d’une commande puisque nous avons extrait et rangé ailleurs le fragment décrivant ce client ?
+* En l'état il est **impossible de reconstruire le document initial**
+    * Comment récupérer le client d'une commande puisque nous avons extrait et rangé ailleurs le fragment décrivant ce client ?
     * Comment identifier la commande de laquelle nous avons extrait un détail ?
 > il manque des **données de références** pour effectuer des **liaisons entre les données**
 * Certaines données sont calculées, e.g., le total de la commande et les sous-totaux des détails
-> il n’est pas nécessaire de les stocker
+> il n'est pas nécessaire de les stocker
 
 Mettons à jour nos tables en prenons ces remarques en considération.
 On va aussi ajouter un bon de commande supplémentaire (soit une commande, un client et des détails en plus) pour étoffer notre exemple :
@@ -82,7 +82,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 #### Un résultat prometteur, mais
 
 * Certaines données sont stockées de manière redondantes dans les données de détails, e.g., libellé et prix
-    * sources d’erreurs lors des mises à jours
+    * sources d'erreurs lors des mises à jours
     * inutiles et dangereux
 * Il serait plus pertinent de construire une 4ème table pour stocker de manière unique les informations relatives aux produits
 
@@ -133,13 +133,13 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 
 ### Premières conclusions
 
-* Une **base de données** est constituée d’un **ensemble de tables** 
+* Une **base de données** est constituée d'un **ensemble de tables** 
 * Chaque **table** contient les données relatives à des **entités** de même nature 
-* Chaque **ligne** d’une table reprend les données relatives à une **entité** 
-* Chaque **colonne** d’une table décrit une **propriété** commune des **entités** 
-* Les **lignes** d’une table sont **distinctes** 
+* Chaque **ligne** d'une table reprend les données relatives à une **entité** 
+* Chaque **colonne** d'une table décrit une **propriété** commune des **entités** 
+* Les **lignes** d'une table sont **distinctes** 
 * Le jeux de colonnes dont les valeurs sont uniques constitue un **identifiant** ou **clé primaire** de la table 
-* Les lignes d’une table peuvent faire **référence** chacune à une ligne d’une autre table. On parle alors de **clé étrangère** 
+* Les lignes d'une table peuvent faire **référence** chacune à une ligne d'une autre table. On parle alors de **clé étrangère** 
 * On évite de stocker les informations qui peuvent être calculées 
 * On ne conserve pas dans une même table des informations relatives plusieurs entités 
-* Il est nécessaire d’avoir un langage d’interrogation de la base de données
+* Il est nécessaire d'avoir un langage d'interrogation de la base de données
