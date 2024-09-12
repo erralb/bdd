@@ -4,6 +4,7 @@ import starlight from '@astrojs/starlight';
 
 export default defineConfig({
 	site: 'https://erralb.github.io/bdd',
+	base: '/bdd/',
 	integrations: [
 		starlight({
 			title: 'Bases de données (BDD)',
