@@ -3,15 +3,28 @@ title: Exemple
 description: Place aux concepts au travers d'un exemple
 ---
 
+import Slide from '../../../components/Slide.astro';
+
+<Slide>
+
 ## Place aux concepts au travers d'un exemple
+
+</Slide>
+<Slide>
 
 Considérons le bon de commande suivant :
 
 ![Bon de Commande 1](02-exemple-01-BonDeCommande.png)
 
+</Slide>
+<Slide>
+
 On peut identifier des données spécifiques à des **entités** distinctes :
 
 ![Bon de Commande 2](02-exemple-02-BonDeCommande2.png)
+
+</Slide>
+<Slide>
 
 ### Décomposition en tables
 
@@ -19,6 +32,9 @@ Les bases de données relationnelles sont composées de **tables** (autrement di
 
 Essayons de décomposer ce bon de commande en tables, en fonction des entités identifiées précédemment (Données de la commande, donnéees du client, données d'un détail). 
 On obtiendrait :
+
+</Slide>
+<Slide>
 
 <table>
     <tr><th colspan="3">Commandes</th></tr>
@@ -41,8 +57,14 @@ On obtiendrait :
     <tr><td>PH222</td><td>PL. HETRE 200x20x2</td><td>230</td><td>92</td><td>21160</td></tr>
 </table>
 
+</Slide>
+<Slide>
+
 #### Cette première décomposition n'est pas satisfaisante :
 
+
+</Slide>
+<Slide>
 
 * En l'état il est **impossible de reconstruire le document initial**
     * Comment récupérer le client d'une commande puisque nous avons extrait et rangé ailleurs le fragment décrivant ce client ?
@@ -51,8 +73,14 @@ On obtiendrait :
 * Certaines données sont calculées, e.g., le total de la commande et les sous-totaux des détails
 > il n'est pas nécessaire de les stocker
 
+</Slide>
+<Slide>
+
 Mettons à jour nos tables en prenons ces remarques en considération.
 On va aussi ajouter un bon de commande supplémentaire (soit une commande, un client et des détails en plus) pour étoffer notre exemple :
+
+</Slide>
+<Slide>
 
 <table>
     <tr><th colspan="3">Commandes</th></tr>
@@ -60,6 +88,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
     <tr><td>30188</td><td>2/1/2009</td><td>B512</td></tr>
     <tr><td>30179</td><td>22/12/2008</td><td>C400</td></tr>
 </table>
+
 
 <table>
     <tr><th colspan="4">Clients</th></tr>
@@ -79,12 +108,20 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
     <tr><td>30179</td><td>PA60</td><td>POINTE ACIER 60</td><td>95</td><td>20</td></tr>
 </table>
 
+</Slide>
+<Slide>
+
 #### Un résultat prometteur, mais
 
 * Certaines données sont stockées de manière redondantes dans les données de détails, e.g., libellé et prix
     * sources d'erreurs lors des mises à jours
     * inutiles et dangereux
 * Il serait plus pertinent de construire une 4ème table pour stocker de manière unique les informations relatives aux produits
+
+</Slide>
+<Slide>
+
+<div style="display:flex; flex-wrap: wrap;">
 
 <table>
     <tr><th colspan="3">Commandes</th></tr>
@@ -122,14 +159,18 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
     <tr><td>PA60</td><td>POINTE ACIER 60</td><td>95</td></tr>
 </table>
 
+</div>
+
+</Slide>
+<Slide>
+
 #### Ce résultat est satisfaisant !
 
 * Aucune donnée n'est dupliquée, hormis les données qui font références à d'autres tables.
 * On peut reconstruire les bons de commandes originaux en utilisant les références (numéros de clients, de commandes et de produits) et en calculant les totaux en multipliant les quantités commandées par les prix des produits
 
-
-
-
+</Slide>
+<Slide>
 
 ### Premières conclusions
 
@@ -143,3 +184,5 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 * On évite de stocker les informations qui peuvent être calculées 
 * On ne conserve pas dans une même table des informations relatives plusieurs entités 
 * Il est nécessaire d'avoir un langage d'interrogation de la base de données
+
+</Slide>
