@@ -28,13 +28,14 @@ import Slide from '../../../components/Slide.astro';
   - etc
 
 </Slide>
-<Slide highlight large>
+<Slide>
 
 :::note[À retenir]
 Une base de données **informatique** doit être **interrogeable**
 :::
 
 </Slide>
+<Slide>
 
 ## Quels sont les défis des bases de données ?
 
@@ -50,6 +51,9 @@ Une base de données **informatique** doit être **interrogeable**
 - Permettre d'extraire des **données décisionnelles** (qui permettent d'aider aux décisions d'une entreprise)
 - Offrir une norme d'accès aux données pour les applications (Programmes informatiques pour interagir avec les bases de données)
   - Par exemple : Hibernate, EJB, ORM, etc.
+
+</Slide>
+<Slide>
 
 ## Qu'est-ce qu'un SGBD ?
 
@@ -67,6 +71,9 @@ Une base de données **informatique** doit être **interrogeable**
   - SQL Server
   - etc
 
+</Slide>
+<Slide>
+
 ## Pourquoi a-t-on développé les SGBD ?
 
 - Pour permettre l'indépendance entre les données et les applications
@@ -78,7 +85,13 @@ Une base de données **informatique** doit être **interrogeable**
 - Pour permettre la concurrence des accès
 - Pour permettre la reprise après les pannes
 
+</Slide>
+<Slide>
+
 ## Notions à connaître sur les BDD
+
+</Slide>
+<Slide>
 
 ### Intégrité et unicité des données
 
@@ -92,6 +105,9 @@ Une base de données **informatique** doit être **interrogeable**
     - Si une donnée est dupliquée, laquelle est la bonne ?
 - Facilité de mise à jour et de recherche
   - Est-on sûr d'avoir mis à jour toutes les copies d'une même donnée ?
+
+</Slide>
+<Slide>
 
 ### Confidentialité et sûreté des traitements
 
@@ -108,6 +124,9 @@ Une base de données **informatique** doit être **interrogeable**
     - Avant qu'un changement ne soit réalisé, l'action est tracée dans un fichier de log
     - Après un crash, l'effet des transactions non abouties est annulé à l'aide du fichier de log
 
+</Slide>
+<Slide>
+
 ### Indépendance des données
 
 - L'indépendance des applications par rapport au modèle physique autorise :
@@ -121,7 +140,13 @@ Une base de données **informatique** doit être **interrogeable**
   - Permet de modifier le schéma logique sans modifier les applications
     - Ajout/suppression d'une entité
 
+</Slide>
+<Slide>
+
 ### Description des données
+
+</Slide>
+<Slide>
 
 #### Schémas
 
@@ -133,26 +158,43 @@ En revanche, il existe en général **plusieurs schémas externes**.
 
 Les 3 types de schéma des bases de données sont :
 
+</Slide>
+<Slide>
+
 - **Schémas externes** aussi appelés **vues**
   - Structure des données telle que perçue par chaque groupe de travail de l'organisation
   - tous les utilisateurs n'ont pas à connaître le schéma logique dans son ensemble
     - données inutiles à l'utilisateur
     - sécurité, confidentialité
+
+</Slide>
+<Slide>
+
 - **Schéma conceptuel** aussi appelé schéma logique
   - Structure et sémantique des données d'une organisation sans soucis d'implémentation.
   - Par exemple :
     - Type de données élémentaires des attributs des objets
     - Règles régissant les données
+
+</Slide>
+<Slide>
+
 - **Schéma interne**
   - Structure de stockage des données en machine
     - fichiers (nom, organisation, localisation)
     - article des fichiers (longueur, champs, placement)
     - chemin d'accès aux données (index, chaînage, hachage)
 
+</Slide>
+
 <br/>
+
+<Slide>
 
 ![3 niveaux de schémas](01-introduction-01-3-niveaux-de-schemas.jpg)
 
+</Slide>
+<Slide>
 
 #### Les schémas à travers des exemples
 
@@ -164,6 +206,9 @@ Les 3 types de schéma des bases de données sont :
   - **Opérations** (idc : string, dte : date, type : string, montant : integer)
 - Schéma interne
   - Les relations sont stockées dans des fichiers sur la machine
+
+</Slide>
+<Slide>
 
 ### Modèles de description de données
 
@@ -184,6 +229,11 @@ Lors de la conception d'une base de données, les schémas précédemment évoqu
         * SQL (modèle relationnel)
     * Présente l'implémentation des schémas
 
+</Slide>
+<Slide>
+
 :::note[À savoir]
 En conception, les **MCD** et **MLD** sont utilisés pour définir les BDD, et les **MCT** (Modèle Conceptuel des Traitements) et **MLT** (Modèle Logique des Traitements) sont utilisées pour définir les applications (logiciels)
 :::
+
+</Slide>
