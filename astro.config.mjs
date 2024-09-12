@@ -6,8 +6,7 @@ import remarkMermaid from 'remark-mermaidjs'
 
 // https://astro.build/config
 export default defineConfig({
-	site: import.meta.env.SITE,
-	base: import.meta.env.BASE,
+	site: 'https://erralb.github.io/bdd',
 	integrations: [
 		starlight({
 			title: 'Bases de données (BDD)',
