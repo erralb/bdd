@@ -1,9 +1,5 @@
 name: Deploy to GitHub Pages
 
-env:
-  SITE='https://erralb.github.io',
-  BASE='bdd'
-
 on:
   # Trigger the workflow every time you push to the `main` branch
   # Using a different branch name? Replace `main` with your branch’s name
