@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-// import remarkMermaid from 'remark-mermaidjs'
+import remarkMermaid from 'remark-mermaidjs'
 
 export default defineConfig({
 	site: 'https://erralb.github.io/bdd',
@@ -120,6 +120,6 @@ export default defineConfig({
 		}),
 	],
 	markdown: {
-		// remarkPlugins: [remarkMermaid],
+		remarkPlugins: [remarkMermaid],
 	},
 });
