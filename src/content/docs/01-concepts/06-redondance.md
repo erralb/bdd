@@ -4,7 +4,7 @@ description: Comment remédier au problème de redondance des données
 ---
 
 <table>
-    <tr><th colspan="5">Livre</th></tr>
+    <tr><th colspan="6">Livre</th></tr>
     <tr><th>numéro</th><th>titre</th><th>auteur</th><th>isbn</th><th>date achat</th><th>rayonnage</th></tr>
     <tr></tr>
 </table>
@@ -54,7 +54,7 @@ Column A | Column B | Column C
 
 ## Comment décomposer une table ?
 
-![Décomposition d'une table](/public/01-06-01-DecompositionTable.png)
+![Décomposition d'une table](06-redondance-01-DecompositionTable.png)
 
 * Soit une table R possédant 3 colonne A, B et C
 * Il existe une dépendance fonctionnelle entre B et C (Si on connait B, alors on connait nécessairement C)
