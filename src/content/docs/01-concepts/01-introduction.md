@@ -3,8 +3,6 @@ title: Introduction
 description: A guide in my new Starlight docs site.
 ---
 
-<!-- <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRAH6-YtNH7DKH6jk127wotWXtNwiCuG8v1Zs0jIhqQoqQOvyFnzcD-mvQeJd-Uiy8KyV6ZZpPbkweL/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" style="min-height:488px"></iframe> -->
-
 ## Qu'est-ce qu'une Base De Données (BDD) ?
 
 > Même si vous n'avez jamais utilisé de système de gestion de bases de données (SGBD), vous avez probablement déjà une idée de ce qu'est une base de données 
