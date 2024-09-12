@@ -7,11 +7,11 @@ description: Place aux concepts au travers d'un exemple
 
 Considérons le bon de commande suivant :
 
-![Bon de Commande 1](/public/01-01-01-BonDeCommande.png)
+![Bon de Commande 1](02-exemple-01-BonDeCommande.png)
 
 On peut identifier des données spécifiques à des **entités** distinctes :
 
-![Bon de Commande 2](/public/01-01-02-BonDeCommande2.png)
+![Bon de Commande 2](02-exemple-02-BonDeCommande2.png)
 
 ### Décomposition en tables
 
