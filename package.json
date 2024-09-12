@@ -10,11 +10,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "0.9.3",
-    "@astrojs/starlight": "0.27.1",
-    "astro": "4.15.4",
-    "astro-expressive-code": "0.35.3",
-    "sharp": "0.32.5",
-    "typescript": "5.4.5"
-  }
+    "@astrojs/check": "^0.9.3",
+    "@astrojs/starlight": "^0.27.1",
+    "astro": "^4.15.3",
+    "sharp": "^0.32.5",
+    "typescript": "^5.6.2"
+  },
+  "packageManager": "yarn@4.4.1"
 }
