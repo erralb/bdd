@@ -1,5 +1,11 @@
-<a id="presentation-button" class="presentation-hidden presentation-trigger" type="button"
-  ><img src="/bdd/public/slides.svg" alt="Slides"></a>
+---
+import { Image } from 'astro:assets';
+import slidesIcon from '../assets/slides.svg';
+---
+
+<a id="presentation-button" class="presentation-hidden presentation-trigger" type="button" title="Start presentation">
+  <Image src={slidesIcon} alt="Slides icon" />
+</a>
 
 <div class="presentation-progress"></div>
 
