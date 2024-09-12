@@ -13,9 +13,10 @@
     "@astrojs/check": "0.9.3",
     "@astrojs/starlight": "0.27.1",
     "astro": "4.15.4",
-    "astro-expressive-code": "^0.35.3",
-    "remark-mermaidjs": "^6.0.0",
-    "sharp": "^0.32.5",
-    "typescript": "^5.4.5"
+    "astro-expressive-code": "0.35.3",
+    "playwright": "1.47.0",
+    "remark-mermaidjs": "6.0.0",
+    "sharp": "0.32.5",
+    "typescript": "5.4.5"
   }
 }
