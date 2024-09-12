@@ -16,6 +16,10 @@ export default defineConfig({
 			customCss: [
 				'./src/style.css',
 			],
+			components: {
+			  // Override the default `SocialIcons` component.
+			  ThemeSelect: './src/components/ThemeSelect.astro',
+			},
 			defaultLocale: 'root',
 			// optional
 			locales: {
