@@ -7,7 +7,9 @@ erDiagram
         int numero PK
         string nom
         string email
-        string adresse
+        string rue
+        string codePostal
+        string ville
         string telephone
     }
 

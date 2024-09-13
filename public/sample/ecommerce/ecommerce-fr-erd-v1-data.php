@@ -14,14 +14,18 @@ for ($i = 1; $i < 6; $i++) {
     $nom = $faker->lastName();
     $email = strtolower($nom).'@'.$faker->freeEmailDomain();
     $nom = $prenom.' '.$nom;
-    $adresse = $faker->address();
+    $rue = $faker->streetAddress();
+    $codePostal = $faker->postcode();
+    $ville = $faker->city();
     $telephone = $faker->phoneNumber();
 
-    $stmt = $pdo->prepare("INSERT INTO CLIENTS (numero, nom, email, adresse, telephone) VALUES (:numero, :nom, :email, :adresse, :telephone)");
+    $stmt = $pdo->prepare("INSERT INTO CLIENTS (numero, nom, email, rue, codePostal, ville, telephone) VALUES (:numero, :nom, :email, :rue, :codePostal, :ville, :telephone)");
     $stmt->bindParam(":numero", $i, PDO::PARAM_INT);
     $stmt->bindParam(":nom", $nom, PDO::PARAM_STR);
     $stmt->bindParam(":email", $email, PDO::PARAM_STR);
-    $stmt->bindParam(":adresse", $adresse, PDO::PARAM_STR);
+    $stmt->bindParam(":rue", $rue, PDO::PARAM_STR);
+    $stmt->bindParam(":codePostal", $codePostal, PDO::PARAM_STR);
+    $stmt->bindParam(":ville", $ville, PDO::PARAM_STR);
     $stmt->bindParam(":telephone", $telephone, PDO::PARAM_STR);
     $stmt->execute();
 }
