@@ -24,3 +24,6 @@ pnpm-debug.log*
 .yarnrc.yml
 .yarn/install-state.gz
 .yarn/releases/yarn-4.4.1.cjs
+
+# ignore composer vendor directory
+public/sample/vendor
