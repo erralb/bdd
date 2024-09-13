@@ -3,9 +3,8 @@ import starlight from '@astrojs/starlight';
 import remarkMermaid from 'remark-mermaidjs'
 
 export default defineConfig({
-	site: 'https://erralb.github.io/bdd',
-	base: '/bdd/',
-	// site: 'https://bdd.test',
+	site: import.meta.env.SITE,
+	base: import.meta.env.BASE,
 	integrations: [
 		starlight({
 			title: 'Bases de données (BDD)',
