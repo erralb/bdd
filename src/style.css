@@ -58,3 +58,6 @@
 .sl-markdown-content li {
   margin-bottom: 1.5rem;
 }
+.sl-markdown-content li > ul {
+  margin-top: 1.5rem;
+}
