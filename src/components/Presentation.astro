@@ -1,16 +1,32 @@
 ---
-import { Image } from 'astro:assets';
-import slidesIcon from '../assets/slides.svg';
+import { Image } from "astro:assets";
+import slidesIcon from "../assets/slides.svg";
 ---
 
-<a id="presentation-button" class="presentation-hidden presentation-trigger" type="button" title="Mode présentation">
+<a
+  id="presentation-button"
+  class="presentation-hidden presentation-trigger"
+  type="button"
+  title="Mode présentation"
+>
   <Image src={slidesIcon} alt="Icône Présentation" />
 </a>
 
 <div class="presentation-progress"></div>
 
+<div class="presentation-close">✕</div>
+
+<div class="presentation-controls">
+  <button id="presentation-prev" class="presentation-trigger" title="Slide précédente"> ← </button>
+  <button id="presentation-next" class="presentation-trigger" title="Slide suivante"> → </button>
+</div>
+
+<div class="presentation-infos">
+  <span id="presentation-slide-number">1</span> / <span id="presentation-slide-total">1</span>
+</div>
+
 <script>
-//   import { createSyncReader, createSyncWriter } from "../sync";
+  //   import { createSyncReader, createSyncWriter } from "../sync";
 
   const button = document.getElementById(
     "presentation-button"
@@ -18,17 +34,21 @@ import slidesIcon from '../assets/slides.svg';
 
   let slides = Array.from(document.querySelectorAll(".presentation-slide"));
 
+  let total = slides.length;
+  document.getElementById("presentation-slide-total")!.textContent = total.toString();
+
   let slide = 0;
+  document.getElementById("presentation-slide-number")!.textContent = (slide + 1).toString();
   let presenter = false;
 
   const presentationId = window.location.href;
-//   const syncWriter = createSyncWriter<number>(presentationId);
+  //   const syncWriter = createSyncWriter<number>(presentationId);
 
   const nextSlide = () => {
     if (slide === slides.length - 1) {
       return slide;
     }
-
+    
     return slide + 1;
   };
 
@@ -69,23 +89,25 @@ import slidesIcon from '../assets/slides.svg';
     }
   };
 
-  let presenting = false
+  let presenting = false;
   const startPresentation = () => {
     // button.innerHTML = "Slides";
     document.body.classList.add("presentation-overflow-hidden");
-    document.querySelector('.sidebar-pane')?.classList.add('presentation-hide');
+    document.querySelector(".sidebar-pane")?.classList.add("presentation-hide");
 
-    presenting = true
+    presenting = true;
     displaySlides();
     setProgress();
-    initListeners()
+    initListeners();
   };
 
   const endPresentation = () => {
     document.body.classList.remove("presentation-overflow-hidden");
-    document.querySelector('.sidebar-pane')?.classList.remove('presentation-hide');
+    document
+      .querySelector(".sidebar-pane")
+      ?.classList.remove("presentation-hide");
 
-    presenting = false
+    presenting = false;
     slides.map((s) =>
       s.classList.remove("active", "inactive", ...transitionClasses)
     );
@@ -97,13 +119,13 @@ import slidesIcon from '../assets/slides.svg';
   };
 
   const setProgress = () => {
-    const progress = ((slide+1)/slides.length)*100;
-    document.body.style.setProperty('--presentation-progress', `${progress}%`)
-  }
+    const progress = ((slide + 1) / slides.length) * 100;
+    document.body.style.setProperty("--presentation-progress", `${progress}%`);
+  };
 
   const transition = (nextSlide: number) => {
     if (!presenting) {
-      return
+      return;
     }
 
     if (slide === nextSlide) {
@@ -113,23 +135,32 @@ import slidesIcon from '../assets/slides.svg';
     slides.forEach((s) => s.classList.remove(...transitionClasses));
 
     if (presenter) {
-    //   syncWriter(nextSlide);
+      //   syncWriter(nextSlide);
     }
 
     slide = nextSlide;
+    document.getElementById("presentation-slide-number")!.textContent = (slide + 1).toString();
 
     displaySlides();
     setProgress();
   };
 
-
-  let listenersInitialized = false
+  let listenersInitialized = false;
   const initListeners = () => {
-     if (listenersInitialized) {
-      return
-     }
+    if (listenersInitialized) {
+      return;
+    }
 
-     listenersInitialized= true
+    document.querySelector(".presentation-close")!.addEventListener("click", endPresentation);
+    document.getElementById("presentation-prev")!.addEventListener("click", () => {
+      transition(prevSlide());
+    });
+    document.getElementById("presentation-next")!.addEventListener("click", () => {
+      transition(nextSlide());
+    });
+    
+
+    listenersInitialized = true;
     window.addEventListener("keyup", (ev) => {
       ev.preventDefault();
       const isEscape = ev.key === "Escape";
@@ -154,59 +185,63 @@ import slidesIcon from '../assets/slides.svg';
       transition(nextSlide);
     });
 
-    let touchstartX = 0;
-    let touchendX = 0;
-    const handleGesure = () => {
-      const magnitude = Math.abs(touchstartX - touchendX);
+    // let touchstartX = 0;
+    // let touchendX = 0;
+    // const handleGesure = () => {
+    //   const magnitude = Math.abs(touchstartX - touchendX);
 
-      if (magnitude < 40) {
-        // Ignore since this could be a scroll up/down
-        return;
-      }
+    //   if (magnitude < 40) {
+    //     // Ignore since this could be a scroll up/down
+    //     return;
+    //   }
 
-      if (touchendX < touchstartX) {
-        transition(nextSlide());
-      }
-      if (touchendX > touchstartX) {
-        transition(prevSlide());
-      }
-    };
+    //   if (touchendX < touchstartX) {
+    //     transition(nextSlide());
+    //   }
+    //   if (touchendX > touchstartX) {
+    //     transition(prevSlide());
+    //   }
+    // };
 
-    document.addEventListener(
-      "touchstart",
-      (ev) => {
-        touchstartX = ev.changedTouches[0].screenX;
-      },
-      false
-    );
+    // document.addEventListener(
+    //   "touchstart",
+    //   (ev) => {
+    //     touchstartX = ev.changedTouches[0].screenX;
+    //   },
+    //   false
+    // );
 
-    document.addEventListener(
-      "touchend",
-      (event) => {
-        touchendX = event.changedTouches[0].screenX;
-        handleGesure();
-      },
-      false
-    );
-  }
+    // document.addEventListener(
+    //   "touchend",
+    //   (event) => {
+    //     touchendX = event.changedTouches[0].screenX;
+    //     handleGesure();
+    //   },
+    //   false
+    // );
+  };
 
   // If there is no presentation on the page then we don't initialize
   if (slides.length) {
     button.classList.remove("presentation-hidden");
     button.addEventListener("click", startPresentation);
     // createSyncReader<number>(presentationId, slide, transition);
+    // startPresentation(); //automatically start the presentation
   }
 </script>
 
 <style is:global>
-  .presentation-progress {
+  .presentation-progress,
+  .presentation-controls,
+  .presentation-infos,
+  .presentation-close {
     display: none;
   }
 
   .presentation-hide {
     display: none;
   }
-  
+
   .presentation-slide-title {
     display: none;
   }
@@ -219,12 +254,44 @@ import slidesIcon from '../assets/slides.svg';
       display: none;
     }
 
-    h1, h2, h3, h4 {
+    h1,
+    h2,
+    h3,
+    h4 {
       font-size: xx-large;
     }
 
     .presentation-slide.large {
-        font-size: x-large;
+      font-size: x-large;
+    }
+
+    .presentation-close {
+      display: block;
+      visibility: visible;
+      position: absolute;
+      z-index: 20;
+      top: 20px;
+      right: 20px;
+      width: 30px;
+      height: 30px;
+      background: var(--color-brand-muted);
+      cursor: pointer;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    .presentation-controls,
+    .presentation-infos {
+      visibility: visible;
+      position: absolute;
+      z-index: 20;
+      top: 95vh;
+      left: 20px;
+      display: flex;
+    }
+
+    .presentation-infos {
+      left: auto;
+      right: 20px;
     }
 
     .presentation-progress {
@@ -233,10 +300,10 @@ import slidesIcon from '../assets/slides.svg';
       visibility: visible;
       position: absolute;
       z-index: 20;
-      top:0px;
+      top: 0px;
       left: 0px;
       width: var(--presentation-progress);
-      height: .25rem;
+      height: 0.25rem;
       background: var(--color-brand-muted);
     }
 
@@ -253,6 +320,8 @@ import slidesIcon from '../assets/slides.svg';
 
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
 
       background-color: var(--color-base);
       color: var(--color-on-base);
@@ -274,9 +343,9 @@ import slidesIcon from '../assets/slides.svg';
         justify-content: flex-start;
       }
 
-      &.highlight{
+      &.highlight {
         background-color: var(--color-brand);
-        color: var(--color-on-brand)
+        color: var(--color-on-brand);
       }
 
       .presentation-slide-title {
@@ -291,20 +360,27 @@ import slidesIcon from '../assets/slides.svg';
         filter: none;
       }
 
-      h1, h2, h3, h4 {
+      h1,
+      h2,
+      h3,
+      h4 {
         font-size: 3rem;
         border-top: none;
       }
 
-      p, ul, li {
+      p,
+      ul,
+      li {
         display: block;
         width: 100%;
         max-width: 1200px;
         font-size: 2rem;
       }
 
+      code {
+        font-size: 2rem;
+      }
     }
-
 
     .presentation-presenter #presentation-content {
       border: solid 8px var(--color-brand);
@@ -333,7 +409,7 @@ import slidesIcon from '../assets/slides.svg';
     justify-content: center;
     cursor: pointer;
     max-height: 30px;
-    }
+  }
 
   .presentation-trigger img {
     max-width: 30px;

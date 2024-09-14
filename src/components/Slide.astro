@@ -10,6 +10,6 @@ const { centered, highlight, large, title} = Astro.props
 ---
 
 <section class="presentation-slide centered large" class:list={{ centered, highlight, large }}>
-  <h1 class="presentation-slide-title">{title}</h1>
+  {title? <h1 class="presentation-slide-title">{title}</h1> : null}
   <slot />
 </section>

@@ -1,6 +1,6 @@
 <multiple-choice
 	data-correct-label={'Correct !'}
-	data-incorrect-label={'Réessayer !'}
+	data-incorrect-label={'Et non...'}
 >
 	<form onsubmit="event.preventDefault()">
 		<ol class="opt-list not-content"><slot /></ol>
@@ -8,7 +8,7 @@
 			<button class="submit" type="submit" disabled>
 				{'Valider'}
 			</button>
-			<div class="answer sr-only" role="alert"></div>
+			<div class="sr-only answer" role="alert"></div>
 		</div>
 	</form>
 </multiple-choice>
