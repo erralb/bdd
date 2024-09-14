@@ -3,11 +3,17 @@ title: Bases de données (BDD)
 description: Bases de données relationnelles, NoSQL, conception, utilisation, requêtes, etc.
 ---
 
+import Slide from "/src/components/Slide.astro";
+
+<Slide>
+
 ## Objectif de ce cours
 
 <center>
 **Se former à l'utilisation et à la conception des Bases de Données (BDD)**
 </center>
+
+</Slide>
 
 ## Introduction
 
@@ -19,36 +25,51 @@ Ce cours complet sur les bases de données vous fournira les connaissances néce
 
 Que vous soyez débutant ou que vous ayez déjà une certaine expérience dans le domaine, ce cours vous aidera à approfondir vos compétences et votre expertise en bases de données.
 
+<Slide>
+
 Dans ce cours, nous allons aborder :
 
 - Les concepts des bases de données : **tables, lignes, colonnes, identifiants**
+</Slide>
+<Slide>
 - Les **dépendances fonctionelles** et la **normatlisation** : 1NF, 2NF, 3NF, BCNF, qui permettent d'assurer la qualité des structures de données.
+</Slide>
+<Slide>
 - **L'algèbre relationnelle**, qui est un langage formel pour interroger les bases de données relationnelles.
+</Slide>
+<Slide>
 - Le langage **SQL (Structured Query Language)**, qui est le langage standard pour interroger les bases de données relationnelles :
 	- Syntaxe de base
-	- Interrogation de données : Requêtes simples et complexes
-	- Sous-requêtes et Jointures
-	- Agrégation et Groupement
+	- **Interrogation de données** : Requêtes simples et complexes
+	- **Sous-requêtes** et **Jointures**
+	- **Agrégation** et **Groupement**
 	- Tris et Limites
-	- Les types de données : Entiers, Réels, Chaines, Dates, JSON, etc.
-	- Vues, Procédures, Triggers
-- La **conception** de bases de données relationnelles : 
+	- Les **types de données** : Entiers, Réels, Chaines, Dates, JSON, etc.
+	- Vues, Procédures, **Triggers**
+</Slide>
+<Slide>
+- La **conception** de bases de données relationnelles : (2ème semestre)
 	- Modélisation conceptuelle
 	- Modélisation logique
 	- Modélisation physique
--  Nous explorerons également les **bases de données NoSQL**, qui offrent une approche plus flexible et évolutive pour le stockage des données.
-
+</Slide>
+<Slide>
+-  Nous explorerons également les **bases de données NoSQL** (2ème semestre), qui offrent une approche plus flexible et évolutive pour le stockage des données.
+</Slide>
+<Slide>
 
 ## Compétences visées
 
-* Connaître les principes des bases de données relationnelles
-* Maîtriser les principes de l'algèbre relationnelle
-* Savoir écrire des requêtes de manipulation de données en SQL
-* Savoir concevoir et normaliser un modèle conceptuel de données à partir d'un cahier des charges
+* Connaître les principes des **bases de données relationnelles**
+* Maîtriser les principes de l'**algèbre relationnelle**
+* Savoir écrire des **requêtes** de manipulation de données en **SQL**
+* Savoir **concevoir** et **normaliser un modèle conceptuel** de données à partir d'un cahier des charges
 * Savoir dériver un schéma relationnel de bases de données à partir d'un modèle de données
-* Savoir utiliser un SGBD pour créer, interroger et maintenir une base de données
-* Connaître les principes des bases de données NoSQL
+* Savoir utiliser un **SGBD** pour créer, interroger et maintenir une base de données
+* Connaître les principes des bases de données **NoSQL**
 * Savoir choisir un type de base de données adapté à un besoin
+
+</Slide>
 
 ## Organisation du cours
 
@@ -58,6 +79,8 @@ Ce cours est initialement prévu pour être donné en présentiel, à l'universi
 
 ### Semestre 1
 
+<Slide title="Organisation du cours - Semestre 1">
+
 #### Cours
 
 Module de 24h : 12h de cours, 6h de TD, 6h de TP
@@ -66,6 +89,9 @@ Module de 24h : 12h de cours, 6h de TD, 6h de TP
 * 4 séances de TD de 1h30
 * 4 séances de TP de 1h30
 
+</Slide>
+<Slide title="Organisation du cours - Semestre 1">
+
 #### Evaluation
 
 * 1 projet noté en binôme (coefficient 40%)
@@ -73,7 +99,12 @@ Module de 24h : 12h de cours, 6h de TD, 6h de TP
 
 Session de rattrapage : 1 examen écrit (coefficient 70%, 30% de la note du Projet étant reportée)
 
+</Slide>
+
 ### Semestre 2
+
+<Slide title="Organisation du cours - Semestre 2">
+
 
 #### Cours
 
@@ -84,12 +115,18 @@ Module de 24h
 * 3 séances de 1h30 pour travailler sur le projet
 * 3 séances de 1h30 sur les bases de données NoSQL
 
+</Slide>
+<Slide title="Organisation du cours - Semestre 2">
+
 #### Evaluation
 
 * 1 projet noté en binôme (40% de la note)
 * 1 examen écrit (60% de la note)
 
 Session de rattrapage : 1 examen écrit (70% de la note, 30% de la note du projet étant reportée)
+
+</Slide>
+<Slide>
 
 ---
 
@@ -102,3 +139,6 @@ import { LinkCard } from '@astrojs/starlight/components';
   description="Avec une première introduction aux concepts de base de données."
   href="/bdd/01-concepts/01-introduction/"
 />
+
+
+</Slide>

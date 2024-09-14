@@ -1,5 +1,5 @@
 ---
-title: Phénomène de redondance
+title: Redondance & DF
 description: Comment remédier au problème de redondance des données
 ---
 import Slide from "/src/components/Slide.astro";
@@ -20,7 +20,6 @@ La redondance des données signifie que les mêmes informations sont stockées p
 <Slide>
 
 ## Exemple
-
 
 <Table
   title="Livres"
@@ -58,19 +57,125 @@ La redondance des données signifie que les mêmes informations sont stockées p
 
 ## Dépendances fonctionnelles
 
-Les dépendances fonctionnelles determinent les **dépendances** de certaines **colonnes entre elles** :
+En théorie des bases de données relationnelles, une dépendance fonctionnelle est une contrainte entre deux ensembles d'attributs dans une relation (table) d'une base de données
 
-* Dans notre exemple précédent, il existe une contrainte entre les colonnes _isbn_, _titre_ et _auteur_ de la table LIVRES
+:::note[Définition]
+Un schéma d’une relation noté ```R = <U, {X→Y}>``` définit l’ensemble des relations R construites sur l’ensemble de constituants U qui vérifient toutes la dépendance fonctionnelle X→Y
+:::
+
+</Slide>
+
+##### Exemple :
+
+<Slide title="Exemple">
+
+* **P** (professeur), **H** (heure), **N** (salle), **Y** (classe), **T** (matière)
+* _"le professeur **p** qui enseigne la matière **t** fait cours à l’heure **h** en salle **n** à la classe **y**"_
+* On peut définir les dépendances fonctionnelles suivantes :
+  
+  ``` { P → T,  HY → N, PH → Y, HN → P }```
+
+> Les dépendances fonctionnelles determinent les **dépendances** de certaines **colonnes entre elles**
+
+</Slide>
+
+##### Autre exemple :
+
+<Slide title="Autre exemple">
+
+
+* Dans la relation _LIVRES_ , il existe une contrainte entre les colonnes _isbn_, _titre_ et _auteur_ de la table LIVRES
 * On notera :
     * ISBN → TITRE, AUTEUR 
     * ISBN est le **déterminant** et (TITRE, AUTEUR) les **déterminés** 
     * Autrement dit, si on possède une valeur _isbn_, on peut **nécessairement** déterminer le _titre_ et l'_auteur_ du livre
 
-:::note[Pour éviter le phénomène de redondance]
-les dépendances fonctionnelles doivent être évitées au sein d'une même table
-:::
 
 >On va donc garder uniquement le déterminant isbn dans la table livre, et déplacer les détérminés titre et auteur dans une nouvelle table
+
+</Slide>
+<Slide>
+
+### Axiomes d'Armstrong
+
+Les dépendances fonctionnelles sont régies par les **axiomes d'Armstrong** :
+
+* **Réflexivité** : Si Y est une partie de X, alors X → Y
+* **Augmentation** : Si X → Y, alors XZ → YZ
+* **Transitivité** : Si X → Y et Y → Z, alors X → Z
+
+Exemple
+
+* Si on a une dépendance fonctionnelle ISBN → TITRE, AUTEUR
+* On peut en déduire que ISBN, DATE_ACHAT → TITRE, AUTEUR, RAYONNAGE
+* On peut en déduire que ISBN → RAYONNAGE
+
+</Slide>
+<Slide>
+
+### Autres propriétés déduites des axiomes d'Armstrong
+
+* **Union** : Si X → Y et X → Z, alors X → YZ
+* **Décomposition** : Si X → YZ, alors X → Y et X → Z
+* **Pseudo-transitivité** : Si X → Y et WY → Z, alors WX → Z
+* **Réduction** : Si X → YZ et X → Y, alors X → Z
+
+Exemple
+
+* Si on a une dépendance fonctionnelle ISBN → TITRE, AUTEUR
+* On peut en
+    * déduire que ISBN → TITRE
+    * déduire que ISBN → AUTEUR
+
+
+</Slide>
+<Slide>
+
+### DF élémentaires et DF complètes
+
+* Une **dépendance fonctionnelle** est dite **élémentaire** si elle ne peut pas être décomposée en plusieurs dépendances fonctionnelles plus simples
+* Une **dépendance fonctionnelle** est dite **complète** si elle est **irréductible** et qu'elle ne peut pas être déduite à partir d'autres dépendances fonctionnelles
+
+Exemple
+
+* Si on a une dépendance fonctionnelle ISBN → TITRE, AUTEUR
+* On ne peut pas la décomposer en ISBN → TITRE et ISBN → AUTEUR
+* On ne peut pas la déduire à partir d'autres dépendances fonctionnelles
+
+
+</Slide>
+<Slide>
+
+### DF non élémentaires
+
+* Une **dépendance fonctionnelle** est dite **non élémentaire** si elle peut être décomposée en plusieurs dépendances fonctionnelles plus simples
+* Une **dépendance fonctionnelle** est dite **incomplète** si elle peut être déduite à partir d'autres dépendances fonctionnelles
+
+Exemple
+
+* Si on a une dépendance fonctionnelle ISBN → TITRE, AUTEUR, RAYONNAGE
+* On peut la décomposer en ISBN → TITRE, AUTEUR et ISBN → RAYONNAGE
+* On peut la déduire à partir de ISBN → TITRE, AUTEUR
+
+
+</Slide>
+<Slide>
+
+:::note
+On peut toujours réécrire un ensemble de DF en un ensemble de DFE, en supprimant les DF triviales obtenues par réflexivité et en décomposant les DF à partie droite non atomique en plusieurs DFE.
+:::
+
+</Slide>
+<Slide>
+
+### Réécriture de DF en DFE
+
+On peut réécrire les DF non élémentaires de l'exemple précédent en les décomposant DFE :
+
+* AB→A n'est pas considérée car c'est une DF triviale obtenu par réflexivité.
+* AB→CB est décomposée en AB→C et AB→B, et AB→B n'est plus considérée car triviale.
+* N°SS→Nom, Prénom est décomposée en N°SS→Nom et N°SS→Prénom.
+
 
 </Slide>
 <Slide>
@@ -82,6 +187,7 @@ Pour éviter la redondance des données, on peut **normaliser** les tables en re
 * **1ère forme normale** : Chaque colonne doit contenir **une seule valeur**
 * **2ème forme normale** : Chaque colonne doit **dépendre de la clé primaire**
 * **3ème forme normale** : Chaque colonne ne doit **dépendre que de la clé primaire**
+* **Forme normale de Boyce-Codd** : Chaque dépendance fonctionnelle est une **dépendance triviale** ou une **dépendance complète**
 
 ### Normalisation de la table Livres
 
@@ -126,13 +232,16 @@ Pour éviter la redondance des données, on peut **normaliser** les tables en re
 
 ## Comment décomposer une table ?
 
-![Décomposition d'une table](06-redondance-01-DecompositionTable.png)
+![Décomposition d'une table](06-redondance-01-decomposition.png)
 
 * Soit une table R possédant 3 colonne A, B et C
 
 * Il existe une dépendance fonctionnelle entre B et C (Si on connait B, alors on connait nécessairement C)
     * On doit donc **extraire la colonne C** de la table R pour éviter la redondance interne
     * La colonne **B doit être présente dans les 2 tables** pour pouvoir reconstruire l'information
+    
+</Slide>
+<Slide>
 
 * On peut aussi remarquer dans cet exemple que :
     * B sera une **clé étrangère** dans la table R
@@ -142,7 +251,6 @@ Pour éviter la redondance des données, on peut **normaliser** les tables en re
 Il faudra alors décomposer autant de fois que nécessaire pour éviter la redondance
 
 </Slide>
-
 <Slide>
 
 ## Conclusions
@@ -153,7 +261,5 @@ Il faudra alors décomposer autant de fois que nécessaire pour éviter la redon
 * La décomposition des tables permet de respecter les règles de normalisation et d'éviter la redondance
 * La décomposition des tables se fait en s'appuyant sur les dépendances fonctionnelles entre les colonnes
 * Identifier les dépendances fonctionnelles est une étape importante dans la conception d'une base de données, qui n'est pas toujours évidente
-
-
 
 </Slide>

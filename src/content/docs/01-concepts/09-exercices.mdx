@@ -1,0 +1,75 @@
+---
+title: Exercices
+description: Exercices introductifs
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Exercice 1 :
+
+<Tabs>
+  <TabItem label="Énoncé" icon="star">
+    Soit :
+    
+    ```
+    R1 (A, B, C, D, E, F) 
+    ```
+
+    une relation avec l'ensemble de dépendances suivant :
+
+    ```
+    { AB → C, AB → D, AB → E, AB → F, B → C, D → E, D → F }
+    ```
+
+    1. Dessiner le graphe(ensemble) minimum de dépendances. 
+    Quelles est la clé de R1 ?
+
+    2. Quelle est la forme normale de R1 ?
+    3. On décompose la relation R1 en R11 et R12 : 
+
+    ```
+    R11(A, B, D, E, F) 
+    ```
+    et 
+    ```
+    R12(B,C)
+    ```
+    
+    Quelles sont les formes normales des relations R11 et R12 ?
+
+    4. Proposer une décomposition sans perte d'information de R11.
+
+  </TabItem>
+  <TabItem label="Solution" icon="moon">
+  1. Dessiner le graphe(ensemble) minimum de dépendances. 
+
+  L'ensemble dse dépendances est :
+
+    ```
+    { AB → C, AB → D, AB → E, AB → F, B → C, D → E, D → F }
+    ```
+  
+  Par transitivité, l'ensemble minimum de dépendances fonctionnelles de R1 est donc :
+
+  ```
+  { AB → D, B → C, D → E, D → F }
+  ```
+
+  2. La clé de cette relation est (A,B). Cette relation est en première forme normale mais pas en
+  deuxième forme normale car il y a un attribut qui ne fait pas partie de la clé(C) qui dépend
+  d'une partie de la clé(B).
+  3. La relation R11 est en deuxième forme normale et pas en troisième normale car il subsiste
+  une dépendance transitive. La relation R12 est en BCNF.
+  4. On peut décomposer R11 en R112(D, E, F) et R112(A>,B,D) sans perte d'information.
+
+  </TabItem>
+</Tabs>
+
+### Questions
+
+1. Est-ce que cette relation est en 2NF ? En 3NF ? Pourquoi ?
+2. Décomposer la relation en 3NF
+
+### Solutions
+
+## Exercice 2 :
