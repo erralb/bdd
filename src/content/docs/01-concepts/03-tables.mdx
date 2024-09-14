@@ -3,11 +3,17 @@ title: Tables, lignes, colonnes
 description: Un point sur les tables des bases de données
 ---
 
+import Slide from "/src/components/Slide.astro";
+
+<Slide>
 ### Tables
 
 - Les **données** d'une base de données sont **organisées** sous la forme de **tables**
 - Une table contient une **collection de lignes** stockées sur un support physique
   - e.g., un disque dur
+
+</Slide>
+<Slide>
 
 ### Lignes
 
@@ -17,9 +23,15 @@ description: Un point sur les tables des bases de données
 - Une ligne **représente** un concept du monde réel, appelé **entité** ou fait
 - Les lignes d'une même table ont le même format ou structure
 
+</Slide>
+<Slide>
+
 ### Colonnes
 
 - **L'ensemble des valeurs de même type** correspondant à une même propriété s'appelle **colonne**
+
+</Slide>
+<Slide>
 
 ### Exemple d'une table
 
@@ -28,5 +40,7 @@ import Table from "/src/components/TableSQLite.astro";
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v1.sqlite"
   title="Clients"
-  query="SELECT * FROM Clients where numero"
+  query="SELECT * FROM Clients"
 />
+
+</Slide>
