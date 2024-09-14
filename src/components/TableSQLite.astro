@@ -10,8 +10,8 @@ export interface Props {
 const { sqliteDB, title, query } = Astro.props;
 const db = new Database(sqliteDB);
 
-const rows = db.prepare(query).all();
-const headers = rows.length ? Object.keys(rows[0]) : [];
+const rows : Array<Array<string>> = db.prepare(query).all();
+const headers : Array<string> = rows.length ? Object.keys(rows[0]) : [];
 
 import Table from "./Table.astro";
 ---
