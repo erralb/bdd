@@ -14,6 +14,9 @@ importers:
       '@astrojs/starlight':
         specifier: ^0.27.1
         version: 0.27.1(astro@4.15.4(rollup@4.21.3)(typescript@5.6.2))
+      '@types/better-sqlite3':
+        specifier: ^7.6.11
+        version: 7.6.11
       astro:
         specifier: ^4.15.4
         version: 4.15.4(rollup@4.21.3)(typescript@5.6.2)
@@ -658,6 +661,9 @@ packages:
 
   '@types/babel__traverse@7.20.6':
     resolution: {integrity: sha512-r1bzfrm0tomOI8g1SzvCaQHo6Lcv6zu0EA+W2kHrt8dyrHQxGzBBL4kdkzIS+jBMV+EYcMAEAqXqYaLJq5rOZg==}
+
+  '@types/better-sqlite3@7.6.11':
+    resolution: {integrity: sha512-i8KcD3PgGtGBLl3+mMYA8PdKkButvPyARxA7IQAd6qeslht13qxb1zzO8dRCtE7U3IoJS782zDBAeoKiM695kg==}
 
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
@@ -3383,6 +3389,10 @@ snapshots:
   '@types/babel__traverse@7.20.6':
     dependencies:
       '@babel/types': 7.25.6
+
+  '@types/better-sqlite3@7.6.11':
+    dependencies:
+      '@types/node': 17.0.45
 
   '@types/cookie@0.6.0': {}
 
