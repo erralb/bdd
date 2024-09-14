@@ -11,7 +11,7 @@ const { sqliteDB, title, query } = Astro.props;
 const db = new Database(sqliteDB);
 
 const rows = db.prepare(query).all();
-const headers = rows.length ? Object.keys(rows[0] as string[]) : [];
+const headers = rows.length ? Object.keys(rows[0]) : [];
 
 import Table from "./Table.astro";
 ---
@@ -19,5 +19,5 @@ import Table from "./Table.astro";
 <Table
   title={title}
   headers={headers}
-  rows={rows.map((row: { [s: string]: string; } | ArrayLike<string>) => Object.values(row) as string[])}
+  rows={rows.map((row: Record<string, any>) => Object.values(row))}
 />
