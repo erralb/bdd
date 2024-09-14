@@ -4,11 +4,13 @@
 }
 
 .sl-markdown-content h1,
-h2,
-h3,
-h4 {
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4 {
   margin-top: 60px !important;
   margin-bottom: 40px;
+  border-top: 2px solid rgb(160, 160, 160);
+  padding-top: 20px;
 }
 
 .sl-markdown-content li {
@@ -16,7 +18,7 @@ h4 {
 }
 
 .sl-markdown-content strong {
-  color: red;
+  color: rgb(228, 27, 27);
 }
 
 .sl-markdown-content li>ul {
@@ -73,6 +75,19 @@ h4 {
 .sl-markdown-content :is(th:last-child, td:last-child):not(:where(.not-content *)) {
   padding-inline-start: 10px;
   padding-inline-end: 10px;
+}
+
+.thead-pk-1 thead tr:nth-child(2) th:nth-child(1),
+.thead-pk-2 thead tr:nth-child(2) th:nth-child(2),
+.thead-pk-3 thead tr:nth-child(2) th:nth-child(3),
+.thead-pk-4 thead tr:nth-child(2) th:nth-child(4),
+.thead-pk-5 thead tr:nth-child(2) th:nth-child(5),
+.thead-pk-6 thead tr:nth-child(2) th:nth-child(6),
+.thead-pk-7 thead tr:nth-child(2) th:nth-child(7),
+.thead-pk-8 thead tr:nth-child(2) th:nth-child(8),
+.thead-pk-9 thead tr:nth-child(2) th:nth-child(9),
+.thead-pk-10 thead tr:nth-child(2) th:nth-child(10) {
+  text-decoration: underline;
 }
 
 .table-pk-1 table td:nth-child(1),

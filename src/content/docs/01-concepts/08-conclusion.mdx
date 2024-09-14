@@ -1,29 +1,27 @@
 ---
-title: Conclusion
+title: Quiz & Conclusion
 description: Conclusion de la première partie du cours
 ---
 
 
 ## Que retenir de cette première partie du cours ?
 
-- Les concepts de tables, des identifiants, de lignes, de colonnes, d'entités
-- Les notions de clés primaires, clés étrangères
-- La différence entre schéma conceptuel, instance d'une base de données et SGBD
-- Le problème de la redondance interne
-- Les différents types de contraintes : contrainte d'unicité, dépendances fonctionnelles
-- Le principe de normalisation et de décomposition à l'aide des dépendances fonctionnelles et des formes normales
+- Les concepts de **tables**, des **identifiants**, de **lignes**, de **colonnes**, d'**entités** et d'**associations**
+- Les notions de **clés primaires** (PK oub Primary Key), **clés étrangères** (FK ou Foreign Key) et d'**attributs**
+- La différence entre **schéma conceptuel** et **instance** d'une base de données et SGBD
+- Le problème de la **redondance interne**
+- Le principe de **normalisation** et de **décomposition** à l'aide des **dépendances fonctionnelles** et des **formes normales**
 
 
 import Box from '/src/components/Box.astro';
 import MultipleChoice from '/src/components/MultipleChoice.astro';
 import Option from '/src/components/Option.astro';
 
-
 <Box icon="question-mark">
 
 ### Tester vos connaissances
 
-1. Une **entité** est utilisée pour
+Une **entité** est utilisée pour
 
 <MultipleChoice>
   <Option>
@@ -37,7 +35,7 @@ import Option from '/src/components/Option.astro';
   </Option>
 </MultipleChoice>
 
-2. Une **clé primaire** est
+Une **clé primaire** est
 
 <MultipleChoice>
   <Option>
@@ -51,7 +49,7 @@ import Option from '/src/components/Option.astro';
   </Option>
 </MultipleChoice>
 
-3. La forme normale de **Boyce-Codd** est une forme normale
+La forme normale de **Boyce-Codd** est une forme normale
 
 <MultipleChoice>
   <Option>
@@ -65,7 +63,7 @@ import Option from '/src/components/Option.astro';
   </Option>
 </MultipleChoice>
 
-4. La **dépendance fonctionnelle** est une relation entre
+La **dépendance fonctionnelle** est une relation entre
 
 <MultipleChoice>
   <Option>
@@ -79,7 +77,7 @@ import Option from '/src/components/Option.astro';
   </Option>
 </MultipleChoice>
 
-5. La **normalisation** d'une base de données permet de
+La **normalisation** d'une base de données permet de
 
 <MultipleChoice>
   <Option>
@@ -93,7 +91,7 @@ import Option from '/src/components/Option.astro';
   </Option>
 </MultipleChoice>
 
-6. Une **association** entre deux entités est représentée par
+Une **association** entre deux entités est représentée par
 
 <MultipleChoice>
   <Option>
@@ -104,6 +102,62 @@ import Option from '/src/components/Option.astro';
   </Option>
   <Option isCorrect>
     une relation
+  </Option>
+</MultipleChoice>
+
+La **redondance interne** est un problème qui peut entraîner
+
+<MultipleChoice>
+  <Option>
+    une perte de données
+  </Option>
+  <Option>
+    une incohérence des données
+  </Option>
+  <Option isCorrect>
+    une maintenance difficile
+  </Option>
+</MultipleChoice>
+
+La 3ème forme normale permet d'éviter
+
+<MultipleChoice>
+  <Option>
+    la redondance interne
+  </Option>
+  <Option>
+    la redondance externe
+  </Option>
+  <Option isCorrect>
+    les dépendances fonctionnelles transitives
+  </Option>
+</MultipleChoice>
+
+La **décomposition** d'une table permet de
+
+<MultipleChoice>
+  <Option>
+    ajouter des données
+  </Option>
+  <Option>
+    supprimer des données
+  </Option>
+  <Option isCorrect>
+    réduire la redondance interne
+  </Option>
+</MultipleChoice>
+
+La 2ème forme normale permet d'éviter
+
+<MultipleChoice>
+  <Option>
+    la redondance interne
+  </Option>
+  <Option isCorrect>
+    les dépendances fonctionnelles partielles
+  </Option>
+  <Option>
+    les dépendances fonctionnelles transitives
   </Option>
 </MultipleChoice>
 
