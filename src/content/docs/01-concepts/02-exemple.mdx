@@ -51,13 +51,13 @@ import Table from "/src/components/Table.astro";
 
 <Table
   title="Commandes"
-  headers={["numéro", "date", "total"]}
+  headers={["numero", "date", "total"]}
   rows={[["5", "29/07/2024", "€166.00"]]}
 />
 
 <Table
   title="Clients"
-  headers={["numéro", "nom", "adresse"]}
+  headers={["numero", "nom", "adresse"]}
   rows={[
     ["2", "Vincent Bouvier", "53, rue Emmanuelle Monnier 02510 Lombard-sur-Leleu"],
   ]}
@@ -65,7 +65,7 @@ import Table from "/src/components/Table.astro";
 
 <Table
   title="Détails"
-  headers={["numéro produit", "intitulé", "prix", "quantité", "sous-total"]}
+  headers={["numero produit", "intitulé", "prix", "quantité", "sous-total"]}
   rows={[
     ["1", "T-shirt", "€42.00", "2", "€84.00"],
     ["3", "Chaussures", "€46.00", "1", "€46.00"],
@@ -102,7 +102,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 
 <Table
   title="Commandes"
-  headers={["numéro", "date", "numéro client"]}
+  headers={["numero", "date", "numero client"]}
   rows={[
     ["5", "29/07/2024", "2"],
     ["2", "08/09/2024", "1"],
@@ -111,7 +111,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 
 <Table
   title="Clients"
-  headers={["numéro", "nom", "adresse"]}
+  headers={["numero", "nom", "adresse"]}
   rows={[
     ["2", "Vincent Bouvier", "53, rue Emmanuelle Monnier 02510 Lombard-sur-Leleu"],
     ["1", "Marie Dupont", "12, rue de la Paix 75000 Paris"],
@@ -120,7 +120,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 
 <Table
   title="Détails"
-  headers={["numéro commande", "numéro produit", "nom produit", "prix", "quantité"]}
+  headers={["numero commande", "numero produit", "nom produit", "prix", "quantité"]}
   rows={[
     ["5", "1", "T-shirt", "€42.00", "2"],
     ["5", "3", "Chaussures", "€46.00", "1"],
@@ -142,7 +142,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
     * inutile et dangereux
 * Certaines données ne sont pas stockées de manière atomique
   * La colonne adresse du client contient une adresse complète
-    * il serait plus judicieux de la décomposer en plusieurs colonnes (numéro, rue, code postal, ville)
+    * il serait plus judicieux de la décomposer en plusieurs colonnes (numero, rue, code postal, ville)
     * Ceci facilterait les recherches et les tris
 
 <br/>
@@ -161,7 +161,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 
 <Table
   title="Commandes"
-  headers={["numéro", "date", "numéro client"]}
+  headers={["numero", "date", "numero client"]}
   rows={[
     ["5", "29/07/2024", "2"],
     ["2", "08/09/2024", "1"],
@@ -171,7 +171,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 
 <Table
   title="Clients"
-  headers={["numéro", "nom", "rue", "code postal", "ville"]}
+  headers={["numero", "nom", "rue", "code postal", "ville"]}
   rows={[
     ["2", "Vincent Bouvier", "53, rue Emmanuelle Monnier", "02510", "Lombard-sur-Leleu"],
     ["1", "Marie Dupont", "12, rue de la Paix", "75000", "Paris"],
@@ -181,7 +181,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 
 <Table
   title="Détails"
-  headers={["numéro commande", "numéro produit", "quantité"]}
+  headers={["numero commande", "numero produit", "quantité"]}
   rows={[
     ["5", "1", "2"],
     ["5", "3", "1"],
@@ -195,7 +195,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 
 <Table
   title="Produits"
-  headers={["numéro", "nom", "prix"]}
+  headers={["numero", "nom", "prix"]}
   rows={[
     ["1", "T-shirt", "€42.00"],
     ["3", "Chaussures", "€46.00"],
@@ -213,7 +213,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 #### Ce résultat est satisfaisant !
 
 * Aucune donnée n'est dupliquée, hormis les données qui font **références** à d'autres tables.
-* On peut **reconstruire les bons de commandes** originaux en utilisant les **références** (numéros de clients, de commandes et de produits) et en calculant les totaux en multipliant les quantités commandées par les prix des produits
+* On peut **reconstruire les bons de commandes** originaux en utilisant les **références** (numeros de clients, de commandes et de produits) et en calculant les totaux en multipliant les quantités commandées par les prix des produits
 
 </Slide>
 <Slide>

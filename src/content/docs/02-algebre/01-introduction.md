@@ -14,8 +14,8 @@ description: Introduction à l'algèbre relationnelle
 
 Une gestion d'étudiants à l'université pourrait se résumer, de manière simple, aux entités suivantes :
 
-* **Étudiants** : nom, prénom, numéro, date de naissance, date de première inscription, régime de sécurité sociale, etc.
-* **Enseignants** : numéro de sécurité sociale, nom, prénom, date de naissance, emploi occupé, salaire, catégorie, date de titularisation, nombre d'enfants, adresse, téléphone, etc.
+* **Étudiants** : nom, prénom, numero, date de naissance, date de première inscription, régime de sécurité sociale, etc.
+* **Enseignants** : numero de sécurité sociale, nom, prénom, date de naissance, emploi occupé, salaire, catégorie, date de titularisation, nombre d'enfants, adresse, téléphone, etc.
 * **UFR (Unité de Formation et de Recherche)** : nom, responsable, bâtiment, téléphone, secrétariat, diplômes préparés, modules, cours, etc.
 * **Inscriptions** : étudiants, UFR, cours et diplômes, etc.
 * **Affectation des enseignants** : calcul des services d'enseignement, congés, modification de salaires, etc

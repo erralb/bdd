@@ -3,7 +3,10 @@
   --sl-text-5xl: 2rem;
 }
 
-.sl-markdown-content h1, h2, h3, h4 {
+.sl-markdown-content h1,
+h2,
+h3,
+h4 {
   margin-top: 60px !important;
   margin-bottom: 40px;
 }
@@ -11,7 +14,12 @@
 .sl-markdown-content li {
   margin-bottom: 1.5rem;
 }
-.sl-markdown-content li > ul {
+
+.sl-markdown-content strong {
+  color: red;
+}
+
+.sl-markdown-content li>ul {
   margin-top: 1.5rem;
 }
 
@@ -26,6 +34,7 @@
   padding: 10px;
   font-weight: bold;
 }
+
 .sl-markdown-content thead,
 .sl-markdown-content tfoot {
   background-color: rgb(95, 95, 95);
@@ -46,8 +55,7 @@
   background-color: rgb(248, 248, 248);
 }
 
-.sl-markdown-content th
-{
+.sl-markdown-content th {
   text-align: center !important;
 }
 
@@ -65,4 +73,45 @@
 .sl-markdown-content :is(th:last-child, td:last-child):not(:where(.not-content *)) {
   padding-inline-start: 10px;
   padding-inline-end: 10px;
+}
+
+.table-pk-1 table td:nth-child(1),
+.table-pk-2 table td:nth-child(2),
+.table-pk-3 table td:nth-child(3),
+.table-pk-4 table td:nth-child(4),
+.table-pk-5 table td:nth-child(5),
+.table-pk-5 table td:nth-child(6),
+.table-pk-5 table td:nth-child(7),
+.table-pk-5 table td:nth-child(8),
+.table-pk-5 table td:nth-child(9),
+.table-pk-5 table td:nth-child(10) {
+  background-color: rgb(243, 127, 127);
+  font-weight: bold;
+}
+
+.table-fk-1 table td:nth-child(1),
+.table-fk-2 table td:nth-child(2),
+.table-fk-3 table td:nth-child(3),
+.table-fk-4 table td:nth-child(4),
+.table-fk-5 table td:nth-child(5),
+.table-fk-6 table td:nth-child(6),
+.table-fk-7 table td:nth-child(7),
+.table-fk-8 table td:nth-child(8),
+.table-fk-9 table td:nth-child(9),
+.table-fk-10 table td:nth-child(10) {
+  background-color: rgb(162, 238, 162);
+}
+
+
+.table-pk-1.table-fk-1 table td:nth-child(1),
+.table-pk-2.table-fk-2 table td:nth-child(2),
+.table-pk-3.table-fk-3 table td:nth-child(3),
+.table-pk-4.table-fk-4 table td:nth-child(4),
+.table-pk-5.table-fk-5 table td:nth-child(5),
+.table-pk-6.table-fk-6 table td:nth-child(6),
+.table-pk-7.table-fk-7 table td:nth-child(7),
+.table-pk-8.table-fk-8 table td:nth-child(8),
+.table-pk-9.table-fk-9 table td:nth-child(9),
+.table-pk-10.table-fk-10 table td:nth-child(10) {
+  background: linear-gradient(0.25turn, rgb(243, 127, 127), #ebf8e1, rgb(162, 238, 162));
 }
