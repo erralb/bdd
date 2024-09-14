@@ -1,0 +1,45 @@
+---
+export interface Props {
+  title?: string;
+  headers?: Array<string>;
+  rows?: Array<Array<string>>;
+  caption?: string;
+  footer?: boolean;
+}
+
+const { title, headers, rows, caption, footer } = Astro.props;
+---
+
+<table>
+  {caption ? <caption>{caption}</caption> : null}
+  <thead>
+    <tr>
+      <th colspan={headers?.length}>{title}</th>
+    </tr>
+    <tr>
+      {headers?.map((heading) => <th>{heading}</th>)}
+    </tr>
+  </thead>
+  <tbody>
+    {
+      rows?.map((value) => (
+        <tr>
+          {value.map((cell) => (
+            <td>{cell}</td>
+          ))}
+        </tr>
+      ))
+    }
+  </tbody>
+  {
+    footer ? (
+      <tfoot>
+        <tr>
+          {headers?.map((heading) => (
+            <th>{heading}</th>
+          ))}
+        </tr>
+      </tfoot>
+    ) : null
+  }
+</table>

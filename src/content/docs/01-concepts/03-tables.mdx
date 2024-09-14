@@ -1,5 +1,5 @@
 ---
-title: Tables, lignes et colonnes
+title: Tables, lignes, colonnes
 description: Un point sur les tables des bases de données
 ---
 
@@ -23,9 +23,16 @@ description: Un point sur les tables des bases de données
 
 ### Exemple d'une table
 
-<table>
-    <tr><th colspan="4">Clients</th></tr>
-  <tr><th>numéro</th><th>nom</th><th>adresse</th><th>localité</th></tr>
-  <tr><td>B512</td><td>GILLET</td><td>14, r. de l'Eté</td><td>Toulouse</td></tr>
-  <tr><td>C400</td><td>FERARD</td><td>65, r. du Tertre</td><td>Poitiers</td></tr>
-</table>
+import Table from "../../../components/Table.astro";
+
+
+<Table
+  title="Clients"
+  headers={["numéro", "nom", "adresse"]}
+  rows={[
+    ["2", "Vincent Bouvier", "53, rue Emmanuelle Monnier 02510 Lombard-sur-Leleu"],
+    ["1", "Marie Dupont", "12, rue de la Paix 75000 Paris"],
+  ]}
+/>
+
+

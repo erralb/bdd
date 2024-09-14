@@ -20,6 +20,11 @@ Considérons le bon de commande suivant :
 <Image src={BonDeCommande} alt="Bon de Commande" />
 
 </Slide>
+
+<br />
+<br />
+<br />
+
 <Slide>
 
 On peut identifier des données spécifiques à des **entités** distinctes :
@@ -42,75 +47,31 @@ On obtiendrait :
 </Slide>
 <Slide>
 
-<table>
-  <tr>
-    <th colspan="3">Commandes</th>
-  </tr>
-  <tr>
-    <th>numéro</th>
-    <th>date</th>
-    <th>total</th>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>29/07/2024</td>
-    <td>€166.00</td>
-  </tr>
-</table>
+import Table from "../../../components/Table.astro";
 
-<table>
-  <tr>
-    <th colspan="3">Clients</th>
-  </tr>
-  <tr>
-    <th>numéro</th>
-    <th>nom</th>
-    <th>adresse</th>
-  </tr>
-  <tr>
-    <td>321</td>
-    <td>Vincent Bouvier</td>
-    <td>
-      53, rue Emmanuelle Monnier
-      <br />
-      02510 Lombard-sur-Leleu
-    </td>
-  </tr>
-</table>
+<Table
+  title="Commandes"
+  headers={["numéro", "date", "total"]}
+  rows={[["5", "29/07/2024", "€166.00"]]}
+/>
 
-<table>
-  <tr>
-    <th colspan="5">Détails</th>
-  </tr>
-  <tr>
-    <th>Numéro Produit</th>
-    <th>Intitulé</th>
-    <th>Prix</th>
-    <th>Quantité</th>
-    <th>Sous-total</th>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>T-shirt</td>
-    <td>€42.00</td>
-    <td>2</td>
-    <td>€84.00</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>Chaussures</td>
-    <td>46</td>
-    <td>1</td>
-    <td>€46.00</td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td>Casquette</td>
-    <td>18</td>
-    <td>2</td>
-    <td>€36.00</td>
-  </tr>
-</table>
+<Table
+  title="Clients"
+  headers={["numéro", "nom", "adresse"]}
+  rows={[
+    ["2", "Vincent Bouvier", "53, rue Emmanuelle Monnier 02510 Lombard-sur-Leleu"],
+  ]}
+/>
+
+<Table
+  title="Détails"
+  headers={["numéro produit", "intitulé", "prix", "quantité", "sous-total"]}
+  rows={[
+    ["1", "T-shirt", "€42.00", "2", "€84.00"],
+    ["3", "Chaussures", "€46.00", "1", "€46.00"],
+    ["4", "Casquette", "€18.00", "2", "€36.00"],
+  ]}
+/>
 
 </Slide>
 <Slide>
@@ -120,12 +81,13 @@ On obtiendrait :
 </Slide>
 <Slide>
 
-- En l'état il est **impossible de reconstruire le document initial**
-  - Comment récupérer le client d'une commande puisque nous avons extrait et rangé ailleurs le fragment décrivant ce client ?
-  - Comment identifier la commande de laquelle nous avons extrait un détail ?
-  > il manque des **données de références** pour effectuer des **liaisons entre les données**
+* En l'état il est **impossible de reconstruire le document initial**
 
-- **Certaines données sont calculées**, e.g., le total de la commande et les sous-totaux des détails
+  * Comment récupérer le client d'une commande puisque nous avons extrait et rangé ailleurs le fragment décrivant ce client ?
+  * Comment identifier la commande de laquelle nous avons extrait un détail ?
+    > il manque des **données de références** pour effectuer des **liaisons entre les données**
+
+* **Certaines données sont calculées**, e.g., le total de la commande et les sous-totaux des détails
   > il n'est pas nécessaire de les stocker
 
 </Slide>
@@ -138,247 +100,110 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 </Slide>
 <Slide>
 
-<table>
-  <tr>
-    <th colspan="3">Commandes</th>
-  </tr>
-  <tr>
-    <th>numéro</th>
-    <th>date</th>
-    <th>numéro client</th>
-  </tr>
-  <tr>
-    <td>30188</td>
-    <td>2/1/2009</td>
-    <td>B512</td>
-  </tr>
-  <tr>
-    <td>30179</td>
-    <td>22/12/2008</td>
-    <td>C400</td>
-  </tr>
-</table>
+<Table
+  title="Commandes"
+  headers={["numéro", "date", "numéro client"]}
+  rows={[
+    ["5", "29/07/2024", "2"],
+    ["2", "08/09/2024", "1"],
+  ]}
+/>
 
-<table>
-  <tr>
-    <th colspan="4">Clients</th>
-  </tr>
-  <tr>
-    <th>numéro</th>
-    <th>nom</th>
-    <th>adresse</th>
-    <th>localité</th>
-  </tr>
-  <tr>
-    <td>B512</td>
-    <td>GILLET</td>
-    <td>14, r. de l'Eté</td>
-    <td>Toulouse</td>
-  </tr>
-  <tr>
-    <td>C400</td>
-    <td>FERARD</td>
-    <td>65, r. du Tertre</td>
-    <td>Poitiers</td>
-  </tr>
-</table>
+<Table
+  title="Clients"
+  headers={["numéro", "nom", "adresse"]}
+  rows={[
+    ["2", "Vincent Bouvier", "53, rue Emmanuelle Monnier 02510 Lombard-sur-Leleu"],
+    ["1", "Marie Dupont", "12, rue de la Paix 75000 Paris"],
+  ]}
+/>
 
-<table>
-  <tr>
-    <th colspan="5">Détails</th>
-  </tr>
-  <tr>
-    <th>numéro commande</th>
-    <th>numéro produit</th>
-    <th>libellé</th>
-    <th>prix</th>
-    <th>quantité</th>
-  </tr>
-  <tr>
-    <td>30188</td>
-    <td>CS464</td>
-    <td>CHEV. SAPIN 400x6x4</td>
-    <td>220</td>
-    <td>180</td>
-  </tr>
-  <tr>
-    <td>30188</td>
-    <td>PA45</td>
-    <td>POINTE ACIER 45</td>
-    <td>105</td>
-    <td>22</td>
-  </tr>
-  <tr>
-    <td>30188</td>
-    <td>PA60</td>
-    <td>POINTE ACIER 60</td>
-    <td>95</td>
-    <td>70</td>
-  </tr>
-  <tr>
-    <td>30188</td>
-    <td>PH222</td>
-    <td>PL. HETRE 200x20x2</td>
-    <td>230</td>
-    <td>92</td>
-  </tr>
-  <tr>
-    <td>30179</td>
-    <td>CS262</td>
-    <td>CHEV. SAPIN 200x6x2</td>
-    <td>75</td>
-    <td>60</td>
-  </tr>
-  <tr>
-    <td>30179</td>
-    <td>PA60</td>
-    <td>POINTE ACIER 60</td>
-    <td>95</td>
-    <td>20</td>
-  </tr>
-</table>
+<Table
+  title="Détails"
+  headers={["numéro commande", "numéro produit", "nom produit", "prix", "quantité"]}
+  rows={[
+    ["5", "1", "T-shirt", "€42.00", "2"],
+    ["5", "3", "Chaussures", "€46.00", "1"],
+    ["5", "4", "Casquette", "€18.00", "2"],
+    ["2", "3", "Chaussures", "€46.00", "1"],
+    ["2", "4", "Casquette", "€18.00", "3"],
+    ["2", "5", "Sac à dos", "€48.00", "3"],
+  ]}
+/>
 
 </Slide>
 <Slide>
 
 #### Un résultat prometteur, mais
 
-- Certaines données sont stockées de manière redondantes dans les données de détails, e.g., libellé et prix
-  - sources d'erreurs lors des mises à jours
-  - inutiles et dangereux
-- Il serait plus pertinent de construire une 4ème table pour stocker de manière unique les informations relatives aux produits
+* Certaines données sont stockées de manière **redondantes** dans les données de **détails**
+  * Les colonnes **libellé** et **prix** sont inutilement répétées
+    * sources d'erreurs lors des mises à jours
+    * inutile et dangereux
+* Certaines données ne sont pas stockées de manière atomique
+  * La colonne adresse du client contient une adresse complète
+    * il serait plus judicieux de la décomposer en plusieurs colonnes (numéro, rue, code postal, ville)
+    * Ceci facilterait les recherches et les tris
+
+<br/>
+
+> Il serait plus pertinent de **construire une 4ème table** pour stocker **de manière unique les informations relatives aux produits**
 
 </Slide>
+
+<br/><br/><br/>
+
 <Slide>
 
-<div style="display: grid;grid-template-columns: auto auto;gap:20px;">
 
-<table>
-  <tr>
-    <th colspan="3">Commandes</th>
-  </tr>
-  <tr>
-    <th>numéro</th>
-    <th>date</th>
-    <th>numéro client</th>
-  </tr>
-  <tr>
-    <td>30188</td>
-    <td>2/1/2009</td>
-    <td>B512</td>
-  </tr>
-  <tr>
-    <td>30179</td>
-    <td>22/12/2008</td>
-    <td>C400</td>
-  </tr>
-</table>
+{/* <div style=" display: grid; grid-template-columns: auto auto; "> */}
+<div style=" display: flex; flex-wrap: wrap; gap: 10%; ">
 
-<table>
-  <tr>
-    <th colspan="4">Clients</th>
-  </tr>
-  <tr>
-    <th>numéro</th>
-    <th>nom</th>
-    <th>adresse</th>
-    <th>localité</th>
-  </tr>
-  <tr>
-    <td>B512</td>
-    <td>GILLET</td>
-    <td>14, r. de l'Eté</td>
-    <td>Toulouse</td>
-  </tr>
-  <tr>
-    <td>C400</td>
-    <td>FERARD</td>
-    <td>65, r. du Tertre</td>
-    <td>Poitiers</td>
-  </tr>
-</table>
+<Table
+  title="Commandes"
+  headers={["numéro", "date", "numéro client"]}
+  rows={[
+    ["5", "29/07/2024", "2"],
+    ["2", "08/09/2024", "1"],
+  ]}
+  caption="Données des commandes"
+/>
 
-<table>
-  <tr>
-    <th colspan="5">Détails</th>
-  </tr>
-  <tr>
-    <th>numéro commande</th>
-    <th>numéro produit</th>
-    <th>quantité</th>
-  </tr>
-  <tr>
-    <td>30188</td>
-    <td>CS464</td>
-    <td>180</td>
-  </tr>
-  <tr>
-    <td>30188</td>
-    <td>PA45</td>
-    <td>22</td>
-  </tr>
-  <tr>
-    <td>30188</td>
-    <td>PA60</td>
-    <td>70</td>
-  </tr>
-  <tr>
-    <td>30188</td>
-    <td>PH222</td>
-    <td>92</td>
-  </tr>
-  <tr>
-    <td>30179</td>
-    <td>CS262</td>
-    <td>60</td>
-  </tr>
-  <tr>
-    <td>30179</td>
-    <td>PA60</td>
-    <td>20</td>
-  </tr>
-</table>
+<Table
+  title="Clients"
+  headers={["numéro", "nom", "rue", "code postal", "ville"]}
+  rows={[
+    ["2", "Vincent Bouvier", "53, rue Emmanuelle Monnier", "02510", "Lombard-sur-Leleu"],
+    ["1", "Marie Dupont", "12, rue de la Paix", "75000", "Paris"],
+  ]}
+  caption="Données des clients"
+/>
 
-<table>
-  <tr>
-    <th colspan="5">Produits</th>
-  </tr>
-  <tr>
-    <th>numéro produit</th>
-    <th>libellé</th>
-    <th>prix</th>
-  </tr>
-  <tr>
-    <td>CS464</td>
-    <td>CHEV. SAPIN 400x6x4</td>
-    <td>220</td>
-  </tr>
-  <tr>
-    <td>PA45</td>
-    <td>POINTE ACIER 45</td>
-    <td>105</td>
-  </tr>
-  <tr>
-    <td>PA60</td>
-    <td>POINTE ACIER 60</td>
-    <td>95</td>
-  </tr>
-  <tr>
-    <td>PH222</td>
-    <td>PL. HETRE 200x20x2</td>
-    <td>230</td>
-  </tr>
-  <tr>
-    <td>CS262</td>
-    <td>CHEV. SAPIN 200x6x2</td>
-    <td>75</td>
-  </tr>
-  <tr>
-    <td>PA60</td>
-    <td>POINTE ACIER 60</td>
-    <td>95</td>
-  </tr>
-</table>
+<Table
+  title="Détails"
+  headers={["numéro commande", "numéro produit", "quantité"]}
+  rows={[
+    ["5", "1", "2"],
+    ["5", "3", "1"],
+    ["5", "4", "2"],
+    ["2", "3", "1"],
+    ["2", "4", "3"],
+    ["2", "5", "3"],
+  ]}
+  caption="Données des détails des commandes"
+/>
+
+<Table
+  title="Produits"
+  headers={["numéro", "nom", "prix"]}
+  rows={[
+    ["1", "T-shirt", "€42.00"],
+    ["3", "Chaussures", "€46.00"],
+    ["4", "Casquette", "€18.00"],
+    ["5", "Sac à dos", "€48.00"],
+  ]}
+  caption="Données des produits"
+/>
 
 </div>
 
@@ -387,23 +212,23 @@ On va aussi ajouter un bon de commande supplémentaire (soit une commande, un cl
 
 #### Ce résultat est satisfaisant !
 
-- Aucune donnée n'est dupliquée, hormis les données qui font références à d'autres tables.
-- On peut reconstruire les bons de commandes originaux en utilisant les références (numéros de clients, de commandes et de produits) et en calculant les totaux en multipliant les quantités commandées par les prix des produits
+* Aucune donnée n'est dupliquée, hormis les données qui font **références** à d'autres tables.
+* On peut **reconstruire les bons de commandes** originaux en utilisant les **références** (numéros de clients, de commandes et de produits) et en calculant les totaux en multipliant les quantités commandées par les prix des produits
 
 </Slide>
 <Slide>
 
 ### Premières conclusions
 
-- Une **base de données** est constituée d'un **ensemble de tables**
-- Chaque **table** contient les données relatives à des **entités** de même nature
-- Chaque **ligne** d'une table reprend les données relatives à une **entité**
-- Chaque **colonne** d'une table décrit une **propriété** commune des **entités**
-- Les **lignes** d'une table sont **distinctes**
-- Le jeux de colonnes dont les valeurs sont uniques constitue un **identifiant** ou **clé primaire** de la table
-- Les lignes d'une table peuvent faire **référence** chacune à une ligne d'une autre table. On parle alors de **clé étrangère**
-- On évite de stocker les informations qui peuvent être calculées
-- On ne conserve pas dans une même table des informations relatives plusieurs entités
-- Il est nécessaire d'avoir un langage d'interrogation de la base de données
+* Une **base de données** est constituée d'un **ensemble de tables**
+* Chaque **table** contient les données relatives à des **entités** de même nature
+* Chaque **ligne** d'une table reprend les données relatives à une **entité**
+* Chaque **colonne** d'une table décrit une **propriété** commune des **entités**
+* Les **lignes** d'une table sont **distinctes**
+* Le jeux de colonnes dont les valeurs sont uniques constitue un **identifiant** ou **clé primaire** de la table
+* Les lignes d'une table peuvent faire **référence** chacune à une ligne d'une autre table. On parle alors de **clé étrangère**
+* On évite de stocker les informations qui peuvent être calculées
+* On ne conserve pas dans une même table des informations relatives plusieurs entités
+* Il est nécessaire d'avoir un langage d'interrogation de la base de données
 
 </Slide>
