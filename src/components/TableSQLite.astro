@@ -2,9 +2,9 @@
 import Database from 'better-sqlite3';
 
 export interface Props {
-  sqliteDB?: string;
+  sqliteDB: string;
   title?: string;
-  query?: string;
+  query: string;
 }
 
 const { sqliteDB, title, query } = Astro.props;
