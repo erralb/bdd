@@ -23,16 +23,10 @@ description: Un point sur les tables des bases de données
 
 ### Exemple d'une table
 
-import Table from "../../../components/Table.astro";
-
+import Table from "/src/components/TableSQLite.astro";
 
 <Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v1.sqlite"
   title="Clients"
-  headers={["numéro", "nom", "adresse"]}
-  rows={[
-    ["2", "Vincent Bouvier", "53, rue Emmanuelle Monnier 02510 Lombard-sur-Leleu"],
-    ["1", "Marie Dupont", "12, rue de la Paix 75000 Paris"],
-  ]}
+  query="SELECT * FROM Clients where numero"
 />
-
-

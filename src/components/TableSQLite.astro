@@ -1,0 +1,23 @@
+---
+import Database from 'better-sqlite3';
+
+export interface Props {
+  sqliteDB?: string;
+  title?: string;
+  query?: string;
+}
+
+const { sqliteDB, title, query } = Astro.props;
+const db = new Database(sqliteDB);
+
+const rows = db.prepare(query).all();
+const headers = rows.length ? Object.keys(rows[0]) : [];
+
+import Table from "./Table.astro";
+---
+
+<Table
+  title={title}
+  headers={headers}
+  rows={rows.map((row) => Object.values(row))}
+/>
