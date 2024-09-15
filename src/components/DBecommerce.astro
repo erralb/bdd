@@ -3,11 +3,21 @@
 import Table from "./TableSQLite.astro";
 ---
 
-<Table
-  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v1.sqlite"
-  title="Commandes"
-  query="SELECT * FROM Commandes"
-/>
+
+<style is:global>
+  .dbecommerce {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .dbecommerce table {
+    margin: 10px 0 !important;
+    font-size: 12px !important;
+  }
+</style>
+
+<div class="dbecommerce">
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v1.sqlite"
@@ -17,12 +27,20 @@ import Table from "./TableSQLite.astro";
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v1.sqlite"
-  title="Details"
-  query="SELECT * FROM Details"
+  title="Produits"
+  query="SELECT * FROM Produits"
 />
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v1.sqlite"
-  title="Produits"
-  query="SELECT * FROM Produits"
+  title="Commandes"
+  query="SELECT * FROM Commandes"
 />
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v1.sqlite"
+  title="Details"
+  query="SELECT * FROM Details"
+/>
+
+</div>

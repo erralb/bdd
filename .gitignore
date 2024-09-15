@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 # ignore composer vendor directory
 vendor
+src/content/docs/01-concepts/10-td1-concepts-corrige.mdx
+src/content/exercices/01-concepts/10-td1-concepts-exercice-3-corrige.mdx
+src/content/exercices/01-concepts/10-td1-concepts-exercice-4-corrige.mdx

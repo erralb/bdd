@@ -5,11 +5,15 @@ import remarkMermaid from 'remark-mermaidjs'
 export default defineConfig({
 	site: 'https://erralb.github.io/bdd',
 	base: '/bdd/',
+
+	// site: 'https://erralb.com/bdd',
+	// base: '/bdd/',
+
 	// site: import.meta.env.SITE,
 	// base: import.meta.env.BASE,
 	integrations: [
 		starlight({
-			title: 'Bases de données (BDD)',
+			title: 'Bases de données',
 			logo: {
 			  src: './src/assets/logo.svg',
 			},
@@ -48,41 +52,41 @@ export default defineConfig({
 								directory: '01-concepts',
 							}
 						},
-						{
-							label: '2. Algèbre Relationnelle',
-							collapsed: true,
-							autogenerate: {
-								directory: '02-algebre'
-							}
-						},
-						{
-							label: '3. Les bases du SQL',
-							collapsed: true,
-							autogenerate: {
-								directory: '03-sql-dml1'
-							}
-						},
-						{
-							label: '4. SQL Avancé',
-							collapsed: true,
-							autogenerate: {
-								directory: '03-sql-dml2'
-							}
-						},
-						{
-							label: '5. Création de BDD',
-							collapsed: true,
-							autogenerate: {
-								directory: '04-sql-ddl'
-							}
-						},
-						{
-							label: '6. Triggers & Procédures',
-							collapsed: true,
-							autogenerate: {
-								directory: '04-sql-ddl'
-							}
-						},
+						// {
+						// 	label: '2. Algèbre Relationnelle',
+						// 	collapsed: true,
+						// 	autogenerate: {
+						// 		directory: '02-algebre'
+						// 	}
+						// },
+						// {
+						// 	label: '3. Les bases du SQL',
+						// 	collapsed: true,
+						// 	autogenerate: {
+						// 		directory: '03-sql-dml1'
+						// 	}
+						// },
+						// {
+						// 	label: '4. SQL Avancé',
+						// 	collapsed: true,
+						// 	autogenerate: {
+						// 		directory: '03-sql-dml2'
+						// 	}
+						// },
+						// {
+						// 	label: '5. Création de BDD',
+						// 	collapsed: true,
+						// 	autogenerate: {
+						// 		directory: '04-sql-ddl'
+						// 	}
+						// },
+						// {
+						// 	label: '6. Triggers & Procédures',
+						// 	collapsed: true,
+						// 	autogenerate: {
+						// 		directory: '04-sql-ddl'
+						// 	}
+						// },
 
 					]
 				},

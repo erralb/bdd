@@ -1,0 +1,26 @@
+
+
+On considère une relation `R` construite sur les attributs : 
+
+`R ( Propriétaire, Occupant, Adresse, NoApt, NbPièces, NbPersonnes )`
+
+et un nuplet `(p, o, a, n, nb1, nb2)` ayant la signification suivante :
+
+_La personne **o** habite avec **nb2** personnes l'appartement de numéro **n** ayant **nb1** pièces dont le propriétaire est **p**_
+
+Une analyse de cette relation nous fournit un ensemble initial `E` de dépendances fonctionnelles :
+
+```
+E {
+  occupant → adresse
+  occupant → noapt
+  occupant → nbpersonnes
+  adresse, noapt → propriétaire
+  adresse, noapt → occupant
+  adresse, noapt → nbpièces
+}
+```
+
+1. **Donner l'ensemble des dépendances fonctionnelles élémentaires engendrées par E**
+2. **Quelles sont les clés potentielles de R ?**
+3. **R est elle en 3ème forme normale ?**

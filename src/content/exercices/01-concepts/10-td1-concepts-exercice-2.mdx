@@ -1,0 +1,77 @@
+
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Tabs>
+  <TabItem label="Énoncé">
+
+Soit le schéma de la relation R :
+
+`R(A, B, C, D, E, G)` 
+
+et un ensemble donné de dépendances fonctionnelles pour cette relation:
+
+```
+A → BC
+AC → E
+ADE → BG
+CG → D
+BG → C
+C → B
+
+```
+1. **Donner le graphe minimal des dépendances fonctionnelles de R**
+
+2. **Donner une décomposition de R en relations 3NF sans perte d'informations et sans perte de dépendances**
+
+3. **Précisez l'identifiant de chaque relation obtenue**
+
+  </TabItem>
+  <TabItem label="Solution">
+
+Soit le schéma de la relation R :
+
+`R(A, B, C, D, E, G)` 
+
+et un ensemble donné de dépendances fonctionnelles pour cette relation:
+
+```
+A → BC
+AC → E
+ADE → BG
+CG → D
+BG → C
+C → B
+
+```
+
+1. **Donner le graphe minimal des dépendances fonctionnelles de R**
+
+* Avec `A → C` et `AC → E`, on constate que `AC → E` n'est pas élémentaire et que l'on peut la remplacer par `A → E` sans perte de dépendance
+* Avec `A → E` et `ADE → BG`, on constate que `ADE → BG` n'est pas élémentaire et que l'on peut la remplacer par A, D → B, G sans perte de dépendance
+* Avec `A → B` et `AD → B`, on constate que `AD → B` est redondante et que l'on peut la supprimer.
+* Avec `A → B`, `C → B` et `A → C`, on constate que `A → B` peut être déduite et que l'on peut donc la supprimer.
+
+L'ensemble minimum des dépendances fonctionnelles de R est donc le suivant :
+
+```
+A → CE
+AD → G
+CG → D
+BG → C
+C → B
+```
+
+2. **Donner une décomposition de R en relations 3NF sans perte d'informations et sans perte de dépendances**
+
+3. **Précisez l'identifiant de chaque relation obtenue**
+
+Voici une décomposition sans perte de dépendance ni d'information ainsi que les identifiants (soulignés) :
+
+* R1(<u>A</u>, E, C) (BCNF)
+* R2(<u>A, D</u>, G) (BCNF)
+* R3(<u>C, G</u>, D) (BCNF)
+* R4(<u>B, G</u>, C) (3FN)
+
+</TabItem>
+</Tabs>

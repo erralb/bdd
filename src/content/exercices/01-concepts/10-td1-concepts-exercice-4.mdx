@@ -1,0 +1,27 @@
+
+On considère le schéma relationnel `R` défini sur les attributs suivants :
+
+`R (Cours, Professeur, Heure, Salle, Etudiant, Note)`
+
+et un nuplet `(c, p, h, s, e, n)` ayant la signification suivante :
+
+_Le cours **c** est fait par le professeur **p** à l'heure **h** dans la salle **s** par l'étudiant **e** qui a reçu la note **n**_
+
+
+L'ensemble _E_ des dépendances fonctionnelles initiales est le suivant :
+
+```
+E {
+  C → P
+  HS → C
+  HP → S
+  CE → N
+  HE → S
+}
+```
+
+1. Donner l'ensemble des dépendances fonctionnelles élémentaires engendrées par _E_
+
+2. Quelle est la clé de la relation R ? Montrer qu'elle est unique
+
+3. Quelle est la forme normale de la relation R ? Si elle n'est pas en 3FN proposer une décomposition en 3FN
