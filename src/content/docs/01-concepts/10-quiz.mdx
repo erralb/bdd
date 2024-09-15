@@ -3,15 +3,11 @@ title: Testez vos connaissances
 description: Conclusion de la première partie du cours
 ---
 
-## Quiz
-
 import Box from '/src/components/Box.astro';
 import MultipleChoice from '/src/components/MultipleChoice.astro';
 import Option from '/src/components/Option.astro';
 
 <Box icon="question-mark">
-
-### Tester vos connaissances
 
 Une **entité** est utilisée pour
 
@@ -153,5 +149,46 @@ La 2ème forme normale permet d'éviter
   </Option>
 </MultipleChoice>
 
+La 3ème forme normale permet d'éviter
+
+<MultipleChoice>
+  <Option>
+    la redondance interne
+  </Option>
+  <Option>
+    les dépendances fonctionnelles partielles
+  </Option>
+  <Option isCorrect>
+    les dépendances fonctionnelles transitives
+  </Option>
+</MultipleChoice>
+
+La forme normale de **Boyce-Codd** permet d'éviter
+
+<MultipleChoice>
+  <Option>
+    la redondance interne
+  </Option>
+  <Option>
+    les dépendances fonctionnelles partielles
+  </Option>
+  <Option isCorrect>
+    les dépendances fonctionnelles transitives
+  </Option>
+</MultipleChoice>
+
+Les **dépendances fonctionnelles** permettent de
+
+<MultipleChoice>
+  <Option>
+    ajouter des données
+  </Option>
+  <Option>
+    supprimer des données
+  </Option>
+  <Option isCorrect>
+    décrire les contraintes d'intégrité
+  </Option>
+</MultipleChoice>
 
 </Box>
