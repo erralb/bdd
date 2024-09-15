@@ -301,6 +301,46 @@ flowchart LR
 </Slide>
 <Slide>
 
+## Définition formelle d'une clé
+
+Grâce aux dépendances fonctionnelles, on va pouvoir définir les identifiants des relations, appelés **clés**
+
+:::tip[Définition d'une clé]
+Soient une relation `R(A1,A2,...,An)` et `K` un sous-ensemble de `A1,A2,... ,An`
+
+`K` est une clé de `R` si et seulement si :
+
+`K→A1,A2,...,An`
+
+et il n'existe pas de `X` inclus dans `K` tel que `X→A1,A2,...,An`
+:::
+
+> Une clé est donc un ensemble minimum d'attributs d'une relation qui détermine tous les autres.
+
+</Slide>
+<Slide title="Définition des clés">
+
+##### Clés candidates et clé primaire
+
+Si une relation comporte **plusieurs clés**, chacune est dite **clé candidate** et l'on en choisit une en particulier pour être la **clé primaire**.
+
+##### Les clés candidates sont des clés !
+
+**Toutes les clés candidates sont des clés**, pas seulement la clé primaire.
+
+##### Les clés candidates se déterminent mutuellement
+
+Toute clé candidate détermine les autres clés candidates, puisque qu'une clé détermine tous les attributs de la relation.
+
+##### Relation "toute clé"
+
+Étant donné qu'une relation **dispose forcément d'une clé**, si une relation R n'admet aucune clé K sous ensemble des attributs A1..An de R, alors c'est que K=A1..An (la clé est composée de tous les attributs de R).
+
+On parle de relation "toute clé".
+
+</Slide>
+<Slide>
+
 ## Exercice
 
 import Exercice1 from '../../exercices/01-concepts/09-exercices-01-reduit.mdx'
