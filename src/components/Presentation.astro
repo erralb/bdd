@@ -185,40 +185,40 @@ import slidesIcon from "../assets/slides.svg";
       transition(nextSlide);
     });
 
-    // let touchstartX = 0;
-    // let touchendX = 0;
-    // const handleGesure = () => {
-    //   const magnitude = Math.abs(touchstartX - touchendX);
+    let touchstartX = 0;
+    let touchendX = 0;
+    const handleGesure = () => {
+      const magnitude = Math.abs(touchstartX - touchendX);
 
-    //   if (magnitude < 40) {
-    //     // Ignore since this could be a scroll up/down
-    //     return;
-    //   }
+      if (magnitude < 40) {
+        // Ignore since this could be a scroll up/down
+        return;
+      }
 
-    //   if (touchendX < touchstartX) {
-    //     transition(nextSlide());
-    //   }
-    //   if (touchendX > touchstartX) {
-    //     transition(prevSlide());
-    //   }
-    // };
+      if (touchendX < touchstartX) {
+        transition(nextSlide());
+      }
+      if (touchendX > touchstartX) {
+        transition(prevSlide());
+      }
+    };
 
-    // document.addEventListener(
-    //   "touchstart",
-    //   (ev) => {
-    //     touchstartX = ev.changedTouches[0].screenX;
-    //   },
-    //   false
-    // );
+    document.addEventListener(
+      "touchstart",
+      (ev) => {
+        touchstartX = ev.changedTouches[0].screenX;
+      },
+      false
+    );
 
-    // document.addEventListener(
-    //   "touchend",
-    //   (event) => {
-    //     touchendX = event.changedTouches[0].screenX;
-    //     handleGesure();
-    //   },
-    //   false
-    // );
+    document.addEventListener(
+      "touchend",
+      (event) => {
+        touchendX = event.changedTouches[0].screenX;
+        handleGesure();
+      },
+      false
+    );
   };
 
   // If there is no presentation on the page then we don't initialize
@@ -314,6 +314,11 @@ import slidesIcon from "../assets/slides.svg";
       bottom: 0;
       left: 0;
 
+      &.hide {
+        display: flex;
+        visibility: visible;
+      }
+
       visibility: visible;
 
       transition: transform 300ms ease-in-out;
@@ -366,20 +371,47 @@ import slidesIcon from "../assets/slides.svg";
       h4 {
         font-size: 3rem;
         border-top: none;
+        width: 100%;
+        text-align: center;
+        max-width: 1200px;
+      }
+
+      h5,
+      h6 {
+        font-size: 2rem;
+        text-align: left;
+        width: 100%;
+        max-width: 1200px;
+        margin-bottom: 20px;
       }
 
       p,
-      ul,
-      li {
+      blockquote,
+      ul:not(role=["tablist"]),
+      li:not(role=["presentation"]), {
         display: block;
         width: 100%;
-        max-width: 1200px;
+        max-width: 1200px !important;
         font-size: 2rem;
       }
+
+      img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-width: 1200px;
+      }
+
 
       code {
         font-size: 2rem;
       }
+
+      p svg {
+        max-width: 100% !important;
+        max-height: 80vh;
+      }
+
     }
 
     .presentation-presenter #presentation-content {

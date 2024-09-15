@@ -6,44 +6,128 @@ description: Règles de décomposition des tables de bases de données
 import Slide from "/src/components/Slide.astro";
 import Table from "/src/components/Table.astro";
 
-<Slide title="Objectifs de la normalisation">
 
-:::tip[Objectifs]
-**Définir des règles** pour **décomposer** les relations tout en **préservant les DF** (Dépendances Fonctionnelles), sans perdre d'informations afin de représenter les objets et les associations canoniques du monde réel
-:::
-
-La normalisation permet d'éviter :
-
-* les anomalies de mises à jour
-* les réponses erronées
-
-Les outils de normalisation sont :
-
-* Les **dépendances fonctionnelles**
-* Les **décompositions** des tables
-* Les **formes normales** (voir [Wikipedia](https://fr.wikipedia.org/wiki/Forme_normale_(bases_de_donn%C3%A9es_relationnelles)) pour des définitions plus détaillées)
-
-</Slide>
 <Slide>
 
 ## La normalisation
 
-:::tip[Définition]
-La décomposition d'une relation (d'une table) est le **remplacement** d'une relation R **par un ensemble de relations** R1,..., Rn tel que :
+:::note[Objectifs]
+Définir **des règles** pour **décomposer** les relations tout en **préservant les DF** <br/> sans perdre d'informations afin de représenter les objets et les associations canoniques du monde réel
 :::
 
-* Les attributs de R sont **égaux à l'union** de tous les attributs des Ri
-* Ri est obtenu à partir de R par **projection** sur les attributs de Ri
-* **Décomposition sans perte** de sorte que l'on puisse **retrouver exactement l'information** de départ
-* Une décomposition est sans perte si et seulement si elle **préserve les dépendances fonctionnelles**
+La normalisation permet d'éviter les anomalies de mises à jour et les réponses erronées
 
-> Pour obtenir une base de données de qualité, on va généralement normaliser les tables jusqu'à la 3e forme normale
+Les outils de normalisation sont :
+
+* Les **dépendances fonctionnelles**
+* Les **formes normales**
+* Les **décompositions** des tables
 
 </Slide>
 <Slide>
 
-## Représentation Schématique d'une relation et des DF
+## Définition
 
+:::tip[Définition]
+La normalisation d'une relation est la décomposition d'une relation est le **remplacement** d'une relation R **par un ensemble de relations** R1,...,Rn tel que :
+
+* Les attributs de R sont **égaux à l'union** de tous les attributs des Ri
+* Ri est obtenu à partir de R par **projection** sur les attributs de Ri
+* **Décomposition sans perte** de sorte que l'on puisse **retrouver exactement l'information** de départ
+    * Une décomposition est sans perte si et seulement si elle **préserve les dépendances fonctionnelles**
+:::
+
+</Slide>
+
+## Exemple
+
+<Slide title="Exemple">
+
+##### La table Livres
+
+<Table
+  title="Livres"
+  headers={["numero", "titre", "auteur", "isbn", "dateAchat", "rayonnage"]}
+  rows={
+    [
+      ["1", "Le Petit Prince", "Antoine de Saint-Exupéry", "978-2-01-000000-0", "2020-07-29", "A1"],
+      ["2", "Le Petit Prince", "Antoine de Saint-Exupéry", "978-2-01-000000-0", "2020-07-29", "A1"],
+      ["3", "Les misérables", "Victor Hugo", "978-2-01-000000-1", "2018-06-21", "A2"],
+      ["4", "Le portrait de Dorian Gray", "Oscar Wilde", "978-2-01-000000-2", "2010-01-29", "F3"],
+      ["5", "Le portrait de Dorian Gray", "Oscar Wilde", "978-2-01-000000-2", "2010-01-29", "F3"],
+      ["6", "Dune", "Frank Herbert", "978-2-01-000000-3", "2015-12-12", "B4"],
+    ]
+  }
+/>
+
+**Problème** : Lorsqu'un livre existe en plusieurs **exemplaires**, les informations _titre_, _auteur_, _isbn_ sont **dupliquées** 
+
+</Slide>
+<Slide>
+
+### Normalisation de la table Livres
+
+* On va créer une nouvelle table _Ouvrages_ contenant les informations relatives aux livres
+* On va créer une nouvelle table _Exemplaires_ contenant les informations relatives aux exemplaires
+
+<Table
+  title="Ouvrages"
+  headers={["isbn", "titre", "auteur"]}
+  rows={
+    [
+        ["978-2-01-000000-0", "Le Petit Prince", "Antoine de Saint-Exupéry"],
+        ["978-2-01-000000-1", "Les misérables", "Victor Hugo"],
+        ["978-2-01-000000-2", "Le portrait de Dorian Gray", "Oscar Wilde"],
+        ["978-2-01-000000-3", "Dune", "Frank Herbert"],
+    ]
+  }
+/>
+
+<Table
+  title="Exemplaires"
+  headers={["numero", "isbn", "dateAchat", "rayonnage"]}
+  rows={
+    [
+        ["1", "978-2-01-000000-0", "2020-07-29", "A1"],
+        ["2", "978-2-01-000000-0", "2020-07-29", "A1"],
+        ["3", "978-2-01-000000-1", "2018-06-21", "A2"],
+        ["4", "978-2-01-000000-2", "2010-01-29", "F3"],
+        ["5", "978-2-01-000000-2", "2010-01-29", "F3"],
+        ["6", "978-2-01-000000-3", "2015-12-12", "B4"]
+    ]
+  }
+/>
+
+> En créant **une deuxième table** et en utilisant l'_ISBN_ comme **clé étrangère** dans la table _Exemplaires_, **on a solutionné le problème de redondance** !
+
+</Slide>
+<Slide>
+
+### Comment décomposer une table ?
+
+![Décomposition d'une table](06-redondance-01-decomposition.png)
+
+* Soit une table R possédant 3 colonne A, B et C
+
+* Il existe une dépendance fonctionnelle entre B et C (Si on connait B, alors on connait nécessairement C)
+    * On doit donc **extraire la colonne C** de la table R pour éviter la redondance interne
+    * La colonne **B doit être présente dans les 2 tables** pour pouvoir reconstruire l'information
+    
+* On peut aussi remarquer dans cet exemple que :
+    * B sera une **clé étrangère** dans la table R
+    * B sera une **clé primaire** dans la table S
+
+> Il peut exister plusieurs dépendances fonctionnelles au sein d'une même table. <br/> Il faudra alors décomposer autant de fois que nécessaire pour éviter la redondance.
+
+</Slide>
+
+<Slide>
+
+## Les formes normales
+
+:::tip[Définition]
+Les formes normales sont des **règles** qui permettent de définir des **étapes de normalisation** pour **garantir l'intégrité** des données et éviter les anomalies
+:::
 
 Nous allons illustrer les différentes formes normales par des exemples concrets, mais on peut toujours rapporter ces exemples à un schéma générique d'une relation R : 
 
@@ -65,7 +149,7 @@ Les dépendances fonctionnelles (DF) de la relation R sont :
 </Slide>
 <Slide>
 
-## 1ère forme normale (1FN ou 1NF)
+### 1ère forme normale (1FN ou 1NF)
 
 :::tip[Définition]
 Une relation est dite de **première forme normale**, si et seulement si :
@@ -77,12 +161,12 @@ Une relation est dite de **première forme normale**, si et seulement si :
 </Slide>
 <Slide>
 
-### Exemples de non-respect de la 1FN
+#### Exemples de non-respect de la 1FN
 
 </Slide>
 <Slide title="Exemples de non-respect de la 1FN">
 
-#### Règle : _tout attribut doit contenir une **valeur atomique**_
+##### Règle : _tout attribut doit contenir une **valeur atomique**_
 
 <Table
     title="Personnes"
@@ -94,15 +178,18 @@ Une relation est dite de **première forme normale**, si et seulement si :
     ]}
 />
 
-* La colonne Nom n'est pas atomique (elle contient le prénom et le nom)
-    * Il faudrait décomposer la colonne Nom en Prénom et Nom
-* La colonne Adresse n'est pas atomique (elle contient le numéro, la rue, la ville et le code postal)
-    * Il faudrait décomposer la colonne Adresse en Numéro, Rue, Ville et Code Postal
+* La colonne _Nom_ n'est pas atomique (elle contient le prénom et le nom)
+    * Il faudrait **décomposer** la colonne _Nom_ en 2 colonnes _Prénom_ et _Nom_
+* La colonne _Adresse_ n'est pas atomique (elle contient le numéro, la rue, la ville et le code postal)
+    * Il faudrait **décomposer** la colonne _Adresse_ en colonnes _Numéro_, _Rue_, _Ville_ et _Code Postal_
 
 </Slide>
+
+<br/>
+
 <Slide title="Exemples de non-respect de la 1FN">
 
-#### Règle : _tous les attributs sont **non répétitifs**_
+##### Règle : _tous les attributs sont **non répétitifs**_
 
 <Table
     title="Produits"
@@ -114,13 +201,16 @@ Une relation est dite de **première forme normale**, si et seulement si :
     ]}
 />
 
-* La colonne Fournisseurs est répétitive (elle contient plusieurs valeurs)
-    * Il faudrait décomposer la colonne Fournisseurs en une table Fournisseur
+* La colonne _Fournisseurs_ est répétitive (elle contient plusieurs valeurs)
+    * Il faudrait décomposer la colonne _Fournisseurs_ en une **table** _Fournisseur_
 
 </Slide>
+
+<br/>
+
 <Slide title="Exemples de non-respect de la 1FN">
 
-#### Règle : tous les attributs sont **constants dans le temps**
+##### Règle : tous les attributs sont **constants dans le temps**
 
 <Table
     title="Personnes"
@@ -132,20 +222,22 @@ Une relation est dite de **première forme normale**, si et seulement si :
     ]}
 />
 
-* La colonne Age n'est pas constante dans le temps
+* La colonne _Age_ n'est pas constante dans le temps
     * Il faudrait transformer la colonne _Age_ en _DateDeNaissance_
+    * On pourra alors toujours calculer l'age à partir de la date de naissance
 
 </Slide>
 <Slide>
 
 :::danger
-Le **non-respect de la première forme normale** constitue une des plaies les plus importantes en matière de bases de données relationnelles et a des **conséquences catastrophiques** en matière de performances
+Le **non-respect de la première forme normale** constitue une des plaies les plus importantes en matière de bases de données relationnelles. <br/>
+Ce non-respect a des **conséquences catastrophiques** en matière de performances
 :::
 
 </Slide>
 <Slide>
 
-## 2ème forme normale (2FN ou 2NF)
+### 2ème forme normale (2FN ou 2NF)
 
 :::tip[Définition]
 Une relation est en deuxième forme normale (2FN ou 2NF) ssi :
@@ -158,9 +250,9 @@ Autrement dit, tous les attributs non-identifiants sont totalement dépendants f
 </Slide>
 <Slide>
 
-### Exemples de non-respect de la 2FN
+#### Exemples de non-respect de la 2FN
 
-#### Règle : Tout attribut non clé **ne dépend pas d'une partie de clé**
+##### Règle : Tout attribut non clé **ne dépend pas d'une partie de clé**
 
 <div class="thead-pk-1 thead-pk-2">
 <Table
@@ -182,16 +274,16 @@ Autrement dit, tous les attributs non-identifiants sont totalement dépendants f
     * La table n'est pas en 2FN car _descriptionProduit_ dépend d'une partie de la clé
 
 :::note[Pour régler ce problème il faudrait décomposer la table en deux tables distinctes]
-
-* **Commande**(numeroCommande, numeroProduit)
-* **Produit**(numeroProduit, descriptionProduit)
+<br/>
+* **Commande**(<u>numeroCommande, numeroProduit*</u>)
+* **Produit**(<u>numeroProduit</u>, descriptionProduit)
 :::
 
 </Slide>
 <Slide>
 
 
-### Schématique du non-respect de la 2FN
+#### Schématique du non-respect de la 2FN
 
 ![Non-respect de la 2FN](07-normalisation-01-Relation-Non-Respect-2FN.svg)
 
@@ -200,7 +292,7 @@ Autrement dit, tous les attributs non-identifiants sont totalement dépendants f
 </Slide>
 <Slide>
 
-## 3ème forme normale (3FN ou 3NF)
+### 3ème forme normale (3FN ou 3NF)
 
 :::tip[Définition]
 Une relation est en troisième forme ssi :
@@ -211,7 +303,7 @@ Une relation est en troisième forme ssi :
 </Slide>
 <Slide>
 
-### Exemples de non-respect de la 3FN
+#### Exemples de non-respect de la 3FN
 
 <div class="thead-pk-1">
 <Table
@@ -227,20 +319,22 @@ Une relation est en troisième forme ssi :
 </div>
 
 * Dans cet exemple :
-    * L'identifiant de la table est _(numeroCommande, numeroClient)_
+    * L'identifiant de la table est _numeroCommande_
     * On peut déduire qu'il existe une dépendance fonctionnelle entre _numeroClient_ et _nomClient_
         * **numeroClient → nomClient**
-    * La table n'est pas en 2FN car _nomClient_ dépend d'une partie de la clé
+    * La table n'est pas en 3FN car _nomClient_ dépend d'un attribut non-clé ( _numeroClient_ ne fait pas partie de la clé)
 
-**Pour régler ce problème**, il faudrait décomposer la table en deux tables distinctes :
 
-* _Commande_(numeroCommande, numeroClient)
-* _Client_(numeroClient, nomClient)
+:::note[Pour régler ce problème il faudrait décomposer la table en deux tables distinctes]
+<br/>
+* **Commande**(<u>numeroCommande</u>, numeroClient*)
+* **Client**(<u>numeroClient</u>, nomClient)
+:::
 
 </Slide>
 <Slide>
 
-### Schématique du non-respect de la 3FN
+#### Schématique du non-respect de la 3FN
 
 ![Non-respect de la 3FN](07-normalisation-02-Relation-Non-Respect-3FN.svg)
 
@@ -249,14 +343,14 @@ Une relation est en troisième forme ssi :
 </Slide>
 <Slide>
 
-### La troisième forme normale :
+#### La troisième forme normale :
 
 * Retire les redondances dues aux dépendances transitives
 * Permet de ne pas perdre d'information
 * Permet de ne pas perdre des dépendances
 
 :::danger[À retenir]
-Un modèle relationnel **doit être** de troisième forme normale. Le respect de la 3FN ne garantit pas une absence de redondance des données d’où la FNBC détaillée ci-après.
+Un modèle relationnel **doit être** à minima de troisième forme normale
 :::
 
 La troisième forme normale est la plus utilisée du fait de son équilibre entre redondance et performance.
@@ -269,6 +363,8 @@ Dans ces cas, on pourra se passer de la normalisation pour augmenter les perform
 
 ### Forme normale de Boyce-Codd (FNBC ou BCNF ou 3.5FN)
 
+Le respect de la 3FN ne garantit pas totalement une absence de redondance des données. C'est pourquoi on doit parfois aller plus loin dans la normalisation avec la FNBC.
+
 :::tip[Définition]
 Une relation est en Forme normale de Boyce-Codd ssi :
 * Une relation en troisième forme normale a un identifiant composé, aucune des propriétés élémentaires de cet identifiant ne doit être en dépendance fonctionnelle d’une autre propriété
@@ -279,7 +375,7 @@ Une relation est en Forme normale de Boyce-Codd ssi :
 </Slide>
 <Slide>
 
-### Exemples de non-respect de la FNBC
+#### Exemples de non-respect de la FNBC
 
 <div class="thead-pk-1 thead-pk-2 thead-pk-3">
 <Table
@@ -319,11 +415,20 @@ ou encore
 </Slide> */}
 <Slide>
 
-## La normalisation… Quand est-ce qu'on s'arrête ?
+### La normalisation… Quand est-ce que l'on s'arrête ?
 
 * Il existe les 4, 5 et 6ème formes normales. Elles évitent principalement la redondance d'information et sont plus précises
 * En pratique, la 3FN est suffisante
 * En effet, les projections et les jointures sont coûteuses pour le système, ainsi une trop forte normalisation diminue fortement les performances
+
+</Slide>
+<Slide>
+
+## Exercice
+
+import Exercice1 from '../../exercices/01-concepts/09-exercices-01.mdx'
+
+<Exercice1 />
 
 </Slide>
 <Slide>
@@ -341,6 +446,8 @@ Voici quelques points clés à retenir sur la normalisation :
 * La normalisation est un compromis entre la performance et la structure des données
 
 On prendra en compte chaque attribut de chaque table pour déterminer les dépendances fonctionnelles et décomposer les tables en conséquence.
+
+La page [Wikipedia sur les formes normales](https://fr.wikipedia.org/wiki/Forme_normale_(bases_de_donn%C3%A9es_relationnelles)) est une bonne ressource pour approfondir vos connaissances sur le sujet.
 
 
 </Slide>

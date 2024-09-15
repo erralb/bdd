@@ -21,20 +21,21 @@ import Slide from "/src/components/Slide.astro";
 </Slide>
 <Slide>
 
-Reprenons notre exemple précédent en colorant les identifiants (**clés primaires**) en rouge :
+##### Reprenons notre exemple précédent en colorant les identifiants (**clés primaires**) en rouge
 
 
 <div class="table-pk-1">
-<Table
-  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v1.sqlite"
-  title="Commandes"
-  query="SELECT * FROM Commandes"
-/>
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v1.sqlite"
   title="Clients"
   query="SELECT * FROM Clients"
+/>
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v1.sqlite"
+  title="Commandes"
+  query="SELECT * FROM Commandes"
 />
 
 <Table
@@ -48,7 +49,7 @@ Reprenons notre exemple précédent en colorant les identifiants (**clés primai
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v1.sqlite"
   title="Details"
-  query="SELECT * FROM Details"
+  query="SELECT * FROM Details ORDER BY numeroCommande"
 />
 </div>
 
@@ -74,7 +75,7 @@ C'est ce mécanisme qui permet d'assurer la cohérence des données.
 
 ### Les clés étrangères
 
-:::note[Définition]
+:::tip[Définition]
 Une colonne ou un ensemble de colonnes dont le rôle est de **référencer** une ligne dans **une autre table** (dite table cible) est dénommée **clé étrangère** (foreign key ou FK)
 :::
 
@@ -117,7 +118,7 @@ Une colonne peut à la fois faire partie de la clé primaire et aussi être une 
 * Il est nécessaire que l'ensemble des valeurs d'une clé étrangère soit un sous-ensemble des valeurs de l'identifiant cible (autrement dit de la clé primaire ciblée par la clé étrangère)
 > Cette contrainte s'appelle **contrainte référentielle**
 
-Par exemple, on ne pourrait pas créer une commande pour un numero de client qui n'existe pas
+Par exemple, on ne pourrait pas créer une _commande_ pour un _numero de client_ qui n'existe pas
 
 :::note[À retenir]
 Une clé étrangère doit toujours référencer une clé primaire existante, sinon l'intégrité de la base de données serait compromise.
@@ -126,10 +127,12 @@ Une clé étrangère doit toujours référencer une clé primaire existante, sin
 </Slide>
 <Slide>
 
-### Deuxièmes conclusions
+### Conclusions
 
 * Les **clés primaires** et **étrangères** permettent d'assurer l'**intégrité** des bases de données relationnelles
 * Elles définissent des **contraintes d'intégrité**, qui permettront aux SGBD de détecter des erreurs lors des opérations sur la base
 * Ce sont ces clés qui permettent de créer des **relations entre les tables**
+* Les clés étrangères font référence aux clés primaires d'autres tables
+* Les **lignes** d'une table sont **distinctes**
 
 </Slide>

@@ -9,8 +9,16 @@
 .sl-markdown-content h4 {
   margin-top: 60px !important;
   margin-bottom: 40px;
-  border-top: 2px solid rgb(160, 160, 160);
   padding-top: 20px;
+}
+
+.sl-markdown-content h2 {
+  border-top: 3px solid rgb(160, 160, 160);
+}
+
+.sl-markdown-content h3,
+.sl-markdown-content h4 {
+  border-top: 1px solid rgb(160, 160, 160);
 }
 
 .sl-markdown-content li {
@@ -18,7 +26,13 @@
 }
 
 .sl-markdown-content strong {
-  color: rgb(228, 27, 27);
+  /* color: rgb(228, 27, 27); */
+  color: rgb(93, 25, 212);
+  font-weight: 500;
+}
+
+.sl-markdown-content em {
+  color: rgb(136, 136, 136);
 }
 
 .sl-markdown-content li>ul {
@@ -129,4 +143,19 @@
 .table-pk-9.table-fk-9 table td:nth-child(9),
 .table-pk-10.table-fk-10 table td:nth-child(10) {
   background: linear-gradient(0.25turn, rgb(243, 127, 127), #ebf8e1, rgb(162, 238, 162));
+}
+
+.presentation-slide.hide {
+  display: none;
+  visibility: hidden;
+}
+
+
+.label foreignObject {
+  overflow: visible;
+  font-size: 90%;
+}
+
+.sl-markdown-content .highlight-box {
+  /* background-color: rgb(248, 248, 248) !important; */
 }
