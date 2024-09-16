@@ -1,0 +1,51 @@
+import { Code } from '@astrojs/starlight/components';
+
+Soit le schéma suivant :
+
+<Code code="ENSEIGNEMENT (NUM_TD, SALLE, JOUR, HEURE, NUM_ENSEIGNANT, NOM_ENSEIGNANT, PRENOM_ENSEIGNANT, CODE_UV, NOM_UV, NUM_ETUDIANT, NOM_ETUDIANT, PRENOM_ETUDIANT, ADRESSE_ETUDIANT, DATE_INSCRIPTION)" wrap="true" />
+
+
+Les étudiants inscrits dans une UV (_CODE_UV_) sont répartis en groupe de TD (_NUM_TD_). La date d'inscription porte sur un étudiant dans une UV. Cette inscription l'affecte dans un groupe de TD.
+
+Les hypothèses sont les suivantes :
+
+* Un enseignant peut assurer l'encadrement de plusieurs groupes
+* Un seul groupe de TD par salle à la même heure le même jour
+* Un étudiant peut être inscrit dans plusieurs UV mais à un seul groupe de TD par UV
+* Un enseignement d'une UV pour un groupe de TD a toujours lieu le même jour et dans la même salle à la même heure
+* Un seul TD par semaine par UV
+
+##### Questions :
+
+1. **A l'aide d'exemples, montrer quelles anomalies et redondances sont impliquées par ce schéma**
+
+2. **Donner une couverture minimale des dépendances fonctionnelles, ainsi que sa fermeture transitive**
+
+:::note[Rappel]
+La couverture minimale d’un ensemble de DFE est un sous-ensemble minimum des DFE permettant de générer toutes les autres DFE.
+:::
+
+3. **Soit la décomposition suivante :**
+
+<Code code="ENSEIGNEMENT (NUM_TD, CODE_UV, HEURE, SALLE, JOUR, NUM_ENSEIGNANT, NOM_ENSEIGNANT, PRENOM_ENSEIGNANT)" wrap="true" />
+
+<Code code="INSCRIPTION (NUM_ETUDIANT, NOM_ETUDIANT, PRENOM_ETUDIANT, ADRESSE_ETUDIANT, CODE_UV, NOM_UV, DATE_INSCRIPTION, NUM_TD)" wrap="true" />
+* 
+    * a. Quelles sont les clés de ces relations ? Montrez que cette décomposition est sans perte et qu'elle préserve les dépendances fonctionnelles. 
+    * b. Existe-t-il encore des risques d'anomalies ou des redondances ? 
+    * c. Les relations sont-elles en 2ème forme normale ?
+    
+4. **Soit la décomposition suivante :**
+
+<Code code="ENSEIGNEMENT (NUM_TD, CODE_UV, HEURE, SALLE, JOUR, NUM_ENSEIGNANT, NOM_ENSEIGNANT, PRENOM_ENSEIGNANT)" wrap="true" />
+<Code code="ETUDIANT (NUM_ETUDIANT, NOM_ETUDIANT, PRENOM_ETUDIANT, ADRESSE_ETUDIANT)" wrap="true" />
+<Code code="INSCRIPTION (NUM_ETUDIANT, CODE_UV, DATE_INSCRIPTION, NUM_TD)" wrap="true" />
+<Code code="UV (CODE_UV, NOM_UV)" wrap="true" />
+* 
+  * a. Quelles sont les clés de ces relations ? Montrez que cette décomposition est sans perte et qu'elle préserve les dépendances fonctionnelles. 
+  * b. Existe-t-il encore des risques d'anomalies ou des redondances ? 
+  * c. Les relations sont-elles en 2ème forme normale ?
+
+5. **Les relations sont-elles en 3ème forme normale ?**
+
+Si ce n'est pas le cas, proposez une nouvelle décomposition (sans perte et conservant les dépendances fonctionnelles).
