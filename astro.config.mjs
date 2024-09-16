@@ -15,15 +15,15 @@ export default defineConfig({
 		starlight({
 			title: 'Bases de données',
 			logo: {
-			  src: './src/assets/logo.svg',
+				src: './src/assets/logo.svg',
 			},
 			favicon: './src/assets/logo.svg',
 			customCss: [
 				'./src/style.css',
 			],
 			components: {
-			  // Override the default `SocialIcons` component.
-			  ThemeSelect: './src/components/ThemeSelect.astro',
+				//override PageTitle to add presentation link
+				PageTitle: './src/components/PageTitle.astro',
 			},
 			defaultLocale: 'root',
 			// optional

@@ -1,0 +1,15 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+import Presentation from './Presentation.astro';
+---
+
+<div class="pageTitle">
+
+<Default {...Astro.props}>
+	<slot />
+</Default>
+
+<Presentation />
+
+</div>

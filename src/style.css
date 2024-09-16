@@ -3,11 +3,22 @@
   --sl-text-5xl: 2rem;
 }
 
+.pageTitle {
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+
+.pageTitle h1 {
+  margin-top: 0;
+  margin-right: 20px;
+}
+
 .sl-markdown-content h1,
 .sl-markdown-content h2,
 .sl-markdown-content h3,
 .sl-markdown-content h4 {
-  margin-top: 60px !important;
+  margin-top: 60px;
   margin-bottom: 40px;
   padding-top: 20px;
 }
@@ -158,4 +169,11 @@
 
 .sl-markdown-content .highlight-box {
   background-color: rgb(244, 240, 255);
+}
+
+/* hide .right-sidebar-panel for printing */
+@media print {
+  .right-sidebar-panel {
+    display: none !important;
+  }
 }
