@@ -7,11 +7,18 @@
   display: flex; 
   align-items: center; 
   justify-content: center;
+  margin-left: auto;
 }
 
 .pageTitle h1 {
   margin-top: 0;
-  margin-right: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.pageTitle #presentation-button {
+  margin-left: auto;
+  align-self: flex-end;
 }
 
 .sl-markdown-content h1,
@@ -23,8 +30,13 @@
   padding-top: 20px;
 }
 
-.sl-markdown-content h2 {
+.sl-markdown-content h2{
   border-top: 3px solid rgb(160, 160, 160);
+}
+
+.sl-markdown-content h2:first-child {
+  border-top: none;
+  margin-top: 0;
 }
 
 .sl-markdown-content h3,
@@ -54,6 +66,7 @@
   border-collapse: collapse;
   font-family: sans-serif;
   margin-bottom: 40px;
+  max-width: 100%;
 }
 
 .sl-markdown-content caption {

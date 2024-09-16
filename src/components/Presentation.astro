@@ -336,6 +336,7 @@ import slidesIcon from "../assets/slides.svg";
       width: 100%;
       /* padding: 2rem 4rem; */
       padding: 1rem;
+      padding-bottom: 100px;
 
       z-index: 10;
       overflow: auto;
@@ -366,11 +367,50 @@ import slidesIcon from "../assets/slides.svg";
         filter: none;
       }
 
+      & > ul {
+        padding-left: 0;
+      }
+
+      table,
+        th,
+        tr,
+        td {
+          font-size: 1rem;
+        }
+
+     /* For screens larger than 768px */
+      @media only screen and (min-width: 760px) {
+        h1,
+        h2,
+        h3,
+        h4 {
+          font-size: 3rem;
+        }
+
+        h5,
+        h6,
+        p,
+        blockquote,
+        ul:not([role="tablist"]),
+        li:not([role="presentation"]),
+        code {
+          font-size: 2rem;
+        }
+
+        table,
+        th,
+        tr,
+        td {
+          font-size: 1.5rem;
+        }
+      }
+
+
+
       h1,
       h2,
       h3,
       h4 {
-        font-size: 3rem;
         border-top: none;
         width: 100%;
         text-align: center;
@@ -394,7 +434,6 @@ import slidesIcon from "../assets/slides.svg";
         display: block;
         width: 100%;
         max-width: 1200px !important;
-        font-size: 2rem;
       }
 
       img {
@@ -402,11 +441,6 @@ import slidesIcon from "../assets/slides.svg";
         height: auto;
         max-width: 100%;
         max-width: 1200px;
-      }
-
-
-      code {
-        font-size: 2rem;
       }
 
       p svg {
