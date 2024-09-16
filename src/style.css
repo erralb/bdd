@@ -184,9 +184,28 @@
   background-color: rgb(244, 240, 255);
 }
 
-/* hide .right-sidebar-panel for printing */
+.onlyPrint {
+  display: none;
+}
+
 @media print {
-  .right-sidebar-panel {
-    display: none !important;
+
+  .onlyPrint {
+    display: initial;
   }
+
+  header,
+  nav,
+  .pagination-links,
+  ul[role="tablist"],
+  #presentation-button {
+    display: none;
+  }
+
+  table,
+  img,
+  .expressive-code { 
+    break-inside: avoid; 
+  } 
+
 }
