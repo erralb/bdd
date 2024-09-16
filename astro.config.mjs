@@ -47,18 +47,45 @@ export default defineConfig({
 					items: [
 						{
 							label: '1. Concepts',
-							collapsed: true,
+							// collapsed: true,
 							autogenerate: {
 								directory: '01-concepts',
 							}
 						},
+
 						// {
 						// 	label: '2. Algèbre Relationnelle',
 						// 	collapsed: true,
-						// 	autogenerate: {
-						// 		directory: '02-algebre'
-						// 	}
+						// 	// autogenerate: {
+						// 	// 	directory: '02-algebre'
+						// 	// }
+						// 	items: [
+						// 		{
+						// 			label: '1. Introduction',
+						// 			slug: '02-algebre/01-introduction',
+						// 		},
+						// 		{
+						// 			label: '2. Opérateurs',
+						// 			autogenerate: {
+						// 				directory: '02-algebre/02-operateurs'
+						// 			}
+						// 		},
+						// 		{
+						// 			label: '3. Conclusion',
+						// 			slug: '02-algebre/03-conclusion',
+						// 		},
+						// 		{
+						// 			label: '4. Exercices',
+						// 			slug: '02-algebre/04-exercices',
+						// 		},
+						// 		{
+						// 			label: '5. TD2',
+						// 			slug: '02-algebre/05-td2-algebre',
+						// 		},
+
+						// 	]
 						// },
+
 						// {
 						// 	label: '3. Les bases du SQL',
 						// 	collapsed: true,

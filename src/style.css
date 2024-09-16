@@ -59,7 +59,11 @@
 }
 
 .sl-markdown-content li>ul {
-  margin-top: 1.5rem;
+  margin-top: 1.2rem;
+}
+
+.sl-markdown-content code {
+  font-size: 1.1rem;
 }
 
 .sl-markdown-content table {
