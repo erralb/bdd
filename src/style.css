@@ -216,8 +216,13 @@
 
   table,
   img,
-  .expressive-code { 
+  .expressive-code,
+  .starlight-aside { 
     break-inside: avoid; 
   } 
+
+  .page-break {
+    page-break-before: always; 
+  }
 
 }
