@@ -29,11 +29,11 @@ Les outils de normalisation sont :
 ## Définition
 
 :::tip[Définition]
-La normalisation d'une relation est la décomposition d'une relation est le **remplacement** d'une relation R **par un ensemble de relations** R1,...,Rn tel que :
+La normalisation d'une relation `R` est la décomposition de celle-ci **par un ensemble de relations** `R1,...,Rn` tel que :
 
-* Les attributs de R sont **égaux à l'union** de tous les attributs des Ri
-* Ri est obtenu à partir de R par **projection** sur les attributs de Ri
-* **Décomposition sans perte** de sorte que l'on puisse **retrouver exactement l'information** de départ
+* Les attributs de `R` sont **égaux à l'union** de tous les attributs des `Ri`
+* `Ri` est obtenu à partir de `R` par **projection** sur les attributs de `Ri`
+* La **décomposition est sans perte**, de sorte que l'on puisse **retrouver exactement l'information** de départ
     * Une décomposition est sans perte si et seulement si elle **préserve les dépendances fonctionnelles**
 :::
 
@@ -70,6 +70,7 @@ La normalisation d'une relation est la décomposition d'une relation est le **re
 * On va créer une nouvelle table _Ouvrages_ contenant les informations relatives aux livres
 * On va créer une nouvelle table _Exemplaires_ contenant les informations relatives aux exemplaires
 
+<div class="tables">
 <Table
   title="Ouvrages"
   headers={["isbn", "titre", "auteur"]}
@@ -98,6 +99,8 @@ La normalisation d'une relation est la décomposition d'une relation est le **re
   }
 />
 
+</div>
+
 > En créant **une deuxième table** et en utilisant l'_ISBN_ comme **clé étrangère** dans la table _Exemplaires_, **on a solutionné le problème de redondance** !
 
 </Slide>
@@ -107,15 +110,15 @@ La normalisation d'une relation est la décomposition d'une relation est le **re
 
 ![Décomposition d'une table](06-redondance-01-decomposition.png)
 
-* Soit une table R possédant 3 colonne A, B et C
+* Soit une table `R` possédant 3 attributs `A`, `B` et `C`
 
-* Il existe une dépendance fonctionnelle entre B et C (Si on connait B, alors on connait nécessairement C)
-    * On doit donc **extraire la colonne C** de la table R pour éviter la redondance interne
-    * La colonne **B doit être présente dans les 2 tables** pour pouvoir reconstruire l'information
+* Il existe une dépendance fonctionnelle entre `B` et `C` (Si on connait `B`, alors on connait nécessairement `C`)
+    * On doit donc **extraire la colonne `C`** de la table `R` pour éviter la redondance interne
+    * La colonne **`B` doit être présente dans les 2 tables** pour pouvoir reconstruire l'information
     
 * On peut aussi remarquer dans cet exemple que :
-    * B sera une **clé étrangère** dans la table R
-    * B sera une **clé primaire** dans la table S
+    * `B` sera une **clé étrangère** dans la table `R`
+    * `B` sera une **clé primaire** dans la table `S`
 
 > Il peut exister plusieurs dépendances fonctionnelles au sein d'une même table. <br/> Il faudra alors décomposer autant de fois que nécessaire pour éviter la redondance.
 
@@ -131,7 +134,7 @@ Les formes normales sont des **règles** qui permettent de définir des **étape
 
 Nous allons illustrer les différentes formes normales par des exemples concrets, mais on peut toujours rapporter ces exemples à un schéma générique d'une relation R : 
 
-_Relation R avec 6 attributs (a1 à a6). les trois premiers a1, a2, a3 formant le déterminant, et les trois derniers a4, a5, a6 le déterminé._
+_Relation R avec 6 attributs (a1 à a6). les trois premiers a1, a2, a3 formant le déterminant, et les trois derniers a4, a5, a6 les déterminés._
 
 <div class="thead-pk-1 thead-pk-2 thead-pk-3">
 <Table
@@ -168,6 +171,7 @@ Une relation est dite de **première forme normale**, si et seulement si :
 
 ##### Règle : _tout attribut doit contenir une **valeur atomique**_
 
+<div class="tables">
 <Table
     title="Personnes"
     caption="Exemple de table non normalisée 1FN"
@@ -177,8 +181,9 @@ Une relation est dite de **première forme normale**, si et seulement si :
         ['2', 'Durand Paul', '15 rue de la Liberté, Lyon']
     ]}
 />
+</div>
 
-* La colonne _Nom_ n'est pas atomique (elle contient le prénom et le nom)
+* La colonne _Nom_ n'est pas atomique (elle contient le _prénom_ et le _nom_)
     * Il faudrait **décomposer** la colonne _Nom_ en 2 colonnes _Prénom_ et _Nom_
 * La colonne _Adresse_ n'est pas atomique (elle contient le numéro, la rue, la ville et le code postal)
     * Il faudrait **décomposer** la colonne _Adresse_ en colonnes _Numéro_, _Rue_, _Ville_ et _Code Postal_
@@ -379,7 +384,7 @@ Une relation est en Forme normale de Boyce-Codd ssi :
 
 <div class="thead-pk-1 thead-pk-2 thead-pk-3">
 <Table
-    title="Exemple de table non normalisée 3FN"
+    title="Universite"
     caption="Exemple de table non normalisée FNBC"
     headers={['enseignantId', 'matiereId', 'salleId']}
     rows={[
@@ -390,7 +395,7 @@ Une relation est en Forme normale de Boyce-Codd ssi :
 </div>
 
 * Dans cet exemple :
-    * Si Durand arrête d’enseigner la Chimie, on supprime la ligne et lon perd la relation Matière-Salle
+    * Si _Durand_ arrête d’enseigner la _Chimie_, on supprime la ligne et on perd la relation _Matière-Salle_
     * On peut déduire qu'il existe une dépendance fonctionnelle entre _enseignantId_ (attributs de la clé) et les 2 autres attributs (aussi attributs de la clé)
 
 **Pour régler ce problème**, il faudrait une conception différente en plusieurs tables
@@ -439,13 +444,13 @@ Lors de la conception d'une base de données, il est important de respecter les 
 
 Voici quelques points clés à retenir sur la normalisation :
 
-* La normalisation est un processus de conception de base de données qui permet de réduire la redondance des données
-* La normalisation permet de garantir l'intégrité des données et d'éviter les anomalies
-* La normalisation permet de structurer les données de manière à ce qu'elles soient faciles à maintenir et à interroger
-* La normalisation est un processus itératif qui peut être long et complexe
+* La **normalisation** est un **processus de conception** de base de données qui permet de **réduire la redondance des données**
+* La normalisation permet de **garantir l'intégrité** des données et d'éviter les anomalies
+* La normalisation permet de **structurer les données **de manière à ce qu'elles soient faciles à maintenir et à interroger
+* La normalisation est un **processus itératif** qui peut être long et complexe
 * La normalisation est un compromis entre la performance et la structure des données
 
-On prendra en compte chaque attribut de chaque table pour déterminer les dépendances fonctionnelles et décomposer les tables en conséquence.
+On prendra en compte _chaque attribut_ de _chaque table_ pour **déterminer les dépendances fonctionnelles** et **décomposer les tables** en conséquence.
 
 La page [Wikipedia sur les formes normales](https://fr.wikipedia.org/wiki/Forme_normale_(bases_de_donn%C3%A9es_relationnelles)) est une bonne ressource pour approfondir vos connaissances sur le sujet.
 

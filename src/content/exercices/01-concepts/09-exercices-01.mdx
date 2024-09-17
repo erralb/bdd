@@ -35,12 +35,18 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
     R12(B,C)
     ```
     
-   ** Quelles sont les formes normales des relations R11 et R12 ?**
+   **Quelles sont les formes normales des relations R11 et R12 ?**
 
     5. **Proposer une décomposition sans perte d'information de R11.**
 
   </TabItem>
   <TabItem label="Solution">
+  
+    Soit une relation R1 de schéma :
+    
+    ```
+    R1 (A, B, C, D, E, F) 
+    ```
 
   1. **Quelle est la couverture minimale de dépendances ?**
 
@@ -74,7 +80,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
     Cette relation est en première forme normale mais pas en deuxième forme normale car il y a un attribut qui ne fait pas partie de la clé(C) qui dépend d'une partie de la clé(B).
 
-    4. **On décompose la relation R1 en R11 et R12 : **
+    4. **On décompose la relation R1 en R11 et R12 :**
     
     La relation R11 est en deuxième forme normale et pas en troisième normale car il subsiste une dépendance transitive. La relation R12 est en BCNF.
 

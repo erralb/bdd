@@ -41,7 +41,7 @@ On peut identifier des données spécifiques à des **entités** distinctes :
 
 Les bases de données relationnelles sont composées de **tables** (autrement dit des tableaux).
 
-Essayons de décomposer ce bon de commande en tables, en fonction des entités identifiées précédemment (Données de la commande, donnéees du client, données d'un détail).
+Essayons de _décomposer ce bon de commande en tables_, en fonction des **entités** identifiées précédemment (Données de la _commande_, donnéees du _client_, données d'un _détail_).
 On obtiendrait :
 
 </Slide>
@@ -49,6 +49,7 @@ On obtiendrait :
 
 import Table from "/src/components/Table.astro";
 
+<div class="tables">
 <Table
   title="Clients"
   headers={["numero", "nom", "adresse"]}
@@ -72,6 +73,7 @@ import Table from "/src/components/Table.astro";
     ["4", "Casquette", "€18.00", "2", "€36.00"],
   ]}
 />
+</div>
 
 </Slide>
 <Slide>
@@ -83,8 +85,8 @@ import Table from "/src/components/Table.astro";
 
 * En l'état il est **impossible de reconstruire le document initial**
 
-  * Comment récupérer le client d'une commande puisque nous avons extrait et rangé ailleurs le fragment décrivant ce client ?
-  * Comment identifier la commande de laquelle nous avons extrait un détail ?
+  * _Comment récupérer le client d'une commande_ puisque nous avons extrait et rangé ailleurs le fragment décrivant ce _client_ ?
+  * _Comment identifier la commande de laquelle_ nous avons extrait un _détail_ ?
     - il manque des **données de références** pour effectuer des **liaisons entre les données**
 
 * **Certaines données sont calculées**, e.g., le total de la commande et les sous-totaux des détails
@@ -100,6 +102,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit en ajoutant un clie
 </Slide>
 <Slide>
 
+<div class="tables">
 <Table
   title="Clients"
   headers={["numero", "nom", "adresse"]}
@@ -130,6 +133,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit en ajoutant un clie
     ["2", "5", "Sac à dos", "€48.00", "3"],
   ]}
 />
+</div>
 
 </Slide>
 <Slide>
@@ -137,7 +141,7 @@ On va aussi ajouter un bon de commande supplémentaire (soit en ajoutant un clie
 #### Un résultat prometteur, mais
 
 ##### Certaines données sont stockées de manière **redondantes** dans les données de **détails**
-Les colonnes _libellé_ et _prix_ sont inutilement répétées
+Les colonnes _nom produit_ et _prix_ sont inutilement répétées
 * sources d'erreurs lors des mises à jour
 * inutile et dangereux
 
@@ -157,7 +161,7 @@ La colonne _adresse du client_ contient une adresse complète
 <Slide>
 
 
-<div style=" display: flex; flex-wrap: wrap; gap: 10%; align-items: flex-start; max-width: 100%;">
+<div class="tables">
 
 <Table
   title="Commandes"

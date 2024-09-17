@@ -66,6 +66,14 @@
   font-size: 1.1rem;
 }
 
+.sl-markdown-content .tables {
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 10%; 
+  align-items: flex-start; 
+  max-width: 100%;
+}
+
 .sl-markdown-content table {
   border-collapse: collapse;
   font-family: sans-serif;

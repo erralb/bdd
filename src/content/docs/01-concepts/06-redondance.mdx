@@ -28,6 +28,7 @@ Considérons une table _LIVRES_ contenant les informations relatives à des livr
 
 La bibliothèque possède **plusieurs exemplaires** de chaque livre :
 
+<div class="tables">
 <Table
   title="Livres"
   headers={["numero", "titre", "auteur", "isbn", "dateAchat", "rayonnage"]}
@@ -47,6 +48,7 @@ La bibliothèque possède **plusieurs exemplaires** de chaque livre :
 
 
 Cette situation va à l'encontre du principe fondateur des bases de données relationnelles
+</div>
 
 </Slide>
 <Slide>
@@ -116,9 +118,9 @@ Un schéma d’une relation noté ```R = <A, {X→Y}>``` définit l’ensemble d
   
   * ``` { P→M,  HC→S,  PH→C,  HS→P }```
 
-On pourra écrire cette relation 
+On pourra écrire cette relation de cette manière : 
 
-``` R = <{Prosesseur, Heure, Salle, Classe, Matiere}, {P→M, HC→S, PH→C, HS→P}> ```
+``` R = <(P, H, S, C, M), {P→M, HC→S, PH→C, HS→P}> ```
   
 
 </Slide>
@@ -128,9 +130,9 @@ On pourra écrire cette relation
 <Slide title="Autre exemple">
 
 
-Dans la relation _LIVRES_ , on peut identifier une DF entre les attributs _isbn_, _titre_ et _auteur_
-* Il semble que :  `ISBN → TITRE, AUTEUR`
-* On dit que ISBN est le **déterminant** et (TITRE, AUTEUR) les **déterminés** 
+Dans la relation _LIVRES_, on peut identifier une DF entre les attributs _isbn_, _titre_ et _auteur_
+* Il semble que : `ISBN → TITRE, AUTEUR`
+* On dit qu'ISBN est le **déterminant** et (TITRE, AUTEUR) les **déterminés** 
 * Autrement dit, si on possède une valeur _isbn_, on peut **nécessairement** déterminer le _titre_ et l'_auteur_ du livre
 
 </Slide>
@@ -143,12 +145,6 @@ Les **dépendances fonctionnelles** sont régies par les [axiomes d'Armstrong](h
 * **Réflexivité** : Si `Y` est une partie de `X`, alors `X → Y`
 * **Augmentation** : Si `X → Y`, alors `XZ → YZ`
 * **Transitivité** : Si `X → Y` et `Y → Z`, alors `X → Z`
-
-##### Exemple
-
-* Si on a une dépendance fonctionnelle `ISBN → TITRE, AUTEUR`
-* On semble pouvoir déduire que `ISBN, DATE_ACHAT → TITRE, AUTEUR, RAYONNAGE`
-* On peut en déduire que `ISBN → RAYONNAGE`
 
 </Slide>
 <Slide>
@@ -196,8 +192,8 @@ Une dépendance fonctionnelle `G → A` est dite **élémentaire** si :
 
 ##### Exemple
 
-* `AB → A` n'est pas élémentaire car A est incluse dans `AB`
-* `AB → CB` n'est pas élémentaire car `CB` n'est pas un attribut, mais un groupe d'attributs
+* `AB → A` n'est pas élémentaire, car A est incluse dans `AB`
+* `AB → CB` n'est pas élémentaire, car `CB` n'est pas un attribut, mais un groupe d'attributs
 * `N°SS → Nom, Prénom` n'est pas élémentaire
 
 </Slide>
@@ -214,26 +210,27 @@ On peut toujours réécrire un ensemble de DF en un ensemble de DFE, en supprima
 
 > On peut réécrire les DF non élémentaires de l'exemple précédent en les décomposant en DFE :
 
-* `AB → A` n'est pas considérée car c'est une DF triviale obtenu par réflexivité
-* `AB → CB` est décomposée en `AB → C` et `AB → B`, et `AB → B` n'est plus considérée car triviale
-* `N°SS → Nom, Prénom` est décomposée en `N°SS → Nom` et `N°SS → Prénom`
+* `AB → A` n'est pas considérée, car c'est une DF _triviale_ obtenue par réflexivité
+* `AB → CB` est _décomposée_ en `AB → C` et `AB → B`, et `AB → B` n'est plus considérée, car triviale
+* `N°SS → Nom, Prénom` est _décomposée_ en `N°SS → Nom` et `N°SS → Prénom`
 
 </Slide>
 <Slide>
 
 ### Fermeture transitive des DFE
 
-> On appelle fermeture transitive F+ d'un ensemble F de DFE, l'ensemble de toutes les DFE qui peuvent être composées par transitivité à partir des DFE de F.
+> On appelle fermeture transitive `F+` d'un ensemble `F` de DFE, l'ensemble de toutes les DFE qui peuvent être composées par _transitivité_ à partir des DFE de `F`.
 
 * Soit l'ensemble `F = {A→B, B→C, B→D, A→E}.`
-* La fermeture transitive de `F` est `F+ = { A→B, B→C, B→D, A→E, A→C, A→D }`
+* La fermeture transitive de `F` est :
+  * `F+ = { A→B, B→C, B→D, A→E, A→C, A→D }`
 
 </Slide>
 <Slide>
 
 ### Couverture minimale des DFE
 
-> La couverture minimale d’un ensemble de DFE est un sous-ensemble minimum des DFE permettant de générer toutes les autres DFE.
+> La **couverture minimale** d’un ensemble de DFE est un sous-ensemble minimum des DFE _permettant de générer toutes les autres DFE_.
 
 Synonyme : Famille génératrice
 
@@ -315,7 +312,7 @@ Soient une relation `R(A1,A2,...,An)` et `K` un sous-ensemble de `A1,A2,... ,An`
 et il n'existe pas de `X` inclus dans `K` tel que `X→A1,A2,...,An`
 :::
 
-> Une clé est donc un ensemble minimum d'attributs d'une relation qui détermine tous les autres.
+> Une clé est donc un _ensemble minimum d'attributs_ d'une relation qui _détermine tous les autres_.
 
 </Slide>
 <Slide title="Définition des clés">
