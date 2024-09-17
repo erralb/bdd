@@ -20,7 +20,7 @@ BG → C
 C → B
 
 ```
-1. **Donner le graphe minimal des dépendances fonctionnelles de R**
+1. **Donner le graphe minimal (la couverture minimale) des dépendances fonctionnelles de R**
 
 2. **Donner une décomposition de R en relations 3NF sans perte d'informations et sans perte de dépendances**
 
@@ -47,16 +47,18 @@ C → B
 
 1. **Donner le graphe minimal des dépendances fonctionnelles de R**
 
-* Avec `A → C` et `AC → E`, on constate que `AC → E` n'est pas élémentaire et que l'on peut la remplacer par `A → E` sans perte de dépendance
-* Avec `A → E` et `ADE → BG`, on constate que `ADE → BG` n'est pas élémentaire et que l'on peut la remplacer par A, D → B, G sans perte de dépendance
-* Avec `A → B` et `AD → B`, on constate que `AD → B` est redondante et que l'on peut la supprimer.
-* Avec `A → B`, `C → B` et `A → C`, on constate que `A → B` peut être déduite et que l'on peut donc la supprimer.
-
-L'ensemble minimum des dépendances fonctionnelles de R est donc le suivant :
+:::note[Rappel]
+La couverture minimale d’un ensemble de DFE est un sous-ensemble minimum des DFE permettant de générer toutes les autres DFE.
+:::
+  
+##### DF élémentaires : 
 
 ```
-A → CE
-AD → G
+A → B
+A → C
+AC → E
+ADE → B
+ADE → G
 CG → D
 BG → C
 C → B
@@ -64,14 +66,78 @@ C → B
 
 2. **Donner une décomposition de R en relations 3NF sans perte d'informations et sans perte de dépendances**
 
+##### Étapes de décomposition en 3NF :
+
+###### Trouver les clés candidates :
+
+En utilisant les axiomes d'Armstrong, on obtient :
+
+```
+A → ABC (non clé car manque DEG)
+AC → ACBE (non clé car manque DG)
+ADE → ADEBGC (couvre tous les attributs, donc c'est une clé candidate)
+Les autres combinaisons ne génèrent pas de clés supplémentaires
+```
+
+Clé candidate : `ADE`
+
+###### Décomposition en 3NF :
+
+:::note[Rappel sur la décomposition]
+Pour chaque dépendance fonctionnelle `X → Y`, créez une relation `R(X, Y)`
+:::
+
+```
+R1(A, B, C) pour A → BC
+R2(A, C, E) pour AC → E
+R3(A, D, E, B, G) pour ADE → BG (correspond à une clé candidate complète)
+R4(C, G, D) pour CG → D
+R5(B, G, C) pour BG → C
+R6(C, B) pour C → B
+
+```
+###### Vérification de la couverture et des dépendances sans perte :
+
+* Assurez-vous que chaque dépendance est couverte par une des relations décomposées.
+
+* Vérifiez que la jointure naturelle des relations décomposées restitue la relation originale sans perte de données.
+
+* Décomposition finale des relations :
+
+```
+R1(A, B, C)
+R2(A, C, E)
+R3(A, D, E, B, G) (clé candidate, nécessaire pour conserver toutes les dépendances)
+R4(C, G, D)
+R5(B, G, C)
+
+```
+
+Cette décomposition assure une forme 3NF sans perte d’informations ni de dépendances fonctionnelles, en maintenant l’intégrité des données de la relation initiale R.
+
 3. **Précisez l'identifiant de chaque relation obtenue**
 
-Voici une décomposition sans perte de dépendance ni d'information ainsi que les identifiants (soulignés) :
+##### Identifiants de chaque relation :
 
-* R1(<u>A</u>, E, C) (BCNF)
-* R2(<u>A, D</u>, G) (BCNF)
-* R3(<u>C, G</u>, D) (BCNF)
-* R4(<u>B, G</u>, C) (3FN)
+* `R1(A, B, C)`
+  * Dépendance fonctionnelle : `A → BC`
+  * Identifiant : `A` (puisque `A` détermine `B` et `C`)
+
+* `R2(A, C, E)`
+  * Dépendance fonctionnelle : `AC → E`
+  * Identifiant : `AC` (puisque `A` et `C` ensemble déterminent `E`)
+
+* `R3(A, D, E, B, G)`
+  * Dépendance fonctionnelle : `ADE → BG`
+  * Identifiant : `ADE` (car c'est une clé candidate complète et détermine tous les autres attributs)
+
+* `R4(C, G, D)`
+  * Dépendance fonctionnelle : `CG → D`
+  * Identifiant : `CG` (puisque `C` et `G` ensemble déterminent `D`)
+
+* `R5(B, G, C)`
+  * Dépendance fonctionnelle : `BG → C`
+  * Identifiant : `BG` (puisque `B` et `G` ensemble déterminent `C`)
 
 </TabItem>
 </Tabs>
