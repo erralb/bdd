@@ -42,6 +42,10 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
+					label: 'Informations',
+					slug: '00-infos/01-intro',
+				},
+				{
 					label: '1 - Relationnelles & SQL',
 					// collapsed: true,
 					items: [
@@ -52,7 +56,7 @@ export default defineConfig({
 								directory: '01-concepts',
 							}
 						},
-
+						
 						// {
 						// 	label: '2. Algèbre Relationnelle',
 						// 	collapsed: true,
