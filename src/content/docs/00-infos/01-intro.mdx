@@ -7,17 +7,17 @@ sidebar:
 
 import Slide from '/src/components/Slide.astro';
 
-<Slide title="Introduction aux bases de données">
+<Slide hide>
+
+# Introduction aux bases de données
 
 ## Concepts, utilisation et développement
 <center>
 ##### Pierre Blarre - Université Grenoble Alpes - SHS - 2024-2025
 </center>
 </Slide>
-<Slide>
+<Slide title="Infos">
 
-
-## Infos
 * Pour me contacter directement : pierre.blarre@univ-grenoble-alpes.fr 
 * Utilisez uniquement vos adresses email universitaires pour me contacter _pas de réponses sur les autres domaines gmail, hotmail, etc._
 * Sur le [Moodle de l'UGA](https://cours.univ-grenobles-alpes.fr) : 
@@ -29,7 +29,7 @@ import Slide from '/src/components/Slide.astro';
 </Slide>
 <Slide>
 
-* Consultez votre **boite mail universitaire tous les jours** pour recevoir les annonces
+* Consultez votre **boite mail universitaire tous les jours** pour bien être au courant  des annonces
 
 </Slide>
 
@@ -70,4 +70,19 @@ import Slide from '/src/components/Slide.astro';
 URL de ce site : https://erralb.github.io/bdd/ 
 
 </Slide>
+<Slide>
 
+---
+
+## Démarrage
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+<LinkCard
+  title="Présentation du module"
+  description=""
+  href="/bdd/"
+/>
+
+
+</Slide>
