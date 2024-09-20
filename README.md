@@ -1,39 +1,35 @@
-## Objectif de ce cours
+## Introduction aux bases de données
 
-> Se former à l'utilisation et à la conception de Bases de Données au sein d'un système d'information
+* Cours publié sur : [https://erralb.github.io/bdd/](https://erralb.github.io/bdd/)
 
-## Introduction
+* Ce cours est construit avec : [https://starlight.astro.build/](https://starlight.astro.build/)
 
-Les bases de données sont un élément essentiel de la technologie moderne. 
+## Installation en local
 
-Elles permettent de stocker, organiser et gérer de grandes quantités de données de manière efficace. Que ce soit pour gérer les informations d'une entreprise, stocker des données personnelles ou alimenter des applications web, les bases de données jouent un rôle crucial.
+* Pour pouvoir installer ce cours sur votre machine locale, vous devez tout d'abord installer [Node Js](https://nodejs.org/) et [pnpm](https://pnpm.io/installation)
+* Puis dans un terminal sur votre machine :
 
-Ce cours complet sur les bases de données vous fournira les connaissances nécessaires pour comprendre les différents types de bases de données, leur conception, leur utilisation et les requêtes qui permettent d'extraire des informations. 
+```
+git clone https://github.com/erralb/bdd.git
+cd bdd
+pnpm install
+pnpm dev
+```
 
-Que vous soyez débutant ou que vous ayez déjà une certaine expérience dans le domaine, ce cours vous aidera à approfondir vos compétences et à devenir un expert en bases de données.
+* Par la suite, lorsque vous souhaitez lancer le site, dans un terminal dans le répertoire du projet : 
 
-Dans ce cours, nous allons aborder :
+```
+pnpm dev
+```
 
-- Les concepts des bases de données : **tables, lignes, colonnes, identifiants**
-- Les **dépendances fonctionelles** et la **normatlisation** : 1NF, 2NF, 3NF, BCNF
-- **L'algèbre relationnelle**, qui est un langage formel pour interroger les bases de données relationnelles
-- Le langage **SQL (Structured Query Language)**, qui est le langage standard pour interroger les bases de données relationnelles :
-	- Syntaxe de base
-	- Requêtes simples et complexes
-	- Jointures
-	- Sous-requêtes
-	- Agrégation
-- La **conception** de bases de données relationnelles : 
-	- Modélisation conceptuelle
-	- Modélisation logique
-	- Modélisation physique
--  Nous explorerons également les **bases de données NoSQL**, qui offrent une approche plus flexible et évolutive pour le stockage des données.
+* Pour mettre le cours à jour, dans un terminal dans le répertoire du projet : 
 
+```
+git pull
+```
 
-## Compétences visées
+Vous pouvez aussi faire un fork du projet pour le modifier à votre convenance. Merci de laisser une mention vers mon site ou ma page GitHub sur votre fork !
 
-* Connaître les principes des bases de données relationnelles
-* Maîtriser les principes de l'algèbre relationnelle
-* Savoir écrire des requêtes de manipulation de données en SQL
-* Savoir concevoir et normaliser un modèle conceptuel de données à partir d'un cahier des charges
-* Savoir dériver un schéma relationnel de bases de données à partir d'un modèle de données
+## Licence
+
+<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/erralb/bdd">Introduction aux bases de données</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://erralb.com">Pierre BLARRE</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt=""></a></p>
