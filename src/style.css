@@ -200,6 +200,12 @@
   display: none;
 }
 
+img,
+.expressive-code {
+  margin: 2rem auto;
+  max-width: 100% !important;
+}
+
 @media print {
 
   .onlyPrint {
