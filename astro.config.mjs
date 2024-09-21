@@ -65,27 +65,38 @@ export default defineConfig({
 							// }
 							items: [
 								{
-									label: '1. Introduction',
 									slug: '02-algebre/01-introduction',
 								},
 								{
-									label: '2. Opérateurs',
-									autogenerate: {
-										directory: '02-algebre/02-operateurs'
-									}
+									label: 'Opérateurs',
+									// autogenerate: {
+									// 	directory: '02-algebre/02-operateurs'
+									// },
+									items: [
+										{slug: '02-algebre/02-operateurs/01-projection'},
+										{slug: '02-algebre/02-operateurs/02-selection'},
+										{slug: '02-algebre/02-operateurs/03-produit'},
+										{slug: '02-algebre/02-operateurs/04-jointure'},
+										{slug: '02-algebre/02-operateurs/05-division'},
+										{slug: '02-algebre/02-operateurs/06-union'},
+										{slug: '02-algebre/02-operateurs/07-intersection'},
+										{slug: '02-algebre/02-operateurs/08-difference'},
+										{slug: '02-algebre/02-operateurs/09-complement'},
+									]
+
 								},
 								{
-									label: '3. Conclusion',
-									slug: '02-algebre/03-conclusion',
+									slug: '02-algebre/03-optimisation',
 								},
 								{
-									label: '4. Exercices',
-									slug: '02-algebre/04-exercices',
+									slug: '02-algebre/04-conclusion',
 								},
-								{
-									label: '5. TD2',
-									slug: '02-algebre/05-td2-algebre',
-								},
+								// {
+								// 	slug: '02-algebre/05-exercices',
+								// },
+								// {
+								// 	slug: '02-algebre/06-td2-algebre',
+								// },
 
 							]
 						},

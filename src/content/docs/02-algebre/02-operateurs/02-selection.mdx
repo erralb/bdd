@@ -5,9 +5,8 @@ description: L'opérateur algébrique de sélection
 
 import Slide from '/src/components/Slide.astro';
 
-<Slide>
+<Slide title="La sélection">
 
-## La sélection
 * **Opérandes** :
     * Une relation `R` de schéma `X`
     * Une condition `C`
@@ -20,26 +19,33 @@ import Slide from '/src/components/Slide.astro';
 </Slide>
 <Slide title="La sélection">
 
-* **Condition** : la condition est aussi appelée critère de sélection. 
-    * C'est une expression composée :
-        * de **valeurs**, par exemple, `“Marie”`
-        * de **noms de colonnes** ou d'**attributs**, par exemple, `“SALAIRE”`
+* **Condition** : la condition est aussi appelée _critère de sélection_
+    * C'est une **expression** composée :
+        * de **valeurs**, par exemple, `"Marie"`
+        * de **noms de colonnes** ou d'**attributs**, par exemple, `"SALAIRE"`
         * d'**opérateurs arithmétiques** `<, >, =, <=, (, )`
         * d'**opérateurs logiques** `∧, ∨, ￢`
 * **Equivalence SQL** : `WHERE [condition]` 
 
 </Slide>
-<Slide title="La sélection">
 
-Donner les informations relatives aux employés habitant Grenoble
-EMPLOYE : (ADRESSE = “Grenoble”)
+## Exemples de requêtes de sélection
+
+<Slide title="Exemples de requêtes de sélection">
+
+_Donner les informations relatives aux employés habitant Grenoble_
+
+```
+EMPLOYE : (ADRESSE = "Grenoble")
 ou
-σ Adresse = “Grenoble” (EMPLOYE)
+σ Adresse = "Grenoble" (EMPLOYE)
+```
+
+![Informations relatives aux employés habitant Grenoble](02-selection-01.png)
 
 </Slide>
-<Slide title="La sélection">
-
-## Exemple
+---
+<Slide title="Exemples de requêtes de sélection">
 
 _Donner les informations relatives aux employés, dont le salaire est supérieur à 1500€_
 
@@ -49,41 +55,72 @@ ou
 σ SALAIRE ≥ 1500 (EMPLOYE)
 ```
 
+![Informations relatives aux employés, dont le salaire est supérieur à 1500€](02-selection-02.png)
+
 </Slide>
-<Slide title="La sélection">
+---
+<Slide title="Exemples de requêtes de sélection">
 
+_Que produit la requête :_
 
-Que produit la requête : 
-EMPLOYE : (NOM = “Marie”) 
+```
+EMPLOYE : (NOM = "Marie") 
 ou 
-σ NOM = “Marie” (EMPLOYE)
+σ NOM = "Marie" (EMPLOYE)
+```
+
+![EMPLOYE : (NOM = "Marie")](02-selection-03.png)
 
 </Slide>
-<Slide title="La sélection">
+---
+<Slide title="Exemples de requêtes de sélection">
 
 
 Que produit la requête : 
-EMPLOYE : (NOM = “Marie”) 
+
+```
+EMPLOYE : (NOM = "Marie") 
 ou 
-σ NOM = “Marie” (EMPLOYE)
+σ NOM = "Marie" (EMPLOYE)
+```
+
+![EMPLOYE : (NOM = "Marie")](02-selection-04.png)
 
 </Slide>
-<Slide title="La sélection">
+---
+<Slide title="Exemples de requêtes de sélection">
 
+_Que produit la requête :_
 
-Que produit la requête : 
-EMPLOYE : (NOM = “Marie” ∧ ADRESSE ≠ “St-Egrève” ∧ SALAIRE < 3000 ) ?
+```
+EMPLOYE : (NOM = "Marie" ∧ ADRESSE ≠ "St-Egrève" ∧ SALAIRE < 3000 )
 ou
-σ NOM = “Marie” ∧ ADRESSE ≠ “St-Egrève” ∧ SALAIRE < 3000 (EMPLOYE)
+σ NOM = "Marie" ∧ ADRESSE ≠ "St-Egrève" ∧ SALAIRE < 3000 (EMPLOYE)
+```
+
+![EMPLOYE : (NOM = "Marie" ∧ ADRESSE ≠ "St-Egrève" ∧ SALAIRE < 3000 )](02-selection-05.png)
 
 </Slide>
-<Slide title="La sélection">
+---
+<Slide title="Exemples de requêtes de sélection">
 
+_Que produit la requête :_
 
-Que produit la requête : 
-EMPLOYE : (NOM = “Marie” ∧ ADRESSE ≠ “St-Egrève” ∧ SALAIRE < 3000 ) ?
+```
+EMPLOYE : (NOM = "Marie" ∧ ADRESSE ≠ "St-Egrève" ∧ SALAIRE < 3000 )
 ou
-σ NOM = “Marie” ∧ ADRESSE ≠ “St-Egrève” ∧ SALAIRE < 3000 (EMPLOYE)
+σ NOM = "Marie" ∧ ADRESSE ≠ "St-Egrève" ∧ SALAIRE < 3000 (EMPLOYE)
+```
 
+![EMPLOYE : (NOM = "Marie" ∧ ADRESSE ≠ "St-Egrève" ∧ SALAIRE < 3000 )](02-selection-06.png)
+
+</Slide>
+<Slide title="La selection">
+
+## Conclusion
+
+* La **sélection** permet de filtrer les lignes d'une relation selon une condition.
+* En algèbre relationnelle, la sélection est notée `R : C` ou `σC(R)`.
+* En SQL, cela correspond à `WHERE [condition]`.
 
 </Slide>

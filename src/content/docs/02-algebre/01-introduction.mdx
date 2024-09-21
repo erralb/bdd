@@ -50,20 +50,20 @@ Une gestion d'étudiants à l'université pourrait se résumer, de manière simp
 ## Algèbre : Rappel
 
 :::note[Définition d'une algèbre]
-Une algèbre est un ensemble d'opérateurs de base formellement définis, qui peuvent être combinés à souhait pour construire des expressions algébriques
+Une algèbre est un ensemble d'opérateurs de base, formellement définis, qui peuvent être combinés à souhait pour construire des expressions algébriques
 :::
 
 </Slide>
 <Slide title="Algèbre: Rappel">
 
-* Les opérateurs arithmétiques : `+, - , x, /`
-* les opérateurs logiques : `∧, ∨, ￢` (AND, OR, NOT)
-* Chaque opérateur à une arité
-    * Exemples d'opérateurs binaires : `+, - , *, /`
-    * Exemple d'opérateurs unaires :  `￢, -` (NOT, négation)
-* Règles de construction des opérateurs ou axiomes
-    * Axiomes pour `+`, `x` (associativité, commutativité, distributivité, etc.)
-    * Axiomes (loi de Morgan) pour `∧` et `∨`
+* Les opérateurs **arithmétiques** : `+, - , x, /`
+* les opérateurs **logiques** : `∧, ∨, ￢` (AND, OR, NOT)
+* Chaque opérateur à une **arité**
+    * Exemples d'opérateurs **binaires** : `+, - , *, /`
+    * Exemple d'opérateurs **unaires** :  `￢, -` (NOT, négation)
+* Règles de construction des opérateurs ou **axiomes**
+    * Axiomes pour `+`, `x` (_associativité, commutativité, distributivité, etc._)
+    * Axiomes (**loi de Morgan**) pour `∧` et `∨`
 * Une **algèbre est dite fermée** si le résultat de tout opérateur est du même type que les opérandes (ce qui est indispensable pour construire des expressions)
 
 </Slide>
@@ -77,10 +77,14 @@ Une algèbre est un ensemble d'opérateurs de base formellement définis, qui pe
 * **Une requête relationnelle est la composition d'un nombre fini d'opérateurs algébriques**
     * L'ordre d'évaluation des opérateurs a un impact sur le temps de réponse du SGBD
     * Principe de l'optimisation des requêtes
-* _Il existe 2 notations_ :
+
+:::danger[Il existe 2 notations pour l'algèbre relationnelle !]
+
     * avec des symboles mathématiques ( `π`, `σ`, `⍴` ) (Pi, Sigma, Rho) 
-    * ou bien une notation textuelle
-    > Les deux sont correctes, vous pouvez utiliser celle que vous préférez.
+    * ou bien une notation textuelle utilisant le nom des relations et des caractères `[]`, `()`, `x`, `:`, `ET`, `OU`, etc.
+
+Les deux sont correctes, vous pouvez utiliser celle que vous préférez. La notation textuelle est plus simple à écrire sur ordinateur...
+:::
 
 </Slide>
 <Slide>
@@ -97,7 +101,7 @@ Une algèbre est un ensemble d'opérateurs de base formellement définis, qui pe
 </Slide>
 <Slide>
 
-### Les autres opérateurs
+### Les opérateurs spécifiques à l'algèbre relationnelle
 
 
 1. La **projection** : `R[A]` ( aussi représentée avec le symbole Pi : <code>π<sub>A</sub></code> )
