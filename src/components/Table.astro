@@ -10,7 +10,7 @@ export interface Props {
 const { title, headers, rows, caption, footer } = Astro.props;
 ---
 
-<table>
+<table class="tableComponent">
   {caption ? <caption>{caption}</caption> : null}
   <thead>
     <tr>
@@ -43,3 +43,116 @@ const { title, headers, rows, caption, footer } = Astro.props;
     ) : null
   }
 </table>
+
+<style>
+
+table.tableComponent {
+
+  border-collapse: collapse;
+  font-family: sans-serif;
+  margin-bottom: 40px;
+  max-width: 100%;
+
+
+  caption {
+    caption-side: bottom;
+    padding: 10px;
+    font-weight: bold;
+  }
+
+  thead,
+  tfoot {
+    background-color: rgb(95, 95, 95);
+  }
+
+  thead>tr:nth-child(1) th,
+  tfoot>tr:nth-child(1) th {
+    text-transform: uppercase;
+    color: white;
+  }
+
+  thead>tr:nth-child(2) th,
+  tfoot>tr:nth-child(2) th {
+    background-color: rgb(239, 239, 239);
+  }
+
+  tbody>tr:nth-of-type(even) {
+    background-color: rgb(248, 248, 248);
+  }
+
+  th {
+    text-align: center !important;
+  }
+
+  th,
+  td {
+    border: 1px solid rgb(160 160 160);
+    padding: 8px 10px;
+  }
+
+  td {
+    text-align: left !important;
+  }
+
+  :is(th:first-child, td:first-child):not(:where(.not-content *)),
+  :is(th:last-child, td:last-child):not(:where(.not-content *)) {
+    padding-inline-start: 10px;
+    padding-inline-end: 10px;
+  }
+
+  .thead-pk-1 thead tr:nth-child(2) th:nth-child(1),
+  .thead-pk-2 thead tr:nth-child(2) th:nth-child(2),
+  .thead-pk-3 thead tr:nth-child(2) th:nth-child(3),
+  .thead-pk-4 thead tr:nth-child(2) th:nth-child(4),
+  .thead-pk-5 thead tr:nth-child(2) th:nth-child(5),
+  .thead-pk-6 thead tr:nth-child(2) th:nth-child(6),
+  .thead-pk-7 thead tr:nth-child(2) th:nth-child(7),
+  .thead-pk-8 thead tr:nth-child(2) th:nth-child(8),
+  .thead-pk-9 thead tr:nth-child(2) th:nth-child(9),
+  .thead-pk-10 thead tr:nth-child(2) th:nth-child(10) {
+    text-decoration: underline;
+  }
+
+  .table-pk-1 table td:nth-child(1),
+  .table-pk-2 table td:nth-child(2),
+  .table-pk-3 table td:nth-child(3),
+  .table-pk-4 table td:nth-child(4),
+  .table-pk-5 table td:nth-child(5),
+  .table-pk-5 table td:nth-child(6),
+  .table-pk-5 table td:nth-child(7),
+  .table-pk-5 table td:nth-child(8),
+  .table-pk-5 table td:nth-child(9),
+  .table-pk-5 table td:nth-child(10) {
+    background-color: rgb(243, 127, 127);
+    font-weight: bold;
+  }
+
+  .table-fk-1 table td:nth-child(1),
+  .table-fk-2 table td:nth-child(2),
+  .table-fk-3 table td:nth-child(3),
+  .table-fk-4 table td:nth-child(4),
+  .table-fk-5 table td:nth-child(5),
+  .table-fk-6 table td:nth-child(6),
+  .table-fk-7 table td:nth-child(7),
+  .table-fk-8 table td:nth-child(8),
+  .table-fk-9 table td:nth-child(9),
+  .table-fk-10 table td:nth-child(10) {
+    background-color: rgb(162, 238, 162);
+  }
+
+
+  .table-pk-1.table-fk-1 table td:nth-child(1),
+  .table-pk-2.table-fk-2 table td:nth-child(2),
+  .table-pk-3.table-fk-3 table td:nth-child(3),
+  .table-pk-4.table-fk-4 table td:nth-child(4),
+  .table-pk-5.table-fk-5 table td:nth-child(5),
+  .table-pk-6.table-fk-6 table td:nth-child(6),
+  .table-pk-7.table-fk-7 table td:nth-child(7),
+  .table-pk-8.table-fk-8 table td:nth-child(8),
+  .table-pk-9.table-fk-9 table td:nth-child(9),
+  .table-pk-10.table-fk-10 table td:nth-child(10) {
+    background: linear-gradient(0.25turn, rgb(243, 127, 127), #ebf8e1, rgb(162, 238, 162));
+  }
+}
+
+</style>
