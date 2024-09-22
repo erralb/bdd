@@ -87,12 +87,30 @@
   img,
   .expressive-code {
     margin: 2rem auto;
-    max-width: 100% !important;
+    max-width: 100%;
   }
 
   details {
     margin: 2rem 0;
     align-self: flex-start;
+  }
+
+  .masonry p {
+    /* columns: 2; */
+
+   display: flex;
+   align-items: left;
+   justify-content: left;
+   flex-direction: row;
+   flex-wrap: wrap;
+   flex-flow: row wrap;
+   align-content: flex-end;
+
+    img {
+      margin-top: 0;
+      max-width: 40%;
+      height: auto !important;
+    }
   }
 
 }
@@ -117,6 +135,10 @@
     display: initial;
   }
 
+  h1, h2, h3, h4, h5 {
+    border-top: none !important;
+  }
+
   header,
   nav,
   .pagination-links,
@@ -130,6 +152,8 @@
   .expressive-code,
   .starlight-aside {
     break-inside: avoid;
+    max-width: 100%;
+    text-wrap: wrap;
   }
 
   .page-break {

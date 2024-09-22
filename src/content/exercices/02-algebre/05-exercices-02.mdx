@@ -1,0 +1,82 @@
+---
+title: Exercice 2
+description: Exercices introductifs
+---
+
+Soit le schéma relationnel de la base de données d'un cinéma : 
+
+```sql wrap
+VILLE (CODEPOSTAL, NOMVILLE) 
+CINEMA (NUMCINE, NOMCINE, ADRESSE, CODEPOSTAL) 
+SALLE (NUMSALLE, CAPACITE, NUMCIN E) 
+FILM (NUMEXP, TITRE, DUREE, CODEDIST) 
+PROJECTION (NUMEXP, NUMSALLE, NUMSEMAINE, NBENTREE) 
+```
+
+Formuler en algèbre relationnelle les requêtes suivantes : 
+
+<br/>
+
+<details>
+<summary>1. Titre des films dont la durée est supérieure ou égale à deux heures</summary>
+
+```sql wrap
+R = (FILM : (DUREE ≥ 2))[TITRE]
+```
+</details>
+
+
+<details>
+<summary>2. Nom des villes abritant un cinéma nommé "Le Capitole" </summary>
+
+```sql wrap
+R1 = (CINEMA : (NOMCINE = "Le Capitole"))
+R2 = (R1 (R1.CODEPOSTAL = VILLE.CODEPOSTAL) x VILLE)[NOMVILLE]
+```
+</details>
+
+
+<details>
+<summary>3. Nom des cinémas situés à Lyon ou contenant au moins une salle de plus 100 places </summary>
+
+```sql wrap
+R1 = (VILLE : (NOMVILLE = "Lyon"))
+R2 = (R1 (R1.CODEPOSTAL = CINEMA.CODEPOSTAL) x CINEMA)
+R3 = (R2 (R2.NUMCINE = SALLE.NUMCINE ∧ SALLE.CAPACITE  100) x SALLES)
+```
+</details>
+
+
+<details>
+<summary>4. Nom, adresse et ville des cinémas dans lesquels on joue le film "Hypnose" la semaine 18 </summary>
+
+```sql wrap
+R1 = (PROJECTION : (SEMAINE = 18))
+R2 = (FILM : (TITRE = "Hypnose"))
+R3 = (R1 (R1.NUMEXP = R2.NUMEXP) x R2)
+R3 = (R2 (R2.NUMSALLE = SALLE.NUMSALLE) x SALLE
+R4 = (R3 (R3.NUMCINE = CINEMA.NUMCIN E) x CINEMA
+R5 = (R4 (R4.CODEPOSTAL = CILLE.CODEPOSTAL) x VILLE
+R6 = R5[NOMCINE, ADRESSE, NOMVILLE]
+```
+</details>
+
+
+<details>
+<summary>5. Numéro d'exploitation des films projetés dans toutes les salles </summary>
+
+```sql wrap
+R = (PROJECTION[NUMEXP, NUMSALLE] / SALLE)
+```
+</details>
+
+
+<details>
+<summary>6. Titre des films qui n'ont pas été projetés</summary>
+
+```sql wrap
+R1 = (FILM[NUMEXP] - PROJECTION[NUMEXP])
+R2 = (R1 (R1.NUMEXP = FILM.NUMEXP) x FILM)[TITRE]
+```
+</details>
+

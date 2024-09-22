@@ -1,0 +1,53 @@
+---
+title: Exercice 1
+description: Exercices introductifs
+---
+
+Soit le schéma relationnel de la base de données d’une agence de voyage :
+
+```sql wrap
+CLIENT (NUMCLIENT, NOM, PRENOM, E-MAIL, NUMCB)
+RESERVATION (NUMCLIENT, CODEVOYAGE, DATERES)
+VOYAGE (CODEVOYAGE, DESTINATION, DUREE, PRIX)
+```
+
+Formuler en algèbre relationnelle les requêtes suivantes :
+
+<br/>
+
+<details>
+<summary>1. Nom, prénom et e-mail des clients ayant une réservation en cours</summary>
+
+```sql wrap
+R1 = CLIENT (CLIENT.NUMCLIENT = RESERVATION.NUMCLIENT) x RESERVATION 
+R2 = R1: (DATERES ≥  "aujourd’hui") 
+R3 = R2[NOM, PRENOM, E-MAIL]
+```
+</details>
+
+<details>
+<summary>2. Nom, prénom et e-mail des clients n’ayant aucune réservation en cours</summary>
+
+```sql wrap
+R4 = (CLIENT - R2[NUMCLIENT, NOM, PRENOM, E-MAIL, NUMCB]) [NOM, PRENOM, E-MAIL]
+```
+</details>
+
+<details>
+<summary>3. Destination et liste des clients ayant réservés pour un voyage de plus de 10 jours et coûtant moins de 1000e</summary>
+
+```sql wrap
+R5 = (RESERVATION (RESERVATION.CODEVOYAGE = VOYAGE.CODEVOYAGE) x VOYAGE) : (DUREE > 10 ∧  PRIX < 1000)
+R6 = (CLIENT (CLIENT.NUMCLIENT = RESERVATION.NUMCLIENT) x R5)
+R7 = R6 [DESTINATION, NOM, PRENOM, E-MAIL]
+```
+</details>
+
+
+<details>
+<summary>4. Numéros de tous les clients ayant réservés **sur tous** les voyages proposés</summary>
+
+```sql wrap
+R8 = RESERVATION[NUMCLIENT, CODEVOYAGE] / VOYAGE[CODEVOYAGE]
+```
+</details>

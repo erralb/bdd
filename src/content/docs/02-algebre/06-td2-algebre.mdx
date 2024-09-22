@@ -3,29 +3,102 @@ title: TD2
 description: Exercices d'algèbre relationelle
 ---
 
-## Exercice 1
-Soit le schéma relationnel de la base de données d'une agence de voyage :
-CLIENT (NUMCLIENT, NOM, PRENOM, E-MAIL, NUMCB)
-RESERVATION (NUMCLIENT, CODEVOYAGE, DATERES)
-VOYAGE (CODEVOYAGE, DESTINATION, DUREE, PRIX)
+## 1. Description du problème
 
-Formuler en algèbre relationnelle les requêtes suivantes :
-1. Nom, prénom et e-mail des clients ayant une réservation en cours
-2. Nom, prénom et e-mail des clients n'ayant aucune réservation en cours
-3. Destination et liste des clients ayant réservés pour un voyage de plus de 10 jours et coûtant moins de 1000e
-4. Numéros de tous les clients ayant réservés sur tous les voyages proposés
+Une agence de voyages veut informatiser la gestion des voyages qu’elle propose (itinéraires, monuments visités, réservations, etc.). 
 
-## Exercice 2
-Soit le schéma relationnel de la base de données d'un cinéma : 
-VILLE (CODEPOSTAL, NOMVILLE) 
-CINEMA (NUMCINE, NOMCINE, ADRESSE, CODEPOSTAL) 
-SALLE (NUMSALLE, CAPACITE, NUMCIN E) 
-FILM (NUMEXP, TITRE, DUREE, CODEDIST) 
-PROJECTION (NUMEXP, NUMSALLE, NUMSEMAINE, NBENTREE) 
-Formuler en algèbre relationnelle les requêtes suivantes : 
-1. Titre des films dont la durée est supérieure ou égale à deux heures 
-2. Nom des villes abritant un cinéma nommé “Le Capitole” 
-3. Nom des cinémas situés à Lyon ou contenant au moins une salle de plus 100 places 
-4. Nom, adresse et ville des cinémas dans lesquels on joue le film “Hypnose” la semaine 18 
-5. Numéro d'exploitation des films projetés dans toutes les salles 
-6. Titre des films qui n'ont pas été projetés
+Une base de données doit être construite à partir du cahier des charges suivant : 
+
+
+* **Les circuits** : un circuit est identifié par un numéro, un nombre d’étapes et une séquence d’étapes. Une étape se déroule pendant un nombre donné de jours, dans une ville donnée. Au cours de chaque étape, tous les monuments de la ville, lorsqu’il y en a, sont visités. Un même circuit ne repasse jamais plusieurs fois dans la même ville, mais il peut arriver que la ville de départ ou d’arrivée figure aussi parmi les villes étapes. Les villes sont identifiées par leurs noms. Les monuments sont identifiés par leurs noms dans la ville où ils sont situés. 
+
+    Un circuit peut être programmé plusieurs fois, à des dates différentes. A chacune de ces programmations, on associe un nombre de places. Deux programmations d’un même circuit peuvent avoir des nombres de places différents. Par contre, le prix d’un circuit est toujours le même quelle que soit sa date de programmation. La durée d’un circuit est égale à la somme des durées de chacune de ces étapes ; 
+* **Les réservations** : une réservation, identifiée par un numéro, est effectuée pour le compte d’un client (identifié par son nom) et concerne une programmation d’un circuit. Plusieurs places pour la même programmation du même circuit peuvent être réservées en une seule fois.
+
+## 2. Schéma des tables
+
+Le schéma retenu pour la base de données est constitué des relations suivantes ; 
+
+_Par convention, on <u>souligne</u> les clés primaires et on indique les clés étrangères avec un astérisque *_
+
+```ansi wrap
+VILLE ([4mNOMV[0m, PAYS)
+{(n, p) ∈ VILLE ↔ la ville dont le nom est n, est située dans la pays p}
+
+MONUMENT ([4mNOMM[0m, NOMV*, PRIX)
+{(nm, nv, p) ∈ MONUMENT ↔ le monument de nom nm est situé dans la ville nv. La visite coûte p francs}
+
+CIRCUIT ([4mNC[0m, NBETAPES, PRIX)
+{(nc, nb, p) ∈ CIRCUIT ↔ le circuit est identifié par le numéro nc. Il comprend nb étapes et vaut p francs}
+
+ETAPE (NOMV, [4mNC, NUMETAPE[0m, DUREE)
+{(nv, nc, nu, no, d) ∈ ETAPE ↔ la ville nv est la nu ième étape du circuit nc. L’étape dure d jours}
+
+PROGRAMMATION ([4mNC, DATE[0m, PLACES)
+{(nc, d, p) ∈ P ROGRAMMATION ↔ le circuit nc est programmé à la date d. P places sont disponibles}
+
+RESERVATION (NC, NR, NOMC, PLACES, DATE)
+{(nc, nr, c, p, d) ∈ RESERVATION ↔ le client de nom c a réservé p places pour le circuit nc commençant à la date d. Sa réservation est identifiée par le numéro nr}
+```
+
+Les domaines associés aux différents attributs sont :
+
+```sql wrap
+domaine(NOMC) = {“Mila”, “Nathalie”, “John”, etc.}
+domaine(NOMV) = {“Paris”, “Londres”, “Exeter”, etc.}
+domaine(PAYS) = {“France”, “Angleterre”, “Irlande”, etc.}
+domaine(NC) = domaine(NR) = domaine(PLACES) = domaine(PRIX) = domaine(NUMETAPE) = domaine(NBETAPES) = domaine(DUREE) = entiers ≥ 0
+domaine(DATE) = dates
+```
+
+Les contraintes d’intégrité référentielle () sont :
+
+```
+RESERVATION[NC, DATE] ⊂ PROGRAMMATION[NC, DATE]
+CIRCUIT[NC] = PROGRAMMATION[NC]
+CIRCUIT[NC] = ETAPE[NC]
+VILLE[NOMV] = ETAPE[NOMV]
+MONUMENT[NOMV] ⊂ VILLE[NOMV]
+```
+
+{/* <div class="masonry">
+    ![Table VILLE](06-td2-algebre-06-Table-VILLE.png)
+    ![Table MONUMENT](06-td2-algebre-03-Table-MONUMENT.png)
+    ![Table CIRCUIT](06-td2-algebre-01-Table-CIRCUIT.png)
+    ![Table ETAPE](06-td2-algebre-05-Table-ETAPE.png)
+    ![Table PROGRAMMATION](06-td2-algebre-02-Table-PROGRAMMATION.png)
+    ![Table RESERVATION](06-td2-algebre-04-Table-RESERVATION.png)
+</div> */}
+
+<div class="page-break"></div>
+
+## 3. Données de la base de données
+
+![Tables 1, 2 et 3](06-td2-algebre-01-Tables-123.png)
+![Tables 4, 5 et 6](06-td2-algebre-02-Tables-456.png)
+
+<div class="page-break"></div>
+<div class="page-break"></div>
+
+## 4. Navigation dans la base de données
+
+Trouver les informations suivantes dans la base de données :
+
+1. Ville de départ du circuit 10 ?
+2. Noms des monuments visités par Mafalda ?
+3. Nombre de places mises à la vente pour le circuit 5 à la date du 9/11/02 ?
+
+## 5. Requêtes
+
+Donner en algèbre relationnelle l’expression des requêtes suivantes :
+
+1. Ville de départ du circuit 10 ?
+2. Noms des monuments visités par Mafalda ?
+3. Donner le numéro, les villes de départ et d’arrivée des circuits qui démarrent après une date donnée ;
+4. Donner les noms des clients qui ont réservé des circuits qui passent par un pays donné ;
+5. Donner le nom des clients qui ne visitent aucun monument ;
+6. Donner le numéro, le prix de base (i.e. ne tenant pas compte du prix des monuments visités), et la date de départ des circuits qui ont encore des places disponibles ;
+7. Donner le numéro et le prix de base des circuits qui n’ont aucune réservation ;
+8. Donner les noms des pays, des villes et des monuments visités par un client donné ;
+9. Donner la liste des numéros de circuits qui passent dans toutes les villes d’un pays donné
+10. Pour chaque circuit restant dans le même pays, donner le nom de ce pays et le numéro de circuit.
