@@ -1,0 +1,86 @@
+---
+title: Exercice 4
+description: Exercices introductifs
+---
+
+Soient `R` et `S` les relations suivantes (les attributs `A`, `B `et `C` sont définis sur le domaine des lettres de l’alphabet).
+
+import Table from '/src/components/Table.astro';
+
+<div class="tables">
+<br/>
+<Table 
+    title="R"
+    headers={["A", "B"]}
+    rows={[
+        ["a", "b"],
+        ["a", "f"],
+        ["c", "b"],
+        ["d", "e"],
+        
+    ]}
+/>
+
+<Table 
+    title="S"
+    headers={["B", "C"]}
+    rows={[
+        ["b", "c"],
+        ["e", "a"],
+        ["b", "d"],
+        ["g", "b"],
+        
+    ]}
+/>
+</div>
+
+**1. Donnez les résultats des requêtes suivantes :**
+
+    
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Tabs>
+  <TabItem label="Version textuelle">
+```
+R1 = R x S : (R.B = S.B)
+```
+```
+R2 =  R x S : (R.B > S.B)
+```
+  </TabItem>
+  <TabItem label="Version mathématique">
+    
+```
+R1 = R ⋈ S (R.B = S.B)
+
+R2 =  R ⋈ S (R.B > S.B)
+
+```
+
+</TabItem>
+</Tabs>
+
+**2. Les équations suivantes sont-elles vraies (justifier) :**
+
+
+<Tabs>
+  <TabItem label="Version textuelle">
+```
+R x S : (R.B = S.B) [A, B] = R
+```
+
+```
+R x S : (R.B = S.B) [B, C] = S
+```
+
+  </TabItem>
+  <TabItem label="Version mathématique">
+```
+πA,B (R ⋈ S) = R
+```
+
+```
+πB,C (R ⋈ S) = S
+```
+</TabItem>
+</Tabs>

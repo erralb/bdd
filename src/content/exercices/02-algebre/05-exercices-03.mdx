@@ -1,0 +1,61 @@
+---
+title: Exercice 3
+description: Exercices introductifs
+---
+
+Soit la relation PERSONNE suivante : 
+
+import Table from '/src/components/Table.astro';
+
+
+<Table 
+    title="PERSONNE"
+    headers={["NOM", "AGE", "VILLE"]}
+    rows={[
+        ["Marc", 29, "Paris"],
+        ["Catherine", 32, "Lyon"],
+        ["Sophie", 54, "Paris"],
+        ["Claude", 13, "Montpellier"],
+        ["Serge", 40, "Lyon"],
+    ]}
+/>
+
+
+**1. Donnez les résultats des requêtes suivantes :**
+
+    
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Tabs>
+  <TabItem label="Version textuelle">
+```
+R1 = PERSONNE : (Age = 30)
+```
+```
+R2 = PERSONNE[Age]
+```
+```
+R3 = PERSONNE : (Nom = 'Serge') [Age]
+```
+  </TabItem>
+  <TabItem label="Version mathématique">
+    
+```
+R1 = σAge=30(PERSONNE)
+```
+```
+R2 = πAge(PERSONNE)
+```
+```
+R3 = πAge(σNom='Serge' (PERSONNE))
+```
+
+</TabItem>
+</Tabs>
+
+**2. Exprimez les requêtes suivantes en algèbre relationnelle :**
+
+1. Les personnes (nom, age, ville) qui habitent Paris
+2. Les personnes (nom, age, ville) qui ont moins de 30 ans
+3. Les villes dans la relation PERSONNE
+4. Les noms des personnes habitant à Paris
