@@ -6,6 +6,8 @@ description: Exercices introductifs
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 <Tabs>
+
+
   <TabItem label="Énoncé">
     Soit une relation R1 de schéma :
     
@@ -16,7 +18,15 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
     Avec l'ensemble de dépendances suivant :
 
     ```
-    { AB → C, AB → D, AB → E, AB → F, B → C, D → E, D → F }
+    { 
+      AB → C
+      AB → D
+      AB → E
+      AB → F
+      B → C
+      D → E
+      D → F
+    }
     ```
 
     1. **Quelle est la couverture minimale de dépendances ? Déssinez son graphe.**
@@ -40,6 +50,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
     5. **Proposer une décomposition sans perte d'information de R11.**
 
   </TabItem>
+  
   <TabItem label="Solution">
   
     Soit une relation R1 de schéma :
@@ -53,32 +64,58 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
   L'ensemble des dépendances est :
 
     ```
-    { AB → C, AB → D, AB → E, AB → F, B → C, D → E, D → F }
+    { 
+      AB → C
+      AB → D
+      AB → E
+      AB → F
+      B → C
+      D → E
+      D → F
+    }
     ```
-  
-  Par transitivité, l'ensemble minimum de dépendances fonctionnelles de R1 est donc :
+
+Par défaut, on peut dessiner le graphe suivant : 
+
+```mermaid
+flowchart LR
+    AB --> C
+    AB --> D
+    AB --> E
+    AB --> F
+    B --> C
+    D --> E
+    D --> F
+```
+
+Par transitivité, on peut supprimer `AB → E` et `AB → F`, car `AB → D` et `D → EF` :
+
+
+```mermaid
+flowchart LR
+    AB --> C
+    AB --> D
+    B --> C
+    D --> E
+    D --> F
+```
+
+L'ensemble minimum de dépendances fonctionnelles de R1 est donc :
 
   ```
-  { AB → D, B → C, D → E, D → F }
-  ```
-
-  Son graphe correspondant est :
-
-  ```mermaid
-  flowchart LR
-      AB --> D
-      B --> C
-      D --> E
-      D --> F
+  { AB → C, AB → D, B → C, D → E, D → F }
   ```
     
     2. **Quelles est la clé de R1 ?**
 
-    La clé de cette relation est (A,B) car on observe que les attributs A et B déterminent tous les autres attributs de la relation
+    La clé `AB` est la seule clé candidate car on observe que les attributs `A` et `B` déterminent tous les autres attributs de la relation
 
     3. **Quelle est la forme normale de R1 ?**
 
-    Cette relation est en première forme normale mais pas en deuxième forme normale car il y a un attribut qui ne fait pas partie de la clé(C) qui dépend d'une partie de la clé(B).
+    Cette relation est en première forme normale mais :
+    
+      * pas en 2FN car il y a un attribut qui ne fait pas partie de la clé `C` qui dépend d'une partie de la clé `B`
+      * pas en 3FN car il y a une dépendance transitive `D → E` et `D → F`
 
     4. **On décompose la relation R1 en R11 et R12 :**
     
@@ -86,7 +123,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
     5. **Proposer une décomposition sans perte d'information de R11.**
     
-    On peut décomposer R11 en R112(D, E, F) et R112(A>,B,D) sans perte d'information.
+    On peut décomposer R11 en `R112(D, E, F)` et `R112(A,B,D)` sans perte d'information.
 
   </TabItem>
 </Tabs>
