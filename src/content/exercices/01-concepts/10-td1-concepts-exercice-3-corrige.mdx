@@ -1,0 +1,73 @@
+On considère une relation `R` construite sur les attributs : 
+
+`R ( proprietaire, occupant, adresse, noApt, nbPieces, nbPersonnes )`
+
+et un nuplet `(p, o, a, n, nb1, nb2)` ayant la signification suivante :
+
+_La personne **o** habite avec **nb2** personnes l'appartement de numéro **n** ayant **nb1** pièces dont le propriétaire est **p**_
+
+Une analyse de cette relation nous fournit un ensemble initial `E` de dépendances fonctionnelles :
+
+```
+E {
+  occupant → adresse
+  occupant → noApt
+  occupant → nbpersonnes
+  adresse, noApt → proprietaire
+  adresse, noApt → occupant
+  adresse, noApt → nbPieces
+}
+```
+
+1. **Donner l'ensemble des dépendances fonctionnelles élémentaires engendrées par E**
+
+Fermeture transitive de E :
+
+On a 
+
+```
+occupant → adresse
+occupant → noApt 
+```
+
+On peut donc en déduire que
+
+```
+occupant → adresse, noApt
+
+```
+
+Par transitivité, on a donc :
+
+```
+occupant → proprietaire
+occupant → nbPieces
+```
+**Les DFE sont donc :**
+
+```
+occupant → adresse, noApt, nbpersonnes, proprietaire, nbPieces
+adresse, noApt → proprietaire, occupant, nbPieces, nbpersonnes
+```
+La DF `adresse, noApt → nbpersonnes` est obtenue par transitivité avec `occupant`
+
+2. **Quelles sont les clés potentielles de R ?**
+
+Une clé est un (ensemble d') attribut qui dérive tous les autres. 
+
+En observant **la fermeture transitive de E**, on peut déduire que `occupant` et `adresse,noApt` les deux clés potentielles de `R`.
+
+3. **R est elle en 3ème forme normale ?**
+
+Pour déterminer la forme normale de R, il faut d'abord distinguer les attributs clés des attributs non clés :
+
+* Attributs **clés** : `adresse, occupant, noApt`
+* Attributs **non clés** : `nbpersonnes, proprietaire, nbPieces`
+
+* Une relation est en forcément en 1ere forme normale si pas de données (on considère que les données sont atomiques)
+* Elle est en 2eme forme normale si tous les attributs non clés dépendent pleinement des clés. Ici c'est le cas, aucun attribut non clé ne dépend que de adresse ou noApt.
+* Une relation est en 3eme forme normale s'il n'existe pas de dépendance fonctionnelle entre deux attributs non clés
+
+C'est le cas ici. **R est donc en 3eme forme normale.**
+
+(Cela dit, il faudrait décomposer l'attribut `adresse` en attributs atomiques pour valider la 1ère forme normale )

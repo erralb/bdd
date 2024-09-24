@@ -1,0 +1,78 @@
+
+On considère le schéma relationnel `R` défini sur les attributs suivants :
+
+`R (Cours, Professeur, Heure, Salle, Etudiant, Note)`
+
+et un nuplet `(c, p, h, s, e, n)` ayant la signification suivante :
+
+_Le cours **c** est fait par le professeur **p** à l'heure **h** dans la salle **s** par l'étudiant **e** qui a reçu la note **n**_
+
+
+L'ensemble `E` des dépendances fonctionnelles initiales est le suivant :
+
+```
+E {
+  C → P
+  HS → C
+  HP → S
+  CE → N
+  HE → S
+}
+```
+
+1. **Donner l'ensemble des dépendances fonctionnelles élémentaires engendrées par `E`**
+
+Fermeture transitive de `E`
+
+On a :
+
+* `C → P` et `HP → S` donc `HC → S`
+* `HS → C` et `C → P` donc `HS → P`
+* `HP → S` et `HS → C` donc `HP → C`
+* `HE → S` et `HS → C` donc `HE → C` donc `HE → P`
+* `HE → C` et `CE → N` donc `HE → N`
+
+En résumé on a :
+
+```
+C → P
+HC → S
+HS → CP
+HP → SC
+CE → N
+HE → SCPN
+
+```
+2. **Quelle est la clé de la relation `R` ? Montrer qu'elle est unique**
+
+De la fermeture transitive on déduit que `HE` est une clé potentielle (dérive tous les autres attributs).
+
+Elle est unique car `HE` sont les seuls attributs qui ne sont pas en partie droite de `DF`. 
+Donc ils appartiennent forcément à toutes les clés. 
+
+Comme `HE` est déjà une clé, il ne peut y en avoir d'autres (critère de minimalité).
+
+3. **Quelle est la forme normale de la relation `R` ? Si elle n'est pas en 3FN proposer une décomposition en 3FN**
+
+`R` est en 1ere forme normale (pas de données composées) uniquement.
+
+On peut décomposer `R` en 4 relations `R1`, `R2`, `R3` et `R4` telles que :
+
+
+* R1 (<u>C, E</u>, N)
+* R2 (<u>C</u>, P)
+* R3 (<u>H, S</u>, C)  ou R3 (<u>H</u>, S, <u>C</u>)
+* R4 (<u>H, E</u>, C)
+
+
+`R1` est obtenue en décomposant le schéma initial selon la DF `CE → N`.
+  C'est la seule DF de `R1` donc la clé est `CE`. `R1` est bien évidemment en 3eme forme normale (une seule DF).
+
+`R2` est obtenue par la DF `C → P`. 
+  Là encore une seule DF, donc `C` est la clé de `R2` et `R2` est en 3eme forme normale.
+
+`R3` est obtenue par la DF `HS → C` ou la DF `HC → S`.
+  Deux clés possibles `HS` ou bien `HC`. `R3` est aussi en 3eme forme normale.
+
+`R4` est obtenue par la DF `HE → C`. 
+  La clé est donc `HE` et `R4` est en 3eme forme normale.

@@ -1,0 +1,62 @@
+---
+title: TD1 - Corrigés
+description: TD1 sur les concepts, DF et normalisation
+---
+
+## Exercice 1 - Corrigé
+
+On considère le bon de commande papier suivant, qu’on se propose d’encoder sous la forme de données à introduire dans la base de données de la boutique présentée ci-après.
+
+![Bon de commande](/src/content/exercices/01-concepts/10-td1-concepts-01-bon-de-commande.svg)
+
+**Qu’en pensez-vous ?**
+
+Problèmes détectés sur le bon de commande :
+
+##### Données commandes : 
+
+* Le numéro de commande n'existe pas en BDD
+* Le 31 février n'existe pas
+* Le montant total est faux
+
+##### Données clients :
+
+* Le client numéro 3 n'est pas celui-ci
+* L'adresse est incomplète
+* Il manque le numéro de téléphone
+
+##### Données des détails de commande :
+
+* Les détails de respsectent pas les contraintes de la BDD (2 fois le produit 1)
+* Les quantités sont écrit en lettres au lieu de chiffres
+* Le sous-total de la 2e ligne est faux
+
+##### Données des produits :
+
+* Le prix unitaire du produit du 3e détail est faux
+
+
+## Exercice 2 - Corrigé
+
+import Exercice2 from '../../exercices/01-concepts/10-td1-concepts-exercice-2.mdx'
+
+<Exercice2 />
+
+
+## Exercice 3 - Corrigé
+
+import Exercice3 from '../../exercices/01-concepts/10-td1-concepts-exercice-3-corrige.mdx'
+
+<Exercice3 />
+
+## Exercice 4 - Corrigé
+
+import Exercice4 from '../../exercices/01-concepts/10-td1-concepts-exercice-4-corrige.mdx'
+
+<Exercice4 />
+
+## Exercice 5 - Corrigé
+
+import Exercice5 from '../../exercices/01-concepts/10-td1-concepts-exercice-5-corrige.mdx'
+
+<Exercice5 />
