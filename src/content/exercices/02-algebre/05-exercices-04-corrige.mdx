@@ -1,0 +1,134 @@
+---
+title: Exercice 4 - Corrigé
+description: Exercices introductifs
+---
+
+Soient `R` et `S` les relations suivantes (les attributs `A`, `B `et `C` sont définis sur le domaine des lettres de l’alphabet).
+
+import Table from '/src/components/Table.astro';
+
+<div class="tables">
+<br/>
+<Table 
+    title="R"
+    headers={["A", "B"]}
+    rows={[
+        ["a", "b"],
+        ["a", "f"],
+        ["c", "b"],
+        ["d", "e"],
+        
+    ]}
+/>
+
+<Table 
+    title="S"
+    headers={["B", "C"]}
+    rows={[
+        ["b", "c"],
+        ["e", "a"],
+        ["b", "d"],
+        ["g", "b"],
+        
+    ]}
+/>
+</div>
+
+**1. Donnez les résultats des requêtes suivantes :**
+
+    
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Tabs>
+  <TabItem label="Version textuelle">
+```
+R1 = R x S : (R.B = S.B)
+```
+```
+R2 =  R x S : (R.B > S.B)
+```
+  </TabItem>
+  <TabItem label="Version mathématique">
+    
+```
+R1 = R ⋈ S (R.B = S.B)
+```
+```
+R2 =  R ⋈ S (R.B > S.B)
+```
+
+</TabItem>
+</Tabs>
+
+<div class="tables">
+<br/>
+
+<Table 
+    title="R1 = R x S : (R.B = S.B)"
+    headers={["A", "B", "C"]}
+    rows={[
+        ["a", "b", "c"],
+        ["a", "b", "d"],
+        ["c", "b", "c"],
+        ["c", "b", "d"],
+        ["d", "e", "a"],        
+    ]}
+/>
+
+<Table 
+    title="R2 =  R x S : (R.B > S.B)"
+    headers={["A", "B", "B'", "C"]}
+    rows={[
+        ["d", "e", "g", "b"],        
+    ]}
+/>
+
+</div>
+
+**2. Les équations suivantes sont-elles vraies (justifier) :**
+
+
+<Tabs>
+  <TabItem label="Version textuelle">
+```
+R x S : (R.B = S.B) [A, B] = R
+```
+Faux car :
+
+<Table 
+    title="R x S : (R.B = S.B) [A, B]"
+    headers={["A", "B"]}
+    rows={[
+        ["a", "b"],
+        ["c", "b"],
+        ["d", "e"],
+    ]}
+/>
+
+```
+R x S : (R.B = S.B) [B, C] = S
+```
+
+Faux car :
+
+<Table 
+    title="R x S : (R.B = S.B) [B, C] = S"
+    headers={["B", "C"]}
+    rows={[
+        ["b", "c"],
+        ["b", "d"],
+        ["e", "a"],
+    ]}
+/>
+
+  </TabItem>
+  <TabItem label="Version mathématique">
+```
+πA,B (R ⋈ S) = R
+```
+
+```
+πB,C (R ⋈ S) = S
+```
+</TabItem>
+</Tabs>
