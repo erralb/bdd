@@ -94,9 +94,9 @@ export default defineConfig({
 								{
 									slug: '02-algebre/05-exercices',
 								},
-								// {
-								// 	slug: '02-algebre/06-td2-algebre',
-								// },
+								{
+									slug: '02-algebre/06-td2-algebre',
+								},
 
 							]
 						},
