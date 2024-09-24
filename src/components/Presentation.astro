@@ -17,15 +17,42 @@ import slidesIcon from "../assets/slides.svg";
 <div class="presentation-close">✕</div>
 
 <div class="presentation-controls">
-  <button id="presentation-prev" class="presentation-trigger" title="Slide précédente"> ← </button>
-  <button id="presentation-next" class="presentation-trigger" title="Slide suivante"> → </button>
-</div>
+  
+  <div class="presentation-pagination">
+    <div><a href="#" id="presentation-prev-lesson-link" class="presentation-prev-lesson-link" title="Leçon précédente"> </a></div>
+    <div><a href="#" id="presentation-next-lesson-link" class="presentation-next-lesson-link" title="Leçon suivante"> </a></div>
+  </div>
 
-<div class="presentation-infos">
-  <span id="presentation-slide-number">1</span> / <span id="presentation-slide-total">1</span>
+  <div class="presentation-slides-controls">
+    <button id="presentation-prev" class="presentation-trigger" title="Slide précédente"> ← </button>
+    <button id="presentation-next" class="presentation-trigger" title="Slide suivante"> → </button>
+  </div>
+
+  <div class="presentation-infos">
+    <span id="presentation-slide-number">1</span> / <span id="presentation-slide-total">1</span> <br/>
+  </div>
+
 </div>
 
 <script>
+
+
+  const nextLessonLink = document.getElementById(
+    "presentation-next-lesson-link"
+  ) as HTMLAnchorElement;
+  const nextLesson = document.querySelector('[rel="next"]') as HTMLAnchorElement;
+  nextLessonLink.href = nextLesson.href;
+  nextLessonLink.textContent = nextLesson.textContent;
+
+  const prevLessonLink = document.getElementById(
+    "presentation-prev-lesson-link"
+  ) as HTMLAnchorElement;
+
+  const prevLesson = document.querySelector('[rel="prev"]') as HTMLAnchorElement;
+  prevLessonLink.href = prevLesson.href;
+  prevLessonLink.textContent = prevLesson.textContent;
+
+
   //   import { createSyncReader, createSyncWriter } from "../sync";
 
   const button = document.getElementById(
@@ -233,7 +260,6 @@ import slidesIcon from "../assets/slides.svg";
 <style is:global>
   .presentation-progress,
   .presentation-controls,
-  .presentation-infos,
   .presentation-close {
     display: none;
   }
@@ -279,22 +305,49 @@ import slidesIcon from "../assets/slides.svg";
       clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
     }
 
-    .presentation-controls,
-    .presentation-infos {
+    .presentation-controls  {
+      bowsizing: border-box;
       visibility: visible;
       position: absolute;
       z-index: 20;
-      top: 95vh;
+      max-width: 100vw;
       left: 20px;
-      display: flex;
+      top: 94vh;
+      width: 90vw;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+
+      div.presentation-pagination {
+        display: flex;
+        gap: 1rem;
+        font-style: italic;
+      }
+
+      div.presentation-slides-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      div.presentation-infos {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
     }
 
-    .presentation-infos {
-      left: auto;
-      right: 20px;
+    @media only screen and (min-width: 760px) {
+      .presentation-controls {
+        top: 95vh;
+        width: 98vw;
+      }
     }
+
 
     .presentation-progress {
+      display: none;
       transition: width 1000ms;
       display: block;
       visibility: visible;
@@ -313,6 +366,7 @@ import slidesIcon from "../assets/slides.svg";
       right: 0;
       bottom: 0;
       left: 0;
+      max-width: 100%;
 
       &.hide {
         display: flex;
@@ -439,8 +493,8 @@ import slidesIcon from "../assets/slides.svg";
       img {
         width: auto;
         height: auto;
-        max-width: 100%;
         max-width: 1200px;
+        max-width: 100%;
       }
 
       p svg {
@@ -483,5 +537,9 @@ import slidesIcon from "../assets/slides.svg";
   .presentation-trigger img {
     max-width: 30px;
     max-height: 30px;
+  }
+
+  .presentation-next-lesson-link {
+    display: flex;
   }
 </style>
