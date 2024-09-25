@@ -1,0 +1,45 @@
+---
+import Table from "./TableSQLite.astro";
+---
+
+
+<style is:global>
+  .dbecommerce {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .dbecommerce table {
+    margin: 10px 0 !important;
+    font-size: 12px !important;
+  }
+</style>
+
+<div class="dbecommerce">
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT * FROM Clients"
+/>
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Produits"
+  query="SELECT * FROM Produits"
+/>
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  query="SELECT * FROM Commandes"
+/>
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Details"
+  query="SELECT * FROM Details"
+/>
+
+</div>

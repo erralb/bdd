@@ -1,0 +1,66 @@
+---
+title: Introduction
+description: Introduction à l'algèbre relationnelle
+---
+
+import Slide from '/src/components/Slide.astro';
+
+<Slide>
+
+## Le langage SQL DML
+
+* DML = Data Manipulation Language
+
+</Slide>
+<Slide title="Le langage SQL">
+
+* SQL :  _Structured Query Language_
+  * Langage d'interrogation des SGBD
+  * Une instruction SQL constitue une requête SQL
+  * Version commerciale du langage SEQUEL issue du prototype System R développé par IBM San José en 1975
+  * Adopté par la plupart des SGBD relationnels
+  * Normalisé
+    * SQL2 : relationnel, 1992
+    * SQL3 : objet-relationnel, 1998
+
+* Le langage SQL est composé de deux sous-langages
+  * 1. DDL (Data Definition Language)
+  * 2. DML (Data Manipulation Language)
+
+</Slide>
+<Slide>
+
+* Le langage SQL DML comporte 2 grandes classes de fonctions :
+  * 1. l'extraction de données
+  * 2. la modification de données
+* L'instruction qui permet de faire les extractions ou sélections est l'instruction
+    * `SELECT`
+    * Equivalence algèbre relationnelle de la projection
+
+
+</Slide>
+
+<Slide>
+
+## L'instruction SELECT
+
+L'instruction SELECT contient 3 parties principales :
+
+  1. la clause  __SELECT__  précise les valeurs (nom des colonnes) qui constitue chaque ligne du résultat attendu
+  2. la clause  __FROM__  indique la ou les tables à partir desquelles le résultat doit être extrait
+  3. la clause  __WHERE__  spécifie la condition de sélection qui doit être satisfaite par les lignes du résultat (équivalence en algèbre relationnelle de la sélection)
+
+Le résultat d'une requête SELECT ou SFW (SELECT FROM WHERE) est une table fictive (ou temporaire) qui sera considérée comme s'affichant à l'écran
+
+
+</Slide>
+<Slide>
+## Les différents types de tables
+
+Il existe plusieurs types de tables dans un SGBD :
+  * Les tables de bases : Les tables que nous avons manipulées jusqu'à présent. Elles sont stockées de manière pérenne dans la mémoire externe et accessibles à tous les utilisateurs.
+  * Les résultats des requêtes SFW : La table résultat de l'exécution d'une requête. Ce type de table est volatile.
+  * Les tables dérivées : Elles servent à stocker le résultat d'une requête pendant une courte durée (quelques jours). Leurs utilisations sont limitées à un utilisateur. On les appelle aussi snapshot.
+  * Les vues : Une vue est une table virtuelle, dont le contenu est défini comme le résultat d'une requête SFW.  _Seule sa définition (une requête SQL) est stockée_ . Son contenu est recalculé à chaque consultation.
+
+</Slide>
