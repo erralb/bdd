@@ -3,11 +3,14 @@
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 <Tabs>
+
   <TabItem label="Énoncé">
 
 Soit le schéma de la relation R :
 
-`R(A, B, C, D, E, G)` 
+```
+R(A, B, C, D, E, G)
+```
 
 et un ensemble donné de dépendances fonctionnelles pour cette relation:
 
@@ -18,20 +21,23 @@ ADE → BG
 CG → D
 BG → C
 C → B
-
 ```
-1. **Donner le graphe minimal (la couverture minimale) des dépendances fonctionnelles de R**
+
+1. **Donner la couverture minimale des dépendances fonctionnelles de R**
 
 2. **Donner une décomposition de R en relations 3NF sans perte d'informations et sans perte de dépendances**
 
 3. **Précisez l'identifiant de chaque relation obtenue**
 
   </TabItem>
+
   <TabItem label="Solution">
 
 Soit le schéma de la relation R :
 
-`R(A, B, C, D, E, G)` 
+```
+R(A, B, C, D, E, G)
+```
 
 et un ensemble donné de dépendances fonctionnelles pour cette relation:
 
@@ -45,99 +51,199 @@ C → B
 
 ```
 
-1. **Donner le graphe minimal des dépendances fonctionnelles de R**
+1. **Donner la couverture minimale des dépendances fonctionnelles de R**
+2. **Donner une décomposition de R en relations 3NF sans perte d'informations et sans perte de dépendances**
+3. **Précisez l'identifiant de chaque relation obtenue**
 
 :::note[Rappel]
 La couverture minimale d’un ensemble de DFE est un sous-ensemble minimum des DFE permettant de générer toutes les autres DFE.
 :::
-  
-##### DF élémentaires : 
+
+Pour déterminer la couverture minimale des dépendances fonctionnelles, nous devons suivre trois étapes : 
+
+1. la décomposition des dépendances
+2. l'élimination des attributs redondants dans les dépendances gauches (réduction des parties gauches)
+3. la suppression des dépendances fonctionnelles redondantes
+
+
+##### Étape 1 : Décomposer les dépendances
+
+Nous devons décomposer les dépendances qui ont plusieurs attributs à droite.
+
+`A -> BC` devient :
 
 ```
-A → B
-A → C
-AC → E
-ADE → B
-ADE → G
-CG → D
-BG → C
-C → B
+A -> B
+A -> C
 ```
 
-2. **Donner une décomposition de R en relations 3NF sans perte d'informations et sans perte de dépendances**
-
-##### Étapes de décomposition en 3NF :
-
-###### Trouver les clés candidates :
-
-En utilisant les axiomes d'Armstrong, on obtient :
+`ADE -> BG` devient :
 
 ```
-A → ABC (non clé car manque DEG)
-AC → ACBE (non clé car manque DG)
-ADE → ADEBGC (couvre tous les attributs, donc c'est une clé candidate)
-Les autres combinaisons ne génèrent pas de clés supplémentaires
+ADE -> B
+ADE -> G
 ```
 
-Clé candidate : `ADE`
+Les autres dépendances n’ont qu’un seul attribut à droite, donc elles restent inchangées.
 
-###### Décomposition en 3NF :
-
-:::note[Rappel sur la décomposition]
-Pour chaque dépendance fonctionnelle `X → Y`, créez une relation `R(X, Y)`
-:::
+Ensemble des dépendances après décomposition :
 
 ```
-R1(A, B, C) pour A → BC
-R2(A, C, E) pour AC → E
-R3(A, D, E, B, G) pour ADE → BG (correspond à une clé candidate complète)
-R4(C, G, D) pour CG → D
-R5(B, G, C) pour BG → C
-R6(C, B) pour C → B
-
-```
-###### Vérification de la couverture et des dépendances sans perte :
-
-* Assurez-vous que chaque dépendance est couverte par une des relations décomposées.
-
-* Vérifiez que la jointure naturelle des relations décomposées restitue la relation originale sans perte de données.
-
-* Décomposition finale des relations :
-
-```
-R1(A, B, C)
-R2(A, C, E)
-R3(A, D, E, B, G) (clé candidate, nécessaire pour conserver toutes les dépendances)
-R4(C, G, D)
-R5(B, G, C)
+A -> B
+A -> C
+AC -> E
+ADE -> B
+ADE -> G
+CG -> D
+BG -> C
+C -> B
 
 ```
 
-Cette décomposition assure une forme 3NF sans perte d’informations ni de dépendances fonctionnelles, en maintenant l’intégrité des données de la relation initiale R.
+##### Étape 2 : Réduire les parties gauches (si possible)
 
-3. **Précisez l'identifiant de chaque relation obtenue**
+Nous allons essayer de réduire la partie gauche de chaque dépendance en éliminant les attributs inutiles.
 
-##### Identifiants de chaque relation :
+* `A -> B` : La partie gauche est déjà minimale.
+* `A -> C` : La partie gauche est déjà minimale.
+* `AC -> E` : Tester si `A -> E` ou `C -> E` est possible. Ni `A` ni `C` seuls ne permettent de déduire `E`, donc cette dépendance est minimale.
+* `ADE -> B` : Tester si `AD -> B`, `AE -> B`, ou `DE -> B` est possible. Aucune réduction ne permet de déduire `B`, donc cette dépendance est minimale.
+* `ADE -> G` : Tester si `AD -> G`, `AE -> G`, ou `DE -> G` est possible. Aucune réduction ne permet de déduire `G`, donc cette dépendance est minimale.
+* `CG -> D` : Tester si `C -> D` ou `G -> D` est possible. Aucune réduction n’est possible, donc cette dépendance est minimale.
+* `BG -> C` : Tester si `B -> C` ou `G -> C` est possible. `B -> C` existe déjà, donc on peut éliminer cette dépendance.
+* `C -> B` : La partie gauche est déjà minimale.
 
-* `R1(A, B, C)`
-  * Dépendance fonctionnelle : `A → BC`
-  * Identifiant : `A` (puisque `A` détermine `B` et `C`)
+Ensemble des dépendances après réduction des parties gauches :
 
-* `R2(A, C, E)`
-  * Dépendance fonctionnelle : `AC → E`
-  * Identifiant : `AC` (puisque `A` et `C` ensemble déterminent `E`)
+```
+A -> B
+A -> C
+AC -> E
+ADE -> B
+ADE -> G
+CG -> D
+C -> B
 
-* `R3(A, D, E, B, G)`
-  * Dépendance fonctionnelle : `ADE → BG`
-  * Identifiant : `ADE` (car c'est une clé candidate complète et détermine tous les autres attributs)
+```
 
-* `R4(C, G, D)`
-  * Dépendance fonctionnelle : `CG → D`
-  * Identifiant : `CG` (puisque `C` et `G` ensemble déterminent `D`)
+##### Étape 3 : Éliminer les dépendances redondantes
 
-* `R5(B, G, C)`
-  * Dépendance fonctionnelle : `BG → C`
-  * Identifiant : `BG` (puisque `B` et `G` ensemble déterminent `C`)
+Nous allons maintenant vérifier si certaines des dépendances peuvent être déduites des autres (c'est-à-dire redondantes).
+
+* `A -> B` : La partie gauche est déjà minimale, mais cette dépendance est redondante car elle peut être déduite par transitivité de `A -> C `et `C -> B` (nous l'éliminerons à l'étape suivante).
+* `A -> C` : Ne peut pas être déduite d’autres dépendances.
+* `AC -> E` : Ne peut pas être déduite d’autres dépendances.
+* `ADE -> B` : peut être supprimée car `A -> B` donc on n'a pas besoin de `ADE` pour déterminer `B`.
+* `ADE -> G` : Ne peut pas être déduite d’autres dépendances.
+* `CG -> D` : Ne peut pas être déduite d’autres dépendances.
+* `C -> B` : Ne peut pas être déduite d’autres dépendances.
+
+La couverture minimale des dépendances fonctionnelles est donc :
+
+```
+A -> C
+AC -> E
+ADE -> G
+CG -> D
+C -> B
+```
+
+##### 1. Décomposition en 2ème forme normale (2FN)
+
+Une relation est en 2ème forme normale (2FN) si elle est en 1ère forme normale (1FN) et que tous les attributs non-clés dépendent entièrement de la clé primaire, c’est-à-dire qu’il n’y a pas de dépendance partielle (dépendance d’un sous-ensemble de la clé).
+
+###### Étape 1 : Identifier la clé primaire
+
+À partir des dépendances fonctionnelles, nous devons identifier la clé primaire de la relation. Une clé candidate est un ensemble minimal d’attributs qui permet de déterminer tous les autres attributs de la relation.
+
+D’après les dépendances minimales, nous pouvons observer :
+
+* `A` détermine `C` (`A -> C`)
+* Avec `A` et `C`, on détermine `E` (`AC -> E`)
+* Avec `A`, `D` et `E`, on détermine `G` (`ADE -> G`)
+* Avec `C` et `G`, on détermine `D` (CG -> D)
+* `C` détermine `B` (`C -> B`)
+* Ainsi, une clé primaire possible est `A, D, E`, car cet ensemble permet de déterminer tous les autres attributs de la relation.
+
+###### Étape 2 : Vérifier les dépendances partielles
+
+Pour être en 2FN, il ne doit pas y avoir de dépendances fonctionnelles où un attribut non-clé dépend d'une partie seulement de la clé primaire.
+
+Dans notre cas, plusieurs dépendances montrent des dépendances partielles, comme `A -> C` et `C -> B` (`C` dépend de `A`, une partie de la clé primaire `A, D, E`). Il faut donc les éliminer en décomposant la relation.
+
+###### Étape 3 : Décomposer la relation en 2FN
+
+Nous allons décomposer la relation en plusieurs sous-relations pour éliminer les dépendances partielles :
+
+* `R1(A, C)` : Relation pour la dépendance `A -> C`.
+* `R2(C, B)` : Relation pour la dépendance `C -> B`.
+* `R3(AC, E)` : Relation pour la dépendance `AC -> E`.
+* `R4(ADE, G)` : Relation pour la dépendance `ADE -> G`.
+* `R5(CG, D)` : Relation pour la dépendance `CG -> D`.
+
+Ces relations sont maintenant en 2ème forme normale, car dans chaque relation, chaque attribut non-clé dépend entièrement de la clé.
+
+##### 2. Décomposition en 3ème forme normale (3FN)
+
+Une relation est en 3ème forme normale (3FN) si elle est en 2FN et qu’il n’y a pas de dépendances transitive, c’est-à-dire qu’un attribut non-clé ne doit pas dépendre d’un autre attribut non-clé.
+
+###### Étape 1 : Vérifier les dépendances transitives
+
+Nous devons examiner chaque relation pour voir si des dépendances transitives existent :
+
+`R1(A, C)` :
+
+* `A -> C`
+* Pas de dépendance transitive ici. Cette relation reste telle quelle.
+
+`R2(C, B)` :
+
+* `C -> B`
+* Pas de dépendance transitive ici. Cette relation reste telle quelle.
+
+`R3(AC, E)` :
+
+* `AC -> E`
+* Pas de dépendance transitive ici. Cette relation reste telle quelle.
+
+`R4(ADE, G)` :
+
+* `ADE -> G`
+* Pas de dépendance transitive ici. Cette relation reste telle quelle.
+
+`R5(CG, D)` :
+
+* `CG -> D`
+* Pas de dépendance transitive ici. Cette relation reste telle quelle.
+
+###### Étape 2 : Résultat en 3ème forme normale
+
+Après avoir éliminé la dépendance transitive dans R1, voici la décomposition finale en 3FN :
+
+* `R1'(A, C)` : Pour la dépendance `A -> C`.
+* `R1''(C, B)` : Pour la dépendance `C -> B`.
+* `R2(AC, E)` : Pour la dépendance `AC -> E`.
+* `R3(ADE, B, G)` : Pour les dépendances `ADE -> B` et `ADE -> G`.
+* `R4(CG, D)` : Pour la dépendance `CG -> D`.
+
+##### Conclusion
+
+Décomposition en 2ème forme normale (2FN) :
+
+* `R1(A, C)` : Relation pour la dépendance `A -> C`.
+* `R2(C, B)` : Relation pour la dépendance `C -> B`.
+* `R3(AC, E)` : Relation pour la dépendance `AC -> E`.
+* `R4(ADE, G)` : Relation pour la dépendance `ADE -> G`.
+* `R5(CG, D)` : Relation pour la dépendance `CG -> D`.
+
+Décomposition en 3ème forme normale (3FN) :
+
+* `R1(A, C)` : Relation pour la dépendance `A -> C`.
+* `R2(C, B)` : Relation pour la dépendance `C -> B`.
+* `R3(AC, E)` : Relation pour la dépendance `AC -> E`.
+* `R4(ADE, G)` : Relation pour la dépendance `ADE -> G`.
+* `R5(CG, D)` : Relation pour la dépendance `CG -> D`.
 
 </TabItem>
+
 </Tabs>
