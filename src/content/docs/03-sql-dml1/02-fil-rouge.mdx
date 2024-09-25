@@ -73,7 +73,7 @@ import DBecommerce2 from '/src/components/DBecommerce2.astro'
 </Slide>
 <Slide title="Jeu de données">
 
-Scénario de données (amené à évoluer) :
+On peut remarquer que le scénario de données est le suivant :
 
 * Le client 1 a commandé tous les produits en 2 commandes (la commande 1 et 2)
 * Le client 2 n'a rien commandé
@@ -88,11 +88,27 @@ Scénario de données (amené à évoluer) :
 
 Vous pouvez télécharger cette base de données dans différents formats :
 
+* **Images** en [png](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2.png) ou [svg](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2.svg)
 
-* Images en [png](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2.png) ou [svg](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2.svg)
-* SQLite [ecommerce-fr-erd-v2.sqlite](/public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite)
-* Le [code SQL des tables](/public/sample/ecommerce/ecommerce-fr-erd-v2-sqlite.sql) (sans les données)
-* Le script PHP pour générer la base avec données, pour SQLite [ecommerce-fr-erd-v2.php](/public/sample/ecommerce/ecommerce-fr-erd-v2-data.php)
+* **SQLite** [ecommerce-fr-erd-v2.sqlite](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite) 
+    * Fichier de base de données SQLite
+    * Vous pouvez l'ouvrir avec un outil de gestion de base de données SQLite comme :
+        * [SQLiteStudio](https://sqlitestudio.pl/)
+        * [VSCode avec une extension DB](https://marketplace.visualstudio.com/items?itemName=cweijan.dbclient-jdbc))
+        * en ligne de commande avec `sqlite3 ecommerce-fr-erd-v2.sqlite`
+
+* Export [MySQL](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2-mysql-EXPORT.sql)
+    * Fichier à importer dans un serveur MySQL
+    * Par exemple avec [phpMyAdmin](https://www.phpmyadmin.net/)
+    * Ou en ligne de commande avec `mysql -u root -p < ecommerce-fr-erd-v2-mysql-EXPORT.sql`
+
+* Export [PostgreSQL](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2-postgresql-EXPORT.sql)
+    * Fichier à importer dans un serveur PostgreSQL
+    * Par exemple avec [pgAdmin](https://www.pgadmin.org/)
+    * Ou en ligne de commande avec `psql -U postgres -f ecommerce-fr-erd-v2-postgresql-EXPORT.sql`
+
+
+* Le script PHP pour générer la base avec données, pour SQLite [ecommerce-fr-erd-v2.php](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2-data.php)
 
 </Slide>
 <Slide>

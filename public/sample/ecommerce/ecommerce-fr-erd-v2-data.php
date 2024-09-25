@@ -8,12 +8,22 @@ require_once 'vendor/autoload.php';
 // Le client 4 a commandé 2 produits en 1 commande (la commande 4)
 // Le client 5 a commandé 3 produits en 1 commande (la commande 5)
 
-//connect to database
-$pdo = new PDO('sqlite:ecommerce-fr-erd-v2.sqlite');
+//connect to database and create tables
 
-//create tables
+//For SQLite
+$pdo = new PDO('sqlite:ecommerce-fr-erd-v2.sqlite');
 $sql = file_get_contents('ecommerce-fr-erd-v2-sqlite.sql');
 $pdo->exec($sql);
+
+//For MySQL
+// $pdo = new PDO('mysql:host=localhost;dbname=filrouge', 'username', 'password');
+// $sql = file_get_contents('ecommerce-fr-erd-v2-mysql.sql');
+// $pdo->exec($sql);
+
+// //For Postgres
+// $pdo = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=filrouge', 'postgres', '');
+// $sql = file_get_contents('ecommerce-fr-erd-v2-postgres.sql');
+// $pdo->exec($sql);
 
 $clients = [
     ['1', 'Lebreton', 'Éléonore', '6, avenue Françoise Olivier', '59778', 'Guillot-la-Forêt'],
