@@ -29,6 +29,9 @@ CREATE TABLE `Clients` (
   `rue` varchar(255) DEFAULT NULL,
   `codePostal` varchar(255) DEFAULT NULL,
   `ville` varchar(255) DEFAULT NULL,
+  `telephone` varchar(20) DEFAULT NULL,
+  `categorie` varchar(2) DEFAULT NULL,
+  `compte` float DEFAULT NULL,
   PRIMARY KEY (`numero`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -39,7 +42,7 @@ CREATE TABLE `Clients` (
 
 LOCK TABLES `Clients` WRITE;
 /*!40000 ALTER TABLE `Clients` DISABLE KEYS */;
-INSERT INTO `Clients` VALUES (1,'Lebreton','Éléonore','6, avenue Françoise Olivier','59778','Guillot-la-Forêt'),(2,'Vasseur','Georges','54, avenue Jean','66941','Jacquot'),(3,'Da Costa','Léon','boulevard Brigitte Faivre','42827','Leclercq'),(4,'Rey','Michel','49, avenue de Adam','58442','Mathieu-sur-Colin'),(5,'Weiss','Dominique','boulevard Remy','58458','Dias-la-Forêt'),(6,'Berlioz','Diane','27 avenue de la Chartreuse','42827','Leclercq');
+INSERT INTO `Clients` VALUES (1,'Lebreton','Éléonore','6, avenue Françoise Olivier','59778','Guillot-la-Forêt','0776059929','A1',10000),(2,'Vasseur','Georges','54, avenue Jean','66941','Jacquot','+33 1 44 68 49 74','B2',1903),(3,'Da Costa','Léon','boulevard Brigitte Faivre','42827','Leclercq','0568740044','C3',-1500),(4,'Rey','Michel','49, avenue de Adam','58442','Mathieu-sur-Colin',NULL,'B1',3251),(5,'Weiss','Dominique','boulevard Remy','58458','Dias-la-Forêt',NULL,'B2',0),(6,'Berlioz','Diane','27 avenue de la Chartreuse','42827','Leclercq',NULL,NULL,123094);
 /*!40000 ALTER TABLE `Clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +98,7 @@ CREATE TABLE `Details` (
 
 LOCK TABLES `Details` WRITE;
 /*!40000 ALTER TABLE `Details` DISABLE KEYS */;
-INSERT INTO `Details` VALUES (1,1,3),(1,2,1),(1,3,1),(2,4,1),(2,5,1),(3,1,1),(3,2,1),(3,3,1),(3,4,1),(3,5,1),(4,1,1),(4,2,1),(5,1,1),(5,2,1),(5,3,1),(6,1,1),(7,1,1);
+INSERT INTO `Details` VALUES (1,1,3),(1,2,1),(1,3,1),(2,4,1),(2,5,1),(3,1,4),(3,2,1),(3,3,2),(3,4,1),(3,5,1),(4,1,7),(4,2,1),(5,1,2),(5,2,1),(5,3,1),(6,1,10),(7,1,1);
 /*!40000 ALTER TABLE `Details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,4 +137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-26 16:27:08
+-- Dump completed on 2024-09-26 17:43:49

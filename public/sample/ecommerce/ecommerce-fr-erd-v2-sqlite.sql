@@ -15,8 +15,9 @@ CREATE TABLE Clients (
     rue VARCHAR(255),
     codePostal VARCHAR(255),
     ville VARCHAR(255),
-    telephone VARCHAR(16),
+    telephone VARCHAR(20),
     categorie VARCHAR(2),
+    compte FLOAT,
     PRIMARY KEY (numero)
 );
 

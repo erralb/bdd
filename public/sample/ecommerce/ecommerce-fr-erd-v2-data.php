@@ -7,16 +7,16 @@
 // Le client 5 a commandé 3 produits en 1 commande (la commande 5)
 
 $clients = [
-    ['1', 'Lebreton', 'Éléonore', '6, avenue Françoise Olivier', '59778', 'Guillot-la-Forêt','0776059929', 'A1'],
-    ['2', 'Vasseur', 'Georges', '54, avenue Jean', '66941', 'Jacquot', '+33 1 44 68 49 74', 'B2'],
-    ['3', 'Da Costa', 'Léon', 'boulevard Brigitte Faivre', '42827', 'Leclercq', '0568740044', 'C3' ],
-    ['4', 'Rey', 'Michel', '49, avenue de Adam', '58442', 'Mathieu-sur-Colin', NULL, 'B1' ],
-    ['5', 'Weiss', 'Dominique', 'boulevard Remy', '58458', 'Dias-la-Forêt', NULL, 'B2' ],
-    ['6', 'Berlioz', 'Diane', '27 avenue de la Chartreuse', '42827', 'Leclercq', NULL, NULL ],
+    ['1', 'Lebreton', 'Éléonore', '6, avenue Françoise Olivier', '59778', 'Guillot-la-Forêt','0776059929', 'A1', 10000],
+    ['2', 'Vasseur', 'Georges', '54, avenue Jean', '66941', 'Jacquot', '+33 1 44 68 49 74', 'B2', 1903.54],
+    ['3', 'Da Costa', 'Léon', 'boulevard Brigitte Faivre', '42827', 'Leclercq', '0568740044', 'C3', -1500 ],
+    ['4', 'Rey', 'Michel', '49, avenue de Adam', '58442', 'Mathieu-sur-Colin', NULL, 'B1', 3251 ],
+    ['5', 'Weiss', 'Dominique', 'boulevard Remy', '58458', 'Dias-la-Forêt', NULL, 'B2', 0],
+    ['6', 'Berlioz', 'Diane', '27 avenue de la Chartreuse', '42827', 'Leclercq', NULL, NULL, 123094 ],
 ];
 
 foreach ($clients as $client) {
-    $stmt = $pdo->prepare("INSERT INTO CLIENTS (numero, nom, prenom, rue, codePostal, ville, telephone, categorie) VALUES (:numero, :nom, :prenom, :rue, :codePostal, :ville, :telephone, :categorie)");
+    $stmt = $pdo->prepare("INSERT INTO CLIENTS (numero, nom, prenom, rue, codePostal, ville, telephone, categorie, compte) VALUES (:numero, :nom, :prenom, :rue, :codePostal, :ville, :telephone, :categorie, :compte)");
     $stmt->bindParam(":numero", $client[0], PDO::PARAM_INT);
     $stmt->bindParam(":nom", $client[1], PDO::PARAM_STR);
     $stmt->bindParam(":prenom", $client[2], PDO::PARAM_STR);
@@ -25,6 +25,7 @@ foreach ($clients as $client) {
     $stmt->bindParam(":ville", $client[5], PDO::PARAM_STR);
     $stmt->bindParam(":telephone", $client[6], PDO::PARAM_STR);
     $stmt->bindParam(":categorie", $client[7], PDO::PARAM_STR);
+    $stmt->bindParam(":compte", $client[8], PDO::PARAM_INT);
     $stmt->execute();
 }
 
@@ -74,17 +75,17 @@ $details = [
     ['1', '3', '1'],
     ['2', '4', '1'],
     ['2', '5', '1'],
-    ['3', '1', '1'],
+    ['3', '1', '4'],
     ['3', '2', '1'],
-    ['3', '3', '1'],
+    ['3', '3', '2'],
     ['3', '4', '1'],
     ['3', '5', '1'],
-    ['4', '1', '1'],
+    ['4', '1', '7'],
     ['4', '2', '1'],
-    ['5', '1', '1'],
+    ['5', '1', '2'],
     ['5', '2', '1'],
     ['5', '3', '1'],
-    ['6', '1', '1'],
+    ['6', '1', '10'],
     ['7', '1', '1'],
 ];
 

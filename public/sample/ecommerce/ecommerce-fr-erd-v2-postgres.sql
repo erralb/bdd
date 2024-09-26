@@ -4,10 +4,11 @@
 -- CREATE DATABASE filRouge;
 -- USE filRouge;
 
-DROP TABLE IF EXISTS Clients;
-DROP TABLE IF EXISTS Commandes;
-DROP TABLE IF EXISTS Produits;
+
 DROP TABLE IF EXISTS Details;
+DROP TABLE IF EXISTS Commandes;
+DROP TABLE IF EXISTS Clients;
+DROP TABLE IF EXISTS Produits;
 
 
 CREATE TABLE Clients ( 
@@ -17,8 +18,9 @@ CREATE TABLE Clients (
     rue VARCHAR(255),
     codePostal VARCHAR(255),
     ville VARCHAR(255),
-    telephone VARCHAR(16),
+    telephone VARCHAR(20),
     categorie VARCHAR(2),
+    compte FLOAT,
     PRIMARY KEY (numero)
 );
 

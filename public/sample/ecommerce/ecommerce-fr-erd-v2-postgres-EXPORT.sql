@@ -30,7 +30,10 @@ CREATE TABLE public.clients (
     prenom character varying(255),
     rue character varying(255),
     codepostal character varying(255),
-    ville character varying(255)
+    ville character varying(255),
+    telephone character varying(20),
+    categorie character varying(2),
+    compte double precision
 );
 
 
@@ -81,12 +84,13 @@ ALTER TABLE public.produits OWNER TO postgres;
 -- Data for Name: clients; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.clients (numero, nom, prenom, rue, codepostal, ville) FROM stdin;
-1	Lebreton	Éléonore	6, avenue Françoise Olivier	59778	Guillot-la-Forêt
-2	Vasseur	Georges	54, avenue Jean	66941	Jacquot
-3	Da Costa	Léon	boulevard Brigitte Faivre	42827	Leclercq
-4	Rey	Michel	49, avenue de Adam	58442	Mathieu-sur-Colin
-5	Weiss	Dominique	boulevard Remy	58458	Dias-la-Forêt
+COPY public.clients (numero, nom, prenom, rue, codepostal, ville, telephone, categorie, compte) FROM stdin;
+1	Lebreton	Éléonore	6, avenue Françoise Olivier	59778	Guillot-la-Forêt	0776059929	A1	10000
+2	Vasseur	Georges	54, avenue Jean	66941	Jacquot	+33 1 44 68 49 74	B2	1903.54
+3	Da Costa	Léon	boulevard Brigitte Faivre	42827	Leclercq	0568740044	C3	-1500
+4	Rey	Michel	49, avenue de Adam	58442	Mathieu-sur-Colin	\N	B1	3251
+5	Weiss	Dominique	boulevard Remy	58458	Dias-la-Forêt	\N	B2	0
+6	Berlioz	Diane	27 avenue de la Chartreuse	42827	Leclercq	\N	\N	123094
 \.
 
 
@@ -115,17 +119,17 @@ COPY public.details (numerocommande, numeroproduit, quantite) FROM stdin;
 1	3	1
 2	4	1
 2	5	1
-3	1	1
+3	1	4
 3	2	1
-3	3	1
+3	3	2
 3	4	1
 3	5	1
-4	1	1
+4	1	7
 4	2	1
-5	1	1
+5	1	2
 5	2	1
 5	3	1
-6	1	1
+6	1	10
 7	1	1
 \.
 

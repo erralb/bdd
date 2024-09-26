@@ -7,16 +7,17 @@ CREATE TABLE Clients (
     rue VARCHAR(255),
     codePostal VARCHAR(255),
     ville VARCHAR(255),
-    telephone VARCHAR(16),
+    telephone VARCHAR(20),
     categorie VARCHAR(2),
+    compte FLOAT,
     PRIMARY KEY (numero)
 );
-INSERT INTO Clients VALUES(1,'Lebreton','Éléonore','6, avenue Françoise Olivier','59778','Guillot-la-Forêt','0776059929','A1');
-INSERT INTO Clients VALUES(2,'Vasseur','Georges','54, avenue Jean','66941','Jacquot','+33 1 44 68 49 74','B2');
-INSERT INTO Clients VALUES(3,'Da Costa','Léon','boulevard Brigitte Faivre','42827','Leclercq','0568740044','C3');
-INSERT INTO Clients VALUES(4,'Rey','Michel','49, avenue de Adam','58442','Mathieu-sur-Colin',NULL,'B1');
-INSERT INTO Clients VALUES(5,'Weiss','Dominique','boulevard Remy','58458','Dias-la-Forêt',NULL,'B2');
-INSERT INTO Clients VALUES(6,'Berlioz','Diane','27 avenue de la Chartreuse','42827','Leclercq',NULL,NULL);
+INSERT INTO Clients VALUES(1,'Lebreton','Éléonore','6, avenue Françoise Olivier','59778','Guillot-la-Forêt','0776059929','A1',10000.0);
+INSERT INTO Clients VALUES(2,'Vasseur','Georges','54, avenue Jean','66941','Jacquot','+33 1 44 68 49 74','B2',1903.0);
+INSERT INTO Clients VALUES(3,'Da Costa','Léon','boulevard Brigitte Faivre','42827','Leclercq','0568740044','C3',-1500.0);
+INSERT INTO Clients VALUES(4,'Rey','Michel','49, avenue de Adam','58442','Mathieu-sur-Colin',NULL,'B1',3251.0);
+INSERT INTO Clients VALUES(5,'Weiss','Dominique','boulevard Remy','58458','Dias-la-Forêt',NULL,'B2',0.0);
+INSERT INTO Clients VALUES(6,'Berlioz','Diane','27 avenue de la Chartreuse','42827','Leclercq',NULL,NULL,123094.0);
 CREATE TABLE Commandes ( 
     numero INT,
     numeroClient INT,
@@ -57,16 +58,16 @@ INSERT INTO Details VALUES(1,2,1);
 INSERT INTO Details VALUES(1,3,1);
 INSERT INTO Details VALUES(2,4,1);
 INSERT INTO Details VALUES(2,5,1);
-INSERT INTO Details VALUES(3,1,1);
+INSERT INTO Details VALUES(3,1,4);
 INSERT INTO Details VALUES(3,2,1);
-INSERT INTO Details VALUES(3,3,1);
+INSERT INTO Details VALUES(3,3,2);
 INSERT INTO Details VALUES(3,4,1);
 INSERT INTO Details VALUES(3,5,1);
-INSERT INTO Details VALUES(4,1,1);
+INSERT INTO Details VALUES(4,1,7);
 INSERT INTO Details VALUES(4,2,1);
-INSERT INTO Details VALUES(5,1,1);
+INSERT INTO Details VALUES(5,1,2);
 INSERT INTO Details VALUES(5,2,1);
 INSERT INTO Details VALUES(5,3,1);
-INSERT INTO Details VALUES(6,1,1);
+INSERT INTO Details VALUES(6,1,10);
 INSERT INTO Details VALUES(7,1,1);
 COMMIT;
