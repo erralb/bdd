@@ -1,0 +1,147 @@
+---
+title: Les quantitieurs ensemblistes
+description: Les quantitieurs ensemblistes SQL
+sidebar:
+    label: Quantifieurs
+---
+
+
+import Slide from '/src/components/Slide.astro';
+import Table from "/src/components/TableSQLite.astro";
+
+<Slide>
+
+## Les quantifieurs ensemblistes
+
+Les quantifieurs ensemblistes permettent d'imposer qu'un ensemble défini possède au moins un élément ou qu'au moins un élément satisfasse une condition particulière
+
+Les quantifieurs SQL sont les suivants :
+
+* `EXISTS`
+* `ALL`
+* `ANY`
+
+</Slide>
+<Slide>
+
+## EXISTS
+
+Une condition peut porter sur l'existence ( `EXISTS` ) ou l'inexistence ( `NOT EXISTS` ) d'au moins une des lignes dans le résultat d'une sous requête
+
+Exemple : _Quels sont les produits qui ont déjà été commandés ? (c.à.d ceux qui sont dans `Details`)_
+
+```sql
+SELECT * FROM Produits AS P WHERE EXISTS ( 
+  SELECT * FROM Details AS D WHERE D.numeroProduit = P.numero
+) ;
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits"
+ query="
+SELECT * FROM Produits AS P WHERE EXISTS ( SELECT * FROM Details AS D WHERE D.numeroProduit = P.numero) ;
+ "
+/>
+
+</Slide>
+<Slide>
+
+## ALL
+
+Le quantifieur `ALL` permet de comparer une valeur à celles d'un ensemble défini par une sous-requête
+
+* `ALL` signifie que tous les éléments de l'ensemble doivent satisfaire la comparaison
+
+* Exemple : _Donner les commandes spécifiant la plus petite quantité du produit 1 ?_
+
+```sql
+SELECT DISTINCT numeroCommande FROM Details WHERE quantite = ALL ( 
+  SELECT quantite FROM Details WHERE numeroProduit = 1
+) ;
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Commandes"
+ query="
+SELECT DISTINCT numeroCommande FROM Details WHERE quantite >= ( 
+  SELECT MAX(quantite) FROM Details WHERE numeroProduit = 1
+);
+"
+/>
+
+La condition s'interprète : _la valeur de quantite (de la ligne de Details courante) est inférieure ou égale à chacun des éléments de la table Details relatifs au produit 1_
+
+:::danger[Remarque]
+Certains SGBD, comme SQLite, ne supportent pas le quantifieur `ALL`
+
+Dans l'exemple ci-dessus, qui utilise SQLite pour générer les données, nous avons utilisé une condition `>=` pour simuler le comportement de `ALL`
+:::
+
+Version SQLite : 
+
+```sql
+SELECT DISTINCT numeroCommande FROM Details WHERE quantite >= ( 
+  SELECT MAX(quantite) FROM Details WHERE numeroProduit = 1
+);
+```
+
+
+</Slide>
+<Slide>
+
+## ANY
+
+Le quantifieur ANY permet de comparer une valeur à celles d'un ensemble défini par une sous-requête
+
+ANY signifie qu'au moins un des éléments de l'ensemble doit satisfaire la comparaison
+
+Exemple : _Donner le détail des commandes du produit numéro 1 dont la quantité n'est pas minimale ?_
+  
+  ```sql
+SELECT * FROM Details WHERE numeroProduit = 1 AND quantite > ANY (
+  SELECT quantite FROM Details WHERE numeroProduit = 1
+) ;
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Details"
+ query="
+SELECT * FROM Details WHERE numeroProduit = 1 AND quantite NOT IN (
+  SELECT MIN(quantite) FROM Details WHERE numeroProduit = 1
+) ;
+"
+/>
+
+La condition s'interprète : _la valeur de `quantite` (de la ligne de `Details` courante) est supérieure à au moins un des éléments de la table `Details` relatifs au produit 1_
+
+:::danger[Remarque]
+Certains SGBD, comme SQLite, ne supportent pas le quantifieur `ANY`
+
+Dans l'exemple ci-dessus, qui utilise SQLite pour générer les données, nous avons utilisé une condition `NOT IN` pour simuler le comportement de `ANY`
+:::
+
+Version SQLite : 
+
+```sql
+SELECT * FROM Details WHERE numeroProduit = 1 AND quantite NOT IN (
+  SELECT MIN(quantite) FROM Details WHERE numeroProduit = 1
+) ;
+```
+
+</Slide>
+<Slide>
+
+## Conclusion
+
+Les quantifieurs ensemblistes permettent de comparer une valeur à celles d'un ensemble défini par une sous-requête
+
+* `EXISTS` : vérifie l'existence d'au moins une ligne dans le résultat de la sous-requête
+* `ALL` : vérifie que la condition est vraie pour toutes les lignes de la sous-requête
+* `ANY` : vérifie que la condition est vraie pour au moins une des lignes de la sous-requête
+
+Ces instructions ne sont pas supportées par tous les SGBD. Il faudra donc adapter les requêtes en conséquence.
+
+</Slide>

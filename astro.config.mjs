@@ -97,17 +97,19 @@ export default defineConfig({
 								{
 									slug: '02-algebre/06-td2-algebre',
 								},
+								{
+									slug: '02-algebre/07-fiche-resume',
+								},
 
 							]
 						},
-
-						// {
-						// 	label: '3. Les bases du SQL',
-						// 	collapsed: true,
-						// 	autogenerate: {
-						// 		directory: '03-sql-dml1'
-						// 	}
-						// },
+						{
+							label: '3. Les bases du SQL',
+							collapsed: true,
+							autogenerate: {
+								directory: '03-sql-dml1'
+							}
+						},
 						// {
 						// 	label: '4. SQL Avancé',
 						// 	collapsed: true,

@@ -1,0 +1,57 @@
+---
+title: Exercices
+description: L'exemple fil rouge du cours
+---
+
+import Slide from '/src/components/Slide.astro';
+import Table from "/src/components/TableSQLite.astro";
+
+<Slide>
+## Exercice 1
+
+Exprimer en SQL les requêtes suivantes :
+
+1. Afficher la liste des _villes_ dans lesquelles il existe au moins un _client_.
+2. Afficher le _numéro_, le _nom_ et la _ville_ des _clients_ de _catégorie_ `B2` n'habitant pas `Paris`
+3. Donner le _numéro_, le _nom_ et le _compte_ des _clients_ de `Leclercq` et de `Jacquot` dont le _compte_ est `positif`
+4. Quelles _catégories_ de _clients_ trouve-t-on à `Leclercq` ?
+
+</Slide>
+<Slide>
+
+## Exercice 2
+
+Exprimer en SQL les requêtes suivantes :
+
+1. Afficher le _numéro_, le _nom_ et la _ville_ des _clients_ dont le _nom_ `précède alphabétiquement` la _ville_ où ils résident
+2. Afficher les _villes_ des _clients_ qui _commande_ le produit 1
+3. Quels sont les _produits_ dont le _nom_ commence par la lettre `c` ou `C` qui font l'objet d'une _commande_ ?
+4. Donner la _valeur totale_ des _stocks_ sans tenir compte des commandes en cours.
+
+</Slide>
+<Slide>
+
+## Exercice 3
+
+Exprimer en SQL les requêtes suivantes :
+
+1. Combien y a-t-il de _commandes_ spécifiant un (ou plusieurs) produit(s) dont le _nom_ commence par la lettre `c` ou `C` ?
+2. Afficher le _numéro_ et le _nom_ des _clients_ qui n'ont pas commandé de _produits_  dont le _nom_ commence par la lettre `c` ou `C`
+3. Quels sont les _produits_ (_numéros_ et _noms_) qui n'ont pas été commandés en `2024` ?
+
+_Conseil : Utilisation de `sous requêtes`, de `COUNT`, de `IN` et `NOT IN`, de `LIKE`_
+
+</Slide>
+<Slide>
+
+## Exercice 4
+
+Exprimer en SQL les requêtes suivantes :
+
+1. Rechercher les _clients_ qui ont _commandé_ `tous` les _produits_.
+2. Rechercher les _villes_ dont `aucun` _client_ n'a passé de _commande_.
+3. Rechercher les _villes_ dont `tous` les _clients_ ont passé `au moins une commande`
+
+_Conseil : Utilisation de `sous requêtes`, de `IN` et `NOT IN`, de `EXISTS` et `NOT EXISTS`, et de références multiplee à une même table (voir le cours)_
+
+</Slide>

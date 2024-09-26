@@ -1,0 +1,132 @@
+---
+title: Les fonctions SQL
+description: Les fonctions SQL
+sidebar:
+    label: Fonctions
+---
+
+import Slide from '/src/components/Slide.astro';
+import Table from "/src/components/TableSQLite.astro";
+
+<Slide title="Les fonctions SQL">
+
+Les fonctions de base des SGBD sont les 4 opérateurs arithmétiques : `+, -, * et /`
+
+Ils sont présents dans tous les SGBD.
+
+D'autres fonctions pourront être présentes en fonction des SGBD
+* Par exemple : exponentielle, logarithme, trigonométrie, etc.
+
+:::danger[Important]
+Les exemples suivants ne fonctionnent pas pour tous les SGBD...
+
+Malgré le fait que le SQL soit standardisé, chaque SGBD (SQLite, MySQL, Postgres, Oracle, etc.) possède ses spécificités syntaxiques, et certaines fonctions et fonctionnalités ne sont pas toujours disponibles.
+:::
+
+_Il faudra donc effectuer des recherches sur internet et dans la documentation des SGBD pour s'y retrouver..._
+
+</Slide>
+<Slide>
+
+## Les fonctions de chaînes de caractères
+
+* `CHAR_LENGTH(s)` : donne le nombre de caractères de la chaîne s
+* `POSITION(s1 IN s2)` : donne :
+ * la position de la chaîne `s1` dans la chaîne `s2`
+ * `1` si `s1` est vide
+ * `0` si `s1` n'apparaît pas dans `s2`
+* `s1 || s2` : construit une chaîne composée de la concaténation de `s1` et `s2`
+* `LOWER(s)` : convertit la chaîne s en minuscule
+* `UPPER(s)` : convertit la chaîne s en majuscule
+* `SUBSTRING(s FROM I FOR L) `: construit une chaîne de longueur L à partir de la chaîne s débutant à l'indice I
+* `TRIM(e c FROM s)` : supprime les caractères `c` à l'extrémité `e` de la chaîne `s` 
+  * `e` peut prendre pour valeur `LEADING`, `TRAILING` et `BOTH`
+  * Exemple : `TRIM (BOTH ' ' FROM ADRESSE || ' ' || UPPER(LOCALITE) )`
+* `BIT LENGTH(s)` : donne le nombre de bits de la chaîne `s`
+* `OCTET LENGTH(s)` : donne le nombre d'octets occupés par la chaîne de bits `s`
+
+
+</Slide>
+<Slide>
+
+## Les fonctions de conversion
+
+* `CAST(v AS t)` : convertit la valeur v selon le type t
+* Exemple : `CAST ( DATECOM AS CHAR(12) )` transforme une date en chaîne de caractères
+
+</Slide>
+<Slide>
+
+## Les fonctions d'extraction
+
+Pour PostgreSQL :
+
+* `EXTRACT(u FROM dt)` : donne, sous la forme numérique, le composant u de ma valeur temporelle `dt`; 
+* les valeurs possibles de `u` sont : `YEAR`, `MONTH`, `DAY`, `HOUR`, `MINUTE`, `SECOND`
+* Exemple :
+ * `EXTRACT (YEAR FROM DATECOM)+1`
+ * `EXTRACT (HOUR FROM CURRENT TIME) > 18`
+
+Pour SQLite : 
+
+Par exemple, on peut extraire le mois de la date de commande :
+
+```sql
+SELECT * FROM Commandes WHERE strftime('%m', dateCommande) = '05';
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  query="
+SELECT * FROM Commandes WHERE strftime('%m', dateCommande) = '05';
+"
+/>
+
+</Slide>
+<Slide>
+
+## L'instruction CASE
+
+Comme dans certains langages de programmation, CASE permet de renvoyer une valeur choisie parmi plusieurs.
+
+Exemple :
+
+```sql
+SELECT numero, nom,
+CASE  SUBSTR(categorie, 1, 1)
+  WHEN 'A' then 'bon'
+  WHEN 'B' then 'moyen'
+  WHEN 'C' then 'occasionnel'
+  ELSE ' inconnu '
+END AS 'catégorie',
+ville
+FROM Clients ;
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="
+SELECT numero, nom,
+CASE  SUBSTR(categorie, 1, 1)
+  WHEN 'A' then 'bon'
+  WHEN 'B' then 'moyen'
+  WHEN 'C' then 'occasionnel'
+  ELSE ' inconnu '
+END AS 'catégorie',
+ville
+FROM Clients ;
+"
+/>
+
+</Slide>
+<Slide>
+
+## Conclusion
+
+* On peut effectuer des calculs sur les données extraites
+* On peut renommer les colonnes du résultat
+* On peut utiliser des fonctions pour manipuler les données
+
+</Slide>

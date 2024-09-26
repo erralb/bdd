@@ -1,0 +1,63 @@
+---
+title: Données extraites, dérivées et constantes
+description: Données extraites et données dérivées
+sidebar:
+    label: Calculs
+---
+
+import Slide from '/src/components/Slide.astro';
+import Table from "/src/components/TableSQLite.astro";
+
+<Slide title="Données dérivées et constantes">
+
+Soit la table Produits suivante :
+
+```sql
+SELECT * FROM Produits WHERE stock > 10 ;
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Produits"
+  query="SELECT * FROM Produits WHERE stock > 10 ;"
+/>
+
+En SQL, il est possible de spécifier des données dérivées ou des constantes :
+
+```sql
+SELECT 'TVA de', numero, '=', 0.2 * prix * stock 
+FROM Produits
+WHERE stock > 10 ;
+```
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Produits"
+  query="SELECT 'TVA de', numero, '=', 0.2 * prix * stock FROM Produits WHERE stock > 10 ;"
+/>
+
+_Dans cet exemple, on calcule la TVA pour les produits dont le stock est supérieur à 10._
+
+</Slide>
+<Slide>
+
+## Renommage des colonnes
+
+Par défaut, les colonnes du résultat prennent le nom utilisé dans la clause `SELECT`
+
+Pour utiliser un autre nom (ou **alias**) il faut utiliser la clause `AS`. 
+
+Exemple :
+
+```sql
+SELECT numero AS 'Produit', 0.2 * prix * stock AS 'TVA' 
+FROM Produits 
+WHERE stock > 10 ;
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Produits"
+  query="SELECT numero AS 'Produit', 0.2 * prix * stock AS 'TVA' FROM Produits WHERE stock > 10 ;"
+/>
+
+</Slide>

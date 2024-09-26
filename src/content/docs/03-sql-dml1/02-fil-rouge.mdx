@@ -1,19 +1,23 @@
 ---
-title: Exemple
-description: L'exemple fil rouge du cours
+title: La base de données "Fil rouge"
+description: La base de données "Fil rouge"
+sidebar:
+    label: Fil rouge
 ---
 
 import Slide from '/src/components/Slide.astro';
 
 <Slide>
-## L'exemple fil rouge du cours
 
 Tout au long de ce cours, nous allons travailler sur un exemple fil rouge : une base de données simplifiée d'une boutique en ligne.
+
+</Slide>
+<Slide>
 
 ### Représentation textuelle
 
 ```ansi
-Clients ([4mnumero[0m, nom, prenom, rue, codePostal, ville)
+Clients ([4mnumero[0m, nom, prenom, rue, codePostal, ville, telephone, categorie, compte)
 Commandes ([4mnumero[0m, numeroClient*, dateCommande, statut)
 Produits ([4mnumero[0m, nom, prix, stock)
 Details ([4mnumeroCommande*, numeroProduit*[0m, quantite)
@@ -55,13 +59,11 @@ On peut remarquer que le scénario de données est le suivant :
 
 Vous pouvez télécharger cette base de données dans différents formats :
 
-* **Images** en [png](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2.png) ou [svg](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2.svg)
-
-* **SQLite** [ecommerce-fr-erd-v2.sqlite](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite) 
+* [SQLite](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite) 
     * Fichier de base de données SQLite
-    * Vous pouvez l'ouvrir avec un outil de gestion de base de données SQLite comme :
+    * Vous pouvez l'ouvrir directement avec un outil de gestion de base de données SQLite comme :
         * [SQLiteStudio](https://sqlitestudio.pl/)
-        * [VSCode avec une extension DB](https://marketplace.visualstudio.com/items?itemName=cweijan.dbclient-jdbc))
+        * [VSCode avec une extension DB](https://marketplace.visualstudio.com/items?itemName=cweijan.dbclient-jdbc)
         * en ligne de commande avec `sqlite3 ecommerce-fr-erd-v2.sqlite`
 
 * Export [MySQL](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2-mysql-EXPORT.sql)
@@ -75,6 +77,6 @@ Vous pouvez télécharger cette base de données dans différents formats :
     * Ou en ligne de commande avec `psql -U postgres -f ecommerce-fr-erd-v2-postgresql-EXPORT.sql`
 
 
-* Le script PHP pour générer la base avec données, pour SQLite [ecommerce-fr-erd-v2.php](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2-data.php)
+* Pour les plus aventureux, vous pouvez regarder les différents fichiers "V2" [ici](https://github.com/erralb/bdd/tree/master/public/sample/ecommerce)
 
 </Slide>

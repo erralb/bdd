@@ -13,6 +13,7 @@ erDiagram
         string ville
         string telephone
         string categorie
+        float compte
     }
 
     Commandes {

@@ -1,0 +1,231 @@
+---
+title: Sous-requêtes
+description: Les sous-requêtes en SQL
+---
+
+import Slide from '/src/components/Slide.astro';
+import Table from "/src/components/TableSQLite.astro";
+
+<Slide title="Les sous-requêtes">
+
+Jusqu'à maintenant, nous avons étudié des requêtes qui extraient des données d'une seule table
+
+Il peut être intéressant d'extraire des lignes en fonction de leur liaison avec les autres tables
+
+On parle alors de condition d'association ou de jointure
+
+On pourra joindre des données de deux manières :
+ * 1. En utilisant une jointure (vue plus tard dans le cours)
+ * 2. En utilisant une sous-requête
+
+</Slide>
+<Slide>
+
+## Exemple
+
+### Sans sous-requête
+
+Supposons que l'on veuille obtenir les commandes des clients habitant `Jacquot`
+
+1. On peut retrouver les numéros des clients habitant `Jacquot` en exécutant la requête :
+
+```sql
+SELECT numero FROM Clients WHERE ville = 'Jacquot' ;
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query="
+SELECT numero FROM Clients WHERE ville = 'Jacquot' ;
+"
+/>
+
+2. Il est alors facile de retrouver les commandes des clients habitant à `Jacquot` :
+
+```sql
+SELECT * FROM Commandes WHERE numero IN (2);
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query="
+SELECT * FROM Commandes WHERE numero IN (2);
+"
+/>
+
+Cette procédure n'est pas pratique... surtout si de nouveaux clients de `Jacquot` s'ajoutent à la base de données
+
+</Slide>
+<Slide>
+
+### Avec sous-requête
+
+```sql
+SELECT * FROM Commandes WHERE numero IN (
+ SELECT numero FROM Clients WHERE ville = 'Jacquot'
+);
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query="
+SELECT * FROM Commandes WHERE numero IN (
+ SELECT numero FROM Clients WHERE ville = 'Jacquot'
+);
+"
+/>
+
+</Slide>
+
+## Références multiples
+
+<Slide title="Références multiples">
+
+### Exemple 1
+
+Une sous-requête peut être définie sur la même table que la requête qui la contient
+
+Exemple : _Quels sont les clients qui habitent dans la même ville que le client numéro 3 ?_
+
+```sql
+SELECT * FROM Clients WHERE ville IN (
+ SELECT ville FROM Clients WHERE numero = 3
+);
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query="
+SELECT * FROM Clients WHERE ville IN (
+ SELECT ville FROM Clients WHERE numero = 3
+);
+"
+/>
+
+</Slide>
+<Slide title="Références multiples">
+
+### Exemple 2
+
+_Quelles commandes spécifient une quantité de produit numéro 1, inférieure à la commande numéro 6 pour le même produit ?_
+
+```sql
+SELECT * FROM Details WHERE numeroProduit = 1 AND quantite < (
+ SELECT quantite FROM Details WHERE numeroCommande = 6
+);
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Commandes"
+ query="
+SELECT * FROM Details WHERE numeroProduit = 1 AND quantite < (
+ SELECT quantite FROM Details WHERE numeroCommande = 6
+);
+"
+/>
+
+On peut s'assurer de la quantite de produit numéro 1 dans la commande numéro 6 en exécutant la requête :
+
+```sql
+SELECT quantite FROM Details WHERE numeroCommande = 6 AND numeroProduit = 1;
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Commandes"
+ query="
+  SELECT quantite FROM Details WHERE numeroCommande = 6 AND numeroProduit = 1;
+ "
+/>
+
+</Slide>
+<Slide>
+
+## Ambiguité
+
+Dans le cas d'ambiguité de noms d'attribut, il est possible :
+
+1. De préfixer le nom de l'attribut par celui de la relation
+
+```sql
+SELECT Produits.numero FROM Produits WHERE Produits.numero IN (
+ SELECT Details.numeroProduit FROM Details
+);
+```
+
+2. D'utiliser des alias
+
+```sql
+SELECT P.numero FROM Produits AS P WHERE P.numero IN (
+ SELECT D.numeroProduit FROM Details AS D
+);
+```
+
+</Slide>
+## Opérations 
+<Slide title="Opérations">
+
+### Comparaisons
+
+Si la sous-requête renvoie une seule ligne et colonne, il est permis d'utiliser les opérateurs de comparaison classique
+
+Exemple :
+
+* Quel est le nom du client qui possède le compte le plus élevé ?
+
+```sql
+SELECT nom FROM Clients WHERE compte = (
+ SELECT MAX(compte) FROM Clients
+);
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query="
+SELECT nom FROM Clients WHERE compte = (
+ SELECT MAX(compte) FROM Clients
+);
+"
+/>
+
+</Slide>
+<Slide title="Opérations">
+
+### Agrégation
+
+Il est intéressant de sélectionner les lignes d'une table qui sont associées, non pas _à au moins une des lignes_ d'une autre table qui vérifie une certaine condition, mais à un nombre défini de ces lignes
+
+* Exemple : _Quelles sont les commandes qui possèdent au moins 3 détails ?_
+
+```sql
+SELECT * FROM Commandes WHERE (
+ SELECT COUNT(*) FROM Details WHERE numeroCommande = Commandes.numero
+) >= 3;
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Commandes"
+ query="
+SELECT * FROM Commandes WHERE (
+ SELECT COUNT(*) FROM Details WHERE numeroCommande = Commandes.numero
+) >= 3;
+"
+/>
+
+</Slide>
+<Slide>
+
+## Conclusion
+
+* Les sous-requêtes sont des requêtes imbriquées dans une requête principale
+* Elles permettent de sélectionner des lignes d'une table en fonction de leur association avec les lignes d'une autre table
+* Elles peuvent être utilisées pour des comparaisons, des agrégations, etc.
+
+</Slide>
