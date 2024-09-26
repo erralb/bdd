@@ -1,0 +1,212 @@
+---
+title: Requêtes
+description: Les requêtes élémentaires en SQL
+---
+
+import Slide from '/src/components/Slide.astro';
+import Table from "/src/components/TableSQLite.astro";
+
+<Slide title="Requêtes élémentaires">
+Une requête simple consiste à demander l'affichage des valeurs de certaines colonnes `A` des lignes d'une table `R`
+
+Equivalence en algèbre relationnelle : la **projection** notée `R[A]` ou `π A (R)`
+</Slide>
+---
+<Slide>
+
+## Une première requête
+
+```sql
+SELECT numero, nom, ville FROM Clients ;
+```
+
+Cette requête SQL sélectionne les valeurs `numero`, `nom`, `ville` des lignes de la table `Clients`. 
+
+La réponse à cette requête se présenterait comme suit à l'écran :
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT numero, nom, ville FROM Clients"
+/>
+
+</Slide>
+<Slide>
+
+### L'astérisque
+
+Si on souhaite sélectionner toutes les colonnes d'une table, plutôt que de les énumérer, on peut utiliser l'astérisque `*`
+
+```sql:
+SELECT * FROM Clients ;
+```
+Résultat : 
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT * FROM Clients"
+/>
+
+</Slide>
+<Slide>
+
+### Requête minimale
+
+À minima, une requête SQL de sélection doit :
+  * cibler des **attributs** (spécifiques ou bien en utilisant le caractère `*` pour tous les sélectionner) après le mot clé `SELECT`
+  * cibler **une ou plusieurs** tables après le mot `FROM`
+  * se **terminer par un point virgule** (attention, le saut de ligne n'est pas pris en compte comme une nouvelle requête)
+
+```sql
+SELECT * FROM nom_table ;
+```
+
+</Slide>
+<Slide>
+
+## Sélection
+
+* La **sélection** consiste à extraire les lignes d'une table respectant une certaine propriété
+* Equivalence en algèbre relationnelle : La **sélection** notée `R : C`  ou  `σ C (R)`
+* La condition de sélection utilise les opérateurs de comparaison suivants :
+  * `=` : l'égalité
+  * `>` : plus grand que
+  * `<` : plus petit que
+  * `<>` : différent de
+  * `>=` : plus grand ou égal
+  * `<=` : plus petit ou égal
+* **Remarques**
+  * L'ordre naturel est utilisé dans les comparaisons
+  * Les chaînes de caractère doivent être entourées d’apostrophes `'` et `'`
+  * Un des formats de dates utilisés est : `'2013-09-01'`
+
+
+</Slide>
+<Slide>
+
+### Exemple
+
+Soit la requête :
+
+```sql
+SELECT numero, nom, ville FROM Clients where ville = 'Leclercq' ;
+```
+
+Cette requête SQL sélectionne les valeurs `numero`, `nom`, `ville` des lignes de la table `Clients`. 
+
+La réponse à cette requête se présenterait comme suit à l'écran :
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT numero, nom, ville FROM Clients where ville = 'Leclercq' ;"
+/>
+
+</Slide>
+<Slide>
+
+### Problème
+
+* Une requête mono table peut contenir **autant de lignes** qu'il y a de ligne **vérifiant la condition** dans la table
+* Il se peut, _si la sélection ne contient aucune clé_, que le résultat possède plusieurs lignes identiques
+* Pour éviter cela, on peut utiliser le mot clé `DISTINCT` qui permet de ne pas afficher les lignes identiques
+
+
+</Slide>
+<Slide>
+
+#### Exemple avec duplication
+
+```sql
+SELECT ville FROM Clients where ville = 'Leclercq' ;
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT ville FROM Clients where ville = 'Leclercq' ;"
+/>
+</Slide>
+<Slide>
+
+#### Exemple sans duplication
+
+```sql
+SELECT distinct ville FROM Clients where ville = 'Leclercq' ;
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT distinct ville FROM Clients where ville = 'Leclercq' ;"
+/>
+
+La réponse est la table suivante :
+</Slide>
+<Slide>
+
+### Autre exemple
+
+
+* Supposons que l'on veuille la liste des numéros de clients ayant passé au moins une commande. On écrirait la requête suivante :
+
+```sql
+SELECT numeroClient FROM Commandes;
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  query="SELECT numeroClient FROM Commandes;"
+/>
+
+Le nombre d'éléments du résultat de cette requête n'est pas égal à celui des clients qui ont passé une commande. Les numéros clients sont dupliqués autant de fois qu'ils ont passé de commandes. Il faut donc mieux écrire :
+
+
+</Slide>
+<Slide>
+
+```sql
+SELECT distinct numeroClient FROM Commandes;
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  query="SELECT distinct numeroClient FROM Commandes;"
+/>
+
+</Slide>
+<Slide>
+
+### Remarque
+
+Si la clause `SELECT` cite **tous les composants d'un identifiant** de la table, l'unicité des lignes résultats est garantie. 
+
+Il est donc inutile d'utiliser **DISTINCT** dans ce cas.
+
+Exemple : 
+
+```sql
+SELECT numeroCommande, numeroProduit FROM Details;
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  query="SELECT numeroCommande, numeroProduit FROM Details LIMIT 5;"
+/>
+
+Ayant selectionné tous les composants de la clé primaire de la table `Details`, les lignes sont uniques.
+
+</Slide>
+<Slide>
+
+## Conclusion
+
+* Les requêtes de sélection SQL `SELECT FROM WHERE (SFW)` permettent d'extraire des données d'une table en fonciton d'une condition
+* On peut sélectionner toutes les colonnes d'une table avec l'astérisque `*`
+* On peut éviter les doublons avec le mot clé `DISTINCT`
+
+</Slide>

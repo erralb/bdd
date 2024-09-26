@@ -23,42 +23,9 @@ Details ([4mnumeroCommande*, numeroProduit*[0m, quantite)
 
 ### Diagramme Entité-Association
 
-```mermaid
-erDiagram
+import {Content as Boutique} from '../../files/ecommerce-fr-erd-v2.md'
 
-    Clients {
-        int numero PK
-        string nom
-        string prenom
-        string rue
-        string codePostal
-        string ville
-    }
-
-    Commandes {
-        int numero PK
-        int numeroClient FK
-        date dateCommande
-        string statut
-    }
-
-    Produits {
-        int numero PK
-        string nom
-        double prix
-        int stock
-    }
-
-    Details {
-        int numeroCommande PK, FK
-        int numeroProduit PK, FK
-        int quantite
-    }
-
-    Clients ||--o{ Commandes : "passent des"
-    Commandes ||--o{ Details : "sont composées de"
-    Produits ||--o{ Details : "sont liés à des"
-```
+<Boutique />
 
 </Slide>
 <Slide>
@@ -109,29 +76,5 @@ Vous pouvez télécharger cette base de données dans différents formats :
 
 
 * Le script PHP pour générer la base avec données, pour SQLite [ecommerce-fr-erd-v2.php](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2-data.php)
-
-</Slide>
-<Slide>
-
-</Slide>
-<Slide>
-
-</Slide>
-<Slide>
-
-</Slide>
-<Slide>
-
-</Slide>
-<Slide>
-
-</Slide>
-<Slide>
-
-</Slide>
-<Slide>
-
-</Slide>
-<Slide>
 
 </Slide>

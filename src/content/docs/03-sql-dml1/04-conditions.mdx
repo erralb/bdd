@@ -1,0 +1,217 @@
+---
+title: Conditions
+description: Les sélections en SQL
+---
+
+import Slide from '/src/components/Slide.astro';
+import Table from "/src/components/TableSQLite.astro";
+
+<Slide title="Conditions">
+
+* Les **conditions** de sélection permettent de **filtrer** les lignes d'une table
+* Les conditions de sélection sont définies dans la clause `WHERE`
+* Les conditions de sélection sont des **expressions booléennes**
+* Les conditions de sélection peuvent être composées d'opérateurs de **comparaison**, **logiques** et de **quantifieurs**
+
+</Slide>
+
+## NULL
+
+<Slide title="NULL">
+
+### IS NULL
+
+Une condition élémentaire peut porter sur la présence de valeurs `NULL`, par exemple :
+
+```sql
+SELECT nom, prenom, telephone FROM Clients WHERE telephone IS NULL;
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT  nom, prenom, telephone FROM Clients WHERE telephone IS NULL;"
+/>
+
+</Slide>
+<Slide title="Conditions">
+
+### IS NOT NULL
+
+Ou sur une condition élémentaire portant sur des valeurs non `NULL`, par exemple :
+
+```sql
+SELECT  nom, prenom, telephone FROM Clients WHERE telephone IS NOT NULL;
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT nom, prenom, telephone FROM Clients WHERE telephone IS NOT NULL;"
+/>
+
+
+</Slide>
+
+## Listes
+
+<Slide title="Listes">
+
+### IN
+
+```sql
+SELECT  nom, prenom, ville FROM Clients WHERE ville IN ('Leclercq', 'Jacquot');
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT nom, prenom, ville FROM Clients WHERE ville IN ('Leclercq', 'Jacquot');"
+/>
+
+</Slide>
+
+<Slide title="Listes">
+
+### NOT IN
+
+```sql
+SELECT  nom, prenom, ville FROM Clients WHERE ville NOT IN ('Leclercq', 'Jacquot');
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT nom, prenom, ville FROM Clients WHERE ville NOT IN ('Leclercq', 'Jacquot');"
+/>
+
+</Slide>
+
+## Intervalle
+
+<Slide title="Intervalle">
+
+### Dans l'intervalle :
+
+```sql
+SELECT * FROM Commandes WHERE dateCommande BETWEEN '2024-01-01' AND '2024-04-01';
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  query="SELECT * FROM Commandes WHERE dateCommande BETWEEN '2024-01-01' AND '2024-04-01';"
+/>
+
+</Slide>
+
+<Slide title="Intervalle">
+
+### En dehors de l'intervalle :
+
+```sql
+SELECT * FROM Commandes WHERE dateCommande NOT BETWEEN '2024-01-01' AND '2024-04-01';
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  query="SELECT * FROM Commandes WHERE dateCommande NOT BETWEEN '2024-01-01' AND '2024-04-01';"
+/>
+
+</Slide>
+
+## Masques (wildcards)
+
+<Slide title="Masques (wildcards)">
+
+### Caractère seul
+
+```sql
+SELECT * FROM Clients WHERE ville LIKE '_eclercq';
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT * FROM Clients WHERE ville LIKE '_eclercq';"
+/>
+
+Ici le `L` de `Leclercq` est remplacé par un caractère quelconque, en utilisant le masque `_`.
+
+</Slide>
+<Slide title="Masques (wildcards)">
+
+### Chaine de caractères
+
+```sql
+SELECT * FROM Clients WHERE ville LIKE '%cq%';
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT * FROM Clients WHERE ville LIKE '%cq%';"
+/>
+
+La requête renvoie les lignes pour lesquelles la valeur de la colonne `ville` contient les lettres `cq`, en utilisant le masque `%`.
+
+</Slide>
+<Slide title="Masques (wildcards)">
+
+### Remarques
+
+* Les symboles utilisés dans les masques :
+  * `_` (underscore) désigne un caractère quelconque
+  * `%` désigne un suite de caractères éventuellement vide
+
+* Pour utiliser les caractères `_` et `%` en tant que caractères normaux, il faut les préfixer d'un anti-slash `\` :
+  * `col LIKE 'user\_name'`
+  * `value LIKE '100\%'`
+
+* Un masque peut s'appliquer à une date :
+  * `dateCommande  LIKE  '2023%'`
+
+* Les conditions admettent la forme négative :
+  * `dateCommande NOT LIKE  '2023%'`
+
+</Slide>
+<Slide>
+
+## Logiques
+
+La condition de la clause `WHERE` peut être composée d'une expression booléenne. 
+
+Exemple :
+
+```sql
+SELECT * FROM Clients WHERE ville = 'Leclercq' AND categorie = 'C3';
+```
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  query="SELECT * FROM Clients WHERE ville = 'Leclercq' AND categorie = 'C3'"
+/>
+
+Soit les expressions `P` et `Q` : 
+  * `WHERE P AND Q` : sélectionne les lignes qui vérifient simultanément `P` et `Q`
+  * `WHERE P OR Q` : sélectionne les lignes qui vérifient `P` ou `Q` ou **les deux**
+  * `WHERE NOT P` : sélection les lignes qui **ne vérifient pas** `P`
+
+L'usage de parenthèses permet d'exprimer des expressions plus complexes :
+  
+```sql
+WHERE  COMPTE  <  0  AND   ( CAT  =  'C1'  OR  LOCALITE  =  'Paris'  )
+```
+
+</Slide>
+<Slide>
+
+## Conclusion
+
+* Les conditions de sélection permettent de filtrer les lignes d'une table
+* Les conditions de sélection sont définies dans la clause `WHERE`
+* Les conditions de sélection sont des expressions booléennes
+* Les conditions de sélection peuvent être composées d'opérateurs de comparaison logiques
+
+</Slide>
