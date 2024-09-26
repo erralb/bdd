@@ -10,10 +10,7 @@ import Table from "/src/components/TableSQLite.astro";
 
 <Slide title="Conditions">
 
-* Les **conditions** de sélection permettent de **filtrer** les lignes d'une table
-* Les conditions de sélection sont définies dans la clause `WHERE`
-* Les conditions de sélection sont des **expressions booléennes**
-* Les conditions de sélection peuvent être composées d'opérateurs de **comparaison**, **logiques** et de **quantifieurs**
+Nous allons voir dans cette partie différentes possibilités de **filtrage** des lignes d'une table en SQL.
 
 </Slide>
 
@@ -26,7 +23,9 @@ import Table from "/src/components/TableSQLite.astro";
 Une condition élémentaire peut porter sur la présence de valeurs `NULL`, par exemple :
 
 ```sql
-SELECT nom, prenom, telephone FROM Clients WHERE telephone IS NULL;
+SELECT nom, prenom, telephone 
+FROM Clients 
+WHERE telephone IS NULL;
 ```
 
 <Table
@@ -43,7 +42,9 @@ SELECT nom, prenom, telephone FROM Clients WHERE telephone IS NULL;
 Ou sur une condition élémentaire portant sur des valeurs non `NULL`, par exemple :
 
 ```sql
-SELECT  nom, prenom, telephone FROM Clients WHERE telephone IS NOT NULL;
+SELECT  nom, prenom, telephone 
+FROM Clients 
+WHERE telephone IS NOT NULL;
 ```
 
 <Table
@@ -62,7 +63,9 @@ SELECT  nom, prenom, telephone FROM Clients WHERE telephone IS NOT NULL;
 ### IN
 
 ```sql
-SELECT  nom, prenom, ville FROM Clients WHERE ville IN ('Leclercq', 'Jacquot');
+SELECT  nom, prenom, ville 
+FROM Clients 
+WHERE ville IN ('Leclercq', 'Jacquot');
 ```
 
 <Table
@@ -78,7 +81,9 @@ SELECT  nom, prenom, ville FROM Clients WHERE ville IN ('Leclercq', 'Jacquot');
 ### NOT IN
 
 ```sql
-SELECT  nom, prenom, ville FROM Clients WHERE ville NOT IN ('Leclercq', 'Jacquot');
+SELECT  nom, prenom, ville 
+FROM Clients 
+WHERE ville NOT IN ('Leclercq', 'Jacquot');
 ```
 
 <Table
@@ -96,7 +101,9 @@ SELECT  nom, prenom, ville FROM Clients WHERE ville NOT IN ('Leclercq', 'Jacquot
 ### Dans l'intervalle :
 
 ```sql
-SELECT * FROM Commandes WHERE dateCommande BETWEEN '2024-01-01' AND '2024-04-01';
+SELECT * 
+FROM Commandes 
+WHERE dateCommande BETWEEN '2024-01-01' AND '2024-04-01';
 ```
 
 <Table
@@ -105,6 +112,14 @@ SELECT * FROM Commandes WHERE dateCommande BETWEEN '2024-01-01' AND '2024-04-01'
   query="SELECT * FROM Commandes WHERE dateCommande BETWEEN '2024-01-01' AND '2024-04-01';"
 />
 
+Alternativement, on peut écrire :
+
+```sql
+SELECT * 
+FROM Commandes 
+WHERE dateCommande >= '2024-01-01' AND dateCommande <= '2024-04-01';
+```
+
 </Slide>
 
 <Slide title="Intervalle">
@@ -112,7 +127,9 @@ SELECT * FROM Commandes WHERE dateCommande BETWEEN '2024-01-01' AND '2024-04-01'
 ### En dehors de l'intervalle :
 
 ```sql
-SELECT * FROM Commandes WHERE dateCommande NOT BETWEEN '2024-01-01' AND '2024-04-01';
+SELECT * 
+FROM Commandes 
+WHERE dateCommande NOT BETWEEN '2024-01-01' AND '2024-04-01';
 ```
 
 <Table
@@ -130,7 +147,9 @@ SELECT * FROM Commandes WHERE dateCommande NOT BETWEEN '2024-01-01' AND '2024-04
 ### Caractère seul
 
 ```sql
-SELECT * FROM Clients WHERE ville LIKE '_eclercq';
+SELECT * 
+FROM Clients 
+WHERE ville LIKE '_eclercq';
 ```
 
 <Table
@@ -147,7 +166,9 @@ Ici le `L` de `Leclercq` est remplacé par un caractère quelconque, en utilisan
 ### Chaine de caractères
 
 ```sql
-SELECT * FROM Clients WHERE ville LIKE '%cq%';
+SELECT * 
+FROM Clients 
+WHERE ville LIKE '%cq%';
 ```
 
 <Table
@@ -187,7 +208,9 @@ La condition de la clause `WHERE` peut être composée d'une expression booléen
 Exemple :
 
 ```sql
-SELECT * FROM Clients WHERE ville = 'Leclercq' AND categorie = 'C3';
+SELECT * 
+FROM Clients 
+WHERE ville = 'Leclercq' AND categorie = 'C3';
 ```
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
@@ -211,9 +234,10 @@ WHERE  COMPTE  <  0  AND   ( CAT  =  'C1'  OR  LOCALITE  =  'Paris'  )
 
 ## Conclusion
 
-* Les conditions de sélection permettent de filtrer les lignes d'une table
+* Les **conditions** de sélection permettent de **filtrer** les lignes d'une table
 * Les conditions de sélection sont définies dans la clause `WHERE`
-* Les conditions de sélection sont des expressions booléennes
-* Les conditions de sélection peuvent être composées d'opérateurs de comparaison logiques
+* Les conditions de sélection sont des **expressions booléennes**
+* Les conditions de sélection peuvent être composées d'opérateurs de **comparaison**, **logiques** et de **quantifieurs**
+
 
 </Slide>

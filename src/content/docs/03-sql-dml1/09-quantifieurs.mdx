@@ -5,7 +5,6 @@ sidebar:
     label: Quantifieurs
 ---
 
-
 import Slide from '/src/components/Slide.astro';
 import Table from "/src/components/TableSQLite.astro";
 
@@ -56,7 +55,7 @@ Le quantifieur `ALL` permet de comparer une valeur à celles d'un ensemble défi
 * Exemple : _Donner les commandes spécifiant la plus petite quantité du produit 1 ?_
 
 ```sql
-SELECT DISTINCT numeroCommande FROM Details WHERE quantite = ALL ( 
+SELECT DISTINCT numeroCommande FROM Details WHERE quantite <= ALL ( 
   SELECT quantite FROM Details WHERE numeroProduit = 1
 ) ;
 ```
@@ -65,8 +64,8 @@ SELECT DISTINCT numeroCommande FROM Details WHERE quantite = ALL (
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Commandes"
  query="
-SELECT DISTINCT numeroCommande FROM Details WHERE quantite >= ( 
-  SELECT MAX(quantite) FROM Details WHERE numeroProduit = 1
+SELECT DISTINCT numeroCommande FROM Details WHERE quantite <= ( 
+  SELECT MIN(quantite) FROM Details WHERE numeroProduit = 1
 );
 "
 />
@@ -82,11 +81,10 @@ Dans l'exemple ci-dessus, qui utilise SQLite pour générer les données, nous a
 Version SQLite : 
 
 ```sql
-SELECT DISTINCT numeroCommande FROM Details WHERE quantite >= ( 
-  SELECT MAX(quantite) FROM Details WHERE numeroProduit = 1
+SELECT DISTINCT numeroCommande FROM Details WHERE quantite <= ( 
+  SELECT MIN(quantite) FROM Details WHERE numeroProduit = 1
 );
 ```
-
 
 </Slide>
 <Slide>

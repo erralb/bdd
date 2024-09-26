@@ -2,7 +2,7 @@
 title: Les données agrégées
 description: L'agrégation de données en SQL
 sidebar:
-    label: Agrégation
+  label: Agrégation
 ---
 
 import Slide from '/src/components/Slide.astro';
@@ -13,25 +13,29 @@ import Table from "/src/components/TableSQLite.astro";
 
 En SQL, il existe des fonctions qui donnent une valeur agrégée calculée pour les lignes sélectionnées :
 
-  * `COUNT(*) ` : donne le nombre de lignes sélectionnées
-  * `COUNT(colonne)`  : donne le nombre de valeurs de la colonne
-  * `AVR(colonne)`  : donne la moyenne des valeurs de la colonne
-  * `SUM(colonne)`  : donne la somme des valeurs de la colonne
-  * `MIN(colonne)`  : donne le minimum des valeurs de la colonne
-  * `MAX(colonne)`  : donne le maximum des valeurs de la colonne
+ * `COUNT(*) ` : donne le nombre de lignes sélectionnées
+ * `COUNT(colonne)` : donne le nombre de valeurs de la colonne
+ * `AVR(colonne)` : donne la moyenne des valeurs de la colonne
+ * `SUM(colonne)` : donne la somme des valeurs de la colonne
+ * `MIN(colonne)` : donne le minimum des valeurs de la colonne
+ * `MAX(colonne)` : donne le maximum des valeurs de la colonne
 
 * Remarque : La colonne peut être remplacée par une expression arithmétique.
 
-* Exemple :
+</Slide>
+## Exemples
+<Slide>
+
+### Exemple 1
 
 ```sql
 SELECT SUM(stock * prix) AS 'Valeur du stock' FROM Produits;
 ```
 
 <Table
-  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
-  title="Produits"
-  query="
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits"
+ query="
 SELECT SUM(stock * prix) AS 'Valeur du stock' FROM Produits;
 "
 />
@@ -39,24 +43,24 @@ SELECT SUM(stock * prix) AS 'Valeur du stock' FROM Produits;
 </Slide>
 <Slide>
 
-## Exemple
+### Exemple 2
 
 _Donner la répartition (moyenne, écart maximum, nombre) des montants des comptes des clients_
 
 ```sql
 SELECT AVG(Compte) AS 'Moyenne', 
-       MAX(Compte) - MIN(Compte) AS 'Écart max', 
-       COUNT(*) AS 'Nombre de clients'
+    MAX(Compte) - MIN(Compte) AS 'Écart max', 
+    COUNT(*) AS 'Nombre de clients'
 FROM Clients;
 ```
 
 <Table
-  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
-  title="Produits"
-  query="
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits"
+ query="
 SELECT AVG(Compte) AS 'Moyenne', 
-       MAX(Compte) - MIN(Compte) AS 'Écart max', 
-       COUNT(*) AS 'Nombre de clients'
+    MAX(Compte) - MIN(Compte) AS 'Écart max', 
+    COUNT(*) AS 'Nombre de clients'
 FROM Clients;
 "
 />
@@ -78,23 +82,23 @@ SELECT COUNT( numeroClient ) FROM Commandes ;
 ```
 
 <Table
-  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
-  title="Produits"
-  query="
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits"
+ query="
 SELECT COUNT( numeroClient ) FROM Commandes ;
 "
 />
 
-Cette requête affiche le nombre de commandes, pas le nombre de clients !  Car : 
+Cette requête affiche le nombre de commandes, pas le nombre de clients ! Car : 
 
 ```sql
 SELECT numeroClient FROM Commandes ;
 ```
 
 <Table
-  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
-  title="Produits"
-  query="
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits"
+ query="
 SELECT numeroClient FROM Commandes ;
 "
 />
@@ -108,9 +112,9 @@ SELECT COUNT( DISTINCT numeroClient ) FROM Commandes;
 ```
 
 <Table
-  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
-  title="Produits"
-  query="
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits"
+ query="
 SELECT COUNT( DISTINCT numeroClient ) FROM Commandes;
 "
 />
@@ -121,20 +125,22 @@ SELECT COUNT( DISTINCT numeroClient ) FROM Commandes;
 ### Ensemble vide
 
 Quelle est la valeur retournée par une fonction agrégative produit à partir d'un ensemble vide ?
-Réponse
-* `0` pour la fonction `COUNT` et inconnu pour les autres
 
-Exemple :
+Réponse : `0` pour la fonction `COUNT` et inconnu pour les autres
 
 ```sql
-SELECT COUNT (*)  AS  'Nombre', 	SUM(compte)  AS  'Somme', 	 MAX (categorie)  AS  'Max'  FROM  Clients ;
+SELECT 
+  COUNT (*) AS 'Nombre', 
+  SUM(compte) AS 'Somme', 
+  MAX (categorie) AS 'Max' 
+FROM Clients ;
 ```
 
 <Table
-  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
-  title="Produits"
-  query="
-SELECT COUNT (*)  AS  'Nombre', 	SUM(compte)  AS  'Somme', 	 MAX (categorie)  AS  'Max' 
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits"
+ query="
+SELECT COUNT (*) AS 'Nombre', 	SUM(compte) AS 'Somme', MAX (categorie) AS 'Max' 
 FROM Clients
 WHERE ville = 'Paris';
 "

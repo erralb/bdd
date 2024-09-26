@@ -8,15 +8,15 @@ import Table from "/src/components/TableSQLite.astro";
 
 <Slide title="Les sous-requêtes">
 
-Jusqu'à maintenant, nous avons étudié des requêtes qui extraient des données d'une seule table
+Jusqu'à maintenant, nous avons étudié des requêtes qui extraient des données **d'une seule table**
 
-Il peut être intéressant d'extraire des lignes en fonction de leur liaison avec les autres tables
+Il peut être intéressant d'extraire des lignes en fonction de **leur liaison avec les autres tables**
 
-On parle alors de condition d'association ou de jointure
+On parle alors de **condition d'association ou de jointure**
 
 On pourra joindre des données de deux manières :
- * 1. En utilisant une jointure (vue plus tard dans le cours)
- * 2. En utilisant une sous-requête
+1. En utilisant des **jointures** (présentées dans le prochain chapitre)
+2. En utilisant des **sous-requêtes**
 
 </Slide>
 <Slide>
@@ -132,7 +132,9 @@ SELECT * FROM Details WHERE numeroProduit = 1 AND quantite < (
 On peut s'assurer de la quantite de produit numéro 1 dans la commande numéro 6 en exécutant la requête :
 
 ```sql
-SELECT quantite FROM Details WHERE numeroCommande = 6 AND numeroProduit = 1;
+SELECT quantite 
+FROM Details 
+WHERE numeroCommande = 6 AND numeroProduit = 1;
 ```
 
 <Table

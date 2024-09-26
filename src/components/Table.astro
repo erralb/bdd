@@ -10,41 +10,47 @@ export interface Props {
 const { title, headers, rows, caption, footer } = Astro.props;
 ---
 
-<table class="tableComponent">
-  {caption ? <caption>{caption}</caption> : null}
-  <thead>
-    <tr>
-      <th colspan={headers?.length}>{title}</th>
-    </tr>
-    <tr>
-      {headers?.map((heading) => <th>{heading}</th>)}
-    </tr>
-  </thead>
-  <tbody>
+<div class="flex">
+  <table class="tableComponent">
+    {caption ? <caption>{caption}</caption> : null}
+    <thead>
+      <tr>
+        <th colspan={headers?.length}>{title}</th>
+      </tr>
+      <tr>
+        {headers?.map((heading) => <th>{heading}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows?.map((value) => (
+          <tr>
+            {value.map((cell) => (
+              <td>{cell}</td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
     {
-      rows?.map((value) => (
-        <tr>
-          {value.map((cell) => (
-            <td>{cell}</td>
-          ))}
-        </tr>
-      ))
+      footer ? (
+        <tfoot>
+          <tr>
+            {headers?.map((heading) => (
+              <th>{heading}</th>
+            ))}
+          </tr>
+        </tfoot>
+      ) : null
     }
-  </tbody>
-  {
-    footer ? (
-      <tfoot>
-        <tr>
-          {headers?.map((heading) => (
-            <th>{heading}</th>
-          ))}
-        </tr>
-      </tfoot>
-    ) : null
-  }
-</table>
+  </table>
+</div>
 
 <style>
+
+div.flex {
+  display: flex;
+}
 
 table.tableComponent {
 

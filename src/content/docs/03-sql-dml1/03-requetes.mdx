@@ -24,8 +24,6 @@ SELECT numero, nom, ville FROM Clients ;
 
 Cette requête SQL sélectionne les valeurs `numero`, `nom`, `ville` des lignes de la table `Clients`. 
 
-La réponse à cette requête se présenterait comme suit à l'écran :
-
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
@@ -92,17 +90,17 @@ SELECT * FROM nom_table ;
 Soit la requête :
 
 ```sql
-SELECT numero, nom, ville FROM Clients where ville = 'Leclercq' ;
+SELECT numero, nom, ville 
+FROM Clients
+WHERE ville = 'Leclercq' ;
 ```
 
-Cette requête SQL sélectionne les valeurs `numero`, `nom`, `ville` des lignes de la table `Clients`. 
-
-La réponse à cette requête se présenterait comme suit à l'écran :
+Cette requête SQL sélectionne les valeurs `numero`, `nom`, `ville` des lignes de la table `Clients` et ne conserve que les lignes qui vérifient la condition `ville = 'Leclercq'` . 
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT numero, nom, ville FROM Clients where ville = 'Leclercq' ;"
+  query="SELECT numero, nom, ville FROM Clients WHERE ville = 'Leclercq' ;"
 />
 
 </Slide>
@@ -121,13 +119,15 @@ La réponse à cette requête se présenterait comme suit à l'écran :
 #### Exemple avec duplication
 
 ```sql
-SELECT ville FROM Clients where ville = 'Leclercq' ;
+SELECT ville 
+FROM Clients
+WHERE ville = 'Leclercq' ;
 ```
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT ville FROM Clients where ville = 'Leclercq' ;"
+  query="SELECT ville FROM Clients WHERE ville = 'Leclercq' ;"
 />
 </Slide>
 <Slide>
@@ -135,16 +135,16 @@ SELECT ville FROM Clients where ville = 'Leclercq' ;
 #### Exemple sans duplication
 
 ```sql
-SELECT distinct ville FROM Clients where ville = 'Leclercq' ;
+SELECT DISTINCT ville 
+FROM Clients WHERE ville = 'Leclercq' ;
 ```
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT distinct ville FROM Clients where ville = 'Leclercq' ;"
+  query="SELECT DISTINCT ville FROM Clients WHERE ville = 'Leclercq' ;"
 />
 
-La réponse est la table suivante :
 </Slide>
 <Slide>
 
@@ -170,13 +170,13 @@ Le nombre d'éléments du résultat de cette requête n'est pas égal à celui d
 <Slide>
 
 ```sql
-SELECT distinct numeroClient FROM Commandes;
+SELECT DISTINCT numeroClient FROM Commandes;
 ```
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes"
-  query="SELECT distinct numeroClient FROM Commandes;"
+  query="SELECT DISTINCT numeroClient FROM Commandes;"
 />
 
 </Slide>
