@@ -11,6 +11,8 @@ erDiagram
         string rue
         string codePostal
         string ville
+        string telephone
+        string categorie
     }
 
     Commandes {

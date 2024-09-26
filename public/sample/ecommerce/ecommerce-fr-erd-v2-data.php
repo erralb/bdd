@@ -1,6 +1,4 @@
 <?php
-require_once 'vendor/autoload.php';
-
 // Scénario de données
 // Le client 1 a commandé tous les produits en 2 commandes (la commande 1 et 2)
 // Le client 2 n'a rien commandé
@@ -8,39 +6,25 @@ require_once 'vendor/autoload.php';
 // Le client 4 a commandé 2 produits en 1 commande (la commande 4)
 // Le client 5 a commandé 3 produits en 1 commande (la commande 5)
 
-//connect to database and create tables
-
-//For SQLite
-$pdo = new PDO('sqlite:ecommerce-fr-erd-v2.sqlite');
-$sql = file_get_contents('ecommerce-fr-erd-v2-sqlite.sql');
-$pdo->exec($sql);
-
-//For MySQL
-// $pdo = new PDO('mysql:host=localhost;dbname=filrouge', 'username', 'password');
-// $sql = file_get_contents('ecommerce-fr-erd-v2-mysql.sql');
-// $pdo->exec($sql);
-
-// //For Postgres
-// $pdo = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=filrouge', 'postgres', '');
-// $sql = file_get_contents('ecommerce-fr-erd-v2-postgres.sql');
-// $pdo->exec($sql);
-
 $clients = [
-    ['1', 'Lebreton', 'Éléonore', '6, avenue Françoise Olivier', '59778', 'Guillot-la-Forêt'],
-    ['2', 'Vasseur', 'Georges', '54, avenue Jean', '66941', 'Jacquot'],
-    ['3', 'Da Costa', 'Léon', 'boulevard Brigitte Faivre', '42827', 'Leclercq'],
-    ['4', 'Rey', 'Michel', '49, avenue de Adam', '58442', 'Mathieu-sur-Colin'],
-    ['5', 'Weiss', 'Dominique', 'boulevard Remy', '58458', 'Dias-la-Forêt'],
+    ['1', 'Lebreton', 'Éléonore', '6, avenue Françoise Olivier', '59778', 'Guillot-la-Forêt','0776059929', 'A1'],
+    ['2', 'Vasseur', 'Georges', '54, avenue Jean', '66941', 'Jacquot', '+33 1 44 68 49 74', 'B2'],
+    ['3', 'Da Costa', 'Léon', 'boulevard Brigitte Faivre', '42827', 'Leclercq', '0568740044', 'C3' ],
+    ['4', 'Rey', 'Michel', '49, avenue de Adam', '58442', 'Mathieu-sur-Colin', NULL, 'B1' ],
+    ['5', 'Weiss', 'Dominique', 'boulevard Remy', '58458', 'Dias-la-Forêt', NULL, 'B2' ],
+    ['6', 'Berlioz', 'Diane', '27 avenue de la Chartreuse', '42827', 'Leclercq', NULL, NULL ],
 ];
 
 foreach ($clients as $client) {
-    $stmt = $pdo->prepare("INSERT INTO CLIENTS (numero, nom, prenom, rue, codePostal, ville) VALUES (:numero, :nom, :prenom, :rue, :codePostal, :ville)");
+    $stmt = $pdo->prepare("INSERT INTO CLIENTS (numero, nom, prenom, rue, codePostal, ville, telephone, categorie) VALUES (:numero, :nom, :prenom, :rue, :codePostal, :ville, :telephone, :categorie)");
     $stmt->bindParam(":numero", $client[0], PDO::PARAM_INT);
     $stmt->bindParam(":nom", $client[1], PDO::PARAM_STR);
     $stmt->bindParam(":prenom", $client[2], PDO::PARAM_STR);
     $stmt->bindParam(":rue", $client[3], PDO::PARAM_STR);
     $stmt->bindParam(":codePostal", $client[4], PDO::PARAM_STR);
     $stmt->bindParam(":ville", $client[5], PDO::PARAM_STR);
+    $stmt->bindParam(":telephone", $client[6], PDO::PARAM_STR);
+    $stmt->bindParam(":categorie", $client[7], PDO::PARAM_STR);
     $stmt->execute();
 }
 
@@ -113,3 +97,5 @@ foreach ($details as $detail) {
 }
 
 echo 'Données insérées avec succès' . "\n";
+
+?>
