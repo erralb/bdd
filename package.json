@@ -23,6 +23,7 @@
   },
   "packageManager": "pnpm@9.10.0",
   "devDependencies": {
+    "@types/sql.js": "^1.4.9",
     "prettier-plugin-astro": "^0.14.1"
   }
 }

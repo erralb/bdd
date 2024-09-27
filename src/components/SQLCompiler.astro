@@ -12,7 +12,7 @@ import { Content as TextDB } from "../content/files/ecommerce-fr-erd-v2-text.md"
 
   async function main() {
     const sqlPromise = initSqlJs({
-      locateFile: (file) => `https://sql.js.org/dist/${file}`,
+      locateFile: (file: string) => `https://sql.js.org/dist/${file}`,
     });
 
     const dataPromise = fetch(
@@ -22,13 +22,13 @@ import { Content as TextDB } from "../content/files/ecommerce-fr-erd-v2-text.md"
     const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
     const db = new SQL.Database(new Uint8Array(buf));
 
-    function runQuery(db, query) {
+    function runQuery(db: any, query: string) {
       let tableContainer = document.getElementById("tableContainer");
+      if (!tableContainer) return;
       tableContainer.innerHTML = "";
       let table = document.createElement("table");
       table.classList.add("tableComponent");
 
-      //catch errors
       try {
         let result = db.exec(query);
         let keys = result[0].columns;
@@ -64,7 +64,8 @@ import { Content as TextDB } from "../content/files/ecommerce-fr-erd-v2-text.md"
 
         tableContainer.appendChild(table);
       } catch (e) {
-        tableContainer.innerHTML = `<p style="color: red;">${e.message}</p>`;
+        let error = e as Error
+        tableContainer.innerHTML = `<p style="color: red;">${error.message}</p>`;
         return;
       }
     }
@@ -73,16 +74,19 @@ import { Content as TextDB } from "../content/files/ecommerce-fr-erd-v2-text.md"
     runQuery(db, query);
 
     //add event listener to #runQuery button
-    document.getElementById("runQuery").addEventListener("click", function () {
-      let userQuery = document.getElementById("userQuery").value;
-      runQuery(db, userQuery);
+    let runQueryButton = document.getElementById("runQuery");
+    if (!runQueryButton) return;
+
+    let textarea = document.getElementById("userQuery") as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    runQueryButton.addEventListener("click", function () {
+      runQuery(db, textarea.value);
     });
 
     window.addEventListener("keydown", function (e) {
-      var evtobj = window.event ? window.event : e;
-      if (evtobj.ctrlKey && evtobj.key == "Enter") {
-        let userQuery = document.getElementById("userQuery").value;
-        runQuery(db, userQuery);
+      if (e.ctrlKey && e.key == "Enter") {
+        runQuery(db, textarea.value);
       }
     });
   }
