@@ -45,7 +45,6 @@ INSERT INTO Produits VALUES(2,'Pantalon',60.0,50);
 INSERT INTO Produits VALUES(3,'Chaussures',120.0,100);
 INSERT INTO Produits VALUES(4,'Casquette',15.0,10);
 INSERT INTO Produits VALUES(5,'Sac à dos',80.0,5);
-INSERT INTO Produits VALUES(6,'Pull',70.0,150);
 CREATE TABLE Details ( 
     numeroCommande INT,
     numeroProduit INT,

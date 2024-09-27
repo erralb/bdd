@@ -124,7 +124,7 @@ CREATE TABLE `Produits` (
 
 LOCK TABLES `Produits` WRITE;
 /*!40000 ALTER TABLE `Produits` DISABLE KEYS */;
-INSERT INTO `Produits` VALUES (1,'T-shirt',25,30),(2,'Pantalon',60,50),(3,'Chaussures',120,100),(4,'Casquette',15,10),(5,'Sac à dos',80,5),(6,'Pull',70,150);
+INSERT INTO `Produits` VALUES (1,'T-shirt',25,30),(2,'Pantalon',60,50),(3,'Chaussures',120,100),(4,'Casquette',15,10),(5,'Sac à dos',80,5);
 /*!40000 ALTER TABLE `Produits` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -137,4 +137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-27  9:13:49
+-- Dump completed on 2024-09-27 11:28:12

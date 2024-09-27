@@ -144,7 +144,6 @@ COPY public.produits (numero, nom, prix, stock) FROM stdin;
 3	Chaussures	120	100
 4	Casquette	15	10
 5	Sac à dos	80	5
-6	Pull	70	150
 \.
 
 
