@@ -1,16 +1,76 @@
 ---
-// import { Code } from "@astrojs/starlight/components";
 import { Content as TextDB } from "../content/files/ecommerce-fr-erd-v2-text.md";
+//import DBEcommmerce2
+import DBecommerce2 from "./DBecommerce2.astro";
 ---
 
 <h5>Schéma de la base de données</h5>
 
 <TextDB />
 
+<details>
+  <summary>Données de la base</summary>
+
+  <DBecommerce2 />
+</details>
+
 <script>
   import initSqlJs from "sql.js";
 
+  import { EditorState, Compartment } from "@codemirror/state";
+  import { EditorView, keymap, lineNumbers } from "@codemirror/view";
+  import { defaultKeymap } from "@codemirror/commands";
+  import { sql } from "@codemirror/lang-sql";
+  // import { language } from "@codemirror/language";
+
+  var query = "SELECT * FROM Clients;";
+
   async function main() {
+    let updateListenerExtension = EditorView.updateListener.of(
+      (update: any) => {
+        // //get the current line number at cursor
+        // console.log(update.state.doc.lineAt(update.state.selection.main.head).number);
+        // //get the current selected code
+        // console.log(update.state.sliceDoc(update.state.selection.main.from, update.state.selection.main.to));
+
+        let selection = update.state.sliceDoc(
+          update.state.selection.main.from,
+          update.state.selection.main.to
+        );
+
+        // let line = update.state.doc.lineAt(update.state.selection.main.head).text;
+
+        // console.log("editor content", update.state.doc.toString());
+        // console.log("selection", selection);
+
+        if (selection.length > 0) {
+          query = selection.toString();
+        } 
+        // else if(line.length > 0) {
+        //   query = update.state.doc.lineAt(update.state.selection.main.head).text; 
+        // }
+        else {
+          query = update.state.doc.toString();
+        }
+      }
+    );
+
+    let startState = EditorState.create({
+      doc: "SELECT * FROM Clients;",
+      extensions: [
+        keymap.of(defaultKeymap),
+        sql(),
+        // language.of(sql()),
+        updateListenerExtension,
+        lineNumbers(),
+      ],
+    });
+
+    let view = new EditorView({
+      state: startState,
+      parent: document.getElementById("editor"),
+    });
+
     const sqlPromise = initSqlJs({
       locateFile: (file: string) => `https://sql.js.org/dist/${file}`,
     });
@@ -64,29 +124,30 @@ import { Content as TextDB } from "../content/files/ecommerce-fr-erd-v2-text.md"
 
         tableContainer.appendChild(table);
       } catch (e) {
-        let error = e as Error
+        let error = e as Error;
         tableContainer.innerHTML = `<p style="color: red;">${error.message}</p>`;
         return;
       }
     }
 
-    let query = "SELECT * FROM Clients;";
     runQuery(db, query);
 
     //add event listener to #runQuery button
     let runQueryButton = document.getElementById("runQuery");
     if (!runQueryButton) return;
 
-    let textarea = document.getElementById("userQuery") as HTMLTextAreaElement;
-    if (!textarea) return;
+    // let textarea = document.getElementById("userQuery") as HTMLTextAreaElement;
+    // if (!textarea) return;
 
     runQueryButton.addEventListener("click", function () {
-      runQuery(db, textarea.value);
+      // console.log("query", query);
+      runQuery(db, query);
     });
 
     window.addEventListener("keydown", function (e) {
       if (e.ctrlKey && e.key == "Enter") {
-        runQuery(db, textarea.value);
+        // console.log(query);
+        runQuery(db, query);
       }
     });
   }
@@ -96,7 +157,9 @@ import { Content as TextDB } from "../content/files/ecommerce-fr-erd-v2-text.md"
 
 <h5>Entrez une requête</h5>
 
-<textarea name="" id="userQuery"> SELECT * FROM Clients; </textarea>
+<div id="editor"></div>
+
+<textarea name="" id="userQuery"></textarea>
 
 <button id="runQuery">Lancer la requête</button> (ou appuyez sur Ctrl + Entrée)
 
@@ -110,11 +173,34 @@ import { Content as TextDB } from "../content/files/ecommerce-fr-erd-v2-text.md"
   }
 
   textarea {
-    display: block;
+    display: none;
     margin: 40px 0 0;
     padding: 10px;
     width: 100%;
     height: 100px;
+  }
+
+  #editor {
+    margin: 40px 0 0;
+    height: 200px;
+    display: flex;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+
+  .cm-editor {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+
+    .cm-scroller {
+      margin-top: 0;
+    }
+
+    .cm-line,
+    .cm-gutterElement {
+      margin: 0;
+    }
   }
 
   table.tableComponent {
