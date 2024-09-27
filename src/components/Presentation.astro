@@ -35,34 +35,34 @@ import slidesIcon from "../assets/slides.svg";
 </div>
 
 <script>
-
-
-  const nextLessonLink = document.getElementById(
-    "presentation-next-lesson-link"
-  ) as HTMLAnchorElement;
   const nextLesson = document.querySelector('[rel="next"]') as HTMLAnchorElement;
-  nextLessonLink.href = nextLesson.href;
-  nextLessonLink.textContent = nextLesson.textContent;
-
-  const prevLessonLink = document.getElementById(
-    "presentation-prev-lesson-link"
-  ) as HTMLAnchorElement;
-
   const prevLesson = document.querySelector('[rel="prev"]') as HTMLAnchorElement;
-  prevLessonLink.href = prevLesson.href;
-  prevLessonLink.textContent = prevLesson.textContent;
 
+  if (nextLesson) {
+    const nextLessonLink = document.getElementById("presentation-next-lesson-link") as HTMLAnchorElement;
+    nextLessonLink.href = nextLesson.href;
+    nextLessonLink.textContent = nextLesson.textContent;
+  }
+
+  if(prevLesson) {
+    const prevLessonLink = document.getElementById("presentation-prev-lesson-link") as HTMLAnchorElement;
+    prevLessonLink.href = prevLesson.href;
+    prevLessonLink.textContent = prevLesson.textContent;
+  }
 
   //   import { createSyncReader, createSyncWriter } from "../sync";
 
-  const button = document.getElementById(
-    "presentation-button"
-  ) as HTMLButtonElement;
+  const button = document.getElementById("presentation-button") as HTMLButtonElement;
 
   let slides = Array.from(document.querySelectorAll(".presentation-slide"));
 
   let total = slides.length;
   document.getElementById("presentation-slide-total")!.textContent = total.toString();
+
+  if(total < 1) {
+    //hide presentation-button
+    button.style.display = "none";
+  }
 
   let slide = 0;
   document.getElementById("presentation-slide-number")!.textContent = (slide + 1).toString();
