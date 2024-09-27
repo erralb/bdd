@@ -85,12 +85,12 @@ ALTER TABLE public.produits OWNER TO postgres;
 --
 
 COPY public.clients (numero, nom, prenom, rue, codepostal, ville, telephone, categorie, compte) FROM stdin;
-1	Lebreton	Éléonore	6, avenue Françoise Olivier	59778	Guillot-la-Forêt	0776059929	A1	10000
-2	Vasseur	Georges	54, avenue Jean	66941	Jacquot	+33 1 44 68 49 74	B2	1903.54
-3	Da Costa	Léon	boulevard Brigitte Faivre	42827	Leclercq	0568740044	C3	-1500
-4	Rey	Michel	49, avenue de Adam	58442	Mathieu-sur-Colin	\N	B1	3251
-5	Weiss	Dominique	boulevard Remy	58458	Dias-la-Forêt	\N	B2	0
-6	Berlioz	Diane	27 avenue de la Chartreuse	42827	Leclercq	\N	\N	123094
+1	Lebreton	Éléonore	6 avenue Françoise Olivier	38240	Meylan	0776059929	A1	10000
+2	Vasseur	Georges	54, avenue Jean	38000	Grenoble	+33 1 44 68 49 74	B2	1903.54
+3	Da Costa	Léon	18, boulevard Brigitte Faivre	75000	Paris	0568740044	C3	-1500
+4	Rey	Michel	49, avenue de Adam	38220	Vizille	\N	B1	3251
+5	Weiss	Dominique	98, boulevard Remy	59000	Lille	\N	B2	0
+6	Berlioz	Diane	27 avenue de la Chartreuse	75000	Paris	\N	\N	123094
 \.
 
 
@@ -102,7 +102,7 @@ COPY public.commandes (numero, numeroclient, datecommande, statut) FROM stdin;
 1	1	2024-02-01	livrée
 2	1	2024-03-15	livrée
 3	3	2024-04-28	livrée
-4	4	2024-05-24	annulée
+4	4	2024-06-24	annulée
 5	5	2024-06-30	en cours
 6	5	2024-07-12	en cours
 7	4	2024-08-19	annulée
@@ -144,6 +144,7 @@ COPY public.produits (numero, nom, prix, stock) FROM stdin;
 3	Chaussures	120	100
 4	Casquette	15	10
 5	Sac à dos	80	5
+6	Pull	70	150
 \.
 
 

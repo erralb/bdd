@@ -42,7 +42,7 @@ CREATE TABLE `Clients` (
 
 LOCK TABLES `Clients` WRITE;
 /*!40000 ALTER TABLE `Clients` DISABLE KEYS */;
-INSERT INTO `Clients` VALUES (1,'Lebreton','Éléonore','6, avenue Françoise Olivier','59778','Guillot-la-Forêt','0776059929','A1',10000),(2,'Vasseur','Georges','54, avenue Jean','66941','Jacquot','+33 1 44 68 49 74','B2',1903),(3,'Da Costa','Léon','boulevard Brigitte Faivre','42827','Leclercq','0568740044','C3',-1500),(4,'Rey','Michel','49, avenue de Adam','58442','Mathieu-sur-Colin',NULL,'B1',3251),(5,'Weiss','Dominique','boulevard Remy','58458','Dias-la-Forêt',NULL,'B2',0),(6,'Berlioz','Diane','27 avenue de la Chartreuse','42827','Leclercq',NULL,NULL,123094);
+INSERT INTO `Clients` VALUES (1,'Lebreton','Éléonore','6 avenue Françoise Olivier','38240','Meylan','0776059929','A1',10000),(2,'Vasseur','Georges','54, avenue Jean','38000','Grenoble','+33 1 44 68 49 74','B2',1903),(3,'Da Costa','Léon','18, boulevard Brigitte Faivre','75000','Paris','0568740044','C3',-1500),(4,'Rey','Michel','49, avenue de Adam','38220','Vizille',NULL,'B1',3251),(5,'Weiss','Dominique','98, boulevard Remy','59000','Lille',NULL,'B2',0),(6,'Berlioz','Diane','27 avenue de la Chartreuse','75000','Paris',NULL,NULL,123094);
 /*!40000 ALTER TABLE `Clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -70,7 +70,7 @@ CREATE TABLE `Commandes` (
 
 LOCK TABLES `Commandes` WRITE;
 /*!40000 ALTER TABLE `Commandes` DISABLE KEYS */;
-INSERT INTO `Commandes` VALUES (1,1,'2024-02-01','livrée'),(2,1,'2024-03-15','livrée'),(3,3,'2024-04-28','livrée'),(4,4,'2024-05-24','annulée'),(5,5,'2024-06-30','en cours'),(6,5,'2024-07-12','en cours'),(7,4,'2024-08-19','annulée');
+INSERT INTO `Commandes` VALUES (1,1,'2024-02-01','livrée'),(2,1,'2024-03-15','livrée'),(3,3,'2024-04-28','livrée'),(4,4,'2024-06-24','annulée'),(5,5,'2024-06-30','en cours'),(6,5,'2024-07-12','en cours'),(7,4,'2024-08-19','annulée');
 /*!40000 ALTER TABLE `Commandes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,7 +124,7 @@ CREATE TABLE `Produits` (
 
 LOCK TABLES `Produits` WRITE;
 /*!40000 ALTER TABLE `Produits` DISABLE KEYS */;
-INSERT INTO `Produits` VALUES (1,'T-shirt',25,30),(2,'Pantalon',60,50),(3,'Chaussures',120,100),(4,'Casquette',15,10),(5,'Sac à dos',80,5);
+INSERT INTO `Produits` VALUES (1,'T-shirt',25,30),(2,'Pantalon',60,50),(3,'Chaussures',120,100),(4,'Casquette',15,10),(5,'Sac à dos',80,5),(6,'Pull',70,150);
 /*!40000 ALTER TABLE `Produits` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -137,4 +137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-26 17:43:49
+-- Dump completed on 2024-09-27  9:13:49
