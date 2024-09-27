@@ -10,7 +10,7 @@ import Slide from '/src/components/Slide.astro';
 <Slide>
 # Description du problème
 
-Un marchand veut informatiser la gestion des ses stocks et des commandes passées par ses clients. La base de données construite pour ce marchand est la suivante :
+Un marchand veut informatiser la gestion de ses stocks et des commandes passées par ses clients. La base de données construite pour ce marchand est la suivante :
 
 </Slide>
 <Slide>
@@ -30,9 +30,9 @@ import {Content as Boutique} from '../../files/ecommerce-fr-erd-v2-mermaid.md'
 
 <div class="page-break"></div>
 
-* La table **Clients** : Chaque ligne décrit un _client_. Les **colonnes** décrivent successivement le _numero_ du client, son _nom_ et _prenom_, son adresse avec _rue, codePostal, ville_, son _telephone_, sa _categorie_ et l'état de son _compte_. L'identifiant primaire est constitué de _numero_. Les colonnes _telephone_ et _categorie_ sont facultatives
+* La table **Clients** : Chaque ligne décrit un _client_. Les **colonnes** décrivent successivement le _numero_ du client, son _nom_ et _prenom_, son adresse avec _rue, codePostal, ville_, son _telephone_, sa _categorie_ et l'état de son _compte_. L'identifiant primaire est constitué de _numero_. Les colonnes _telephone_ et _categorie_ sont facultatives.
 
-* La table **Produits** : chaque ligne décrit un _produit_ ; les **colonnes** décrivent successivement le _numero_ du produit, son _nom_, son _prix_ unitaire et la _quantité_ restant en stock. _numero_ est l'identifiant primaire.
+* La table **Produits** : chaque ligne décrit un _produit_ ; les **colonnes** décrivent successivement le _numero_ du produit, son _nom_, son _prix_ unitaire et la _quantité_ restante en stock. _numero_ est l'identifiant primaire.
 
 * La table **Commandes** : chaque ligne décrit une _commande passée par un client_ ; les **colonnes** décrivent successivement le _numero_ de la commande, le _numeroClient_ du client qui a passé la commande, la _dateCommande_ de la commande et le _statut_ de la commande. L'identifiant primaire est constitué de _numero_. _numeroClient_ est une clé étrangère vers la table _Clients_.
 
