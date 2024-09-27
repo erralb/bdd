@@ -1,0 +1,150 @@
+---
+import { Code } from "@astrojs/starlight/components";
+---
+
+<script>
+  import initSqlJs from "sql.js";
+
+  async function main() {
+    const sqlPromise = initSqlJs({
+      locateFile: (file) => `https://sql.js.org/dist/${file}`,
+    });
+
+    const dataPromise = fetch(
+      "/bdd/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    ).then((res) => res.arrayBuffer());
+    console.log(dataPromise);
+    const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
+    const db = new SQL.Database(new Uint8Array(buf));
+
+    function runQuery(db, query) {
+      let tableContainer = document.getElementById("tableContainer");
+      tableContainer.innerHTML = "";
+      let table = document.createElement("table");
+      table.classList.add("tableComponent");
+
+      const stmt = db.prepare(query);
+      let result = db.exec(query);
+      let keys = result[0].columns;
+      let rows = result[0].values;
+
+      let thead = document.createElement("thead");
+      let tbody = document.createElement("tbody");
+      let tfoot = document.createElement("tfoot");
+
+      let tr = document.createElement("tr");
+      for (let key of keys) {
+        let th = document.createElement("th");
+        th.textContent = key;
+        tr.appendChild(th);
+      }
+
+      thead.appendChild(tr);
+      tfoot.appendChild(tr.cloneNode(true));
+      table.appendChild(thead);
+
+      for (let row of rows) {
+        let tr = document.createElement("tr");
+        for (let cell of row) {
+          let td = document.createElement("td");
+          td.textContent = cell;
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      }
+
+      table.appendChild(tbody);
+      table.appendChild(tfoot);
+
+      tableContainer.appendChild(table);
+    }
+
+    let query = "SELECT * FROM Clients;";
+    runQuery(db, query);
+
+    //add event listener to #runQuery button
+    document.getElementById("runQuery").addEventListener("click", function () {
+      let userQuery = document.getElementById("userQuery").value;
+      runQuery(db, userQuery);
+    });
+
+  }
+
+  main();
+</script>
+
+<br/>
+
+<textarea name="" id="userQuery"> SELECT * FROM Clients; </textarea>
+
+<button id="runQuery">Lancer la requête</button>
+
+<!-- <Code is:raw code="SELECT * FROM Clients;" lang="sql" /> -->
+
+<div id="tableContainer"></div>
+
+<style is:global>
+  .sl-container {
+    max-width: 100%;
+  }
+
+  textarea {
+    display: block;
+    margin: 40px 0 0;
+    padding: 10px;
+    width: 100%;
+    height: 100px;
+  }
+
+  table.tableComponent {
+    border-collapse: collapse;
+    font-family: sans-serif;
+    margin-bottom: 40px;
+    max-width: 100%;
+
+    caption {
+      caption-side: bottom;
+      padding: 10px;
+    }
+
+    thead,
+    tfoot {
+      background-color: rgb(250, 236, 209);
+    }
+
+    thead > tr:nth-child(1) th,
+    tfoot > tr:nth-child(1) th {
+      color: black;
+      font-weight: normal;
+    }
+
+    thead > tr:nth-child(2) th,
+    tfoot > tr:nth-child(2) th {
+      background-color: rgb(239, 239, 239);
+    }
+
+    tbody > tr:nth-of-type(even) {
+      background-color: rgb(248, 248, 248);
+    }
+
+    th {
+      text-align: center !important;
+    }
+
+    th,
+    td {
+      border: 1px solid rgb(160 160 160);
+      padding: 8px 10px;
+    }
+
+    td {
+      text-align: left !important;
+    }
+
+    :is(th:first-child, td:first-child):not(:where(.not-content *)),
+    :is(th:last-child, td:last-child):not(:where(.not-content *)) {
+      padding-inline-start: 10px;
+      padding-inline-end: 10px;
+    }
+  }
+</style>
