@@ -122,6 +122,7 @@ import DBecommerce2 from "./DBecommerce2.astro";
         table.appendChild(tbody);
         table.appendChild(tfoot);
 
+        tableContainer.innerHTML = "";
         tableContainer.appendChild(table);
       } catch (e) {
         let error = e as Error;
