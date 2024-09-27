@@ -85,7 +85,7 @@ import DBecommerce2 from "./DBecommerce2.astro";
     function runQuery(db: any, query: string) {
       let tableContainer = document.getElementById("tableContainer");
       if (!tableContainer) return;
-      tableContainer.innerHTML = "";
+      tableContainer.innerHTML = "Données en cours de chargement...";
       let table = document.createElement("table");
       table.classList.add("tableComponent");
 
