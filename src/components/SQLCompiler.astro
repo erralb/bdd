@@ -1,6 +1,11 @@
 ---
 import { Code } from "@astrojs/starlight/components";
+import { Content as TextDB } from "../content/files/ecommerce-fr-erd-v2-text.md";
 ---
+
+<h5>Schéma de la base de données</h5>
+
+<TextDB />
 
 <script>
   import initSqlJs from "sql.js";
@@ -23,40 +28,45 @@ import { Code } from "@astrojs/starlight/components";
       let table = document.createElement("table");
       table.classList.add("tableComponent");
 
-      const stmt = db.prepare(query);
-      let result = db.exec(query);
-      let keys = result[0].columns;
-      let rows = result[0].values;
+      //catch errors
+      try {
+        let result = db.exec(query);
+        let keys = result[0].columns;
+        let rows = result[0].values;
 
-      let thead = document.createElement("thead");
-      let tbody = document.createElement("tbody");
-      let tfoot = document.createElement("tfoot");
+        let thead = document.createElement("thead");
+        let tbody = document.createElement("tbody");
+        let tfoot = document.createElement("tfoot");
 
-      let tr = document.createElement("tr");
-      for (let key of keys) {
-        let th = document.createElement("th");
-        th.textContent = key;
-        tr.appendChild(th);
-      }
-
-      thead.appendChild(tr);
-      tfoot.appendChild(tr.cloneNode(true));
-      table.appendChild(thead);
-
-      for (let row of rows) {
         let tr = document.createElement("tr");
-        for (let cell of row) {
-          let td = document.createElement("td");
-          td.textContent = cell;
-          tr.appendChild(td);
+        for (let key of keys) {
+          let th = document.createElement("th");
+          th.textContent = key;
+          tr.appendChild(th);
         }
-        tbody.appendChild(tr);
+
+        thead.appendChild(tr);
+        tfoot.appendChild(tr.cloneNode(true));
+        table.appendChild(thead);
+
+        for (let row of rows) {
+          let tr = document.createElement("tr");
+          for (let cell of row) {
+            let td = document.createElement("td");
+            td.textContent = cell;
+            tr.appendChild(td);
+          }
+          tbody.appendChild(tr);
+        }
+
+        table.appendChild(tbody);
+        table.appendChild(tfoot);
+
+        tableContainer.appendChild(table);
+      } catch (e) {
+        tableContainer.innerHTML = `<p style="color: red;">${e.message}</p>`;
+        return;
       }
-
-      table.appendChild(tbody);
-      table.appendChild(tfoot);
-
-      tableContainer.appendChild(table);
     }
 
     let query = "SELECT * FROM Clients;";
@@ -68,18 +78,25 @@ import { Code } from "@astrojs/starlight/components";
       runQuery(db, userQuery);
     });
 
+    window.addEventListener("keydown", function (e) {
+      var evtobj = window.event ? window.event : e;
+      if (evtobj.ctrlKey && evtobj.key == "Enter") {
+        let userQuery = document.getElementById("userQuery").value;
+        runQuery(db, userQuery);
+      }
+    });
   }
 
   main();
 </script>
 
-<br/>
+<h5>Entrez une requête</h5>
 
 <textarea name="" id="userQuery"> SELECT * FROM Clients; </textarea>
 
-<button id="runQuery">Lancer la requête</button>
+<button id="runQuery">Lancer la requête</button> (ou appuyez sur Ctrl + Entrée)
 
-<!-- <Code is:raw code="SELECT * FROM Clients;" lang="sql" /> -->
+<h5>Résultat</h5>
 
 <div id="tableContainer"></div>
 
