@@ -1,0 +1,22 @@
+---
+export interface Props {
+  sqliteDB: string;
+  title?: string;
+  query: string;
+}
+
+const { sqliteDB, title, query } = Astro.props;
+
+import Table from "./TableSQLite.astro";
+import { Code } from '@astrojs/starlight/components';
+---
+
+<Code is:raw code={query} lang="sql" />
+
+Résultat de la requête :
+
+<Table
+ sqliteDB={sqliteDB}
+ title={title}
+ query={query}
+/>
