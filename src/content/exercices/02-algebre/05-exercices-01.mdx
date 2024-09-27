@@ -3,7 +3,7 @@ title: Exercice 1
 description: Exercices introductifs
 ---
 
-Soit le schéma relationnel de la base de données d’une agence de voyage :
+Soit le schéma relationnel de la base de données d'une agence de voyage :
 
 ```sql wrap
 CLIENT (NUMCLIENT, NOM, PRENOM, E-MAIL, NUMCB)
@@ -19,14 +19,14 @@ Formuler en algèbre relationnelle les requêtes suivantes :
 <summary>1. Nom, prénom et e-mail des clients ayant une réservation en cours</summary>
 
 ```sql wrap
-R1 = RESERVATION ::(DATERES ≥  "aujourd’hui") 
+R1 = RESERVATION ::(DATERES ≥  "aujourd'hui") 
 R2 = R1 x CLIENT (CLIENT.NUMCLIENT = RESERVATION.NUMCLIENT)
 R3 = R2[NOM, PRENOM, E-MAIL]
 ```
 </details>
 
 <details>
-<summary>2. Nom, prénom et e-mail des clients n’ayant aucune réservation en cours</summary>
+<summary>2. Nom, prénom et e-mail des clients n'ayant aucune réservation en cours</summary>
 
 ```sql wrap
 R4 = (CLIENT - R2[NUMCLIENT, NOM, PRENOM, E-MAIL, NUMCB]) [NOM, PRENOM, E-MAIL]

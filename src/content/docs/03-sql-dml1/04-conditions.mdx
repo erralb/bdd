@@ -65,13 +65,13 @@ WHERE telephone IS NOT NULL;
 ```sql
 SELECT  nom, prenom, ville 
 FROM Clients 
-WHERE ville IN ('Leclercq', 'Jacquot');
+WHERE ville IN ('Paris', 'Grenoble');
 ```
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT nom, prenom, ville FROM Clients WHERE ville IN ('Leclercq', 'Jacquot');"
+  query="SELECT nom, prenom, ville FROM Clients WHERE ville IN ('Paris', 'Grenoble');"
 />
 
 </Slide>
@@ -83,13 +83,13 @@ WHERE ville IN ('Leclercq', 'Jacquot');
 ```sql
 SELECT  nom, prenom, ville 
 FROM Clients 
-WHERE ville NOT IN ('Leclercq', 'Jacquot');
+WHERE ville NOT IN ('Paris', 'Grenoble');
 ```
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT nom, prenom, ville FROM Clients WHERE ville NOT IN ('Leclercq', 'Jacquot');"
+  query="SELECT nom, prenom, ville FROM Clients WHERE ville NOT IN ('Paris', 'Grenoble');"
 />
 
 </Slide>
@@ -158,7 +158,7 @@ WHERE ville LIKE '_eclercq';
   query="SELECT * FROM Clients WHERE ville LIKE '_eclercq';"
 />
 
-Ici le `L` de `Leclercq` est remplacé par un caractère quelconque, en utilisant le masque `_`.
+Ici le `L` de `Paris` est remplacé par un caractère quelconque, en utilisant le masque `_`.
 
 </Slide>
 <Slide title="Masques (wildcards)">
@@ -210,12 +210,12 @@ Exemple :
 ```sql
 SELECT * 
 FROM Clients 
-WHERE ville = 'Leclercq' AND categorie = 'C3';
+WHERE ville = 'Paris' AND categorie = 'C3';
 ```
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT * FROM Clients WHERE ville = 'Leclercq' AND categorie = 'C3'"
+  query="SELECT * FROM Clients WHERE ville = 'Paris' AND categorie = 'C3'"
 />
 
 Soit les expressions `P` et `Q` : 

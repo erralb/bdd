@@ -25,23 +25,23 @@ On pourra joindre des données de deux manières :
 
 ### Sans sous-requête
 
-Supposons que l'on veuille obtenir les commandes des clients habitant `Jacquot`
+Supposons que l'on veuille obtenir les commandes des clients habitant `Grenoble`
 
-1. On peut retrouver les numéros des clients habitant `Jacquot` en exécutant la requête :
+1. On peut retrouver les numéros des clients habitant `Grenoble` en exécutant la requête :
 
 ```sql
-SELECT numero FROM Clients WHERE ville = 'Jacquot' ;
+SELECT numero FROM Clients WHERE ville = 'Grenoble' ;
 ```
 
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
  query="
-SELECT numero FROM Clients WHERE ville = 'Jacquot' ;
+SELECT numero FROM Clients WHERE ville = 'Grenoble' ;
 "
 />
 
-2. Il est alors facile de retrouver les commandes des clients habitant à `Jacquot` :
+2. Il est alors facile de retrouver les commandes des clients habitant à `Grenoble` :
 
 ```sql
 SELECT * FROM Commandes WHERE numero IN (2);
@@ -55,7 +55,7 @@ SELECT * FROM Commandes WHERE numero IN (2);
 "
 />
 
-Cette procédure n'est pas pratique... surtout si de nouveaux clients de `Jacquot` s'ajoutent à la base de données
+Cette procédure n'est pas pratique... surtout si de nouveaux clients de `Grenoble` s'ajoutent à la base de données
 
 </Slide>
 <Slide>
@@ -64,7 +64,7 @@ Cette procédure n'est pas pratique... surtout si de nouveaux clients de `Jacquo
 
 ```sql
 SELECT * FROM Commandes WHERE numero IN (
- SELECT numero FROM Clients WHERE ville = 'Jacquot'
+ SELECT numero FROM Clients WHERE ville = 'Grenoble'
 );
 ```
 
@@ -73,7 +73,7 @@ SELECT * FROM Commandes WHERE numero IN (
  title="Clients"
  query="
 SELECT * FROM Commandes WHERE numero IN (
- SELECT numero FROM Clients WHERE ville = 'Jacquot'
+ SELECT numero FROM Clients WHERE ville = 'Grenoble'
 );
 "
 />

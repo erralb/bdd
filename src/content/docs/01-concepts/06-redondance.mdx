@@ -100,7 +100,7 @@ Nous disposons de plusieurs outils pour **adresser** le problème de redondance 
 En théorie des bases de données relationnelles, une **dépendance fonctionnelle** est une **contrainte entre deux ensembles d'attributs** dans une relation (table)
 
 :::tip[Définition]
-Un schéma d’une relation noté ```R = <A, {X→Y}>``` définit l’ensemble des **relations R** construites sur l’ensemble des **attributs A** qui vérifient l'ensemble des dépendances fonctionnelles **X→Y**
+Un schéma d'une relation noté ```R = <A, {X→Y}>``` définit l'ensemble des **relations R** construites sur l'ensemble des **attributs A** qui vérifient l'ensemble des dépendances fonctionnelles **X→Y**
 :::
 
 </Slide>
@@ -111,7 +111,7 @@ Un schéma d’une relation noté ```R = <A, {X→Y}>``` définit l’ensemble d
 
 * On souhaite définir une relation entre les attributs suivants : 
   * **P**rofesseur, **H**eure, **S**alle, **C**lasse, **M**atière
-* On pourrait décider que l'affirmation _"le professeur **p** qui enseigne la matière **m** fait cours à l’heure **h** en salle **s** à la classe **c**"_ correspond à ce que nous souhaitons représenter dans la bdd
+* On pourrait décider que l'affirmation _"le professeur **p** qui enseigne la matière **m** fait cours à l'heure **h** en salle **s** à la classe **c**"_ correspond à ce que nous souhaitons représenter dans la bdd
 * Depuis cette affirmation, on peut donc déduire les dépendances fonctionnelles suivantes :
   
   * ``` { P→M,  HC→S,  PH→C,  HS→P }```
@@ -228,7 +228,7 @@ On peut toujours réécrire un ensemble de DF en un ensemble de DFE, en supprima
 
 ### Couverture minimale des DFE
 
-> La **couverture minimale** d’un ensemble de DFE est un sous-ensemble minimum des DFE _permettant de générer toutes les autres DFE_.
+> La **couverture minimale** d'un ensemble de DFE est un sous-ensemble minimum des DFE _permettant de générer toutes les autres DFE_.
 
 Synonyme : Famille génératrice
 

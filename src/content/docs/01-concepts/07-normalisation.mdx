@@ -302,7 +302,7 @@ Autrement dit, tous les attributs non-identifiants sont totalement dépendants f
 :::tip[Définition]
 Une relation est en troisième forme ssi :
 * Elle est en deuxième forme normale
-* Tout attribut n’appartenant pas à un identifiant ne dépend pas d’un attribut non identifiant
+* Tout attribut n'appartenant pas à un identifiant ne dépend pas d'un attribut non identifiant
 :::
 
 </Slide>
@@ -372,7 +372,7 @@ Le respect de la 3FN ne garantit pas totalement une absence de redondance des do
 
 :::tip[Définition]
 Une relation est en Forme normale de Boyce-Codd ssi :
-* Une relation en troisième forme normale a un identifiant composé, aucune des propriétés élémentaires de cet identifiant ne doit être en dépendance fonctionnelle d’une autre propriété
+* Une relation en troisième forme normale a un identifiant composé, aucune des propriétés élémentaires de cet identifiant ne doit être en dépendance fonctionnelle d'une autre propriété
 :::
 
 > La BCNF est une forme normale plus stricte que la 3FN
@@ -395,7 +395,7 @@ Une relation est en Forme normale de Boyce-Codd ssi :
 </div>
 
 * Dans cet exemple :
-    * Si _Durand_ arrête d’enseigner la _Chimie_, on supprime la ligne et on perd la relation _Matière-Salle_
+    * Si _Durand_ arrête d'enseigner la _Chimie_, on supprime la ligne et on perd la relation _Matière-Salle_
     * On peut déduire qu'il existe une dépendance fonctionnelle entre _enseignantId_ (attributs de la clé) et les 2 autres attributs (aussi attributs de la clé)
 
 **Pour régler ce problème**, il faudrait une conception différente en plusieurs tables

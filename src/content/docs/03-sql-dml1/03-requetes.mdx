@@ -78,7 +78,7 @@ SELECT * FROM nom_table ;
   * `<=` : plus petit ou égal
 * **Remarques**
   * L'ordre naturel est utilisé dans les comparaisons
-  * Les chaînes de caractère doivent être entourées d’apostrophes `'` et `'`
+  * Les chaînes de caractère doivent être entourées d'apostrophes `'` et `'`
   * Un des formats de dates utilisés est : `'2013-09-01'`
 
 
@@ -92,15 +92,15 @@ Soit la requête :
 ```sql
 SELECT numero, nom, ville 
 FROM Clients
-WHERE ville = 'Leclercq' ;
+WHERE ville = 'Paris' ;
 ```
 
-Cette requête SQL sélectionne les valeurs `numero`, `nom`, `ville` des lignes de la table `Clients` et ne conserve que les lignes qui vérifient la condition `ville = 'Leclercq'` . 
+Cette requête SQL sélectionne les valeurs `numero`, `nom`, `ville` des lignes de la table `Clients` et ne conserve que les lignes qui vérifient la condition `ville = 'Paris'` . 
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT numero, nom, ville FROM Clients WHERE ville = 'Leclercq' ;"
+  query="SELECT numero, nom, ville FROM Clients WHERE ville = 'Paris' ;"
 />
 
 </Slide>
@@ -121,13 +121,13 @@ Cette requête SQL sélectionne les valeurs `numero`, `nom`, `ville` des lignes 
 ```sql
 SELECT ville 
 FROM Clients
-WHERE ville = 'Leclercq' ;
+WHERE ville = 'Paris' ;
 ```
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT ville FROM Clients WHERE ville = 'Leclercq' ;"
+  query="SELECT ville FROM Clients WHERE ville = 'Paris' ;"
 />
 </Slide>
 <Slide>
@@ -136,13 +136,13 @@ WHERE ville = 'Leclercq' ;
 
 ```sql
 SELECT DISTINCT ville 
-FROM Clients WHERE ville = 'Leclercq' ;
+FROM Clients WHERE ville = 'Paris' ;
 ```
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT DISTINCT ville FROM Clients WHERE ville = 'Leclercq' ;"
+  query="SELECT DISTINCT ville FROM Clients WHERE ville = 'Paris' ;"
 />
 
 </Slide>

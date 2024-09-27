@@ -56,7 +56,7 @@ C → B
 3. **Précisez l'identifiant de chaque relation obtenue**
 
 :::note[Rappel]
-La couverture minimale d’un ensemble de DFE est un sous-ensemble minimum des DFE permettant de générer toutes les autres DFE.
+La couverture minimale d'un ensemble de DFE est un sous-ensemble minimum des DFE permettant de générer toutes les autres DFE.
 :::
 
 Pour déterminer la couverture minimale des dépendances fonctionnelles, nous devons suivre trois étapes : 
@@ -84,7 +84,7 @@ ADE -> B
 ADE -> G
 ```
 
-Les autres dépendances n’ont qu’un seul attribut à droite, donc elles restent inchangées.
+Les autres dépendances n'ont qu'un seul attribut à droite, donc elles restent inchangées.
 
 Ensemble des dépendances après décomposition :
 
@@ -109,7 +109,7 @@ Nous allons essayer de réduire la partie gauche de chaque dépendance en élimi
 * `AC -> E` : Tester si `A -> E` ou `C -> E` est possible. Ni `A` ni `C` seuls ne permettent de déduire `E`, donc cette dépendance est minimale.
 * `ADE -> B` : Tester si `AD -> B`, `AE -> B`, ou `DE -> B` est possible. Aucune réduction ne permet de déduire `B`, donc cette dépendance est minimale.
 * `ADE -> G` : Tester si `AD -> G`, `AE -> G`, ou `DE -> G` est possible. Aucune réduction ne permet de déduire `G`, donc cette dépendance est minimale.
-* `CG -> D` : Tester si `C -> D` ou `G -> D` est possible. Aucune réduction n’est possible, donc cette dépendance est minimale.
+* `CG -> D` : Tester si `C -> D` ou `G -> D` est possible. Aucune réduction n'est possible, donc cette dépendance est minimale.
 * `BG -> C` : Tester si `B -> C` ou `G -> C` est possible. `B -> C` existe déjà, donc on peut éliminer cette dépendance.
 * `C -> B` : La partie gauche est déjà minimale.
 
@@ -131,12 +131,12 @@ C -> B
 Nous allons maintenant vérifier si certaines des dépendances peuvent être déduites des autres (c'est-à-dire redondantes).
 
 * `A -> B` : La partie gauche est déjà minimale, mais cette dépendance est redondante car elle peut être déduite par transitivité de `A -> C `et `C -> B` (nous l'éliminerons à l'étape suivante).
-* `A -> C` : Ne peut pas être déduite d’autres dépendances.
-* `AC -> E` : Ne peut pas être déduite d’autres dépendances.
+* `A -> C` : Ne peut pas être déduite d'autres dépendances.
+* `AC -> E` : Ne peut pas être déduite d'autres dépendances.
 * `ADE -> B` : peut être supprimée car `A -> B` donc on n'a pas besoin de `ADE` pour déterminer `B`.
-* `ADE -> G` : Ne peut pas être déduite d’autres dépendances.
-* `CG -> D` : Ne peut pas être déduite d’autres dépendances.
-* `C -> B` : Ne peut pas être déduite d’autres dépendances.
+* `ADE -> G` : Ne peut pas être déduite d'autres dépendances.
+* `CG -> D` : Ne peut pas être déduite d'autres dépendances.
+* `C -> B` : Ne peut pas être déduite d'autres dépendances.
 
 La couverture minimale des dépendances fonctionnelles est donc :
 
@@ -150,13 +150,13 @@ C -> B
 
 ##### 1. Décomposition en 2ème forme normale (2FN)
 
-Une relation est en 2ème forme normale (2FN) si elle est en 1ère forme normale (1FN) et que tous les attributs non-clés dépendent entièrement de la clé primaire, c’est-à-dire qu’il n’y a pas de dépendance partielle (dépendance d’un sous-ensemble de la clé).
+Une relation est en 2ème forme normale (2FN) si elle est en 1ère forme normale (1FN) et que tous les attributs non-clés dépendent entièrement de la clé primaire, c'est-à-dire qu'il n'y a pas de dépendance partielle (dépendance d'un sous-ensemble de la clé).
 
 ###### Étape 1 : Identifier la clé primaire
 
-À partir des dépendances fonctionnelles, nous devons identifier la clé primaire de la relation. Une clé candidate est un ensemble minimal d’attributs qui permet de déterminer tous les autres attributs de la relation.
+À partir des dépendances fonctionnelles, nous devons identifier la clé primaire de la relation. Une clé candidate est un ensemble minimal d'attributs qui permet de déterminer tous les autres attributs de la relation.
 
-D’après les dépendances minimales, nous pouvons observer :
+D'après les dépendances minimales, nous pouvons observer :
 
 * `A` détermine `C` (`A -> C`)
 * Avec `A` et `C`, on détermine `E` (`AC -> E`)
@@ -185,7 +185,7 @@ Ces relations sont maintenant en 2ème forme normale, car dans chaque relation, 
 
 ##### 2. Décomposition en 3ème forme normale (3FN)
 
-Une relation est en 3ème forme normale (3FN) si elle est en 2FN et qu’il n’y a pas de dépendances transitive, c’est-à-dire qu’un attribut non-clé ne doit pas dépendre d’un autre attribut non-clé.
+Une relation est en 3ème forme normale (3FN) si elle est en 2FN et qu'il n'y a pas de dépendances transitive, c'est-à-dire qu'un attribut non-clé ne doit pas dépendre d'un autre attribut non-clé.
 
 ###### Étape 1 : Vérifier les dépendances transitives
 

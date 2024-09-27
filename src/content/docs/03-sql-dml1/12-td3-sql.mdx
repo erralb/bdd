@@ -1,7 +1,150 @@
 ---
-title: TD3 - Introduction à SQL
+title: TD3 - Introduction au SQL DML
 description: Un travail dirigé introductif à SQL
 sidebar:
     label: TD3
     hidden: true
 ---
+import Slide from '/src/components/Slide.astro';
+
+<Slide>
+# Description du problème
+
+Un marchand veut informatiser la gestion des ses stocks et des commandes passées par ses clients. La base de données construite pour ce marchand est la suivante :
+
+</Slide>
+<Slide>
+
+import {Content as TextDB} from '../../files/ecommerce-fr-erd-v2-text.md'
+
+<TextDB />
+
+</Slide>
+<Slide>
+
+import {Content as Boutique} from '../../files/ecommerce-fr-erd-v2-mermaid.md'
+
+<Boutique />
+
+</Slide>
+
+<div class="page-break"></div>
+
+* La table **Clients** : Chaque ligne décrit un _client_. Les **colonnes** décrivent successivement le _numero_ du client, son _nom_ et _prenom_, son adresse avec _rue, codePostal, ville_, son _telephone_, sa _categorie_ et l'état de son _compte_. L'identifiant primaire est constitué de _numero_. Les colonnes _telephone_ et _categorie_ sont facultatives
+
+* La table **Produits** : chaque ligne décrit un _produit_ ; les **colonnes** décrivent successivement le _numero_ du produit, son _nom_, son _prix_ unitaire et la _quantité_ restant en stock. _numero_ est l'identifiant primaire.
+
+* La table **Commandes** : chaque ligne décrit une _commande passée par un client_ ; les **colonnes** décrivent successivement le _numero_ de la commande, le _numeroClient_ du client qui a passé la commande, la _dateCommande_ de la commande et le _statut_ de la commande. L'identifiant primaire est constitué de _numero_. _numeroClient_ est une clé étrangère vers la table _Clients_.
+
+* La table **Details** : chaque ligne représente un _détail d'une commande_ ; les colonnes décrivent successivement le _numero_ de la commande à laquelle le détail appartient, le _numero_ du produit commandé et la _quantité_ commandée. L'identifiant primaire est constitué de _numeroCommande_ et _numeroProduit_. _numeroCommande_ et _numeroProduit_ sont en outre chacune une clé étrangère respectivement vers les tables _Commandes_ et _Produits_.
+
+<div class="page-break"></div>
+
+# Questions 
+
+**Formulez les requêtes suivantes en SQL.** _Vous pouvez d'abord utiliser l'algèbre relationnelle pour les formuler puis les convertir en SQL._
+
+1. Afficher la liste des produits en stock.
+
+2. Afficher la liste des villes dans lesquelles il existe au moins un client.
+
+3. Afficher le numéro, le nom et la ville des clients de catégorie ``B2`` n'habitant pas à `Paris`.
+
+4. Afficher les caractéristiques des produits en stock dont le prix est supérieur à 100.
+
+5. Donner le numéro, le nom et le compte des clients de `Paris` et de `Grenoble` dont le compte est positif.
+
+6. Quelles catégories de clients trouve-t-on à `Paris` ?
+
+7. Afficher le numéro, le nom et la ville des clients dont le nom précède alphabétiquement la ville où ils résident.
+
+8. Afficher le total, le minimum, la moyenne et le maximum des comptes des clients.
+
+9. Afficher les numéros des clients qui commandent le produit de numéro 1.
+
+10. Afficher les villes des clients qui commandent le produit de numéro 1.
+
+11. Donner le numéro et le nom des clients de `Grenoble` qui n'ont pas passé de commandes.
+
+12. Quels sont les produits en qui contiennent la lettre `t` dans leur nom qui font l'objet d'une commande ?
+
+13. Ecrire les requêtes SQL qui recherchent les clients :
+
+    1. habitant à `Lille` ou à `Grenoble`.  
+    2. qui à la fois habitent à `Lille` et n'habitent pas à `Grenoble`.  
+    3. qui habitent à `Lille` ou n'habitent pas à `Grenoble`.  
+    4. qui n'habitent ni à `Lille` ni à `Grenoble`.  
+    5. qui n'habitent pas à `Lille` ou qui n'habitent pas à `Grenoble`.  
+    6. de catégorie `B2` habitant à `Grenoble`.  
+    7. de catégorie `B2` ou habitant à `Grenoble`.  
+    8. de catégorie `B2` n'habitant pas à `Grenoble`.  
+    9. qui n'ont pas été sélectionnés dans la question précédente.  
+    10. qui soit sont de catégorie `B1` ou `B2`, soit habitent à `Lille` ou à `Grenoble`, ou les deux conditions.  
+    11. qui soit sont de catégorie `B1` ou `B2`, soit habitent à `Lille` ou à `Grenoble`, mais pas les deux conditions.
+    12. qui sont de catégorie `B1` ou `B2`, et qui habitent à `Lille` ou à `Grenoble`.  
+    13. qui n'ont pas été sélectionnés dans la question précédente.
+
+14. Afficher la valeur totale des stocks de tous les produits.
+
+15. Afficher le numéro et le nom des produits qui contiennent la lettre `u` dans leur nom :
+
+    1. – qui ne sont pas commandés,  
+    2. – qui sont commandés à `Meylan`,  
+    3. – qui ne sont pas commandés à `Meylan`  
+    4. – qui ne sont commandés qu'à `Meylan`,  
+    5. – qui ne sont pas commandés qu'à `Meylan`,  
+    6. – qui sont commandés à `Meylan`, mais aussi ailleurs.
+
+16. Combien y a-t-il de commandes spécifiant un (ou plusieurs) produit(s) qui contiennent la lettre `u` ?
+
+17. Dans combien de villes trouve-t-on des clients de catégorie `B2` ?
+
+18. Afficher le _numéro_ et le _nom_ des clients qui n'ont pas commandé de produits qui contiennent la lettre `u`.
+
+19. A la question : _rechercher les villes dans lesquelles on n'a pas commandé de produit numéro 1_, quatre utilisateurs proposent les requêtes suivantes. Indiquez la (ou les) requêtes correctes, et interprétez les autres.
+
+```sql
+SELECT DISTINCT ville FROM Clients WHERE numero IN  
+    ( SELECT numeroClient FROM Commandes WHERE numero NOT IN  
+        (SELECT numeroCommande FROM Details WHERE numeroProduit = 1 )
+    );
+```
+
+```sql
+SELECT DISTINCT ville FROM Clients WHERE numero NOT IN  
+    (SELECT numeroClient FROM Commandes WHERE numero IN  
+        (SELECT numeroCommande FROM Details WHERE numeroProduit = 1 )
+    );
+```
+
+```sql
+SELECT DISTINCT ville FROM Clients WHERE ville NOT IN  
+    (SELECT ville FROM Clients WHERE numero IN  
+        (SELECT numeroClient FROM Commandes WHERE numero IN  
+            (SELECT numeroCommande FROM Details WHERE numeroProduit = 1 )
+        )
+    );
+```
+20. Dans quelles villes a-t-on commandé en juin 2024 ?
+
+21. On suppose que le concepteur de la base de données n'a pas trouvé utile de déclarer la colonne _numeroCommande_ comme clé étrangère dans la table _Details_. 
+    Il est donc possible que certaines lignes de Details violent la contrainte d'intégrité référentielle portant sur cette colonne. 
+    Ecrire une requête qui recherche les anomalies éventuelles.
+
+22. Normalement, à toute commande doit être associé au moins un détail. Ecrire une requête qui vérifie que chaque commande a au moins un détail.
+
+23. Quels sont les produits (numéro et nom) qui n'ont pas été commandés en 2024 ?
+
+24. Rechercher les clients qui ont commandé tous les produits.  
+
+    *Suggestion : Application du quantificateur **pour tout**. On recherche les clients, tels qu'il n'existe pas de produits qui n'apparaissent pas dans les détails de leurs commandes.*
+
+25. Dans quelles villes a-t-on commandé tous les produits (tous clients confondus) ?
+
+26. Rechercher les produits qui ont été commandés par tous les clients.
+
+27. Rechercher les villes dont aucun client n'a passé de commande.
+
+28. Rechercher les villes dont tous les clients ont passé au moins une commande.
+
+29. Rechercher les produits qui sont commandés dans toutes les villes.

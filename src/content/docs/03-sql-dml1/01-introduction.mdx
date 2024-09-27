@@ -60,17 +60,17 @@ Le **résultat** d'une requête SELECT ou **SFW** (SELECT FROM WHERE) est une ta
 Par exemple, la requête SFW suivante :
 
 ```sql 
-SELECT nom, prenom FROM Clients WHERE ville = 'Jacquot' OR ville = 'Dias-la-Forêt'
+SELECT nom, prenom FROM Clients WHERE ville = 'Grenoble' OR ville = 'Lille'
 ```
 
-retournera une table temporaire contenant les colonnes `nom` et `prenom` des clients habitant à `Jacquot` ou `Dias-la-Forêt` : 
+retournera une table temporaire contenant les colonnes `nom` et `prenom` des clients habitant à `Grenoble` ou `Lille` : 
 
 import Table from "/src/components/TableSQLite.astro";
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT nom, prenom FROM Clients WHERE ville = 'Jacquot' OR ville = 'Dias-la-Forêt'"
+  query="SELECT nom, prenom FROM Clients WHERE ville = 'Grenoble' OR ville = 'Lille'"
 />
 
 </Slide>

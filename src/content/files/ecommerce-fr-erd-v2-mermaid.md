@@ -1,7 +1,4 @@
 ```mermaid
----
-title: Fil Rouge
----
 erDiagram
 
     Clients {
