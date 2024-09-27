@@ -1,0 +1,79 @@
+---
+title: Exercice 3
+description: Exercices introductifs
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import SQLiteQuery from "/src/components/SQLiteQuery.astro";
+
+Exprimer en SQL les requêtes suivantes :
+
+_Conseil : Utilisation de `sous requêtes`, de `COUNT`, de `IN` et `NOT IN`, de `LIKE`_
+
+<br/>
+
+<details>
+<summary>1. Combien y a-t-il de _commandes_ spécifiant un (ou plusieurs) produit(s) dont le _nom_ commence par la lettre `c` ou `C` ?</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Details"
+ query= {`
+    SELECT COUNT(DISTINCT D.numeroCommande) AS "Nombre de commandes"
+    FROM Details D
+    WHERE D.numeroProduit IN (
+        SELECT P.numero FROM Produits P WHERE P.nom LIKE 'c%' OR P.nom LIKE 'C%'
+    );
+`}
+/>
+
+</details>
+
+<details>
+<summary>2. Afficher le _numéro_ et le _nom_ des _clients_ qui n'ont pas commandé de _produits_  dont le _nom_ commence par la lettre `c` ou `C`</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query= {`
+    SELECT C.numero, C.nom
+    FROM Clients C
+    WHERE C.numero NOT IN (
+        SELECT DISTINCT COM.numeroClient
+        FROM Commandes COM
+        WHERE COM.numero IN (
+            SELECT D.numeroCommande FROM Details D WHERE D.numeroProduit IN (
+                SELECT P.numero FROM Produits P WHERE P.nom LIKE 'c%' OR P.nom LIKE 'C%'
+            )
+        )
+    );            
+`}
+/>
+
+</details>
+
+<details>
+<summary>3. Quels sont les _produits_ (_numéros_ et _noms_) qui n'ont pas été commandés en `2024` ?</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits"
+ query= {`
+    SELECT P.numero, P.nom
+    FROM Produits P
+    WHERE P.numero NOT IN (
+        SELECT D.numeroProduit
+        FROM Details D
+        WHERE D.numeroCommande IN (
+            SELECT C.numero
+            FROM Commandes C
+            WHERE C.dateCommande LIKE '2024%'
+        )
+    );
+`}
+/>
+
+</details>
+
+
+

@@ -1,0 +1,82 @@
+---
+title: Exercice 2
+description: Exercices introductifs
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import SQLiteQuery from "/src/components/SQLiteQuery.astro";
+
+Exprimer en SQL les requêtes suivantes :
+
+<br/>
+
+<details>
+<summary>1. Afficher le _numéro_, le _nom_ et la _ville_ des _clients_ dont le _nom_ `précède alphabétiquement` la _ville_ où ils résident</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query="
+    SELECT c.numero, c.nom, c.ville
+    FROM Clients c
+    WHERE c.nom < c.ville
+"
+/>
+
+</details>
+
+<details>
+<summary>2. Afficher les _villes_ des _clients_ qui _commandent_ le _produit_ `1`</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query= {`
+ SELECT C.ville FROM Clients C WHERE C.numero IN (
+    SELECT COM.numeroClient FROM Commandes COM WHERE COM.numero IN (
+        SELECT D.numeroCommande FROM Details D WHERE D.numeroProduit = 1
+    )
+);
+`}
+/>
+
+</details>
+
+<details>
+<summary>3. Quels sont les _produits_ dont le _nom_ commence par la lettre `c` ou `C` qui font l'objet d'une _commande_ ?</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits"
+ query= {`
+    SELECT P.numero, P.nom 
+    FROM Produits P 
+    WHERE 
+        P.nom LIKE 'c%' 
+        OR P.nom LIKE 'C%' 
+        AND P.numero IN ( SELECT D.numeroProduit FROM Details D );
+`}
+/>
+
+</details>
+
+
+<details>
+<summary>4. Donner la _valeur totale_ des _stocks_ sans tenir compte des commandes en cours.</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits"
+ query= {`
+    SELECT SUM(P.stock * P.prix) AS 'Valeur du stock' 
+    FROM Produits P;
+`}
+/>
+
+</details>
+
+
+
+
+
+

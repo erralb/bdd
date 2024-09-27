@@ -1,0 +1,72 @@
+---
+title: Exercice 1
+description: Exercices introductifs
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import SQLiteQuery from "/src/components/SQLiteQuery.astro";
+
+Exprimer en SQL les requêtes suivantes :
+
+<br/>
+
+<details>
+<summary>1. Afficher la liste des _villes_ dans lesquelles il existe au moins un _client_.</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query="
+    SELECT DISTINCT ville FROM clients;
+"
+/>
+
+</details>
+
+<details>
+<summary>2. Afficher le _numéro_, le _nom_ et la _ville_ des _clients_ de _catégorie_ `B2` n'habitant pas `Paris`</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query="
+    SELECT numero, nom, ville
+    FROM Clients
+    WHERE categorie = 'B2' AND ville != 'Paris';
+"
+/>
+
+</details>
+
+<details>
+<summary>3. Donner le _numéro_, le _nom_ et le _compte_ des _clients_ des villes `Paris` et `Grenoble` dont le _compte_ est `positif`</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query="
+    SELECT numero, nom, compte
+    FROM Clients
+    WHERE ville IN ('Paris', 'Grenoble') AND compte > 0;
+"
+/>
+</details>
+
+
+<details>
+<summary>4. Quelles _catégories_ de _clients_ trouve-t-on dans la ville `Paris` ?</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query="
+    SELECT DISTINCT categorie, ville
+    FROM Clients
+    WHERE ville = 'Paris';
+"
+/>
+
+</details>
+
+
+

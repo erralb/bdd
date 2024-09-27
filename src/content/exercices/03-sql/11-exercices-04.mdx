@@ -1,0 +1,78 @@
+---
+title: Exercice 4
+description: Exercices introductifs
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import SQLiteQuery from "/src/components/SQLiteQuery.astro";
+
+Exprimer en SQL les requêtes suivantes :
+
+_Conseil : Utilisation de `sous requêtes`, de `IN` et `NOT IN`, de `EXISTS` et `NOT EXISTS`, et de références multiplee à une même table (voir le cours)_
+
+<br/>
+
+<details>
+<summary>1. Rechercher les _clients_ qui ont _commandé_ `tous` les _produits_.</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query= {`
+    SELECT C.numero, C.nom
+    FROM Clients C
+    WHERE NOT EXISTS (
+        SELECT P.numero FROM Produits P
+        WHERE P.numero NOT IN (
+            SELECT D.numeroProduit FROM Details D
+            WHERE D.numeroCommande IN (
+                SELECT COM.numero FROM Commandes COM
+                WHERE COM.numeroClient = C.numero
+            )
+        )
+    );
+`}
+/>
+
+</details>
+
+<details>
+<summary>2. Rechercher les _villes_ dont `aucun` _client_ n'a passé de _commande_.</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query= {`
+    SELECT DISTINCT ville FROM Clients
+    WHERE ville NOT IN (
+        SELECT DISTINCT ville FROM Clients C
+        WHERE C.numero IN (
+            SELECT COM.numeroClient FROM Commandes COM
+        )
+    );
+`}
+/>
+
+</details>
+
+
+<details>
+<summary>3. Rechercher les _villes_ dont `tous` les _clients_ ont passé `au moins une commande`</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Clients"
+ query= {`
+    SELECT DISTINCT ville FROM Clients
+    WHERE NOT EXISTS (
+        SELECT C.numero FROM Clients C
+        WHERE C.ville = Clients.ville
+        AND NOT EXISTS (
+            SELECT COM.numeroClient FROM Commandes COM
+            WHERE COM.numeroClient = C.numero
+        )
+    );
+`}
+/>
+
+</details>
