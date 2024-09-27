@@ -56,7 +56,7 @@ export default defineConfig({
 								directory: '01-concepts',
 							}
 						},
-						
+
 						{
 							label: '2. Algèbre Relationnelle',
 							collapsed: true,
@@ -73,15 +73,15 @@ export default defineConfig({
 									// 	directory: '02-algebre/02-operateurs'
 									// },
 									items: [
-										{slug: '02-algebre/02-operateurs/01-projection'},
-										{slug: '02-algebre/02-operateurs/02-selection'},
-										{slug: '02-algebre/02-operateurs/03-produit'},
-										{slug: '02-algebre/02-operateurs/04-jointure'},
-										{slug: '02-algebre/02-operateurs/05-division'},
-										{slug: '02-algebre/02-operateurs/06-union'},
-										{slug: '02-algebre/02-operateurs/07-intersection'},
-										{slug: '02-algebre/02-operateurs/08-difference'},
-										{slug: '02-algebre/02-operateurs/09-complement'},
+										{ slug: '02-algebre/02-operateurs/01-projection' },
+										{ slug: '02-algebre/02-operateurs/02-selection' },
+										{ slug: '02-algebre/02-operateurs/03-produit' },
+										{ slug: '02-algebre/02-operateurs/04-jointure' },
+										{ slug: '02-algebre/02-operateurs/05-division' },
+										{ slug: '02-algebre/02-operateurs/06-union' },
+										{ slug: '02-algebre/02-operateurs/07-intersection' },
+										{ slug: '02-algebre/02-operateurs/08-difference' },
+										{ slug: '02-algebre/02-operateurs/09-complement' },
 									]
 
 								},
@@ -98,6 +98,9 @@ export default defineConfig({
 									slug: '02-algebre/06-td2-algebre',
 								},
 								{
+									slug: '02-algebre/06-td2-algebre-corrige',
+								},
+								{
 									slug: '02-algebre/07-fiche-resume',
 								},
 
@@ -108,7 +111,7 @@ export default defineConfig({
 							collapsed: true,
 							autogenerate: {
 								directory: '03-sql-dml1'
-							}
+							},
 						},
 						// {
 						// 	label: '4. SQL Avancé',
@@ -131,6 +134,7 @@ export default defineConfig({
 						// 		directory: '04-sql-ddl'
 						// 	}
 						// },
+						{ slug: 'sql-compiler' },
 
 					]
 				},

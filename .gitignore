@@ -27,4 +27,3 @@ pnpm-debug.log*
 
 # ignore composer vendor directory
 vendor
-src/content/docs/02-algebre/06-td2-algebre-corrige.mdx

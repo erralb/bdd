@@ -1,0 +1,115 @@
+---
+title: TD2 - Corrigé
+description: Exercices corrigés d'algèbre relationelle
+---
+
+## 3. Données de la base de données
+
+![Tables 1, 2 et 3](06-td2-algebre-01-Tables-123.png)
+![Tables 4, 5 et 6](06-td2-algebre-02-Tables-456.png)
+
+## 4. Navigation dans la base de données
+
+1. Ville de départ du circuit 10 ?
+
+```
+Shannon
+```
+
+2. Noms des monuments visités par Mafalda ?
+
+```
+RESERVATION : Mafalda -> NC 5 et 2
+ETAPES : Elle a visité Venise et Londres
+MONUMENT : Tous les monuments appartenant à Venise et Londres
+```
+
+3. Nombre de places mises à la vente pour le circuit 5 à la date du 9/11/02 ?
+
+```
+110 ( 66 de Programmation + 43 et 1 de Reservation )
+```
+
+## 5. Requêtes
+
+Donner en algèbre relationnelle l'expression des requêtes suivantes :
+
+1. Ville de départ du circuit 10 ?
+
+```
+R = ETAPE : ( NC = 10 ∧ NUMETAPE = 1)  [NOMV]
+```
+
+2. Noms des monuments visités par Mafalda ?
+
+```
+R1 = RESERVATION : ( NOMC = ‘Mafalda' )
+R2 = R1 (R1.NC = ETAPE.NC)  x ETAPE
+R3 = R2 (R2.NOMV = MONUMENT.NOMV) x MONUMENT
+R4 = R3 [NOMM]
+```
+
+3. Donner le numéro, les villes de départ et d'arrivée des circuits qui démarrent après une date donnée ;
+
+```
+R1 = PROGRAMMATION : ( DATE > ‘9/2/02' ) [NC] -- j'isole par date
+R2 = ETAPE ( ETAPE.NC = CIRCUIT.NC ) x CIRCUIT -- je joins en relation ETAPE et CIRCUIT
+R3 = R2 : ( NUMETAPE = 1 ∨ NUMETAPE = NBETAPES ) -- J'isole les étapes départ et arrivée
+R4 = R1 ( R1.NC = R3.NC ) x R3 -- je joins mes NC de R1 et ceux de R3
+R5 = R4 [NC, NOMV]
+
+```
+4. Donner les noms des clients qui ont réservé des circuits qui passent par un pays donné ;
+
+```
+R1 = VILLE ( VILLE.NOMV = ETAPE.NOMV ) x ETAPE
+R2 = R1 ( R1.NC = RESERVATION.NC ) x RESERVATION
+R3 = R2 : ( PAYS = ‘FRANCE' ) [NOMC]
+
+```
+5. Donner le nom des clients qui ne visitent aucun monument ;
+
+```
+R1 = RESERVATION ( RESERVATION.NC = ETAPE.NC ) x ETAPE
+R2 = R1 ( R1.NOMV = MONUMENT.NOMV ) x MONUMENT [NC, NOMC]
+R3 = RESERVATION [NC, NOMC] - R2
+
+```
+L'idée : je récupère uniquement les clients qui visitent des monuments et je soustrais ces clients à ma table de réservation
+
+6. Donner le numéro, le prix de base (i.e. ne tenant pas compte du prix des monuments visités), et la date de départ des circuits qui ont encore des places disponibles ;
+
+```
+R1 = CIRCUIT ( CIRCUIT.NC = PROGRAMMATION.NC ) x PROGRAMMATION
+R2 = RESERVATION [ NC, SOMME(PLACES) ]
+R3 = R1 ( R1.NC = R2.NC ) x R2
+R4 = R3 : ( R3.SOMME(PLACE) < R3.PLACES )
+
+```
+7. Donner le numéro et le prix de base des circuits qui n'ont aucune réservation ;
+
+```
+R1 = CIRCUIT (CIRCUIT.NC = RESERVATION.NC) x RESERVATION [NC, PRIX]
+R2 = CIRCUIT [NC, PRIX] - R1
+
+```
+8. Donner les noms des pays, des villes et des monuments visités par un client donné ;
+
+```
+R1 = RESERVATION : ( NOMC = ‘client donné' )
+R2 = R1 ( R1.NC = ETAPE.NC) x ETAPE
+R3 = R2 ( R2.NOMV = MONUMENT. NOMV ) x MONUMENT
+R4 = R3 ( R3.NOMV x VILLE.NOMV ) x VILLE
+R5 = R4 [ PAYS, NOMV, MONUMENT]
+
+```
+9. Donner la liste des numéros de circuits qui passent dans toutes les villes d'un pays donné
+
+```
+R1 = VILLE : ( PAYS = ‘pays donné' )
+R2 = ETAPE / R1
+R3 = R2 [NC]
+
+```
+10. Pour chaque circuit restant dans le même pays, donner le nom de ce pays et le numéro de circuit.
+
