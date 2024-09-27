@@ -131,9 +131,20 @@
 
 @media print {
 
+  @page {
+      size: A4 portrait; 
+      margin: 2cm 1cm;
+  }
+
   .onlyPrint {
     display: initial;
   }
+
+  html, body, div {
+    /* border: 1px solid black; */
+    margin: 0;
+    padding: 0;
+}
 
   h1, h2, h3, h4, h5 {
     border-top: none !important;
@@ -141,10 +152,22 @@
 
   header,
   nav,
+  .right-sidebar-container,
   .pagination-links,
   ul[role="tablist"],
-  #presentation-button {
-    display: none;
+  #presentation-button,
+  footer {
+    display: none !important;
+  }
+
+  div.main-frame {
+    margin: 0;
+    padding: 40px 0 0;
+    width: 100%;
+  }
+
+  main {
+    padding: 0 !important;
   }
 
   table,
