@@ -9,19 +9,17 @@ import Slide from '/src/components/Slide.astro';
 
 <Slide>
 
-Tout au long de ce cours, nous allons travailler sur un exemple fil rouge : une base de données simplifiée d'une boutique en ligne.
+Tout au long de ce cours, nous allons travailler sur un exemple fil rouge : une base de données simplifiée d'une **boutique en ligne**.
 
 </Slide>
 <Slide>
 
 ### Représentation textuelle
 
-```ansi
-Clients ([4mnumero[0m, nom, prenom, rue, codePostal, ville, telephone, categorie, compte)
-Commandes ([4mnumero[0m, numeroClient*, dateCommande, statut)
-Produits ([4mnumero[0m, nom, prix, stock)
-Details ([4mnumeroCommande*, numeroProduit*[0m, quantite)
-```
+import {Content as TextDB} from '../../files/ecommerce-fr-erd-v2-text.md'
+
+<TextDB />
+
 </Slide>
 <Slide>
 
@@ -57,9 +55,9 @@ On peut remarquer que le scénario de données est le suivant :
 
 ### Téléchargements
 
-Vous pouvez télécharger cette base de données dans différents formats :
+Vous pouvez télécharger cette base de données pour travailler dessus :
 
-* [SQLite](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite) 
+* Fichier [SQLite](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite) 
     * Fichier de base de données SQLite
     * Vous pouvez l'ouvrir directement avec un outil de gestion de base de données SQLite comme :
         * [SQLiteStudio](https://sqlitestudio.pl/)
@@ -69,14 +67,14 @@ Vous pouvez télécharger cette base de données dans différents formats :
 * Export [MySQL](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2-mysql-EXPORT.sql)
     * Fichier à importer dans un serveur MySQL
     * Par exemple avec [phpMyAdmin](https://www.phpmyadmin.net/)
-    * Ou en ligne de commande avec `mysql -u root -p < ecommerce-fr-erd-v2-mysql-EXPORT.sql`
+    * Ou en ligne de commande avec `mysql -u root -p < ecommerce-fr-erd-v2-mysql-EXPORT.sql` (en remplaçant `root` par votre utilisateur MySQL)
 
 * Export [PostgreSQL](/bdd/public/sample/ecommerce/ecommerce-fr-erd-v2-postgresql-EXPORT.sql)
     * Fichier à importer dans un serveur PostgreSQL
     * Par exemple avec [pgAdmin](https://www.pgadmin.org/)
-    * Ou en ligne de commande avec `psql -U postgres -f ecommerce-fr-erd-v2-postgresql-EXPORT.sql`
+    * Ou en ligne de commande avec `psql -U postgres -f ecommerce-fr-erd-v2-postgresql-EXPORT.sql` (en remplaçant `postgres` par votre utilisateur PostgreSQL)
 
 
-* Pour les plus aventureux, vous pouvez regarder les différents fichiers "V2" [ici](https://github.com/erralb/bdd/tree/master/public/sample/ecommerce)
+* Pour les plus aventureux, vous pouvez regarder comment je modifie et génère ces différents fichiers [ici](https://github.com/erralb/bdd/tree/master/public/sample/ecommerce)
 
 </Slide>
