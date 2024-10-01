@@ -13,7 +13,7 @@ import Table from "/src/components/TableSQLite.astro";
 
 En SQL, il existe des fonctions qui donnent une valeur agrégée calculée pour les lignes sélectionnées :
 
- * `COUNT(*) ` : donne le nombre de lignes sélectionnées
+ * `COUNT(*)` : donne le nombre de lignes sélectionnées
  * `COUNT(colonne)` : donne le nombre de valeurs de la colonne
  * `AVR(colonne)` : donne la moyenne des valeurs de la colonne
  * `SUM(colonne)` : donne la somme des valeurs de la colonne
@@ -40,6 +40,19 @@ SELECT SUM(stock * prix) AS 'Valeur du stock' FROM Produits;
 "
 />
 
+Pour info : 
+```sql
+SELECT stock * prix AS 'Valeurs des stocks' FROM Produits;
+```
+
+<Table
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits"
+ query="
+SELECT stock * prix AS 'Valeurs des stocks' FROM Produits;
+"
+/>
+
 </Slide>
 <Slide>
 
@@ -56,7 +69,7 @@ FROM Clients;
 
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
- title="Produits"
+ title="Clients"
  query="
 SELECT AVG(Compte) AS 'Moyenne', 
     MAX(Compte) - MIN(Compte) AS 'Écart max', 
@@ -133,7 +146,8 @@ SELECT
   COUNT (*) AS 'Nombre', 
   SUM(compte) AS 'Somme', 
   MAX (categorie) AS 'Max' 
-FROM Clients ;
+FROM Clients 
+WHERE ville = 'Rouen';
 ```
 
 <Table
@@ -142,7 +156,7 @@ FROM Clients ;
  query="
 SELECT COUNT (*) AS 'Nombre', 	SUM(compte) AS 'Somme', MAX (categorie) AS 'Max' 
 FROM Clients
-WHERE ville = 'Paris';
+WHERE ville = 'Rouen';
 "
 />
 
