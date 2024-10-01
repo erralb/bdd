@@ -110,7 +110,7 @@ Nous allons essayer de réduire la partie gauche de chaque dépendance en élimi
 * `ADE -> B` : Tester si `AD -> B`, `AE -> B`, ou `DE -> B` est possible. Aucune réduction ne permet de déduire `B`, donc cette dépendance est minimale.
 * `ADE -> G` : Tester si `AD -> G`, `AE -> G`, ou `DE -> G` est possible. Aucune réduction ne permet de déduire `G`, donc cette dépendance est minimale.
 * `CG -> D` : Tester si `C -> D` ou `G -> D` est possible. Aucune réduction n'est possible, donc cette dépendance est minimale.
-* `BG -> C` : Tester si `B -> C` ou `G -> C` est possible. `B -> C` existe déjà, donc on peut éliminer cette dépendance.
+* `BG -> C` : Tester si `B -> C` ou `G -> C` est possible. `B -> C` existe déjà, donc on peut éliminer cette dépendance. -- ERREUR
 * `C -> B` : La partie gauche est déjà minimale.
 
 Ensemble des dépendances après réduction des parties gauches :

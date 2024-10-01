@@ -52,8 +52,7 @@ Exprimer en SQL les requêtes suivantes :
     SELECT P.numero, P.nom 
     FROM Produits P 
     WHERE 
-        P.nom LIKE 'c%' 
-        OR P.nom LIKE 'C%' 
+        ( P.nom LIKE 'c%' OR P.nom LIKE 'C%' )
         AND P.numero IN ( SELECT D.numeroProduit FROM Details D );
 `}
 />
