@@ -63,7 +63,7 @@ Cette procédure n'est pas pratique... surtout si de nouveaux clients de `Grenob
 ### Avec sous-requête
 
 ```sql
-SELECT * FROM Commandes WHERE numero IN (
+SELECT * FROM Commandes WHERE numeroClient IN (
  SELECT numero FROM Clients WHERE ville = 'Grenoble'
 );
 ```
@@ -72,7 +72,7 @@ SELECT * FROM Commandes WHERE numero IN (
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
  query="
-SELECT * FROM Commandes WHERE numero IN (
+SELECT * FROM Commandes WHERE numeroClient IN (
  SELECT numero FROM Clients WHERE ville = 'Grenoble'
 );
 "
