@@ -91,6 +91,10 @@ import DBecommerce2 from "./DBecommerce2.astro";
 
       try {
         let result = db.exec(query);
+        if(! result[0]) {
+          tableContainer.innerHTML = "Résultat vide";
+          return;
+        }
         let keys = result[0].columns;
         let rows = result[0].values;
 
