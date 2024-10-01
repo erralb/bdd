@@ -9,7 +9,7 @@ import Slide from '/src/components/Slide.astro';
 
 <Slide>
 
-Tout au long de ce cours, nous allons travailler sur un exemple fil rouge : une base de données simplifiée d'une **boutique en ligne**.
+Tout au long de ce cours, nous allons travailler sur un exemple "fil rouge" : une base de données simplifiée d'une **boutique en ligne**.
 
 </Slide>
 <Slide>
@@ -53,24 +53,25 @@ On peut remarquer que le scénario de données est le suivant :
 </Slide>
 <Slide>
 
-### Téléchargements
+### Travailler sur la base de données
 
-Vous pouvez télécharger cette base de données pour travailler dessus :
+Vous pouvez travailler directement sur cette base de données sur le [Compilateur SQL](/bdd/sql-compiler) en ligne
 
-* Fichier [SQLite](/bdd/sample/ecommerce/ecommerce-fr-erd-v2.sqlite) 
-    * Fichier de base de données SQLite
-    * Vous pouvez l'ouvrir directement avec un outil de gestion de base de données SQLite comme :
+Vous pouvez aussi télécharger la base de données pour travailler dessus sur votre machine :
+
+* [Fichier SQLite](/bdd/sample/ecommerce/ecommerce-fr-erd-v2.sqlite) 
+    * Vous pouvez ouvrir ce fichier un outil de gestion de base de données SQLite comme :
         * [SQLiteStudio](https://sqlitestudio.pl/)
         * [VSCode avec une extension DB](https://marketplace.visualstudio.com/items?itemName=cweijan.dbclient-jdbc)
-        * en ligne de commande avec `sqlite3 ecommerce-fr-erd-v2.sqlite`
+        * en ligne de commande avec `sqlite3 ecommerce-fr-erd-v2.sqlite` (vérifier bien d'avoir [installé sqlite3](https://www.sqlite.org/download.html) sur votre machine)
 
 * Export [MySQL](/bdd/sample/ecommerce/ecommerce-fr-erd-v2-mysql-EXPORT.sql)
-    * Fichier à importer dans un serveur MySQL
+    * Fichier à importer dans un serveur [MySQL](https://dev.mysql.com/downloads/installer/)
     * Par exemple avec [phpMyAdmin](https://www.phpmyadmin.net/)
     * Ou en ligne de commande avec `mysql -u root -p < ecommerce-fr-erd-v2-mysql-EXPORT.sql` (en remplaçant `root` par votre utilisateur MySQL)
 
 * Export [PostgreSQL](/bdd/sample/ecommerce/ecommerce-fr-erd-v2-postgresql-EXPORT.sql)
-    * Fichier à importer dans un serveur PostgreSQL
+    * Fichier à importer dans un serveur [PostgreSQL](https://www.postgresql.org/download/)
     * Par exemple avec [pgAdmin](https://www.pgadmin.org/)
     * Ou en ligne de commande avec `psql -U postgres -f ecommerce-fr-erd-v2-postgresql-EXPORT.sql` (en remplaçant `postgres` par votre utilisateur PostgreSQL)
 
