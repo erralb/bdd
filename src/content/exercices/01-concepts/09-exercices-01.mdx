@@ -88,14 +88,16 @@ flowchart LR
     D --> F
 ```
 
-Par transitivité, on peut supprimer `AB → E` et `AB → F`, car `AB → D` et `D → EF` :
+Par transitivité, on peut : 
+
+* supprimer `AB → E` et `AB → F`, car `AB → D` et `D → EF` :
+* Supprimer `B → C` car `AB → C` et `B → C` :
 
 
 ```mermaid
 flowchart LR
     AB --> C
     AB --> D
-    B --> C
     D --> E
     D --> F
 ```
@@ -103,8 +105,33 @@ flowchart LR
 L'ensemble minimum de dépendances fonctionnelles de R1 est donc :
 
   ```
-  { AB → C, AB → D, B → C, D → E, D → F }
+  { AB → C, AB → D, D → E, D → F }
   ```
+
+Solution alternative :
+
+Par transitivité, on peut : 
+
+* supprimer `AB → E` et `AB → F`, car `AB → D` et `D → EF` :
+* Supprimer `AB → C` car `B → C`:
+
+
+```mermaid
+flowchart LR
+    AB --> D
+    D --> E
+    D --> F
+    B --> C
+```
+
+L'ensemble minimum de dépendances fonctionnelles de R1 est donc :
+
+  ```
+  { AB → C, AB → D, D → E, D → F }
+  ou
+  { AB → D, B → C, D → E, D → F }
+  ```
+
     
     2. **Quelles est la clé de R1 ?**
 

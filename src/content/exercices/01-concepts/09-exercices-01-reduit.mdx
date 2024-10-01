@@ -16,7 +16,15 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
     Avec l'ensemble de dépendances suivant :
 
     ```
-    { AB → C, AB → D, AB → E, AB → F, B → C, D → E, D → F }
+    { 
+      AB → C, 
+      AB → D,
+      AB → E,
+      AB → F,
+      B → C,
+      D → E,
+      D → F 
+    }
     ```
 
     1. **Quelle est la couverture minimale de dépendances ? Déssinez son graphe.**
@@ -25,6 +33,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
   </TabItem>
   <TabItem label="Solution">
+  
   
     Soit une relation R1 de schéma :
     
@@ -37,24 +46,74 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
   L'ensemble des dépendances est :
 
     ```
-    { AB → C, AB → D, AB → E, AB → F, B → C, D → E, D → F }
+    { 
+      AB → C
+      AB → D
+      AB → E
+      AB → F
+      B → C
+      D → E
+      D → F
+    }
     ```
-  
-  Par transitivité, l'ensemble minimum de dépendances fonctionnelles de R1 est donc :
+
+Par défaut, on peut dessiner le graphe suivant : 
+
+```mermaid
+flowchart LR
+    AB --> C
+    AB --> D
+    AB --> E
+    AB --> F
+    B --> C
+    D --> E
+    D --> F
+```
+
+Par transitivité, on peut : 
+
+* supprimer `AB → E` et `AB → F`, car `AB → D` et `D → EF` :
+* Supprimer `B → C` car `AB → C` et `B → C` :
+
+
+```mermaid
+flowchart LR
+    AB --> C
+    AB --> D
+    D --> E
+    D --> F
+```
+
+L'ensemble minimum de dépendances fonctionnelles de R1 est donc :
 
   ```
+  { AB → C, AB → D, D → E, D → F }
+  ```
+
+Solution alternative :
+
+Par transitivité, on peut : 
+
+* supprimer `AB → E` et `AB → F`, car `AB → D` et `D → EF` :
+* Supprimer `AB → C` car `B → C`:
+
+
+```mermaid
+flowchart LR
+    AB --> D
+    D --> E
+    D --> F
+    B --> C
+```
+
+L'ensemble minimum de dépendances fonctionnelles de R1 est donc :
+
+  ```
+  { AB → C, AB → D, D → E, D → F }
+  ou
   { AB → D, B → C, D → E, D → F }
   ```
 
-  Son graphe correspondant est :
-
-  ```mermaid
-  flowchart LR
-      AB --> D
-      B --> C
-      D --> E
-      D --> F
-  ```
     
     2. **Quelles est la clé de R1 ?**
 
