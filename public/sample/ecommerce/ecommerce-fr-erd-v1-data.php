@@ -1,4 +1,13 @@
 <?php
+/**
+ * Script to populate the database with fake data
+ * https://fakerphp.org/
+ * You need to run :
+ *  composer install 
+ * 
+ * before running this script in order to install Faker PHP
+ */
+
 require_once 'vendor/autoload.php';
 
 $faker = Faker\Factory::create('fr_FR');

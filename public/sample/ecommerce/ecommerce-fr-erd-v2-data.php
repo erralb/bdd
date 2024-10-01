@@ -1,4 +1,8 @@
 <?php
+/**
+ * Script to populate the database data
+ */
+
 // Scénario de données
 // Le client 1 a commandé tous les produits en 2 commandes (la commande 1 et 2)
 // Le client 2 n'a rien commandé
