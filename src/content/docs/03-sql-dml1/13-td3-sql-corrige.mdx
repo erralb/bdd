@@ -1,0 +1,664 @@
+---
+title: TD3 - Introduction au SQL DML - Corrigé
+description: Un travail dirigé introductif à SQL
+sidebar:
+    label: TD3 - Corrigé
+    hidden: true
+---
+import Slide from '/src/components/Slide.astro';
+
+<Slide>
+# Description du problème
+
+Un marchand veut informatiser la gestion de ses stocks et des commandes passées par ses clients. La base de données construite pour ce marchand est la suivante :
+
+</Slide>
+<Slide>
+
+import {Content as TextDB} from '../../files/ecommerce-fr-erd-v2-text.md'
+
+<TextDB />
+
+</Slide>
+<Slide>
+
+import {Content as Boutique} from '../../files/ecommerce-fr-erd-v2-mermaid.md'
+
+<Boutique />
+
+</Slide>
+
+<div class="page-break"></div>
+
+* La table **Clients** : Chaque ligne décrit un _client_. Les **colonnes** décrivent successivement le _numero_ du client, son _nom_ et _prenom_, son adresse avec _rue, codePostal, ville_, son _telephone_, sa _categorie_ et l'état de son _compte_. L'identifiant primaire est constitué de _numero_. Les colonnes _telephone_ et _categorie_ sont facultatives.
+
+* La table **Produits** : chaque ligne décrit un _produit_ ; les **colonnes** décrivent successivement le _numero_ du produit, son _nom_, son _prix_ unitaire et la _quantité_ restante en stock. _numero_ est l'identifiant primaire.
+
+* La table **Commandes** : chaque ligne décrit une _commande passée par un client_ ; les **colonnes** décrivent successivement le _numero_ de la commande, le _numeroClient_ du client qui a passé la commande, la _dateCommande_ de la commande et le _statut_ de la commande. L'identifiant primaire est constitué de _numero_. _numeroClient_ est une clé étrangère vers la table _Clients_.
+
+* La table **Details** : chaque ligne représente un _détail d'une commande_ ; les colonnes décrivent successivement le _numero_ de la commande à laquelle le détail appartient, le _numero_ du produit commandé et la _quantité_ commandée. L'identifiant primaire est constitué de _numeroCommande_ et _numeroProduit_. _numeroCommande_ et _numeroProduit_ sont en outre chacune une clé étrangère respectivement vers les tables _Commandes_ et _Produits_.
+
+<div class="page-break"></div>
+
+# Questions 
+
+**Formulez les requêtes suivantes en SQL.** _Vous pouvez d'abord utiliser l'algèbre relationnelle pour les formuler puis les convertir en SQL._
+
+# Requêtes SQL pour le schéma de base de données
+
+```sql
+-- 1. Liste des produits en stock
+SELECT numero, nom, prix, stock
+FROM Produits
+WHERE stock > 0;
+
+-- 2. Liste des villes où il existe au moins un client
+SELECT DISTINCT ville
+FROM Clients;
+
+-- 3. Clients de catégorie B2 n'habitant pas à Paris
+SELECT numero, nom, ville
+FROM Clients
+WHERE categorie = 'B2'
+AND ville <> 'Paris';
+
+-- 4. Produits en stock dont le prix est supérieur à 100
+SELECT numero, nom, prix, stock
+FROM Produits
+WHERE stock > 0
+AND prix > 100;
+
+-- 5. Clients de Paris ou Grenoble avec un compte positif
+SELECT numero, nom, compte
+FROM Clients
+WHERE (ville = 'Paris' OR ville = 'Grenoble')
+AND compte > 0;
+
+-- 6. Catégories de clients à Paris
+SELECT DISTINCT categorie
+FROM Clients
+WHERE ville = 'Paris';
+
+-- 7. Clients dont le nom précède alphabétiquement la ville
+SELECT numero, nom, ville
+FROM Clients
+WHERE nom < ville;
+
+-- 8. Statistiques des comptes des clients
+SELECT SUM(compte) AS total, MIN(compte) AS minimum, AVG(compte) AS moyenne, MAX(compte) AS maximum
+FROM Clients;
+
+-- 9. Numéros des clients qui commandent le produit 1
+SELECT DISTINCT numeroClient
+FROM Commandes
+WHERE numero IN (
+    SELECT numeroCommande
+    FROM Details
+    WHERE numeroProduit = 1
+);
+
+-- Version JOIN
+SELECT DISTINCT numeroClient
+FROM Commandes
+JOIN Details ON Commandes.numero = Details.numeroCommande
+WHERE numeroProduit = 1;
+
+-- 10. Villes des clients qui commandent le produit 1
+SELECT C.ville FROM Clients C WHERE C.numero IN (
+  SELECT COM.numeroClient FROM Commandes COM WHERE COM.numero IN (
+      SELECT D.numeroCommande FROM Details D WHERE D.numeroProduit = 1
+  )
+);
+
+-- Version JOIN
+SELECT DISTINCT ville
+FROM Clients
+JOIN Commandes ON Clients.numero = Commandes.numeroClient
+JOIN Details ON Commandes.numero = Details.numeroCommande
+WHERE numeroProduit = 1;
+
+-- 11. Clients de Grenoble qui n'ont pas passé de commandes
+SELECT numero, nom
+FROM Clients
+WHERE ville = 'Grenoble'
+AND numero NOT IN (
+    SELECT numeroClient FROM Commandes
+);
+
+-- 12. Produits contenant la lettre `t` dans leur nom et commandés
+SELECT DISTINCT numero, nom
+FROM Produits
+WHERE nom LIKE '%t%'
+AND numero IN (
+    SELECT numeroProduit
+    FROM Details
+);
+
+-- Version JOIN
+SELECT DISTINCT Produits.numero, Produits.nom
+FROM Produits
+JOIN Details ON Produits.numero = Details.numeroProduit
+WHERE Produits.nom LIKE '%t%';
+
+-- 13. Requêtes sur les clients
+
+-- 13.1 Habitants de Lille ou Grenoble
+SELECT * FROM Clients WHERE ville = 'Lille' OR ville = 'Grenoble';
+
+-- 13.2 Habitants de Lille et non Grenoble
+SELECT * FROM Clients WHERE ville = 'Lille' AND ville <> 'Grenoble';
+
+-- 13.3 Habitants de Lille ou n'habitant pas Grenoble
+SELECT * FROM Clients WHERE ville = 'Lille' OR ville <> 'Grenoble';
+
+-- 13.4 Ni Lille ni Grenoble
+SELECT * FROM Clients WHERE ville <> 'Lille' AND ville <> 'Grenoble';
+
+-- 13.5 N'habitant pas à Lille ou Grenoble
+SELECT * FROM Clients WHERE ville <> 'Lille' OR ville <> 'Grenoble';
+
+-- 13.6 Catégorie B2 habitant à Grenoble
+SELECT * FROM Clients WHERE categorie = 'B2' AND ville = 'Grenoble';
+
+-- 13.7 Catégorie B2 ou habitant à Grenoble
+SELECT * FROM Clients WHERE categorie = 'B2' OR ville = 'Grenoble';
+
+-- 13.8 Catégorie B2 n'habitant pas à Grenoble
+SELECT * FROM Clients WHERE categorie = 'B2' AND ville <> 'Grenoble';
+
+-- 13.9 Pas sélectionné dans la question précédente
+SELECT * FROM Clients WHERE numero NOT IN (
+    SELECT numero FROM Clients WHERE categorie = 'B2' AND ville <> 'Grenoble'
+);
+
+-- 13.10 Catégorie B1 ou B2, ou habitant à Lille ou Grenoble
+SELECT * FROM Clients WHERE (categorie = 'B1' OR categorie = 'B2') OR (ville = 'Lille' OR ville = 'Grenoble');
+
+-- 13.11 Catégorie B1 ou B2, ou habitant à Lille ou Grenoble, mais pas les deux
+SELECT * FROM Clients WHERE 
+((categorie = 'B1' OR categorie = 'B2') AND (ville != 'Lille' AND ville != 'Grenoble'))
+OR
+((categorie = 'B1' AND categorie = 'B2') AND (ville = 'Lille' OR ville = 'Grenoble'))
+;
+
+-- 13.12 Catégorie B1 ou B2 et habitant à Lille ou Grenoble
+SELECT * FROM Clients WHERE (categorie = 'B1' OR categorie = 'B2') AND (ville = 'Lille' OR ville = 'Grenoble');
+
+-- 13.13 Pas sélectionné dans la question précédente
+SELECT * FROM Clients WHERE numero NOT IN (
+    SELECT numero FROM Clients WHERE (categorie = 'B1' OR categorie = 'B2') AND (ville = 'Lille' OR ville = 'Grenoble')
+);
+
+-- 14. Valeur totale des stocks de tous les produits
+SELECT SUM(stock * prix) AS valeur_totale
+FROM Produits;
+
+-- 15. Produits contenant la lettre 'u' dans leur nom
+
+SELECT numero, nom
+FROM Produits
+WHERE nom LIKE '%u%';
+
+-- 15.1 Qui ne sont pas commandés
+SELECT numero, nom
+FROM Produits
+WHERE nom LIKE '%u%'
+AND numero NOT IN (
+    SELECT numeroProduit FROM Details
+);
+
+-- 15.2 Qui sont commandés à Meylan
+SELECT DISTINCT numero, nom
+FROM Produits
+WHERE nom LIKE '%u%'
+AND numero IN (
+    SELECT numeroProduit 
+    FROM Details
+    WHERE numeroCommande IN (
+        SELECT numero 
+        FROM Commandes
+        WHERE numeroClient IN (
+            SELECT numero
+            FROM Clients
+            WHERE ville = 'Meylan'
+        )
+    )
+);
+
+-- Version JOIN
+SELECT DISTINCT Produits.numero, Produits.nom
+FROM Produits
+JOIN Details ON Produits.numero = Details.numeroProduit
+JOIN Commandes ON Details.numeroCommande = Commandes.numero
+JOIN Clients ON Commandes.numeroClient = Clients.numero
+WHERE Produits.nom LIKE '%u%' AND Clients.ville = 'Meylan';
+
+-- 15.3 Qui ne sont pas commandés à Meylan
+SELECT DISTINCT numero, nom
+FROM Produits
+WHERE nom LIKE '%u%'
+AND numero NOT IN (
+    SELECT numeroProduit
+    FROM Details
+    WHERE numeroCommande IN (
+        SELECT numero
+        FROM Commandes
+        WHERE numeroClient IN (
+            SELECT numero
+            FROM Clients
+            WHERE ville = 'Meylan'
+        )
+    )
+);
+
+-- Version JOIN
+SELECT DISTINCT Produits.numero, Produits.nom
+FROM Produits
+WHERE Produits.nom LIKE '%u%'
+AND numero NOT IN (
+    SELECT Produits.numero
+    FROM Produits
+    JOIN Details ON Produits.numero = Details.numeroProduit
+    JOIN Commandes ON Details.numeroCommande = Commandes.numero
+    JOIN Clients ON Commandes.numeroClient = Clients.numero
+    WHERE Clients.ville = 'Meylan'
+);
+
+-- 15.4 Qui ne sont commandés qu'à Meylan
+SELECT DISTINCT numero, nom
+FROM Produits
+WHERE numero IN (
+    SELECT numeroProduit
+    FROM Details
+    WHERE numeroCommande IN (
+        SELECT numero
+        FROM Commandes
+        WHERE numeroClient IN (
+            SELECT numero
+            FROM Clients
+            WHERE ville = 'Meylan'
+        )
+    )
+)
+AND numero NOT IN (
+    SELECT numeroProduit
+    FROM Details
+    WHERE numeroCommande IN (
+        SELECT numero
+        FROM Commandes
+        WHERE numeroClient IN (
+            SELECT numero
+            FROM Clients
+            WHERE ville <> 'Meylan'
+        )
+    )
+);
+
+-- Version JOIN
+SELECT DISTINCT Produits.numero, Produits.nom
+FROM Produits
+JOIN Details ON Produits.numero = Details.numeroProduit
+JOIN Commandes ON Details.numeroCommande = Commandes.numero
+JOIN Clients ON Commandes.numeroClient = Clients.numero
+WHERE Clients.ville = 'Meylan'
+AND Produits.numero NOT IN (
+    SELECT Produits.numero
+    FROM Produits
+    JOIN Details ON Produits.numero = Details.numeroProduit
+    JOIN Commandes ON Details.numeroCommande = Commandes.numero
+    JOIN Clients ON Commandes.numeroClient = Clients.numero
+    WHERE Clients.ville <> 'Meylan'
+);
+
+-- 15.5 Qui ne sont pas commandés qu'à Meylan
+SELECT DISTINCT numero, nom
+FROM Produits
+WHERE nom LIKE '%u%'
+AND numero IN (
+    SELECT numeroProduit
+    FROM Details
+)
+AND numero IN (
+    SELECT numeroProduit
+    FROM Details
+    WHERE numeroCommande IN (
+        SELECT numero
+        FROM Commandes
+        WHERE numeroClient IN (
+            SELECT numero
+            FROM Clients
+            WHERE ville <> 'Meylan'
+        )
+    )
+);
+
+-- Version JOIN
+SELECT DISTINCT Produits.numero, Produits.nom
+FROM Produits
+WHERE Produits.nom LIKE '%u%'
+AND Produits.numero IN (
+    SELECT numeroProduit
+    FROM Details
+)
+AND Produits.numero IN (
+    SELECT Produits.numero
+    FROM Produits
+    JOIN Details ON Produits.numero = Details.numeroProduit
+    JOIN Commandes ON Details.numeroCommande = Commandes.numero
+    JOIN Clients ON Commandes.numeroClient = Clients.numero
+    WHERE Clients.ville <> 'Meylan'
+);
+
+-- 15.6 Qui sont commandés à Meylan, mais aussi ailleurs
+SELECT DISTINCT numero, nom
+FROM Produits
+WHERE numero IN (
+    -- Produits commandés par des clients à Meylan
+    SELECT numeroProduit
+    FROM Details
+    WHERE numeroCommande IN (
+        SELECT numero
+        FROM Commandes
+        WHERE numeroClient IN (
+            SELECT numero
+            FROM Clients
+            WHERE ville = 'Meylan'
+        )
+    )
+)
+AND numero IN (
+    -- Produits également commandés par des clients qui ne sont pas à Meylan
+    SELECT numeroProduit
+    FROM Details
+    WHERE numeroCommande IN (
+        SELECT numero
+        FROM Commandes
+        WHERE numeroClient IN (
+            SELECT numero
+            FROM Clients
+            WHERE ville <> 'Meylan'
+        )
+    )
+);
+
+-- Version JOIN
+SELECT DISTINCT Produits.numero, Produits.nom
+FROM Produits
+JOIN Details ON Produits.numero = Details.numeroProduit
+JOIN Commandes ON Details.numeroCommande = Commandes.numero
+JOIN Clients ON Commandes.numeroClient = Clients.numero
+WHERE Clients.ville = 'Meylan'
+AND Produits.numero IN (
+    SELECT Produits.numero
+    FROM Produits
+    JOIN Details ON Produits.numero = Details.numeroProduit
+    JOIN Commandes ON Details.numeroCommande = Commandes.numero
+    JOIN Clients ON Commandes.numeroClient = Clients.numero
+    WHERE Clients.ville <> 'Meylan'
+);
+
+-- 16. Nombre de commandes spécifiant un produit contenant la lettre 'u'
+SELECT COUNT(DISTINCT numeroCommande)
+FROM Details
+WHERE numeroProduit IN (
+    SELECT numero
+    FROM Produits
+    WHERE nom LIKE '%u%'
+);
+
+-- Version JOIN
+SELECT COUNT(DISTINCT Details.numeroCommande)
+FROM Details
+JOIN Produits ON Details.numeroProduit = Produits.numero
+WHERE Produits.nom LIKE '%u%';
+
+-- 17. Nombre de villes avec des clients de catégorie B2
+SELECT COUNT(DISTINCT ville)
+FROM Clients
+WHERE categorie = 'B2';
+
+-- 18. Numéro et nom des clients qui n'ont pas commandé de produits contenant la lettre 'u'
+SELECT numero, nom
+FROM Clients
+WHERE numero NOT IN (
+    SELECT numeroClient
+    FROM Commandes
+    WHERE numero IN (
+        SELECT numeroCommande
+        FROM Details
+        WHERE numeroProduit IN (
+            SELECT numero
+            FROM Produits
+            WHERE nom LIKE '%u%'
+        )
+    )
+);
+
+-- Version JOIN
+SELECT numero, nom
+FROM Clients
+WHERE numero NOT IN (
+    SELECT Commandes.numeroClient
+    FROM Commandes
+    JOIN Details ON Commandes.numero = Details.numeroCommande
+    JOIN Produits ON Details.numeroProduit = Produits.numero
+    WHERE Produits.nom LIKE '%u%'
+);
+
+-- 19. Villes où le produit numéro 1 n'a pas été commandé
+
+-- Requête 1 (incorrecte)
+SELECT DISTINCT ville 
+FROM Clients 
+WHERE numero IN (  
+    SELECT numeroClient 
+    FROM Commandes 
+    WHERE numero NOT IN (  
+        SELECT numeroCommande 
+        FROM Details 
+        WHERE numeroProduit = 1 
+    )
+);
+
+-- Requête 2 (incorrecte)
+SELECT DISTINCT ville 
+FROM Clients 
+WHERE numero NOT IN (  
+    SELECT numeroClient 
+    FROM Commandes 
+    WHERE numero IN (  
+        SELECT numeroCommande 
+        FROM Details 
+        WHERE numeroProduit = 1 
+    )
+);
+
+-- Requête 3 (correcte)
+SELECT DISTINCT ville 
+FROM Clients 
+WHERE ville NOT IN (  
+    SELECT ville 
+    FROM Clients 
+    WHERE numero IN (  
+        SELECT numeroClient 
+        FROM Commandes 
+        WHERE numero IN (  
+            SELECT numeroCommande 
+            FROM Details 
+            WHERE numeroProduit = 1 
+        )
+    )
+);
+
+-- 20. Villes où des commandes ont été passées en juin 2024
+SELECT DISTINCT ville
+FROM Clients
+WHERE numero IN (
+    SELECT numeroClient
+    FROM Commandes
+    WHERE dateCommande BETWEEN '2024-06-01' AND '2024-06-30'
+);
+
+-- Version JOIN
+SELECT DISTINCT ville
+FROM Clients
+JOIN Commandes ON Clients.numero = Commandes.numeroClient
+WHERE Commandes.dateCommande BETWEEN '2024-06-01' AND '2024-06-30';
+
+-- 21. Requête pour vérifier les anomalies de clé étrangère dans la table Details
+SELECT * 
+FROM Details 
+WHERE numeroCommande NOT IN (SELECT numero FROM Commandes);
+
+-- 22. Vérification que chaque commande a au moins un détail
+SELECT * 
+FROM Commandes 
+WHERE numero NOT IN (
+    SELECT numeroCommande FROM Details
+);
+
+-- 23. Produits (numéro et nom) qui n'ont pas été commandés en 2024
+SELECT numero, nom 
+FROM Produits 
+WHERE numero NOT IN (
+    SELECT numeroProduit
+    FROM Details
+    WHERE numeroCommande IN (
+        SELECT numero
+        FROM Commandes
+        WHERE dateCommande BETWEEN '2024-01-01' AND '2024-12-31'
+    )
+);
+
+-- Version JOIN
+SELECT numero, nom 
+FROM Produits 
+WHERE numero NOT IN (
+    SELECT numeroProduit 
+    FROM Details 
+    JOIN Commandes ON Details.numeroCommande = Commandes.numero 
+    WHERE Commandes.dateCommande BETWEEN '2024-01-01' AND '2024-12-31'
+);
+
+-- 24. Clients qui ont commandé tous les produits
+SELECT DISTINCT numero, nom
+FROM Clients
+WHERE NOT EXISTS (
+    SELECT * 
+    FROM Produits
+    WHERE NOT EXISTS (
+        SELECT * 
+        FROM Commandes
+        WHERE numeroClient = Clients.numero
+        AND numero IN (
+            SELECT numeroCommande 
+            FROM Details 
+            WHERE numeroProduit = Produits.numero
+        )
+    )
+);
+
+-- Version JOIN
+SELECT DISTINCT Clients.numero, Clients.nom
+FROM Clients
+WHERE NOT EXISTS (
+    SELECT * FROM Produits
+    WHERE NOT EXISTS (
+        SELECT * FROM Commandes
+        JOIN Details ON Commandes.numero = Details.numeroCommande
+        WHERE Commandes.numeroClient = Clients.numero
+        AND Details.numeroProduit = Produits.numero
+    )
+);
+
+-- 25. Villes où tous les produits ont été commandés (tous clients confondus
+SELECT DISTINCT ville
+FROM Clients
+WHERE numero IN (
+    SELECT numeroClient
+    FROM Commandes
+    WHERE NOT EXISTS (
+        SELECT *
+        FROM Produits
+        WHERE NOT EXISTS (
+            SELECT *
+            FROM Details
+            WHERE Details.numeroProduit = Produits.numero
+            AND Details.numeroCommande = Commandes.numero
+        )
+    )
+);
+
+-- Version JOIN
+SELECT DISTINCT ville
+FROM Clients
+JOIN Commandes ON Clients.numero = Commandes.numeroClient
+WHERE NOT EXISTS (
+    SELECT * FROM Produits
+    WHERE NOT EXISTS (
+        SELECT * FROM Details
+        WHERE Details.numeroProduit = Produits.numero
+        AND Details.numeroCommande = Commandes.numero
+    )
+);
+
+-- 26. Produits qui ont été commandés par tous les clients
+SELECT DISTINCT Produits.numero, Produits.nom
+FROM Produits
+WHERE NOT EXISTS (
+    SELECT * FROM Clients
+    WHERE NOT EXISTS (
+        SELECT * FROM Commandes
+        JOIN Details ON Commandes.numero = Details.numeroCommande
+        WHERE Commandes.numeroClient = Clients.numero
+        AND Details.numeroProduit = Produits.numero
+    )
+);
+
+-- 27. Villes dont aucun client n'a passé de commande
+SELECT DISTINCT ville
+FROM Clients
+WHERE numero NOT IN (
+    SELECT numeroClient FROM Commandes
+);
+
+-- 28. Villes dont tous les clients ont passé au moins une commande
+SELECT DISTINCT ville
+FROM Clients
+WHERE NOT EXISTS (
+    SELECT * FROM Clients AS C
+    WHERE Clients.ville = C.ville
+    AND C.numero NOT IN (SELECT numeroClient FROM Commandes)
+);
+
+-- 29. Produits commandés dans toutes les villes
+SELECT DISTINCT numero, nom
+FROM Produits
+WHERE NOT EXISTS (
+    SELECT *
+    FROM Clients
+    WHERE NOT EXISTS (
+        SELECT *
+        FROM Commandes
+        WHERE numeroClient = Clients.numero
+        AND numero IN (
+            SELECT numeroCommande
+            FROM Details
+            WHERE numeroProduit = Produits.numero
+        )
+    )
+);
+
+-- Version JOIN
+SELECT DISTINCT Produits.numero, Produits.nom
+FROM Produits
+WHERE NOT EXISTS (
+    SELECT * FROM Clients
+    WHERE NOT EXISTS (
+        SELECT * FROM Commandes
+        JOIN Details ON Commandes.numero = Details.numeroCommande
+        WHERE Commandes.numeroClient = Clients.numero
+        AND Details.numeroProduit = Produits.numero
+    )
+);
+```

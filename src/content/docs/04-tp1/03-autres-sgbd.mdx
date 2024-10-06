@@ -1,0 +1,166 @@
+---
+title: Autres SGBD
+sidebar:
+    hidden: true
+---
+
+
+## Le SGBD MySQL
+
+### Installation
+
+Si ce n'est pas déjà fait, installez [MySQL](https://www.mysql.com/fr/) sur votre machine :
+
+<Tabs>
+  <TabItem label="Linux">
+    ```bash
+    sudo apt-get install mysql-server
+    ```
+  </TabItem>
+  <TabItem label="MacOS">
+    ```bash
+    brew install mysql
+    ```
+  </TabItem>
+  <TabItem label="Windows">
+    Téléchargez et installer l'exécutable sur le [site officiel](https://www.mysql.com/fr/downloads/)
+  </TabItem>
+</Tabs>
+
+### Utilisation dans un terminal
+
+Pour utiliser MySQL dans un terminal, il suffit de taper la commande `mysql` :
+
+```bash
+mysql -u root -p
+```
+
+### Utilisation avec un fichier
+
+Il est possible de créer une base de données MySQL à partir d'un fichier `.sql` :
+
+```bash
+mysql -u root -p < mon_fichier.sql
+```
+
+### Utilisation en mode interactif
+
+Une fois dans le terminal MySQL, vous pouvez taper des commandes SQL :
+
+```sql
+mysql> CREATE DATABASE ma_base_de_donnees;
+mysql> USE ma_base_de_donnees;
+mysql> CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR(255));
+mysql> INSERT INTO users (name) VALUES ('Aude');
+mysql> SELECT * FROM users;
+```
+
+### Utilisation en mode non interactif
+
+Il est possible d'exécuter des commandes SQL directement depuis le terminal :
+
+```bash
+mysql -u root -p -e "SELECT * FROM users;" ma_base_de_donnees
+```
+
+## Le SGBD PostgreSQL
+
+### Installation
+
+Si ce n'est pas déjà fait, installez [PostgreSQL](https://www.postgresql.org/) sur votre machine :
+
+<Tabs>
+  <TabItem label="Linux">
+    ```bash
+    sudo apt-get install postgresql
+    ```
+  </TabItem>
+  <TabItem label="MacOS">
+    ```bash
+    brew install postgresql
+    ```
+  </TabItem>
+  <TabItem label="Windows">
+    Téléchargez et installer l'exécutable sur le [site officiel](https://www.postgresql.org/download/)
+  </TabItem>
+</Tabs>
+
+### Utilisation dans un terminal
+
+Pour utiliser PostgreSQL dans un terminal, il suffit de taper la commande `psql` :
+
+```bash
+psql -U postgres
+```
+
+### Utilisation avec un fichier
+
+Il est possible de créer une base de données PostgreSQL à partir d'un fichier `.sql` :
+
+```bash
+psql -U postgres -f mon_fichier.sql
+```
+
+### Utilisation en mode interactif
+
+Une fois dans le terminal PostgreSQL, vous pouvez taper des commandes SQL :
+
+```sql
+postgres=# CREATE DATABASE ma_base_de_donnees;
+postgres=# \c ma_base_de_donnees;
+ma_base_de_donnees=# CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR(255));
+ma_base_de_donnees=# INSERT INTO users (name) VALUES ('Aude');
+ma_base_de_donnees=# SELECT * FROM users;
+```
+
+### Utilisation en mode non interactif
+
+Il est possible d'exécuter des commandes SQL directement depuis le terminal :
+
+```bash
+psql -U postgres -c "SELECT * FROM users;" ma_base_de_donnees
+```
+
+## Les interfaces graphiques
+
+Les interfaces graphiques permettent de se connecter aux SGBD-R et de les manipuler de manière plus conviviale.
+
+### Installation de DBeaver
+
+Pour réaliser les travaux pratiques, vous pouvez installer [DBeaver](https://dbeaver.io/) sur votre machine.
+
+### Présentation de DBeaver
+
+DBeaver est un outil de gestion de base de données multiplateforme et gratuit qui prend en charge de nombreux SGBD-R.
+
+### Installation de MySQL Workbench
+
+Pour réaliser les travaux pratiques, vous pouvez installer [MySQL Workbench](https://www.mysql.com/fr/products/workbench/) sur votre machine.
+
+### Présentation de MySQL Workbench
+
+MySQL Workbench est un outil de modélisation de données, de développement SQL et d'administration de bases de données MySQL.
+
+### Installation de PG Admin
+
+Pour réaliser les travaux pratiques, vous pouvez installer [PG Admin](https://www.pgadmin.org/) sur votre machine.
+
+### Présentation de PG Admin
+
+PG Admin est un outil de gestion et d'administration de bases de données PostgreSQL.
+
+### Installation de SQL Server Management Studio
+
+Pour réaliser les travaux pratiques, vous pouvez installer [SQL Server Management Studio](https://docs.microsoft.com/fr-fr/sql/ssms/download-sql-server-management-studio-ssms) sur votre machine.
+
+### Présentation de SQL Server Management Studio
+
+SQL Server Management Studio est un outil de gestion et d'administration de bases de données SQL Server.
+
+### Installation de PhpMyAdmin
+
+Pour réaliser les travaux pratiques, vous pouvez installer [PhpMyAdmin](https://www.phpmyadmin.net/) sur votre machine.
+
+### Présentation de PhpMyAdmin
+
+PhpMyAdmin est un outil de gestion et d'administration de bases de données MySQL.

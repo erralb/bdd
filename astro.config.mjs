@@ -114,7 +114,14 @@ export default defineConfig({
 							},
 						},
 						// {
-						// 	label: '4. SQL Avancé',
+						// 	label: '4. Travaux Pratiques 1',
+						// 	collapsed: true,
+						// 	autogenerate: {
+						// 		directory: '04-tp1'
+						// 	}
+						// },
+						// {
+						// 	label: '5. SQL Avancé',
 						// 	collapsed: true,
 						// 	autogenerate: {
 						// 		directory: '03-sql-dml2'

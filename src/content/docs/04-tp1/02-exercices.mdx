@@ -1,0 +1,112 @@
+---
+title: TP1 - Algèbre Relationnelle et SQL
+sidebar:
+    label: Exercices
+---
+
+## Description du schéma
+
+On considère le schéma relationnel nommé `Bazar` défini par les trois relations suivantes, où les clés primaires sont <u>soulignées</u> et les clés étrangères sont indiquées avec un astérisque `*` :
+
+```ansi wrap
+PRODUIT ([4mNPRO[0m, NOMP, QTP, COULEUR)
+```
+La relation `PRODUIT` décrit chaque produit identifié par son numéro `NPRO`, son nom `NOMP`, sa quantité `QTP` disponible en stock et sa couleur `COULEUR`.
+
+```ansi wrap
+VENTE ([4mNVEN[0m, NOMC, NPRV*, QTV, DATEV)
+```
+La relation `VENTE` décrit toutes les ventes de produits réalisées.
+
+Pour chaque vente, identifiée par son numéro `NVEN`, on conserve le nom du client `NOMC` le numéro du produit vendu `NPRV`, la quantité `QTV` de produit vendu ainsi que la date `DATEV` de la vente.
+
+```ansi wrap
+ACHAT ([4mNACH[0m, NOMF, NPRA*, QTA, DATEA)
+```
+La relation `ACHAT` décrit les commandes de produits aux fournisseurs. 
+
+Pour chaque achat, identifié par son numéro `NACH`, on donne le nom du fournisseur `NOMF`, le numéro du produit commandé `NPRA`, la quantité commandée `QTA` ainsi que la date `DATEA` à laquelle le produit a été commandé.
+
+
+Les domaines de valeurs associés aux différents attributs sont :
+
+```sql wrap
+domaine(NOMP) = {"chaussette", "casserole", "téléphone", etc.}
+domaine(NOMC) = {"John", "Catherine", "Alphonse", etc.}
+domaine(NOMF) = {"Darty", "LaRedoute", "Carefour", etc.}
+domaine(COULEUR) = {"rouge", "vert", "bleu", etc.}
+domaine(NPRO) = domaine(NVEN) = domaine(NACH) = domaine(NPRV) = domaine(NPRA) = domaine(QTP) = domaine(QTV) = domaine(QTA) = entiers ≥ 0
+domaine(DATE) = date
+```
+
+Les contraintes d’intégrité référentielle sont : 
+
+```
+VENTE[NPRV] ⊆ PRODUIT[NPRO]
+ACHAT[NPRA] ⊆ PRODUIT[NPRO]
+```
+
+_Autrement dit, les colonnes `NPRV` et `NPRA` sont des clés étrangères pointant vers la table `PRODUIT`. On peut remarquer que les clés étrangères n'ont pas besoin d'être nommées de la même manière que les clés primaires._
+
+
+import Table from "/src/components/TableSQLite.astro";
+
+<details>
+<summary>Données de la base de données</summary>
+
+    <Table
+    sqliteDB="public/bazar.sqlite"
+    title="PRODUIT"
+    query="SELECT * FROM PRODUIT"
+    />
+
+    <div class="tables">
+
+        <Table
+        sqliteDB="public/bazar.sqlite"
+        title="ACHAT"
+        query="SELECT * FROM ACHAT"
+        />
+
+        <Table
+        sqliteDB="public/bazar.sqlite"
+        title="VENTE"
+        query="SELECT * FROM VENTE"
+        />
+
+    </div>
+
+</details>
+
+## Écriture de requêtes
+
+_Si ce n'est pas déjà fait, installez [SQLite Studio](https://sqlitestudio.pl/) et ouvrez la base de données [bazard.sqlite](/bdd/public/bazar.sqlite) pour tester vos requêtes._
+
+Rédigez, d'abord en algèbre relationnelle lorsque cela est possible, puis en SQL les requêtes suivantes :
+
+1. Donner les noms et couleurs de tous les produits
+
+2. Donner les noms et quantités en stock des produits de couleur rouge
+
+3. Donner les numéros de vente, le nom du client, la quantité vendue pour les ventes du produit de nom « torchon », réalisées avant le 12/09/87
+
+4. Donner les noms des clients ayant acheté au moins un produit de couleur vert
+
+5. Donner les noms des fournisseurs qui sont également des clients
+
+6. Donner les noms des fournisseurs qui fournissent les produits de couleur bleue et dont la quantité en stock (actuellement) est inférieur à 100
+
+7. Donner le nom des fournisseurs avec lesquels aucune commande de produit n’a été réalisée depuis le 30/06/87
+
+8. Donner pour chaque produit, les noms des fournisseurs du produit et les noms des clients l’ayant acheté	
+
+9. Donner les noms des clients ayant acheté au moins une fois de tous les produits disponibles
+
+10. Donner les noms des fournisseurs qui fournissent tous les produits
+
+11. Donner, pour chaque couleur, le nombre de produits de cette couleur
+
+12. Donner le nom et le nombre des produits vendus lors de la plus grosse vente.
+
+
+Sauvegardez vos requêtes SQL dans **un seul fichier** `.sql` puis soumettez-le sur Moodle.
