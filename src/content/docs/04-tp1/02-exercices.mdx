@@ -1,8 +1,12 @@
 ---
 title: TP1 - Algèbre Relationnelle et SQL
 sidebar:
-    label: Exercices
+  label: Exercices
 ---
+
+import Slide from "/src/components/Slide.astro";
+
+<Slide>
 
 ## Description du schéma
 
@@ -11,11 +15,13 @@ On considère le schéma relationnel nommé `Bazar` défini par les trois relati
 ```ansi wrap
 PRODUIT ([4mNPRO[0m, NOMP, QTP, COULEUR)
 ```
+
 La relation `PRODUIT` décrit chaque produit identifié par son numéro `NPRO`, son nom `NOMP`, sa quantité `QTP` disponible en stock et sa couleur `COULEUR`.
 
 ```ansi wrap
 VENTE ([4mNVEN[0m, NOMC, NPRV*, QTV, DATEV)
 ```
+
 La relation `VENTE` décrit toutes les ventes de produits réalisées.
 
 Pour chaque vente, identifiée par son numéro `NVEN`, on conserve le nom du client `NOMC` le numéro du produit vendu `NPRV`, la quantité `QTV` de produit vendu ainsi que la date `DATEV` de la vente.
@@ -23,23 +29,29 @@ Pour chaque vente, identifiée par son numéro `NVEN`, on conserve le nom du cli
 ```ansi wrap
 ACHAT ([4mNACH[0m, NOMF, NPRA*, QTA, DATEA)
 ```
-La relation `ACHAT` décrit les commandes de produits aux fournisseurs. 
+
+La relation `ACHAT` décrit les commandes de produits aux fournisseurs.
 
 Pour chaque achat, identifié par son numéro `NACH`, on donne le nom du fournisseur `NOMF`, le numéro du produit commandé `NPRA`, la quantité commandée `QTA` ainsi que la date `DATEA` à laquelle le produit a été commandé.
 
+</Slide>
+<Slide>
 
 Les domaines de valeurs associés aux différents attributs sont :
 
 ```sql wrap
-domaine(NOMP) = {"chaussette", "casserole", "téléphone", etc.}
-domaine(NOMC) = {"John", "Catherine", "Alphonse", etc.}
-domaine(NOMF) = {"Darty", "LaRedoute", "Carefour", etc.}
-domaine(COULEUR) = {"rouge", "vert", "bleu", etc.}
-domaine(NPRO) = domaine(NVEN) = domaine(NACH) = domaine(NPRV) = domaine(NPRA) = domaine(QTP) = domaine(QTV) = domaine(QTA) = entiers ≥ 0
-domaine(DATE) = date
+- domaine(NOMP) = {"chaussette", "casserole", "téléphone", etc.}
+- domaine(NOMC) = {"John", "Catherine", "Alphonse", etc.}
+- domaine(NOMF) = {"Darty", "LaRedoute", "Carefour", etc.}
+- domaine(COULEUR) = {"rouge", "vert", "bleu", etc.}
+- domaine(NPRO) = domaine(NVEN) = domaine(NACH) = domaine(NPRV) = domaine(NPRA) = domaine(QTP) = domaine(QTV) = domaine(QTA) = entiers ≥ 0
+- domaine(DATE) = date
 ```
 
-Les contraintes d’intégrité référentielle sont : 
+</Slide>
+<Slide>
+
+Les contraintes d’intégrité référentielle sont :
 
 ```
 VENTE[NPRV] ⊆ PRODUIT[NPRO]
@@ -48,19 +60,21 @@ ACHAT[NPRA] ⊆ PRODUIT[NPRO]
 
 _Autrement dit, les colonnes `NPRV` et `NPRA` sont des clés étrangères pointant vers la table `PRODUIT`. On peut remarquer que les clés étrangères n'ont pas besoin d'être nommées de la même manière que les clés primaires._
 
+</Slide>
+<Slide>
 
 import Table from "/src/components/TableSQLite.astro";
 
 <details>
 <summary>Données de la base de données</summary>
 
-    <Table
-    sqliteDB="public/bazar.sqlite"
-    title="PRODUIT"
-    query="SELECT * FROM PRODUIT"
-    />
+    <div class="tables tables-3-col">
 
-    <div class="tables">
+        <Table
+        sqliteDB="public/bazar.sqlite"
+        title="PRODUIT"
+        query="SELECT * FROM PRODUIT"
+        />
 
         <Table
         sqliteDB="public/bazar.sqlite"
@@ -78,9 +92,12 @@ import Table from "/src/components/TableSQLite.astro";
 
 </details>
 
+</Slide>
+<Slide>
+
 ## Écriture de requêtes
 
-_Si ce n'est pas déjà fait, installez [SQLite Studio](https://sqlitestudio.pl/) et ouvrez la base de données [bazard.sqlite](/bdd/public/bazar.sqlite) pour tester vos requêtes._
+_Si ce n'est pas déjà fait, installez [SQLite Studio](https://sqlitestudio.pl/) et ouvrez la base de données [bazar.sqlite](/bdd/public/bazar.sqlite) pour tester vos requêtes._
 
 Rédigez, d'abord en algèbre relationnelle lorsque cela est possible, puis en SQL les requêtes suivantes :
 
@@ -98,7 +115,7 @@ Rédigez, d'abord en algèbre relationnelle lorsque cela est possible, puis en S
 
 7. Donner le nom des fournisseurs avec lesquels aucune commande de produit n’a été réalisée depuis le 30/06/87
 
-8. Donner pour chaque produit, les noms des fournisseurs du produit et les noms des clients l’ayant acheté	
+8. Donner pour chaque produit, les noms des fournisseurs du produit et les noms des clients l’ayant acheté
 
 9. Donner les noms des clients ayant acheté au moins une fois de tous les produits disponibles
 
@@ -108,5 +125,10 @@ Rédigez, d'abord en algèbre relationnelle lorsque cela est possible, puis en S
 
 12. Donner le nom et le nombre des produits vendus lors de la plus grosse vente.
 
+## Rendu
 
-Sauvegardez vos requêtes SQL dans **un seul fichier** `.sql` puis soumettez-le sur Moodle.
+1. Sauvegardez vos requêtes SQL dans **un seul fichier** `.sql`
+2. Ajouter des impressions d'écran de vos résultats de requêtes dans un document PDF
+3. Créez une archive zip avec ces deux fichiers, puis déposez la sur Moodle.
+
+</Slide>
