@@ -1,7 +1,7 @@
 ---
 title: Installation de SGBD
 sidebar:
-    label: Installation
+    label: Installation SQLite
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
@@ -62,7 +62,7 @@ Si ce n'est pas déjà fait, installez [SQLite](https://www.sqlite.org/index.htm
 
 _Pour les utilisateurs de **Windows**, préférez l'utilisation du terminal [PowerShell](https://learn.microsoft.com/en-us/powershell/)._
 
-Pour plus de facilité, vous pouvez utiliser les terminaux intégré à VSCode.
+Pour plus de facilité, vous pouvez utiliser les terminaux intégrés à VSCode.
 
 Pour utiliser SQLite dans un terminal en mode interactif, il suffit de taper la commande `sqlite3` :
 
@@ -73,7 +73,7 @@ sqlite3
 </Slide>
 <Slide title="Utilisation dans un terminal">
 
-Une fois dans le terminal SQLite, vous pouvez entrer des **commandes SQLite** pour piloter/configuer le sgbd d'une part, et exécuter des **requêtes SQL** d'autre part.
+Une fois dans le terminal SQLite, vous pouvez entrer des **commandes SQLite** pour piloter/configuer le sgbd d'une part et exécuter des **requêtes SQL** d'autre part.
 
 Les commandes SQLite sont précédées d'un point `.`
 
@@ -168,7 +168,9 @@ INSERT INTO users (name) VALUES ('Aude');
 SELECT * FROM users;
 ```
 
-_En mode interactif sans ouvrir de base de données, les données sont stockées en mémoire et sont perdues à la fermeture du terminal._
+:::danger[Attention]
+En mode interactif sans ouvrir de base de données, les données sont stockées en mémoire et sont perdues à la fermeture du terminal.
+:::
 
 </Slide>
 <Slide title="Utilisation dans un terminal">
@@ -203,47 +205,5 @@ Enfin, SQLite dispose d'un mode non interactif qui permet d'exécuter des requê
 sqlite3 ma_base_de_donnees.db "SELECT * FROM users;"
 ```
 Prenez un moment pour explorer les commandes SQLite et les requêtes SQL en terminal
-
-</Slide>
-<Slide>
-
-## Interfaces graphiques pour SQLite
-
-Il existe de nombreuses interfaces graphiques pour SQLite, dont les plus populaires sont :
-
-* [SQLite Studio](https://sqlitestudio.pl/) : recommandé pour débuter
-* [VSCode](https://code.visualstudio.com/) avec l'extension [Database Client JDBC](https://marketplace.visualstudio.com/items?itemName=cweijan.dbclient-jdbc) : intégration dans l'éditeur de code, recommandé pour les développeurs
-* [SQLite Browser](https://sqlitebrowser.org/) : similaire à SQLite Studio
-* [PHPLiteAdmin](https://www.phpliteadmin.org/) : interface web nécessitant un serveur web PHP
-* [DBeaver](https://dbeaver.io/) : compatible avec de nombreux SGBD-R, plus complexe à prendre en main
-
-
-Je vous conseille d'essayer [SQLite Studio](https://sqlitestudio.pl/) pour commencer, mais vous pouvez utiliser l'interface graphique de votre choix par la suite.
-
-</Slide>
-<Slide>
-
-### 
-
-Téléchargez la base de données à utiliser pendant le TP : [bazar.sqlite](/bdd/public/sample/bazar.sqlite)
-
-1. Ouvrez SQLite Studio
-2. Cliquez sur `Fichier` > `Ouvrir la base de données`
-3. Sélectionnez le fichier `bazar.sqlite` téléchargé précédemment
-
-_Sur les machines des salles B1 et B2 de l’université_, vous pouvez executer la commande suivante dans un terminal pour lancer SQLite Studio : 
-
-```bash
-/usr/local/SQLiteStudio/sqlitestudio
-```
-
-</Slide>
-<Slide title="SQLite Studio">
-
-Vous pouvez maintenant explorer la base de données et exécuter des requêtes SQL :
-
-![Aperçu de SQLite Studio](01-installation-01-SQLite-Studio.png)
-
-Prenez un moment pour explorer l'interface de SQLite Studio et exécuter quelques requêtes SQL, puis passez aux exercices !
 
 </Slide>

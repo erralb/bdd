@@ -1,0 +1,53 @@
+---
+title: Interfaces graphiques pour SQLite
+sidebar:
+    label: Interface graphique
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import Slide from '/src/components/Slide.astro';
+
+<Slide title="Interfaces graphiques pour SQLite">
+
+Il existe de nombreuses interfaces graphiques pour SQLite, dont les plus populaires sont :
+
+* [SQLite Studio](https://sqlitestudio.pl/) : recommandé pour débuter
+* [VSCode](https://code.visualstudio.com/) avec l'extension [Database Client JDBC](https://marketplace.visualstudio.com/items?itemName=cweijan.dbclient-jdbc) : intégration dans l'éditeur de code, recommandé pour les développeurs
+* [SQLite Browser](https://sqlitebrowser.org/) : similaire à SQLite Studio
+* [PHPLiteAdmin](https://www.phpliteadmin.org/) : interface web nécessitant un serveur web PHP
+* [DBeaver](https://dbeaver.io/) : compatible avec de nombreux SGBD-R, plus complexe à prendre en main
+
+
+Je vous conseille d'essayer [SQLite Studio](https://sqlitestudio.pl/) pour commencer, mais vous pouvez utiliser l'interface graphique de votre choix par la suite.
+
+</Slide>
+<Slide>
+
+### 
+
+Téléchargez la base de données à utiliser pendant le TP : [bazar.sqlite](/bdd/public/sample/bazar.sqlite)
+
+1. Ouvrez SQLite Studio
+2. Cliquez sur `Fichier` > `Ouvrir la base de données`
+3. Sélectionnez le fichier `bazar.sqlite` téléchargé précédemment
+
+_Sur les machines des salles B1 et B2 de l’université_, vous pouvez executer la commande suivante dans un terminal pour lancer SQLite Studio : 
+
+```bash
+/usr/local/SQLiteStudio/sqlitestudio
+```
+
+</Slide>
+<Slide title="SQLite Studio">
+
+Vous pouvez maintenant explorer la base de données et exécuter des requêtes SQL :
+
+![Aperçu de SQLite Studio](01-installation-01-SQLite-Studio.png)
+
+:::danger[Attention]
+Les onglets d'éditeurs de requêtes dans SQLite Studio ne sont pas automatiquement sauvegardés. Pensez à sauvegarder vos requêtes dans un fichier `.sql` pour les retrouver plus tard.
+:::
+
+Prenez un moment pour explorer l'interface de SQLite Studio et exécuter quelques requêtes SQL, puis passez aux exercices !
+
+</Slide>
