@@ -1,0 +1,31 @@
+---
+import Table from "./TableSQLite.astro";
+---
+
+<style is:global>
+  .bazar {
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+</style>
+
+<div class="bazar">
+
+  <Table
+  sqliteDB="public/sample/bazar.sqlite"
+  title="PRODUIT"
+  query="SELECT * FROM PRODUIT"
+/>
+<Table
+  sqliteDB="public/sample/bazar.sqlite"
+  title="ACHAT"
+  query="SELECT * FROM ACHAT"
+/>
+<Table
+  sqliteDB="public/sample/bazar.sqlite"
+  title="VENTE"
+  query="SELECT * FROM VENTE"
+/>
+
+</div>

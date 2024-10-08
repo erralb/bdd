@@ -113,13 +113,13 @@ export default defineConfig({
 								directory: '03-sql-dml1'
 							},
 						},
-						// {
-						// 	label: '4. Travaux Pratiques 1',
-						// 	collapsed: true,
-						// 	autogenerate: {
-						// 		directory: '04-tp1'
-						// 	}
-						// },
+						{
+							label: '4. Travaux Pratiques 1',
+							collapsed: true,
+							autogenerate: {
+								directory: '04-tp1'
+							}
+						},
 						// {
 						// 	label: '5. SQL Avancé',
 						// 	collapsed: true,
@@ -141,7 +141,14 @@ export default defineConfig({
 						// 		directory: '04-sql-ddl'
 						// 	}
 						// },
-						{ slug: 'sql-compiler' },
+						{
+							label: 'Compilateurs SQL',
+							collapsed: true,
+							autogenerate: {
+								directory: 'sql-compiler'
+							}
+						},
+						// { slug: 'sql-compiler' },
 
 					]
 				},

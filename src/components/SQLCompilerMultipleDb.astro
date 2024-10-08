@@ -1,0 +1,278 @@
+---
+import { Content as DBecommerceText } from "../content/files/ecommerce-fr-erd-v2-text.md";
+import DBecommerce2 from "./DBecommerce2.astro";
+---
+
+<div id="db-select">
+  <label for="selectDatabase">Sélectionnez une base de données:</label>
+</div>
+
+<script>
+  import initSqlJs from "sql.js";
+  import { EditorState } from "@codemirror/state";
+  import { EditorView, keymap, lineNumbers } from "@codemirror/view";
+  import { defaultKeymap } from "@codemirror/commands";
+  import { sql } from "@codemirror/lang-sql";
+  // import { language } from "@codemirror/language";
+
+  const databases: Record<string, { id: string; url: string; defaultQuery: string }> = {
+    ecommerce: {
+      id: "ecommerce",
+      url: "/bdd/sample/ecommerce/ecommerce-fr-erd-v2.sqlite",
+      defaultQuery: "SELECT * FROM Clients;",
+    },
+    bazar: {
+      id: "bazar",
+      url: "/bdd/sample/bazar.sqlite",
+      defaultQuery: "SELECT * FROM PRODUIT;",
+    },
+  };
+
+  //create a select with the databases
+  let select = document.createElement("select");
+  select.id = "selectDatabase";
+  select.innerHTML = `
+    <option value="${databases.ecommerce.id}">E-commerce</option>
+    <option value="${databases.bazar.id}">Bazar</option>
+  `;
+  let dbSelect = document.getElementById("db-select");
+  if (dbSelect) dbSelect.appendChild(select);
+
+  //add event listener to the select
+  select.addEventListener("change", async function () {
+    let selectedDb = select.value;
+    let dbURL = databases[selectedDb].url;
+    let defaultQuery = databases[selectedDb].defaultQuery;
+    await main(dbURL, defaultQuery);
+  });
+
+  async function main(dbURL: RequestInfo | URL, defaultQuery: string) {
+
+    let query = defaultQuery;
+
+    //Query editor
+    let updateListenerExtension = EditorView.updateListener.of(
+      (update: any) => {
+        let selection = update.state.sliceDoc(
+          update.state.selection.main.from,
+          update.state.selection.main.to
+        );
+        if (selection.length > 0) {
+          query = selection.toString();
+        }
+        else {
+          query = update.state.doc.toString();
+        }
+      }
+    );
+
+    let startState = EditorState.create({
+      doc: defaultQuery,
+      extensions: [
+        keymap.of(defaultKeymap),
+        sql(),
+        updateListenerExtension,
+        lineNumbers(),
+      ],
+    });
+
+    new EditorView({
+      state: startState,
+      parent: document.getElementById("editor"),
+    });
+
+    //Load
+    const sqlPromise = initSqlJs({
+      locateFile: (file: string) => `https://sql.js.org/dist/${file}`,
+    });
+
+    const dataPromise = fetch(dbURL).then((res) =>
+      res.arrayBuffer()
+    );
+    // console.log(dataPromise);
+
+    const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
+    const db = new SQL.Database(new Uint8Array(buf));
+
+    function runQuery(db: any, query: string) {
+      let tableContainer = document.getElementById("tableContainer");
+      if (!tableContainer) return;
+      tableContainer.innerHTML = "Données en cours de chargement...";
+      let table = document.createElement("table");
+      table.classList.add("tableComponent");
+
+      try {
+        let result = db.exec(query);
+        if (!result[0]) {
+          tableContainer.innerHTML = "Résultat vide";
+          return;
+        }
+        let keys = result[0].columns;
+        let rows = result[0].values;
+
+        let thead = document.createElement("thead");
+        let tbody = document.createElement("tbody");
+        let tfoot = document.createElement("tfoot");
+
+        let tr = document.createElement("tr");
+        for (let key of keys) {
+          let th = document.createElement("th");
+          th.textContent = key;
+          tr.appendChild(th);
+        }
+
+        thead.appendChild(tr);
+        tfoot.appendChild(tr.cloneNode(true));
+        table.appendChild(thead);
+
+        for (let row of rows) {
+          let tr = document.createElement("tr");
+          for (let cell of row) {
+            let td = document.createElement("td");
+            td.textContent = cell;
+            tr.appendChild(td);
+          }
+          tbody.appendChild(tr);
+        }
+
+        table.appendChild(tbody);
+        table.appendChild(tfoot);
+
+        tableContainer.innerHTML = "";
+        tableContainer.appendChild(table);
+      } catch (e) {
+        let error = e as Error;
+        tableContainer.innerHTML = `<p style="color: red;">${error.message}</p>`;
+        return;
+      }
+    }
+
+    runQuery(db, query);
+
+    //add event listener to #runQuery button
+    let runQueryButton = document.getElementById("runQuery");
+    if (!runQueryButton) return;
+
+    runQueryButton.addEventListener("click", function () {
+      runQuery(db, query);
+    });
+
+    window.addEventListener("keydown", function (e) {
+      if (e.ctrlKey && e.key == "Enter") {
+        runQuery(db, query);
+      }
+    });
+  }
+
+  //Call ecommerce database by default
+  main(databases.ecommerce.url, databases.ecommerce.defaultQuery);
+
+</script>
+
+<h5>Entrez une requête</h5>
+
+<div id="editor"></div>
+
+<textarea name="" id="userQuery"></textarea>
+
+<button id="runQuery">Lancer la requête</button> (ou appuyez sur Ctrl + Entrée)
+
+<p>
+  <i
+    >Par défaut, la première requête de l'éditeur sera executée. Vous pouvez
+    sélectionner le code pour executer des requêtes spécifiques;</i
+  >
+</p>
+
+<h5>Résultat</h5>
+
+<div id="tableContainer">Données en cours de chargement...</div>
+
+<style is:global>
+  .sl-container {
+    max-width: 100%;
+  }
+
+  textarea {
+    display: none;
+    margin: 40px 0 0;
+    padding: 10px;
+    width: 100%;
+    height: 100px;
+  }
+
+  #editor {
+    margin: 40px 0 0;
+    height: 200px;
+    display: flex;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+
+  .cm-editor {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+
+    .cm-scroller {
+      margin-top: 0;
+    }
+
+    .cm-line,
+    .cm-gutterElement {
+      margin: 0;
+    }
+  }
+
+  table.tableComponent {
+    border-collapse: collapse;
+    font-family: sans-serif;
+    margin-bottom: 40px;
+    max-width: 100%;
+
+    caption {
+      caption-side: bottom;
+      padding: 10px;
+    }
+
+    thead,
+    tfoot {
+      background-color: rgb(250, 236, 209);
+    }
+
+    thead > tr:nth-child(1) th,
+    tfoot > tr:nth-child(1) th {
+      color: black;
+      font-weight: normal;
+    }
+
+    thead > tr:nth-child(2) th,
+    tfoot > tr:nth-child(2) th {
+      background-color: rgb(239, 239, 239);
+    }
+
+    tbody > tr:nth-of-type(even) {
+      background-color: rgb(248, 248, 248);
+    }
+
+    th {
+      text-align: center !important;
+    }
+
+    th,
+    td {
+      border: 1px solid rgb(160 160 160);
+      padding: 8px 10px;
+    }
+
+    td {
+      text-align: left !important;
+    }
+
+    :is(th:first-child, td:first-child):not(:where(.not-content *)),
+    :is(th:last-child, td:last-child):not(:where(.not-content *)) {
+      padding-inline-start: 10px;
+      padding-inline-end: 10px;
+    }
+  }
+</style>

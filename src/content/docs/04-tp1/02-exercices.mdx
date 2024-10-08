@@ -71,19 +71,19 @@ import Table from "/src/components/TableSQLite.astro";
     <div class="tables tables-3-col">
 
         <Table
-        sqliteDB="public/bazar.sqlite"
+        sqliteDB="public/sample/bazar.sqlite"
         title="PRODUIT"
         query="SELECT * FROM PRODUIT"
         />
 
         <Table
-        sqliteDB="public/bazar.sqlite"
+        sqliteDB="public/sample/bazar.sqlite"
         title="ACHAT"
         query="SELECT * FROM ACHAT"
         />
 
         <Table
-        sqliteDB="public/bazar.sqlite"
+        sqliteDB="public/sample/bazar.sqlite"
         title="VENTE"
         query="SELECT * FROM VENTE"
         />
@@ -97,7 +97,7 @@ import Table from "/src/components/TableSQLite.astro";
 
 ## Écriture de requêtes
 
-_Si ce n'est pas déjà fait, installez [SQLite Studio](https://sqlitestudio.pl/) et ouvrez la base de données [bazar.sqlite](/bdd/public/bazar.sqlite) pour tester vos requêtes._
+_Si ce n'est pas déjà fait, installez [SQLite Studio](https://sqlitestudio.pl/) et ouvrez la base de données [bazar.sqlite](/bdd/public/sample/bazar.sqlite) pour tester vos requêtes. <br/> Si pour une raison ou une autre vous ne pouvez pas installer SQLite et SQLite Studio, vous pouvez également utiliser [le compilateur en ligne du site](/bdd/sql-compiler/02-bazar/) pour tester vos requêtes._
 
 Rédigez, d'abord en algèbre relationnelle lorsque cela est possible, puis en SQL les requêtes suivantes :
 
