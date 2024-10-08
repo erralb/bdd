@@ -37,21 +37,53 @@ SQLite est un SGBD-R **léger**, **rapide**, **sans serveur** et **sans configur
 
 ### Installation
 
-Si ce n'est pas déjà fait, installez [SQLite](https://www.sqlite.org/index.html) sur votre machine :
+Si ce n'est pas déjà fait, installez [SQLite](https://www.sqlite.org/index.html) sur votre machine.
+
+
+En fonction de votre OS et préférences, vous pouvez installer SQLite de différentes manières :
 
 <Tabs>
   <TabItem label="Linux">
-    ```bash
-    sudo apt-get install sqlite3
-    ```
+  * Fichier précompilé pour Linux : [sqlite-tools-linux-x64-3460100.zip (1.99 MiB)](https://www.sqlite.org/2024/sqlite-tools-linux-x64-3460100.zip)
+  * Via le gestionnaire de paquets de votre distribution :
+    * Debian/Ubuntu :
+
+      ```bash
+      sudo apt-get install sqlite3
+      ```
+
+    * Fedora :
+
+      ```bash
+      sudo dnf install sqlite
+      ```
+
+    * Arch Linux :
+
+      ```bash
+      sudo pacman -S sqlite
+      ```
+
+    * Redhat/CentOS :
+
+      ```bash
+      sudo yum install sqlite
+      ```
+
+    
   </TabItem>
   <TabItem label="MacOS">
+
+    * Avec [le fichier précompilé pour MAC](https://www[.sqlite.org/download.html) actuellement [sqlite-tools-osx-x64-3460100.zip (3.55 MiB)](https://www.sqlite.org/2024/sqlite-tools-osx-x64-3460100.zip)
+    
+    * Avec Homebrew :
+
     ```bash
     brew install sqlite3
     ```
   </TabItem>
   <TabItem label="Windows">
-    Téléchargez et installer l'exécutable sur le [site officiel](https://www.sqlite.org/download.html)
+    * Avec [le fichier précompilé pour Windows](https://www.sqlite.org/download.html) actuellement [https://www.sqlite.org/2024/sqlite-dll-win-x64-3460100](https://www.sqlite.org/2024/sqlite-dll-win-x64-3460100.zip)
   </TabItem>
 </Tabs>
 
