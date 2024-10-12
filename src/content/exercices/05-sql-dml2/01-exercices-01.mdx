@@ -1,0 +1,83 @@
+---
+title: Exercice 1
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import SQLiteQuery from "/src/components/SQLiteQuery.astro";
+
+
+
+Exprimer les requêtes suivantes en SQL :
+
+<br/>
+
+<details>
+<summary>1. Calculer le montant (_quantité * prix_) de chaque détails des commandes du client numero 1</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Montant détails du client 1"
+ query="
+    SELECT 
+
+        Co.numero AS 'Commande', 
+        P.nom AS 'Produit', 
+        D.quantite AS 'Quantité',
+        D.quantite * P.prix AS 'Montant'
+    
+    FROM Details D, Produits P, Commandes Co, Clients C
+    
+    WHERE D.numeroProduit = P.numero
+    AND D.numeroCommande = Co.numero
+    AND Co.numeroClient = C.numero
+    AND C.numero = 1;
+"
+/>
+
+Version avec `JOIN` :
+
+```sql
+    SELECT 
+
+        Co.numero AS 'Commande', 
+        P.nom AS 'Produit', 
+        D.quantite AS 'Quantité',
+        D.quantite * P.prix AS 'Montant'
+    
+    FROM Commandes Co
+    JOIN Clients C ON Co.numeroClient = C.numero
+    JOIN Details D ON Co.numero = D.numeroCommande
+    JOIN Produits P ON D.numeroProduit = P.numero
+    WHERE C.numero = 1;
+```
+
+</details>
+
+<details>
+<summary>2. Calculer le montant commandé (la somme `SUM`) des produits ayant le nom 'Casquette'</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Casquettes"
+ query="
+    SELECT SUM(D.quantite * P.prix) AS 'Montant total'
+    FROM Details D, Produits P
+    WHERE D.numeroProduit = P.numero
+    AND P.nom = 'Casquette';
+"
+/>
+
+* On peut vérifier notre requête en affichant les détails des commandes des casquettes :
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Casquettes"
+ query="
+    SELECT *
+    FROM Details D, Produits P
+    WHERE D.numeroProduit = P.numero
+    AND P.nom = 'Casquette';
+"
+/>
+
+</details>

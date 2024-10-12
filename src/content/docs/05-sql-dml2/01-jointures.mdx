@@ -1,0 +1,274 @@
+---
+title: Les jointures
+sidebar:
+    label: Jointures
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import Slide from '/src/components/Slide.astro';
+
+<Slide title="Les jointures">
+
+## Présentation
+
+Les jointures permettent de **coupler les lignes de plusieurs tables** afin d'en extraire des _données corrélées_.
+
+En reprenant notre schéma de base de données [fil rouge](/bdd/03-sql-dml1/02-fil-rouge/) :
+
+import {Content as TextDB} from '../../files/ecommerce-fr-erd-v2-text.md'
+
+<TextDB />
+
+Et la requête SQL suivante :
+
+<div class="flex">
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  showSQL="true"
+  query="
+SELECT 
+
+  Co.numero AS nCom, Co.dateCommande, Co.numeroClient AS nCliCom, 
+  C.numero AS nCli, C.nom
+
+FROM  Commandes Co, Clients C
+
+WHERE Co.numeroClient = C.numero ;
+"
+/>
+</div>
+
+Cette requête produit une **table temporaire** qui contient : 
+* des colonnes **des 2 tables** `Clients` et `Commandes`
+* des lignes qui vérifient que le numéro du client dans la table `Commandes` est égal au numéro du client dans la table `Clients`
+
+</Slide>
+<Slide>
+
+### Explication
+
+Conceptuellement, le résultat de cette jointure pourrait être construit comme suit :
+
+  1. On réalise un produit cartésien des tables `Commandes Co` et `Clients C`
+  2. On ne conserve que les lignes qui vérifient la condition de jointure :  `Co.numeroClient = C.numero`
+  3. On ne retient que les colonnes demandées : `Co.numero as nCom, Co.dateCommande, Co.numeroClient as nCliCom, C.numero as nCli, C.nom`
+
+On parlera ici d'une **jointure interne** (ou `INNER JOIN`), c.-à-d. que seules les lignes qui vérifient la condition de jointure sont conservées.
+
+La jointure interne est la jointure la plus courante en SQL. 
+
+Elle représente une intersection des ensembles de lignes des tables jointes.
+
+</Slide>
+<Slide>
+
+#### Le produit cartésien
+
+Une jointure, sans condition de jointure, n'est pas interdite :
+
+```sql
+SELECT * FROM Commandes, Clients;
+```
+
+Cette jointure particulière porte le nom de produit relationnel ou produit cartésien
+
+</Slide>
+<Slide>
+
+### Syntaxes
+
+Il existe **plusieurs syntaxes** pour réaliser une jointure en SQL.
+
+La syntaxe _la plus ancienne_ utilise la clause `FROM` avec une virgule pour séparer les tables et la clause `WHERE` pour spécifier la condition de jointure :
+
+```sql
+SELECT *
+FROM  Commandes Co, Clients C
+WHERE Co.numeroClient = C.numero ;
+```
+
+La syntaxe _la plus récente_ utilise la clause `JOIN` avec la clause `ON` pour spécifier la condition de jointure.
+
+```sql
+SELECT *
+FROM  Commandes Co
+JOIN  Clients C
+ON Co.numeroClient = C.numero ;
+```
+
+Dans cet exemple, le résultat produit est exactement le même.
+
+</Slide>
+<Slide title="Les jointures">
+
+## Jointures multiples
+
+Une jointure peut s'appliquer sur de multiples tables.
+
+Pour `n` tables impliquées dans la requête, il faut au moins `n-1` conditions de jointures.
+
+##### Exemple
+
+On souhaite obtenir les détails des commandes, avec pour chaque ligne de résultat les numéros de commande, nom du client, nom du produit et quantité commandée.
+
+On doit donc joindre les 4 tables `Commandes`, `Clients`, `Details` et `Produits` pour obtenir les informations souhaitées.
+
+```sql
+
+SELECT 
+
+Co.numero AS 'Commande',
+C.nom AS 'Client',
+P.nom AS 'Produit',
+D.quantite AS 'Quantité'
+
+FROM Commandes Co, Clients C, Details D, Produits P
+
+WHERE Co.numeroClient = C.numero
+AND Co.numero = D.numeroCommande
+AND D.numeroProduit = P.numero;
+```
+
+</Slide>
+<Slide title="Jointures multiples">
+
+La même requête, mais cette fois-ci avec la syntaxe `JOIN` :
+
+<div class="flex">
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Détails"
+  showSQL="true"
+  query="
+SELECT 
+
+Co.numero AS 'Commande',
+C.nom AS 'Client',
+P.nom AS 'Produit',
+D.quantite
+
+FROM Commandes Co
+JOIN Clients C ON Co.numeroClient = C.numero
+JOIN Details D ON Co.numero = D.numeroCommande
+JOIN Produits P ON D.numeroProduit = P.numero;
+"
+/>
+</div>
+
+_On a bien 3 conditions de jointure pour 4 tables impliquées._
+
+</Slide>
+<Slide>
+
+## Conditions multiples
+
+Il est possible de spécifier d'autres conditions dans la clause `WHERE` pour filtrer les résultats, quelle que soit la syntaxe utilisée.
+
+Exemple : _Donner pour chaque commande antérieure au 27/09/2024 passée par des clients de catégorie C1 le numéro de commande, sa date, le numéro du client, son nom et sa ville_
+
+On doit donc joindre les tables `Commandes` et `Clients` pour obtenir les informations souhaitées, puis filtrer les résultats avec la condition `C.categorie = 'C1'` et `Co.dateCommande < '2024-09-27'`.
+
+
+</Slide>
+<Slide>
+
+Avec la syntaxe classique :
+
+```sql
+SELECT 
+  Co.numero AS nCom, Co.dateCommande, Co.numeroClient AS nCliCom, 
+  C.numero AS nCli, C.nom
+
+FROM Commandes Co, Clients C
+    
+WHERE Co.numeroClient = C.numero
+AND C.categorie = 'C1'
+AND Co.dateCommande < '2024-09-27';
+```
+
+</Slide>
+<Slide>
+
+Avec la syntaxe `JOIN` :
+
+<div class="flex">
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Détails"
+  showSQL="true"
+  query="
+SELECT 
+  Co.numero AS nCom, Co.dateCommande, Co.numeroClient AS nCliCom, 
+  C.numero AS nCli, C.nom
+
+FROM Commandes Co
+JOIN Clients C ON Co.numeroClient = C.numero
+    
+WHERE C.categorie = 'A1'
+AND Co.dateCommande < '2024-09-27';
+"
+/>
+</div>
+
+</Slide>
+<Slide>
+
+## Les lignes célibataires
+
+Les **lignes célibataires** sont les lignes qui n'ont aucune correspondance dans l'une des tables de la jointure.
+
+* Par exemple, les clients qui n'ont passé aucune commande
+* Il existe une méthode pour obtenir les lignes célibataires, appelée la **jointure externe** (`OUTER JOIN`)
+* Plus généralement, les SGBD permettent de faire des jointures sur les différentes parties des relations (inclusion, exclusion, etc.)
+
+</Slide>
+<Slide>
+
+## Les différentes jointures
+
+La jointure interne (`INNER JOIN`) est la plus courante, mais il existe d'autres types de jointures :
+
+* `OUTER JOIN` : permet de conserver les lignes célibataires
+* `LEFT JOIN` : conserve les lignes de la table de gauche, même si elles n'ont pas de correspondance dans la table de droite
+* `RIGHT JOIN` : conserve les lignes de la table de droite, même si elles n'ont pas de correspondance dans la table de gauche
+* `FULL JOIN` : conserve toutes les lignes des deux tables, même si elles n'ont pas de correspondance dans l'autre table
+
+</Slide>
+<Slide>
+
+## Schématique des différentes jointures
+
+![Les différentes jointures disponibles](01-jointures-01-differentes-jointures.jpg)
+
+Remarques : 
+
+* `INNER JOIN` est la jointure par défaut, il n'est pas nécessaire de spécifier `INNER`
+* `OUTER JOIN` est un synonyme de `FULL JOIN`
+* `LEFT JOIN` est un synonyme de `LEFT OUTER JOIN`
+* `RIGHT JOIN` est un synonyme de `RIGHT OUTER JOIN`
+
+</Slide>
+<Slide>
+
+## Conclusion
+
+* Les jointures permettent de coupler les lignes de plusieurs tables
+* La jointure interne `INNER JOIN` est la plus courante
+* Par défaut, c'est un `INNER JOIN` qui est réalisé
+  * avec JOIN / ON
+  * ou en utilisant la clause WHERE T1.id = T2.rid
+* Les autres jointures peuvent être utiles pour certaines requêtes
+* On peut spécifier des conditions supplémentaires dans la clause WHERE
+* On peut utiliser tout ce qui a été vu précédemment avec des jointures pour réaliser des requêtes complexes
+
+</Slide>
+<Slide>
+
+## Exercice
+
+import Exercice1 from '../../exercices/05-sql-dml2/01-exercices-01.mdx'
+
+<Exercice1 />
+
+</Slide>
