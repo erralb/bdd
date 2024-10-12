@@ -1,0 +1,31 @@
+---
+import Table from "./TableSQLite.astro";
+---
+
+<style is:global>
+  .produits {
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    & > div {
+      margin-top: 0 !important;
+    }
+  }
+</style>
+
+<div class="produits">
+
+  <Table
+  sqliteDB="public/sample/produits.sqlite"
+  title="PRODUIT"
+  query="SELECT * FROM PRODUIT"
+/>
+
+<Table
+  sqliteDB="public/sample/produits.sqlite"
+  title="COMPOSITION"
+  query="SELECT * FROM COMPOSITION"
+/>
+
+</div>
