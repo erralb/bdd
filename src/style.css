@@ -36,10 +36,10 @@
     border-top: 3px solid rgb(160, 160, 160);
   }
 
-  h2:first-child {
+  /* h2:first-child {
     border-top: none;
     margin-top: 0;
-  }
+  } */
 
   h3,
   h4 {

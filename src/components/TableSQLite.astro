@@ -4,17 +4,23 @@ import Database from 'better-sqlite3';
 export interface Props {
   sqliteDB: string;
   title?: string;
+  showSQL?: boolean;
   query: string;
 }
 
-const { sqliteDB, title, query } = Astro.props;
+const { sqliteDB, title, showSQL, query } = Astro.props;
 const db = new Database(sqliteDB);
 
 const rows : Array<Array<string>> = db.prepare(query).all() as Array<Array<string>>;
 const headers : Array<string> = rows.length ? Object.keys(rows[0]) : [];
 
 import Table from "./Table.astro";
+import { Code } from '@astrojs/starlight/components';
 ---
+
+{showSQL ? <Code code={query} lang="sql" wrap /> : null}
+
+{showSQL ? "Résultat : " : null}
 
 <Table
   title={title}
