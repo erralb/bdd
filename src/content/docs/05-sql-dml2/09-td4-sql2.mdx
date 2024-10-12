@@ -48,47 +48,90 @@ PERSONNE (NPERS, NOM, RESPONSABLE*)
 
 ## Exercice 3
 
-Soit le schéma relationnel suivant :
+En reprendant le schéma relationnel de la base de données fil rouge :
 
-```
-CLIENT (NCLI, NOM, ADRESSE, LOCALITE, CAT, COMPTE)
-PRODUIT (NPRO, LIBELLE, PRIX, QSTOCK)
-COMMANDE (NCOM, NCLI, DATECOM)
-DETAIL (NCOM, NPRO, QCOM)
-```
+import { Content as TextDB } from "/src/content/files/ecommerce-fr-erd-v2-text.md";
+
+<TextDB />
+
+
+import DBecommerce2 from "/src/components/DBecommerce2.astro";
+
+<details>
+  <summary>Données de la base</summary>
+
+  <DBecommerce2 />
+</details>
 
 Répondez aux questions suivantes :
 
-1. Calculer le montant de chaque détail de commande du client ’C400’.
-2. Calculer le montant commandé des produits en sapin.
+1. Calculer le montant de chaque détail de commande du client numéro 1
+
+2. Calculer le montant commandé des produits 'Pantalon'
+
 3. Afficher le total et la moyenne des comptes des clients, ainsi que le nombre de clients, selon chacune des classifications suivantes :
-    4. par catégorie, (b) par localité,
-    5. par catégorie dans chaque localité.
+    (a) par catégorie, (b) par ville, (c) par catégorie dans chaque ville.
+
 6. Combien y a-t-il de commandes spécifiant un (ou plusieurs) produit(s) en acier ?
-7. Compléter le fragment suivant de manière à former une requête valide
-    * select CAT, NPRO, sum(QCOM*PRIX) from ...
-8. Calculer le montant dû par chaque client. Dans ce calcul, on ne prend en compte que le montant des commandes. Attention aux clients qui n’ont pas passé de commandes.
-9. Calculer le montant duˆ par les clients de chaque localité. Dans ce calcul, on ne prend en compte que le montant des commandes. Attention aux localités dans lesquelles aucun client n’a passé de commandes.
+
+7. Compléter le fragment suivant de manière à former une requête valide :
+
+```sql
+    SELECT categorie, numeroProduit, SUM(quantite*prix)
+    FROM ...
+```
+
+8. Calculer le montant dû par chaque client. _Dans ce calcul, on ne prend en compte que le montant des commandes. Attention aux clients qui n’ont pas passé de commandes, ils devraient apparaître avec un montant nul._
+
+9. Calculer le montant dû par les clients de chaque ville. _Dans ce calcul, on ne prend en compte que le montant des commandes. Attention aux villes dans lesquelles aucun client n’a passé de commandes._
+
 10. Calculer, par jour, le total des montants des commandes.
 
-On suppose qu’on n’a pas trouvé utile d’imposer un identifiant primaire sur la table PRODUIT. Il se peut donc que plusieurs lignes aient même valeur de la colonne NPRO, ce qui déroge au principe d’unicité des valeurs de cette colonne.
+11. On suppose que le concepteur de la base de données n’a pas trouvé utile d’imposer un identifiant primaire sur la table `Produits`
+    
+    Il se pourrait donc que plusieurs lignes de la table `Produits` aient la même valeur pour le _numéro_ de produit (ce qui déroge au principe d’unicité des bases de données relationnelles...)
 
-12. Ecrire une requête qui recherche les valeurs de NPRO présentes en plus d’un exemplaire.
-13. Ecrire une requête qui indique combien de valeurs de NPRO sont présentes en plus d’un exemplaire.
+    (a) Ecrire une requête qui recherche les valeurs de NPRO présentes en plus d’un exemplaire.
 
-14. Afficher pour chaque localité, les libellés des produits qui y sont commandés.
-15. Afficher par localité, et pour chaque catégorie dans celle-ci, le total des montants des commandes.
-16. Indiquer, pour chaque localité, les catégories de clients qui n’y sont pas représentées Suggestion. Construire l’ensemble de tous les couples (LOCALITE, CAT) possibles et en retirer ceux qui existent dans la base. Attention aux valeurs null, qui ne doivent pas être prises en compte.
-17. Produire (à l’écran) une table de couples < X, Y > de clients tels que X et Y habitent dans la même localité. On évitera de renseigner < X,X >, mais aussi < Y,X > si < X,Y > est déjà repris.
-18. Suggestion. Auto-jointure de CLIENT. On évitera les couples inverse en imposant un ordre sur les valeurs de NOM (p.ex. X < Y ).
-19. Afficher pour chaque client, le nombre de commandes, le nombre de produits commandés et le nombre de détails. On se limite aux clients qui ont passé au moins une commande. Suggestion : il s’agit d’une requête basée sur des groupements multi-niveaux.
-20. Afficher, pour chaque localité et pour chaque catégorie, (1) le nombre de commandes passées par les clients de cette localité et de cette catégorie, (2) le montant total de ces commandes.
-21. Calculer le nombre moyen de produits par commande. De même le nombre moyen de commandes par client, par localité ou par catégorie.
-22. Remarque. Il n’est pas possible de demander directement la moyenne d’une somme. Suggestion. Construction et interrogation d’une vue ou calcul de la moyenne dans le from.
-23. Quel est, pour chaque localité, le nombre moyen de commandes par client.
-24. Ecrire une requête SQL qui donne, pour chaque produit, le nombre de produits qui ont été commandés le 23-12-2008.
-25. Donner pour chaque localité dans laquelle se trouve au moins un client de catégorie ’C1’ la liste des produits en sapin qu’on y a commandés.
-26. Donner pour chaque produit la liste des localités dans lesquelles ce produit est commandé en plus de 500 unités (= au total pour la localité).
-27. Afficher, pour chaque localité, les produits qu’on y commande et qui sont aussi commandés dans au moins une autre localité.
-28. Suggestion. Un produit est intéressant si le nombre de localités dans lesquelles il est commandé est supérieur ou égal à 2.
-29. Calculer, pour chaque localité, le nombre de catégories distinctes.
+    (b) Ecrire une requête qui indique combien de valeurs de NPRO sont présentes en plus d’un exemplaire.
+
+12. Afficher pour chaque ville, les noms des produits qui y sont commandés.
+
+13. Afficher par ville, et pour chaque catégorie dans celle-ci, le total des montants des commandes.
+
+14. Indiquer, pour chaque ville, les catégories de clients qui n’y sont pas représentées
+    _Suggestion: Construire l’ensemble de tous les couples (ville, categorie), possibles et en retirer ceux qui existent dans la base. Attention aux valeurs null, qui ne doivent pas être prises en compte._
+
+15. Produire (à l’écran) une table de couples < X, Y > de clients tels que X et Y habitent dans la même ville. 
+    On évitera de renseigner < X,X >, mais aussi < Y,X > si < X,Y > est déjà repris.
+    
+    _Suggestion. Auto-jointure de CLIENT. On évitera les couples inverse en imposant un ordre sur les valeurs de NOM (p.ex. X < Y )._
+
+16. Afficher pour chaque client, le nombre de commandes, le nombre de produits commandés et le nombre de détails. 
+    On se limite aux clients qui ont passé au moins une commande. 
+    
+    _Suggestion : il s’agit d’une requête basée sur des groupements multi-niveaux._
+
+18. Afficher, pour chaque ville et pour chaque catégorie :
+
+    (a) le nombre de commandes passées par les clients de cette ville et de cette catégorie
+
+    (b) le montant total de ces commandes.
+
+19. Calculer le nombre moyen de produits par commande. De même le nombre moyen de commandes par client, par ville ou par catégorie.
+    
+    _Remarque: Il n’est pas possible de demander directement la moyenne d’une somme. Suggestion : Construction et interrogation d’une vue ou calcul de la moyenne dans le `FROM`._
+
+20. Quel est, pour chaque ville, le nombre moyen de commandes par client.
+
+22. Ecrire une requête SQL qui donne, pour chaque produit, le nombre de produits qui ont été commandés le 30/06/2024.
+
+23. Donner pour chaque ville dans laquelle se trouve au moins un client de catégorie `C1` la liste des produits `Pantalon` qu’on y a commandés.
+
+24. Donner pour chaque produit la liste des villes dans lesquelles ce produit est commandé en plus de 2 unités (= au total pour la ville).
+
+25. Afficher, pour chaque ville, les produits qu’on y commande et qui sont aussi commandés dans au moins une autre ville.
+
+    _Suggestion : Un produit est intéressant si le nombre de villes dans lesquelles il est commandé est supérieur ou égal à 2._
+
+27. Calculer, pour chaque ville, le nombre de catégories distinctes.

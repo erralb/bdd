@@ -1,135 +1,229 @@
 ---
-title: Remarques
+title: Compléments sur les jointures
+sidebar:
+  label: Remarques
 ---
 
 import Table from "/src/components/TableSQLite.astro";
 import Slide from '/src/components/Slide.astro';
 
-<Slide>
+<Slide title="Compléments sur les jointures">
+
+La jointure est un opérateur fondamental en ce qu'il permet de naviguer parmi les données. Cependant, il est nécessaire de bien comprendre le fonctionnement des jointures pour écrire des requêtes correctes et efficaces.
+
+Nous allons nous intéresser :
+
+1. à la pertinence d'utiliser une sous-requête plutôt qu'une jointure
+2. aux valeurs dérivées dans une jointure
+3. aux jointures généralisées
+4. à l'interprétation du résultat d'une jointure
+
 </Slide>
+<Slide>
 
+## Sous-requête vs jointure
 
+_Certaines conditions utilisant une sous-requête (SELECT emboité) peuvent s'exprimer à l'aide d'une jointure_
 
-# Compléments sur les jointures
+Examinons 2 cas :
 
-* La jointure est un opérateur fondamental en ce qu'il permet de naviguer parmi les données.
-* Dans la suite nous allons nous intéresser en particulier :
-  * 1. à la pertinence d'utiliser une sous-requête  __ou__  une jointure
-  * 2. aux valeurs dérivées dans une jointure
-  * 3. aux jointures généralisées
-  * 4. à l'interprétation du résultat d'une jointure
+1. Le cas des conditions d'association et de non association
+2. Le cas de sous-requête et de clé étrangère multicomposants
 
+</Slide>
+<Slide>
 
----
+### Equivalence
 
+La requête suivante, qui renvoie les _commandes_ passées par des _clients_ de Grenoble :
 
-* Certaines conditions utilisant une sous-requête (SELECT emboité) peuvent s'exprimer à l'aide d'une jointure
-* Examinons 2 cas :
-  * 1. Le cas des conditions d'association et de non association
-  * 2. Le cas de sous-requête et de clé étrangère multicomposants
-
-
----
-
-
-```
-__SELECT__  NCOM, DATECOM  __FROM__  COMMANDE  __WHERE__  NCLI  __IN__  ( __SELECT__  NCLI 					 __FROM__  CLIENT 					 __WHERE__  LOCALITE = ' Poitiers ' ) ;
+```sql
+SELECT numero, dateCommande 
+FROM  COMMANDE 
+WHERE  numeroClient IN ( SELECT  numero FROM Clients WHERE ville='Grenoble' ) ;
 
 ```
 peut s'écrire également sous la forme d'une jointure :
 
-```
-__SELECT__  NCOM, DATECOM  __FROM__  COMMANDE, CLIENT  __WHERE__  COMMANDE.NCLI = CLIENT.NCLI 	 __AND__  LOCALITE = ' Poitiers ' ;
-
-```
-
----
-
-
-```
-__SELECT__  *  __FROM__  COMMANDE  __WHERE__  NCOM IN ( __SELECT__  NCOM 				 __FROM__  DETAIL 				 __WHERE__  NPRO = 'PA60' AND QCOM < ( __SELECT__  QCOM 												 __FROM__  DETAIL 												 __WHERE__  NPRO = 'PA60' 												 __AND__  NCOM = '30182' ) ) ;
-
-```
-peut s'écrire également sous la forme d'une jointure :
-
-```
-__SELECT__  M.NCOM, DATENCOM, NCLI  __FROM__  COMMANDE M, DETAIL D1, DETAIL D2  __WHERE__  D1.NPRO = D1.NCOM  __AND__  D2.NCOM = '30182'  __AND__  D2.NPRO  __=__  'PA60'  __AND__  D1.QCOM  __<__  D2.QCOM ;
-
+```sql
+SELECT numero, dateCommande
+FROM  COMMANDE C, CLIENTS CL
+WHERE  C.numeroClient = CL.numero 
+AND CL.ville='Grenoble' ;
 ```
 
----
+Ou en utilisant la syntaxe `JOIN` :
 
-
+```sql
+SELECT numero, dateCommande
+FROM  COMMANDE C
+JOIN CLIENTS CL ON C.numeroClient = CL.numero
+WHERE CL.ville='Grenoble' ;
 ```
-* __SELECT__  NCOM, DATECOM, NCLI  __FROM__  COMMANDE  __WHERE__  NCOM  __N__  __OT IN__  ( __SELECT__  NCOM 						 __FROM__  DETAIL  __WHERE__  NPRO = 'PA60' ) ;
 
+
+</Slide>
+<Slide>
+
+### Equivalence
+
+La requête suivante renvoie les _commandes_ qui contiennent un _produit_ dont la quantité est inférieure à la quantité commandée pour le produit numéro 1 dans la commande numéro 3 :
+
+```sql
+SELECT * 
+FROM Commandes 
+WHERE numero IN ( SELECT numeroCommande
+                  FROM Details
+                  WHERE numeroProduit = 1 AND quantite < (SELECT quantite
+                                                          FROM Details
+                                                          WHERE numeroProduit = 1
+                                                          AND numeroCommande = 3) ) ;
 ```
-* __n'est absolument pas équivalente à__
 
+Cette requête peut également s'écrire sous la forme de jointures uniquement :
+
+```sql
+SELECT DISTINCT C.*
+FROM Commandes C, Details D1, Details D2
+WHERE C.numero = D1.numeroCommande
+AND D1.numeroProduit = 1
+AND D2.numeroCommande = 3
+AND D1.quantite < D2.quantite ;
 ```
-* __SELECT__   __DISTINCT__  COMMANDE.NCOM, DATECOM, NCLI  __FROM__  COMMANDE, DETAIL  __WHERE__  COMMANDE.NCOM = DETAIL.NCOM  __AND__  NPRO <> 'PA60' ;
 
+</Slide>
+<Slide>
+
+### Non équivalence
+
+Cependant, la requête suivante, qui renvoie les _commandes_ qui ne contiennent pas de _produit_ numéro 1 : _(qui pourrait aussi s'écrire avec un `NOT EXISTS`)_
+
+```sql
+SELECT *
+FROM Commandes
+WHERE numero NOT IN ( SELECT numeroCommande 
+						          FROM Details WHERE numeroProduit = 1 ) ;
 ```
-  * Remarque : il faut se souvenir qu'une jointure fondée sur le couple identifiant primaire/clé étrangère permet de matérialiser des associations entre lignes et non  __l'inexistence__  d'association.
+
+:::danger[&nbsp;]
+ne peut absolument pas s'écrire sous la forme d'une jointure !
+:::
 
 
----
+_Avec une jointure, on ne peut pas exprimer une condition de **non-association**_
+
+Intuitivement, on pourrait penser que la requête suivante serait similaire à la précédente :
+
+```sql
+SELECT *
+FROM Commandes C, Details D
+WHERE C.numero = D.numeroCommande
+AND D.numeroProduit != 1 ;
+```
+
+Mais cette requête ne renvoie pas les commandes qui ne contiennent pas le produit numéro 1. Elle renvoie les commandes qui contiennent un produit différent du produit numéro 1.
+
+:::tip[À retenir]
+Il faut se souvenir, qu'une jointure, fondée sur un couple de clés _primaire/étrangère_ permet de matérialiser des associations entre lignes et non  **l'inexistence** d'associations.
+:::
+
+</Slide>
+<Slide>
+
+#### Comparaison des résultats
+
+Pour s'en assurer, comparons les résultats des deux requêtes :
 
 
-* Conclusion
-  * 1. La jointure et la sous-requête permettent d'exprimer des conditions d'association entre lignes
-  * 2. En revanche, des conditions de non-association ne sont généralement exprimables que par des sous-requêtes, ainsi que par la forme  __NOT EXISTS__
+<div class="tables-2-col">
+<div>
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  showSQL="true"
+  query="
+SELECT numero
+FROM Commandes
+WHERE numero NOT IN ( SELECT numeroCommande 
+						          FROM Details WHERE numeroProduit = 1 ) ;
+"
+/>
+</div>
+<div>
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  showSQL="true"
+  query="
+SELECT C.numero
+FROM Commandes C, Details D
+WHERE C.numero = D.numeroCommande
+AND D.numeroProduit != 1 ;
+"
+/>
+</div>
+</div>
 
+</Slide>
+<Slide title="Conclusion sur les sous-requêtes et les jointures">
 
----
+### Conclusion
 
+1. La **jointure et la sous-requête** permettent d'exprimer des **conditions d'association** entre lignes
 
-Une jointure permet également d'effectuer des calculs sur des quantités extraites de plusieurs tables
+2. _En revanche_, des **conditions de non-association** ne sont généralement exprimables que par des **sous-requêtes**, ainsi que par la forme `NOT EXISTS`
 
-Le raisonnement est simple : la jointure constitue des lignes fictives dont la clause SELECT extrait des valeurs comme elle le ferait d'une ligne réelle issue d'une table
+</Slide>
+<Slide>
 
-Par exemple, la requête suivant associe à chaque ligne de DETAIL le montant à payer :
+## Calculs sur les jointures
 
-__SELECT__  NCOM, D.NPRO, QCOM*PRIX  __FROM__  DETAIL D, PRODUIT P  __WHERE__  D.NPRO = P.NPRO ;
+Une jointure permet également d'effectuer des **calculs** sur des quantités extraites de plusieurs tables
 
+Le raisonnement est simple : la jointure constitue des lignes fictives, dont la clause `SELECT` extrait des valeurs comme elle le ferait d'une ligne réelle issue d'une table
 
----
+Par exemple, la requête suivant associe à chaque ligne de `Details` le montant à payer pour la commande numéro 1:
 
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  showSQL="true"
+  query="
+SELECT D.numeroCommande, D.numeroProduit, D.quantite, D.quantite * P.prix AS 'Montant'
+FROM Details D, Produits P
+WHERE D.numeroProduit = P.numero
+AND D.numeroCommande = 1 ;
+"
+/>
 
-La requête suivante, elle, établit le montant de la commande 30184 :
+</Slide>
+<Slide>
 
-__SELECT__  'Montant commande 30184 =',  __SUM__ (QCOM*PRIX)  __FROM__  DETAIL D, PRODUIT P  __WHERE__  D.NCOM = '30184'  __AND__  D.NPRO = P.NPRO ;
+La requête suivante, elle, établit le montant de la commande numéro 1 :
 
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Commandes"
+  showSQL="true"
+  query="
+SELECT D.numeroCommande, SUM(D.quantite * P.prix) AS 'Montant total'
+FROM Details D, Produits P
+WHERE D.numeroProduit = P.numero
+AND D.numeroCommande = 1 ;
+"
+/>
 
----
+</Slide>
+<Slide>
 
+## Autres conditions de jointures
 
-Les jointures étudiées jusqu'ici étaient fondées sur l'égalité des valeurs d'une clé étrangère avec celles d'un identifiant
+Les conditions de jointures présentées jusqu'ici étaient fondées sur **l'égalité des valeurs d'une clé étrangère avec celles d'un identifiant**
 
-Toutefois, la forme même de la condition de jointure suggère que toute comparaison peut servir à indiquer comment associer les lignes des tables concernées
+Toutefois, toute comparaison peut servir à indiquer comment associer les lignes des tables concernées.
 
-
----
-
-
-* Considérons le schéma suivant :
-  * __VENTE__  ( _CHAINE, PRODUIT_ , PRIX) : chaque ligne (c, p, x) indique que le produit  _p_  a été vendu dans le magasin  _c_  au prix  _x_
-  * __IMPLANTATION__  ( _CHAINE_ , VILLE) : chaque ligne (c, v) indique que le magasin  _c_  est implanté dans la ville  _v_
-* La colonne CHAINE n'est pas une clé étrangère, ni un identifiant de la relation IMPLANTATION
-* On peut seulement  _espérer_  que les colonnes aient des valeurs communes
-* Nous ne sommes pas dans le schéma classique représentant des associations explicites
-
-
----
-
-
-__SELECT__  DISTINCT PRODUIT, VILLE , PRIX  __FROM__  VENTE  __V__ , IMPLANTATION  __I__   __WHERE__   __V__ .CHAINE =  __I__ .CHAINE ;
-
-indique, pour chaque ligne (p, v, x), que le produit  _p_  est disponible dans la ville  _v_  au prix  _x_  quels que soient les magasins qui proposent  _p_
-
-
----
-
+</Slide>
+<Slide title="Autres conditions de jointures">
 
 L'exemple ci-dessous illustre une opération fréquente qui consiste à condenser de l'information de manière à la rendre plus lisible
 
@@ -138,26 +232,34 @@ La table ci-dessous établit des intervalles successifs de valeurs de compte (MI
 ![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures11.png)
 
 
----
-
+</Slide>
+<Slide>
 
 Comment associer à chaque client le code de son compte ?
 
-__SELECT__  NCLI , NOM, CODE_CPT  __FROM__  CLIENT, CLASSE_CPT  __WHERE__  CAT = 'C1 '  __AND__  COMPTE >= MIN_CPT  __AND__  COMPTE < MAX_CPT ;
+La requête suivante permet de réaliser cette opération :
+
+```sql
+SELECT NCLI, NOM, CODE_CPT
+FROM CLIENT, CLASSE_CPT
+WHERE CAT = 'C1 '
+AND COMPTE >= MIN_CPT
+AND COMPTE < MAX_CPT ;
+```
 
 ![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures12.png)
 
+</Slide>
+<Slide>
 
----
-
+## Compréhension du résultat d'une jointure
 
 La construction d'une requête qui utilise une ou plusieurs jointures peut s'avérer délicate
 
 Il importe donc de bien comprendre ce que représente le résultat d'une jointure
 
-
----
-
+</Slide>
+<Slide>
 
 * La question est la suivante : sachant que toute ligne d'une table représente une entité du domaine d'application (un client, un achat, un détail, etc.), quelles entités les lignes d'une jointure représentent-elles ?
 * Par exemple, chaque ligne produite par l'évaluation de la requête :
@@ -168,8 +270,8 @@ Il importe donc de bien comprendre ce que représente le résultat d'une jointur
   * 3. une commande ?
 * Réponse :  __des commandes__
 
-
----
+</Slide>
+<Slide>
 
 
 * La règle relative à une jointure élémentaire fondée sur l'égalité identifiant / clé étrangère est simple
@@ -182,7 +284,9 @@ Il importe donc de bien comprendre ce que représente le résultat d'une jointur
 * En bref : le résultat d'une jointure représente des entités de la table contenant la clé étrangère
 
 
----
+
+</Slide>
+<Slide>
 
 
 Qu'en est il pour cette requête ?
@@ -192,7 +296,9 @@ __SELECT__  COMMANDE.NCOM, DATECOM, NCLI __FROM__  COMMANDE, DETAIL __WHERE__  C
 Réponse : les lignes sont celles de la table DETAIL
 
 
----
+
+</Slide>
+<Slide>
 
 
 Ce que nous venons de discuter conduit à une autre règle : l'identifiant du résultat de la jointure
@@ -205,3 +311,4 @@ Si l'identifiant primaire de TB n'est pas repris dans la clause SELECT, le résu
 
 __SELECT__  LOCALITE, LIBELLE __FROM__  CLIENT CLI , COMMANDE COM, DETAIL D, PRODUIT P __WHERE__  CLI .NCLI = COM.NCLI __AND__  COM.NCOM D.NCOM __AND__  D.NPRO = P.NPRO ;
 
+</Slide>

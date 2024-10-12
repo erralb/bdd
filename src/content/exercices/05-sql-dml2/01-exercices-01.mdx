@@ -12,7 +12,10 @@ Exprimer les requêtes suivantes en SQL :
 <br/>
 
 <details>
-<summary>1. Calculer le montant (_quantité * prix_) de chaque détails des commandes du client numero 1</summary>
+<summary>1. Calculer le _montant_ (soit la _quantité * prix_) de chaque détails des commandes du client _numero 1_</summary>
+
+On a besoin de joindre les tables `Details` (pour la quantité et la commande), `Produits` (pour le prix) et `Commandes` (pour le numéro de client) pour obtenir les informations souhaitées.
+
 
 <SQLiteQuery
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
@@ -20,17 +23,17 @@ Exprimer les requêtes suivantes en SQL :
  query="
     SELECT 
 
-        Co.numero AS 'Commande', 
+        D.numeroCommande AS 'Commande', 
         P.nom AS 'Produit', 
+        P.prix AS 'Prix',
         D.quantite AS 'Quantité',
         D.quantite * P.prix AS 'Montant'
     
-    FROM Details D, Produits P, Commandes Co, Clients C
+    FROM Details D, Produits P, Commandes Co
     
     WHERE D.numeroProduit = P.numero
     AND D.numeroCommande = Co.numero
-    AND Co.numeroClient = C.numero
-    AND C.numero = 1;
+    AND Co.numeroClient = 1;
 "
 />
 
@@ -39,16 +42,16 @@ Version avec `JOIN` :
 ```sql
     SELECT 
 
-        Co.numero AS 'Commande', 
+        D.numeroCommande AS 'Commande', 
+        P.nom AS 'Produit', 
         P.nom AS 'Produit', 
         D.quantite AS 'Quantité',
         D.quantite * P.prix AS 'Montant'
     
-    FROM Commandes Co
-    JOIN Clients C ON Co.numeroClient = C.numero
-    JOIN Details D ON Co.numero = D.numeroCommande
+    FROM Details D
+    JOIN Commandes Co ON D.numeroCommande = Co.numero
     JOIN Produits P ON D.numeroProduit = P.numero
-    WHERE C.numero = 1;
+    WHERE Co.numero = 1;
 ```
 
 </details>
@@ -56,24 +59,13 @@ Version avec `JOIN` :
 <details>
 <summary>2. Calculer le montant commandé (la somme `SUM`) des produits ayant le nom 'Casquette'</summary>
 
+On a besoin de joindre les tables `Details` (pour la quantité) et `Produits` (pour le prix) pour obtenir les informations souhaitées. Puis on filtre les produits ayant le nom 'Casquette' et on calcule la somme des montants.
+
 <SQLiteQuery
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Casquettes"
  query="
     SELECT SUM(D.quantite * P.prix) AS 'Montant total'
-    FROM Details D, Produits P
-    WHERE D.numeroProduit = P.numero
-    AND P.nom = 'Casquette';
-"
-/>
-
-* On peut vérifier notre requête en affichant les détails des commandes des casquettes :
-
-<SQLiteQuery
- sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
- title="Casquettes"
- query="
-    SELECT *
     FROM Details D, Produits P
     WHERE D.numeroProduit = P.numero
     AND P.nom = 'Casquette';
