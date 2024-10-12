@@ -1,0 +1,75 @@
+---
+title: Ordre des lignes d'un résultat
+sidebar:
+  label: Ordre
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import Slide from '/src/components/Slide.astro';
+
+<Slide>
+</Slide>
+
+
+
+
+
+# Ordre des lignes d'un résultat
+
+Par construction, l'ordre des lignes d'une table est arbitraire
+
+On ne peut pas supposer que les lignes sont stockées dans un ordre déterminé
+
+Par principe, l'ordre des lignes du résultat d'une requête est aussi arbitraire
+
+Il est possible d'imposer un ordre de présentation en utilisant la clause ORDER BY
+
+
+---
+
+
+Donner la liste ordonnée par localité des clients (numéro, nom et localité) de catégorie C1 et C2
+
+__SELECT__  NCLI , NOM, LOCALITE  __FROM__  CLIENT __WHERE__  CAT  __IN__  ( 'C1 ' , 'C2 ' ) __ORDER BY__  LOCALITE ;
+
+On peut également indiquer plusieurs critères de tri :
+
+__SELECT__  * __FROM__  CLIENT __ORDER BY__  LOCALITE, CAT ;
+
+Les clients vont apparaître classés par localité, puis dans chaque localité classés par catégorie.  _Attention l'ordre à une importance._
+
+
+---
+
+
+* Il est possible de modifier l'ordre utilisé pour le tri
+  * La clause  __ASC__  pour le tri ascendant
+  * La clause  __DESC__  pour le tri descendant
+* Par défaut, le tri est ascendant
+* Par exemple :
+* __SELECT__  * __FROM__  PRODUIT __WHERE__  LIBELLE  __LIKE__  '%SAPIN%' __ORDER BY__  QSTOCK  __DESC__  ;
+
+
+---
+
+
+Si une expression apparaît dans le SELECT, elle sera spécifiée par son nom
+
+S'il s'agit d'une colonne avec un alias, elle sera spécifié par celui-ci
+
+Exemple : Donner les localités par valeurs décroissantes de leur population de clients
+
+__SELECT__  LOCALITE,	 __COUNT__ (*)  __AS__  POPULATION,	 __SUM__ (COMPTE) __FROM__  CLIENT __GROUP BY__  LOCALITE __ORDER BY__  POPULATION  __DESC__  ;
+
+
+---
+
+
+Il est possible d'utiliser des critères qui ne sont pas dans la clause SELECT
+
+Exemple :
+
+__SELECT__  NCOM, NPRO, QCOM __FROM__  DETAIL D, PRODUIT P __WHERE__  D.NPRO = P.NPRO  __ORDER__   __BY__  NCOM, QCOM*PRIX  __DESC__  ;
+
+
+---

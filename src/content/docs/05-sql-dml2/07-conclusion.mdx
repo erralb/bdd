@@ -1,0 +1,76 @@
+---
+title: Conclusion
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import Slide from '/src/components/Slide.astro';
+
+<Slide>
+</Slide>
+
+
+# Interprétation d'une requête
+
+* Pour une requête mono-table :
+  * 1. On considère la table spécifiée dans la clause FROM
+  * 2. On sélectionne les lignes sur la base de la clause WHERE
+  * 3. On classe ces lignes en groupes comme spécifié dans la clause GROUP BY
+  * 4. On ne retient que les lignes qui vérifient la clause HAVING
+  * 5. Les lignes des groupes sont ordonnées selon la clause ORDER BY éventuellement
+  * 6. De chacune des lignes, on extrait les valeurs demandées dans la clause SELECT
+
+
+---
+
+
+* Pour une requête multitable :
+  * 1. On considère les tables spécifiées dans la clause FROM
+  * 2. On effectue la jointure de ces tables selon le critère de jointure de la clause WHERE ou en utilisant la clause JOIN / ON
+  * 3. On sélectionne les lignes de la jointure sur la base des autres conditions de la clause WHERE
+  * 4. On classe ces lignes en groupes comme spécifié dans la clause GROUP BY
+  * 5. On ne retient que les groupes qui vérifient la clause HAVING
+  * 6. Les lignes des groupes sont ordonnées selon la clause ORDER BY éventuellement
+  * 7. De chacune des lignes, on extrait les valeurs demandées dans la clause SELECT
+
+
+---
+
+
+* A titre d'exemple, on indique, pour la requête suivante, l'ordre d'interprétation qui conduisent à l'élaboration du résultat :
+  * 7 :  __SELECT__  NCLI ,  __COUNT__ (*),  __SUM__ (QCOM)
+  * 1 :  __FROM__  COMMANDE M, DETAIL D
+  * 2 :  __WHERE__  M.NCOM = D.NCOM
+  * 3 :  __AND__  NPRO = 'PA60'
+  * 4 :  __GROUP BY__  NCLI
+  * 5 :  __HAVING COUNT__ (*) > = 2
+  * 6 :  __ORDER BY__  NCLI
+* _Remarque : Il s'agit d'une évaluation fictive, le SBGD utilisant généralement d'autres procédés plus efficaces pour construire le résultat_
+
+
+---
+
+
+* Avec JOIN / ON
+  * 7 :  __SELECT__  NCLI ,  __COUNT__ (*),  __SUM__ (QCOM)
+  * 1 :  __FROM__  COMMANDE M,
+  * 2 :  __JOIN __ DETAIL D __      ON__  M.NCOM = D.NCOM
+  * 3 :  __WHERE__  NPRO = 'PA60'
+  * 4 :  __GROUP BY__  NCLI
+  * 5 :  __HAVING COUNT__ (*) > = 2
+  * 6 :  __ORDER BY__  NCLI
+* _Remarque : Il s'agit d'une évaluation fictive, le SBGD utilisant généralement d'autres procédés plus efficaces pour construire le résultat_
+
+
+---
+
+
+# Pour se préparer aux TP
+
+* _[https://www.sqlitetutorial.net/](https://www.sqlitetutorial.net/)_  : Tutoriel complet sur SQLite et SQL
+* _[SQLite Studio](https://github.com/pawelsalawa/sqlitestudio/releases)_  : Interface graphique pour SQLite
+* Les bases de données au format SQLite présentées dans le cours sont disponibles pour tester les requêtes :
+  * _[Clients](https://drive.google.com/file/d/12TxOXIlS41hMe5E5C_6cevzuyXhaM5sf/view?usp=sharing)_  (exemple fil rouge du cours)
+  * _[Personnes](https://drive.google.com/file/d/1ctY3S2cJb-zp7ybTbo1F9QfbWsMmOIWI/view?usp=sharing)_  (requêtes cycliques)
+
+
+---

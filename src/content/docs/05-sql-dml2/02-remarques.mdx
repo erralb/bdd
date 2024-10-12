@@ -1,0 +1,207 @@
+---
+title: Remarques
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import Slide from '/src/components/Slide.astro';
+
+<Slide>
+</Slide>
+
+
+
+# Compléments sur les jointures
+
+* La jointure est un opérateur fondamental en ce qu'il permet de naviguer parmi les données.
+* Dans la suite nous allons nous intéresser en particulier :
+  * 1. à la pertinence d'utiliser une sous-requête  __ou__  une jointure
+  * 2. aux valeurs dérivées dans une jointure
+  * 3. aux jointures généralisées
+  * 4. à l'interprétation du résultat d'une jointure
+
+
+---
+
+
+* Certaines conditions utilisant une sous-requête (SELECT emboité) peuvent s'exprimer à l'aide d'une jointure
+* Examinons 2 cas :
+  * 1. Le cas des conditions d'association et de non association
+  * 2. Le cas de sous-requête et de clé étrangère multicomposants
+
+
+---
+
+
+```
+__SELECT__  NCOM, DATECOM  __FROM__  COMMANDE  __WHERE__  NCLI  __IN__  ( __SELECT__  NCLI 					 __FROM__  CLIENT 					 __WHERE__  LOCALITE = ' Poitiers ' ) ;
+
+```
+peut s'écrire également sous la forme d'une jointure :
+
+```
+__SELECT__  NCOM, DATECOM  __FROM__  COMMANDE, CLIENT  __WHERE__  COMMANDE.NCLI = CLIENT.NCLI 	 __AND__  LOCALITE = ' Poitiers ' ;
+
+```
+
+---
+
+
+```
+__SELECT__  *  __FROM__  COMMANDE  __WHERE__  NCOM IN ( __SELECT__  NCOM 				 __FROM__  DETAIL 				 __WHERE__  NPRO = 'PA60' AND QCOM < ( __SELECT__  QCOM 												 __FROM__  DETAIL 												 __WHERE__  NPRO = 'PA60' 												 __AND__  NCOM = '30182' ) ) ;
+
+```
+peut s'écrire également sous la forme d'une jointure :
+
+```
+__SELECT__  M.NCOM, DATENCOM, NCLI  __FROM__  COMMANDE M, DETAIL D1, DETAIL D2  __WHERE__  D1.NPRO = D1.NCOM  __AND__  D2.NCOM = '30182'  __AND__  D2.NPRO  __=__  'PA60'  __AND__  D1.QCOM  __<__  D2.QCOM ;
+
+```
+
+---
+
+
+```
+* __SELECT__  NCOM, DATECOM, NCLI  __FROM__  COMMANDE  __WHERE__  NCOM  __N__  __OT IN__  ( __SELECT__  NCOM 						 __FROM__  DETAIL  __WHERE__  NPRO = 'PA60' ) ;
+
+```
+* __n'est absolument pas équivalente à__
+
+```
+* __SELECT__   __DISTINCT__  COMMANDE.NCOM, DATECOM, NCLI  __FROM__  COMMANDE, DETAIL  __WHERE__  COMMANDE.NCOM = DETAIL.NCOM  __AND__  NPRO <> 'PA60' ;
+
+```
+  * Remarque : il faut se souvenir qu'une jointure fondée sur le couple identifiant primaire/clé étrangère permet de matérialiser des associations entre lignes et non  __l'inexistence__  d'association.
+
+
+---
+
+
+* Conclusion
+  * 1. La jointure et la sous-requête permettent d'exprimer des conditions d'association entre lignes
+  * 2. En revanche, des conditions de non-association ne sont généralement exprimables que par des sous-requêtes, ainsi que par la forme  __NOT EXISTS__
+
+
+---
+
+
+Une jointure permet également d'effectuer des calculs sur des quantités extraites de plusieurs tables
+
+Le raisonnement est simple : la jointure constitue des lignes fictives dont la clause SELECT extrait des valeurs comme elle le ferait d'une ligne réelle issue d'une table
+
+Par exemple, la requête suivant associe à chaque ligne de DETAIL le montant à payer :
+
+__SELECT__  NCOM, D.NPRO, QCOM*PRIX  __FROM__  DETAIL D, PRODUIT P  __WHERE__  D.NPRO = P.NPRO ;
+
+
+---
+
+
+La requête suivante, elle, établit le montant de la commande 30184 :
+
+__SELECT__  'Montant commande 30184 =',  __SUM__ (QCOM*PRIX)  __FROM__  DETAIL D, PRODUIT P  __WHERE__  D.NCOM = '30184'  __AND__  D.NPRO = P.NPRO ;
+
+
+---
+
+
+Les jointures étudiées jusqu'ici étaient fondées sur l'égalité des valeurs d'une clé étrangère avec celles d'un identifiant
+
+Toutefois, la forme même de la condition de jointure suggère que toute comparaison peut servir à indiquer comment associer les lignes des tables concernées
+
+
+---
+
+
+* Considérons le schéma suivant :
+  * __VENTE__  ( _CHAINE, PRODUIT_ , PRIX) : chaque ligne (c, p, x) indique que le produit  _p_  a été vendu dans le magasin  _c_  au prix  _x_
+  * __IMPLANTATION__  ( _CHAINE_ , VILLE) : chaque ligne (c, v) indique que le magasin  _c_  est implanté dans la ville  _v_
+* La colonne CHAINE n'est pas une clé étrangère, ni un identifiant de la relation IMPLANTATION
+* On peut seulement  _espérer_  que les colonnes aient des valeurs communes
+* Nous ne sommes pas dans le schéma classique représentant des associations explicites
+
+
+---
+
+
+__SELECT__  DISTINCT PRODUIT, VILLE , PRIX  __FROM__  VENTE  __V__ , IMPLANTATION  __I__   __WHERE__   __V__ .CHAINE =  __I__ .CHAINE ;
+
+indique, pour chaque ligne (p, v, x), que le produit  _p_  est disponible dans la ville  _v_  au prix  _x_  quels que soient les magasins qui proposent  _p_
+
+
+---
+
+
+L'exemple ci-dessous illustre une opération fréquente qui consiste à condenser de l'information de manière à la rendre plus lisible
+
+La table ci-dessous établit des intervalles successifs de valeurs de compte (MIN CPT et MAX CPT) leur attribue un code (CODE CPT)
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures11.png)
+
+
+---
+
+
+Comment associer à chaque client le code de son compte ?
+
+__SELECT__  NCLI , NOM, CODE_CPT  __FROM__  CLIENT, CLASSE_CPT  __WHERE__  CAT = 'C1 '  __AND__  COMPTE >= MIN_CPT  __AND__  COMPTE < MAX_CPT ;
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures12.png)
+
+
+---
+
+
+La construction d'une requête qui utilise une ou plusieurs jointures peut s'avérer délicate
+
+Il importe donc de bien comprendre ce que représente le résultat d'une jointure
+
+
+---
+
+
+* La question est la suivante : sachant que toute ligne d'une table représente une entité du domaine d'application (un client, un achat, un détail, etc.), quelles entités les lignes d'une jointure représentent-elles ?
+* Par exemple, chaque ligne produite par l'évaluation de la requête :
+* __SELECT__  C.NCLI , NOM, LOCALITE  __FROM__  CLIENT C, COMMANDE M  __WHERE__  M.NCLI = C.NCLI ;
+* représente-t-elle :
+  * 1. un client ?
+  * 2. un client qui a passé une ou plusieurs commandes ?
+  * 3. une commande ?
+* Réponse :  __des commandes__
+
+
+---
+
+
+* La règle relative à une jointure élémentaire fondée sur l'égalité identifiant / clé étrangère est simple
+* Soit une table  __TA__ , d'identifiant  __IA__ , et une table  __TB__  de clé étrangère  __RA__  obligatoire et référençant  __TA__ :
+  * __TA__  (IA, DA)
+  * __TB__  (IB, RA, DB)
+* Le résultat de la requête :
+* __SELECT__  *  __FROM__  TA, TB  __WHERE__  TA.IA = TB.RA ;
+* contient autant de lignes qu'il y en a dans la table TB. Autrement dit, chaque ligne du résultat d'une jointure représente une ligne de TB
+* En bref : le résultat d'une jointure représente des entités de la table contenant la clé étrangère
+
+
+---
+
+
+Qu'en est il pour cette requête ?
+
+__SELECT__  COMMANDE.NCOM, DATECOM, NCLI __FROM__  COMMANDE, DETAIL __WHERE__  COMMANDE.NCOM = DETAIL.NCOM ;
+
+Réponse : les lignes sont celles de la table DETAIL
+
+
+---
+
+
+Ce que nous venons de discuter conduit à une autre règle : l'identifiant du résultat de la jointure
+
+__SELECT__  * __FROM__  TA, TB __WHERE__  TA. IA = TB.RA ;
+
+est constitué des colonnes de l'identifiant primaire de TB (soit IB)
+
+Si l'identifiant primaire de TB n'est pas repris dans la clause SELECT, le résultat n'a pas d'identifiant:
+
+__SELECT__  LOCALITE, LIBELLE __FROM__  CLIENT CLI , COMMANDE COM, DETAIL D, PRODUIT P __WHERE__  CLI .NCLI = COM.NCLI __AND__  COM.NCOM D.NCOM __AND__  D.NPRO = P.NPRO ;
+

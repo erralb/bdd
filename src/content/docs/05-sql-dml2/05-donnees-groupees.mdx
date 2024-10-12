@@ -1,0 +1,221 @@
+---
+title: Données groupées
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import Slide from '/src/components/Slide.astro';
+
+<Slide>
+</Slide>
+
+
+---
+
+
+# Extraction de données groupées
+
+Les requêtes examinées jusqu'à maintenant produisent des lignes qui sont généralement une correspondance une pour une avec les lignes d'une table de la clause FROM
+
+Nous allons maintenant examiner comment il est possible d'extraire d'une table, ou d'une jointure, des informations sur les concepts latents dans ces tables
+
+
+---
+
+
+Considérons la table CLIENT. Il est permis d'y percevoir, virtuellement du moins des groupes de clients selon leur localité, ou selon leur catégorie, ou encore selon leur nom.
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures13.png)
+
+
+---
+
+
+Par exemple, la requête suivante donne, pour chaque groupe de clients classés ou regroupés par localité, le nom de celle-ci, le nombre de clients dans le groupe et la valeur moyenne des comptes des clients du groupe
+
+__SELECT__  LOCALITE,		 __COUNT__ (*)  __AS__  NOMBRE_CLIENT,		 __AVG__ (COMPTE)  __AS__  MOYENNE_COMPTE __FROM__  CLIENT __GROUP__   __BY__  LOCALITE ;
+
+Le résultat est le suivant :
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures14.png)
+
+
+---
+
+
+Des conditions de sélection peuvent être imposées aux groupes à sélectionner
+
+Elles sont exprimées dans une clause HAVING pour éviter toute confusion avec la clause WHERE
+
+Par exemple, la requête suivante donne le montant moyen des comptes des clients des villes en comptant au moins 3 :
+
+__SELECT__  LOCALITE,  __COUNT__ (*),  __AVG__ (COMPTE) __FROM__  CLIENT __GROUP BY__  LOCALITE __HAVING__   __COUNT__ (*) >= 3 ;
+
+Le résultat est le suivant :
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures15.png)
+
+
+---
+
+
+Remarque : la condition exprimée par la clause HAVING peut porter sur les éléments cités dans la clause SELECT, mais aussi sur toute autre fonction d'agrégation calculable sur chaque groupe
+
+
+---
+
+
+* Exemple : on souhaite obtenir la liste des clients ayant commandé au moins 2 fois le produit PA45
+  * 1. On regroupe les lignes de la table COMMANDE en les regroupant par client :
+* __SELECT__  NCLI , COUNT(*) __FROM__  COMMANDE __GROUP__   __BY__  NCLI;
+  * 2. On ne retient ensuite que les groupes d'un moins 2 commandes :
+* __SELECT__  NCLI , COUNT(*) __FROM__  COMMANDE __GROUP__   __BY__  NCLI __HAVING COUNT__ (*) >= 2;
+
+
+---
+
+
+  * 3. Finalement, on ne considère, avant groupement, que les commandes spécifiant le produit PA45
+* __SELECT__  NCLI ,  __COUNT__ (*) __FROM__  COMMANDE __WHERE__  NCOM  __IN__  ( __SELECT__  NCOM  __FROM__  DETAIL  __WHERE__  NPRO = 'PA45' ) __GROUP BY__  NCLI __HAVING__   __COUNT__ (*) >= 2 ;
+
+
+---
+
+
+Il est également possible d'obtenir la quantité totale commandée du produit PA45
+
+Les données appartenant à plusieurs tables (NCLI et QCOM), il faut effectuer un groupement sur le résultat de la jointure de COMMANDE et DETAIL
+
+__SELECT__  NCLI ,  __COUNT__ (*),  __SUM__ (QCOM)  __FROM__  COMMANDE M, DETAIL D  __WHERE__  M.NCOM = D.NCOM  __AND__  NPRO = 'PA45'  __GROUP BY__  NCLI  __HAVING COUNT__ (*) >= 2 ;
+
+
+---
+
+
+Considérons un autre exemple : Pour chaque client de Poitiers donner le montant total de ses commandes
+
+__SELECT__  'Montant dû par',		C.NCLI , 		' =  ', 		 __SUM__ (QCOM*PRIX) __FROM__  CLIENT C, COMMANDE M, DETAIL D, PRODUIT P __WHERE__  LOCALITE = 'Poitiers' __AND__  M.NCLI = C.NCLI __AND__  M.NCOM = D.NCOM __AND__  D.NPRO = P. NPRO __GROUP BY__  M.NCLI ;
+
+
+---
+
+
+Considérons un dernier exemple : Donner la quantité qui reste en stock si on déduit les quantités commandées
+
+__SELECT__  P.NPRO, QSTOCK -  __SUM__ (D.QCOM)  __AS__  SOLDE __FROM__  DETAIL D, PRODUIT P __WHERE__  D.NPRO = P.NPRO __GROUP BY__  P.NPRO, QSTOCK ;
+
+Le résultat est le suivant :
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures16.png)
+
+
+---
+
+
+* Remarques :
+  * 1. Le critère de groupement peut inclure plusieurs noms de colonne
+  * 2. L'ordre des colonnes est indifférent
+* Exemple : Donner pour chaque localité et produit le montant total commandé
+* __SELECT__  LOCALITE, P.NPRO,  __SUM__ (QCOM*PRIX)  __AS__  Montant __FROM__  CLIENT C, COMMANDE M, DETAIL D, PRODUIT P __WHERE__  M.NCLI = C.NCLI __AND__  M.NCOM = D.NCOM __AND__  D.NPRO = P. NPRO __GROUP BY__  LOCALITE, P.NPRO ;
+
+
+---
+
+
+Version SQL alternative avec des JOIN / ON
+
+__SELECT__  LOCALITE, P.NPRO,  __SUM__ (QCOM*PRIX)  __AS__  Montant __FROM__  CLIENT C __JOIN__  COMMANDE M __ON__  M.NCLI = C.NCLI __JOIN__  DETAIL D __ON__  M.NCOM = D.NCOM __JOIN__  PRODUIT P __ON__  D.NPRO = P. NPRO __GROUP BY__  LOCALITE, P.NPRO ;
+
+
+---
+
+
+Remarque : Le critère de groupement peut aussi inclure une expression de calcul quelconque
+
+Exemple : Donner la liste des clients en fonction de la première lettre de leur catégorie
+
+__SELECT__   __SUBSTRING__ (CAT  __FROM__  1 for 1)  __AS__  CAT,		 __COUNT__ (*) AS N __FROM__  CLIENT __GROUP__   __BY__   __SUBSTRING__ (CAT  __FROM__  1 FOR 1) ;
+
+Le résultat est le suivant :
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures17.png)
+
+
+---
+
+
+Syntaxe pour  __SQLite__  :
+
+SELECT  __substr__ (CAT, 1, 1) AS CAT,
+
+COUNT(*) AS N
+
+FROM CLIENT
+
+GROUP BY  __substr__ (CAT, 1, 1) ;
+
+
+---
+
+
+Un regroupement très intéressant serait de regrouper les clients selon leurs valeurs de COMPTE par intervalle de 1.000
+
+__SELECT__  'de' ,  __int__  (COMPTE/1000)*1000  __AS__  MIN,		'a' ,  __int__  (COMPTE/1000)*1000 + 999  __AS__  MAX,		 __COUNT__ (*)  __AS__  N __FROM__  CLIENT C __GROUP BY__   __int__  (COMPTE/1000) ;
+
+Le résultat est le suivant :
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures18.png)
+
+
+---
+
+
+Syntaxe pour  __SQLite :__
+
+SELECT 'de' ,  __abs__ (COMPTE/1000)*1000 AS MIN,		'a' ,  __abs__ (COMPTE/1000)*1000 + 999 AS MAX,		COUNT(*) AS NFROM CLIENT CGROUP BY  __abs__  (COMPTE/1000) ;
+
+
+---
+
+
+L'extraction de données groupées est à définir avec précaution avec des jointures
+
+Exemple : Donner pour chaque localité, la somme des comptes des clients et le nombre de commandes. On serait tenté d'écrire :
+
+__SELECT__  LOCALITE,  __SUM__ (COMPTE) ,  __COUNT__ (*) __FROM__  CLIENT C, COMMANDE M __WHERE__  C.NCLI = M.NCLI __GROUP__   __BY__  LOCALITE ;
+
+Ce qui donnerait :
+
+Ce résultat, en apparence correct, est pourtant erroné (indépendamment du fait que les clients sans commande ne sont pas repris)
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures19.png)
+
+
+---
+
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures20.png)
+
+* Le résultat de la jointure n'est pas des clients mais des commandes
+  * Rappel : le résultat d'une jointure représente des entités de la table contenant la clé étrangère
+* En particulier, le compte du client CS400 est comptabilisé 3 fois, pour un total de 1050 au lieu de 350
+* Le calcul de la somme des comptes s'effectue donc sur des ensembles de commandes et non des clients
+* Pour répondre correctement à la question il faut procéder en deux étapes
+
+
+---
+
+
+Il est possible d'éviter la clause GROUP BY lorsque le concept latent dans une table est explicitement représenté par une autre table, et que le regroupement ne sert qu'à la sélection
+
+Exemple : Donner les produits dont plus de 500 unités ont été commandées en 2009
+
+__SELECT__  D.NPRO __FROM__  DETAIL D, COMMANDE M __WHERE__  C.NCOM = M.NCOM  __AND__  DATECOM  __LIKE__  '%2009' __GROUP BY__  D.NPRO  __HAVING__   __SUM__ (QCOM) > 500 ;
+
+est équivalente à
+
+__SELECT__  NPRO  __FROM__  PRODUIT P __WHERE__  (  __SELECT__  SUM(QCOM)  __FROM__  DETAIL		 __WHERE__  NPRO = P.NPRO  __AND__  NCOM  __IN__  			( __SELECT__  NCOM  __FROM__  COMMANDE  __WHERE__  DATECOM LIKE ' %2009 ' )
+
+)  __>__  500 ;
+
+
+---

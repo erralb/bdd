@@ -1,0 +1,111 @@
+---
+title: Données cycliques
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import Slide from '/src/components/Slide.astro';
+
+<Slide>
+</Slide>
+
+
+
+# Requête sur des structures de données cycliques
+
+On qualifie de cyclique une structure de données qui fait directement ou non, référence à elle-même
+
+Par exemple :
+
+Il existe un cycle entre la colonne RESPONSABLE (clé étrangère de la table PERSONNE) et la table PERSONNE elle-même. Le rôle de cette colonne est de désigner le responsable direct de chaque personne, s'il existe.
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures7.png)
+
+
+---
+
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures8.png)
+
+
+---
+
+
+La table PERSONNE permet de répondre à la question suivante : donner, pour chaque personne (S, pour subordonné) ayant un responsable (R), le numéro et le nom de celui-ci
+
+```
+__SELECT__   __S__ .NPERS,  __R__ .NPERS,  __R__ .NOM  __FROM__  PERSONNE  __S__ , PERSONNE  __R__   __WHERE__   __S__ .RESPONSABLE =  __R__ .NPERS ;
+
+```
+Cette requête construit des  __couples__  de personnes, la première étant la personne  __subordonnée (S)__  et la seconde son  __responsable (R)__
+
+Elle réalise donc une jointure de la table PERSONNE avec elle-même, ce qu'on appelle une auto-jointure
+
+
+---
+
+
+Donner pour chaque personne dont le nom est Dupont, son numéro ainsi que le numéro et le nom de son responsable s'il existe :
+
+```
+__SELECT__   __S__ .NPERS,  __S__ .NOM, R.NPERS, R.NOM  __FROM__  PERSONNE  __S__ , PERSONNE R  __WHERE__   __S__ .RESPONSABLE = R.NPERS  __AND__   __S__ .NOM = 'Dupont' __UNION__  __SELECT__  NPERS, NOM, '__' , '__'  __FROM__  PERSONNE  __WHERE__  RESPONSABLE  __IS NULL__  __ AND__  Nom = 'Dupont' ;
+
+```
+
+---
+
+
+* Donner, pour chaque personne subordonnée à la personne de numéro  __p4__ , son numéro et son nom. On ignorera les personnes qui n'ont pas de responsable.
+```
+* __SELECT__   __SS__ .NPERS,  __SS__ .NOM  __FROM__  PERSONNE  __R__ , PERSONNE  __S__ , PERSONNE  __SS__   __WHERE__   __R__ .NPERS = 'p4'  __AND__   __R__ .NPERS =  __S__ .RESPONSABLE  __AND__   __S__ .NPERS =  __SS__ .RESPONSABLE ;
+
+```
+* Remarques :
+  * Nous obtenons ici les subordonnées de niveau 2 en effectuant une double jointure
+  * Il est impossible d'effectuer des jointures  _récursivement_
+  * Cette requête montre que SQL ne permet pas d'obtenir facilement les responsables directs et indirects d'une personne déterminée sans recourir à la  _programmation procédurale_
+
+
+---
+
+
+On modélise la nomenclature de produits. Chaque produit est composé de sous-produits, qui sont eux-même composés de sous-produits, etc
+
+La table COMPOSITION représente les relations de composition entre produits
+
+Une ligne (h, b, q) indique que le produit  _b_  est un composant du produit  _h_ , et qu'il faut  _q_  unités de  _b_  pour fabriquer 1 unité de  _h_
+
+Les matières premières ont un prix et un poids unitaires fixés
+
+Le prix et le poids des autres produits peuvent être déterminés à partir des caractéristiques de leurs composants
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures9.png)
+
+
+---
+
+
+![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures10.png)
+
+
+---
+
+
+Donner les informations relatives aux produits p4 ainsi que sa composition
+
+```
+__SELECT__   __H__ .NPRO,  __H__ .LIBELLE ,  __C__ .QTE,  __B__ .LIBELLE  __FROM__  PRODUIT  __H__ , COMPOSITION  __C__ , PRODUIT  __B__   __WHERE__   __C__ .COMPOSE =  __H__ .NPRO  __AND__   __C__ .COMPOSANT =  __B__ .NPRO  __AND__   __H__ .NPRO = ' p4 ' ;
+
+```
+_H et B désigne respectivement le produit composé (haut) et le produit composant (bas)_
+
+
+---
+
+
+Avec la clause JOIN / ON
+
+```
+__SELECT__  H.NPRO, H.LIBELLE , C.QTE, B.LIBELLE  __FROM__  PRODUIT H __JOIN__  COMPOSITION C __ON__  C.COMPOSE = H.NPRO  __JOIN__  PRODUIT B __ON__  C.COMPOSANT = B.NPRO __WHERE__  H.NPRO = ' p4 ' ;
+
+```
+---
