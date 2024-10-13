@@ -120,13 +120,13 @@ export default defineConfig({
 								directory: '04-tp1'
 							}
 						},
-						// {
-						// 	label: '5. SQL Avancé',
-						// 	collapsed: true,
-						// 	autogenerate: {
-						// 		directory: '03-sql-dml2'
-						// 	}
-						// },
+						{
+							label: '5. SQL Avancé',
+							collapsed: true,
+							autogenerate: {
+								directory: '05-sql-dml2'
+							}
+						},
 						// {
 						// 	label: '5. Création de BDD',
 						// 	collapsed: true,

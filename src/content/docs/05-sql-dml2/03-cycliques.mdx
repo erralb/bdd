@@ -1,47 +1,69 @@
 ---
 title: Données cycliques
+sidebar :
+  hidden: true
 ---
 
 import Table from "/src/components/TableSQLite.astro";
 import Slide from '/src/components/Slide.astro';
 
 <Slide>
+
+On qualifie de **cyclique** une structure de données qui fait directement ou non, référence à elle-même.
+
+Exemple :
+
+Soit la relation `Personnes` suivante :
+
+import {Content as TextDB} from '../../files/personnes-text.md'
+
+<TextDB />
+
+Cette relation est _cyclique_ car elle contient une colonne `responsable` qui fait référence à la clé primaire `numero` de la table `Personnes` elle-même.
+
+Le rôle de cette colonne est de désigner le _responsable_ direct de chaque personne, s'il existe.
+
+import {Content as Personnes} from '../../files/personnes-mermaid.md'
+
+<Personnes />
+
+<Table
+  sqliteDB="public/sample/personnes.sqlite"
+  title="Personnes"
+  showSQL="true"
+  query="
+SELECT * 
+FROM Personnes
+"
+/>
+
 </Slide>
+<Slide>
+
+La table PERSONNE permet de répondre à la question suivante : 
+
+donner, pour chaque personne `S` (pour subordonné) ayant un responsable `R`, le `numero` et le `nom` de celui-ci
 
 
-
-# Requête sur des structures de données cycliques
-
-On qualifie de cyclique une structure de données qui fait directement ou non, référence à elle-même
-
-Par exemple :
-
-Il existe un cycle entre la colonne RESPONSABLE (clé étrangère de la table PERSONNE) et la table PERSONNE elle-même. Le rôle de cette colonne est de désigner le responsable direct de chaque personne, s'il existe.
-
-![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures7.png)
-
-
----
+<Table
+  sqliteDB="public/sample/personnes.sqlite"
+  title="Personnes"
+  showSQL="true"
+  query="
+SELECT S.numero, R.numero, R.nom
+FROM Personnes S, Personnes R
+WHERE S.responsable = R.numero;
+"
+/>
 
 
-![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures8.png)
+Cette requête construit des **couples** de `Personnes`, la première étant la personne subordonnée `S` et la seconde son responsable `R`
+
+Elle réalise donc une jointure de la table PERSONNE avec elle-même, ce qu'on appelle une **auto-jointure**
 
 
----
-
-
-La table PERSONNE permet de répondre à la question suivante : donner, pour chaque personne (S, pour subordonné) ayant un responsable (R), le numéro et le nom de celui-ci
-
-```
-__SELECT__   __S__ .NPERS,  __R__ .NPERS,  __R__ .NOM  __FROM__  PERSONNE  __S__ , PERSONNE  __R__   __WHERE__   __S__ .RESPONSABLE =  __R__ .NPERS ;
-
-```
-Cette requête construit des  __couples__  de personnes, la première étant la personne  __subordonnée (S)__  et la seconde son  __responsable (R)__
-
-Elle réalise donc une jointure de la table PERSONNE avec elle-même, ce qu'on appelle une auto-jointure
-
-
----
+</Slide>
+<Slide>
 
 
 Donner pour chaque personne dont le nom est Dupont, son numéro ainsi que le numéro et le nom de son responsable s'il existe :
@@ -51,7 +73,8 @@ __SELECT__   __S__ .NPERS,  __S__ .NOM, R.NPERS, R.NOM  __FROM__  PERSONNE  __S_
 
 ```
 
----
+</Slide>
+<Slide>
 
 
 * Donner, pour chaque personne subordonnée à la personne de numéro  __p4__ , son numéro et son nom. On ignorera les personnes qui n'ont pas de responsable.
@@ -65,7 +88,8 @@ __SELECT__   __S__ .NPERS,  __S__ .NOM, R.NPERS, R.NOM  __FROM__  PERSONNE  __S_
   * Cette requête montre que SQL ne permet pas d'obtenir facilement les responsables directs et indirects d'une personne déterminée sans recourir à la  _programmation procédurale_
 
 
----
+</Slide>
+<Slide>
 
 
 On modélise la nomenclature de produits. Chaque produit est composé de sous-produits, qui sont eux-même composés de sous-produits, etc
@@ -81,13 +105,15 @@ Le prix et le poids des autres produits peuvent être déterminés à partir des
 ![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures9.png)
 
 
----
+</Slide>
+<Slide>
 
 
 ![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures10.png)
 
 
----
+</Slide>
+<Slide>
 
 
 Donner les informations relatives aux produits p4 ainsi que sa composition
@@ -99,7 +125,8 @@ __SELECT__   __H__ .NPRO,  __H__ .LIBELLE ,  __C__ .QTE,  __B__ .LIBELLE  __FROM
 _H et B désigne respectivement le produit composé (haut) et le produit composant (bas)_
 
 
----
+</Slide>
+<Slide>
 
 
 Avec la clause JOIN / ON
@@ -108,4 +135,5 @@ Avec la clause JOIN / ON
 __SELECT__  H.NPRO, H.LIBELLE , C.QTE, B.LIBELLE  __FROM__  PRODUIT H __JOIN__  COMPOSITION C __ON__  C.COMPOSE = H.NPRO  __JOIN__  PRODUIT B __ON__  C.COMPOSANT = B.NPRO __WHERE__  H.NPRO = ' p4 ' ;
 
 ```
----
+
+</Slide>
