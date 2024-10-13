@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS Clients;
 DROP TABLE IF EXISTS Commandes;
 DROP TABLE IF EXISTS Produits;
 DROP TABLE IF EXISTS Details;
+DROP TABLE IF EXISTS Classes_Comptes;
 
 CREATE TABLE Clients ( 
     numero INT,
@@ -45,6 +46,16 @@ CREATE TABLE Details (
     PRIMARY KEY (numeroCommande,numeroProduit),
     FOREIGN KEY(numeroCommande) REFERENCES Commandes(numero),
     FOREIGN KEY(numeroProduit) REFERENCES Produits(numero)
+);
+
+-- table CLASSE_CPT 
+-- columns MIN_CPT MAX_CPT CODE_CPT
+
+CREATE TABLE Classes_Comptes ( 
+    minimumCompte INT,
+    maximumCompte INT,
+    codeCompte VARCHAR(1),
+    PRIMARY KEY (minimumCompte,maximumCompte,codeCompte)
 );
 
 PRAGMA foreign_keys = ON;

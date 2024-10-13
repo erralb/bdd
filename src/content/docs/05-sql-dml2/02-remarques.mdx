@@ -5,7 +5,7 @@ sidebar:
 ---
 
 import Table from "/src/components/TableSQLite.astro";
-import Slide from '/src/components/Slide.astro';
+import Slide from "/src/components/Slide.astro";
 
 <Slide title="Compléments sur les jointures">
 
@@ -38,17 +38,18 @@ Examinons 2 cas :
 La requête suivante, qui renvoie les _commandes_ passées par des _clients_ de Grenoble :
 
 ```sql
-SELECT numero, dateCommande 
-FROM  COMMANDE 
+SELECT numero, dateCommande
+FROM  COMMANDE
 WHERE  numeroClient IN ( SELECT  numero FROM Clients WHERE ville='Grenoble' ) ;
 
 ```
+
 peut s'écrire également sous la forme d'une jointure :
 
 ```sql
 SELECT numero, dateCommande
 FROM  COMMANDE C, CLIENTS CL
-WHERE  C.numeroClient = CL.numero 
+WHERE  C.numeroClient = CL.numero
 AND CL.ville='Grenoble' ;
 ```
 
@@ -61,7 +62,6 @@ JOIN CLIENTS CL ON C.numeroClient = CL.numero
 WHERE CL.ville='Grenoble' ;
 ```
 
-
 </Slide>
 <Slide>
 
@@ -70,8 +70,8 @@ WHERE CL.ville='Grenoble' ;
 La requête suivante renvoie les _commandes_ qui contiennent un _produit_ dont la quantité est inférieure à la quantité commandée pour le produit numéro 1 dans la commande numéro 3 :
 
 ```sql
-SELECT * 
-FROM Commandes 
+SELECT *
+FROM Commandes
 WHERE numero IN ( SELECT numeroCommande
                   FROM Details
                   WHERE numeroProduit = 1 AND quantite < (SELECT quantite
@@ -101,14 +101,13 @@ Cependant, la requête suivante, qui renvoie les _commandes_ qui ne contiennent 
 ```sql
 SELECT *
 FROM Commandes
-WHERE numero NOT IN ( SELECT numeroCommande 
+WHERE numero NOT IN ( SELECT numeroCommande
 						          FROM Details WHERE numeroProduit = 1 ) ;
 ```
 
 :::danger[&nbsp;]
 ne peut absolument pas s'écrire sous la forme d'une jointure !
 :::
-
 
 _Avec une jointure, on ne peut pas exprimer une condition de **non-association**_
 
@@ -124,7 +123,7 @@ AND D.numeroProduit != 1 ;
 Mais cette requête ne renvoie pas les commandes qui ne contiennent pas le produit numéro 1. Elle renvoie les commandes qui contiennent un produit différent du produit numéro 1.
 
 :::tip[À retenir]
-Il faut se souvenir, qu'une jointure, fondée sur un couple de clés _primaire/étrangère_ permet de matérialiser des associations entre lignes et non  **l'inexistence** d'associations.
+Il faut se souvenir, qu'une jointure, fondée sur un couple de clés _primaire/étrangère_ permet de matérialiser des associations entre lignes et non **l'inexistence** d'associations.
 :::
 
 </Slide>
@@ -134,34 +133,33 @@ Il faut se souvenir, qu'une jointure, fondée sur un couple de clés _primaire/�
 
 Pour s'en assurer, comparons les résultats des deux requêtes :
 
-
 <div class="tables-2-col">
-<div>
-<Table
-  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
-  title="Commandes"
-  showSQL="true"
-  query="
+  <div>
+    <Table
+      sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+      title="Commandes"
+      showSQL="true"
+      query="
 SELECT numero
 FROM Commandes
 WHERE numero NOT IN ( SELECT numeroCommande 
 						          FROM Details WHERE numeroProduit = 1 ) ;
 "
-/>
-</div>
-<div>
-<Table
-  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
-  title="Commandes"
-  showSQL="true"
-  query="
+    />
+  </div>
+  <div>
+    <Table
+      sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+      title="Commandes"
+      showSQL="true"
+      query="
 SELECT C.numero
 FROM Commandes C, Details D
 WHERE C.numero = D.numeroCommande
 AND D.numeroProduit != 1 ;
 "
-/>
-</div>
+    />
+  </div>
 </div>
 
 </Slide>
@@ -225,12 +223,17 @@ Toutefois, toute comparaison peut servir à indiquer comment associer les lignes
 </Slide>
 <Slide title="Autres conditions de jointures">
 
-L'exemple ci-dessous illustre une opération fréquente qui consiste à condenser de l'information de manière à la rendre plus lisible
+L'exemple ci-dessous illustre une opération fréquente qui consiste à condenser de l'information de manière à la rendre plus lisible.
 
-La table ci-dessous établit des intervalles successifs de valeurs de compte (MIN CPT et MAX CPT) leur attribue un code (CODE CPT)
+La table ci-dessous établit des intervalles successifs de valeurs de compte (minimum et maximum sur le compte) et leur attribut un code de classe de compte.
 
-![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures11.png)
-
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Classes_Comptes"
+  query="
+SELECT * FROM Classes_Comptes ;
+"
+/>
 
 </Slide>
 <Slide>
@@ -239,76 +242,140 @@ Comment associer à chaque client le code de son compte ?
 
 La requête suivante permet de réaliser cette opération :
 
-```sql
-SELECT NCLI, NOM, CODE_CPT
-FROM CLIENT, CLASSE_CPT
-WHERE CAT = 'C1 '
-AND COMPTE >= MIN_CPT
-AND COMPTE < MAX_CPT ;
-```
-
-![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures12.png)
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Classes de comptes des clients"
+  showSQL="true"
+  query="
+  SELECT numero, nom, compte, codeCompte
+  FROM Clients, Classes_Comptes
+  WHERE compte >= minimumCompte
+  AND compte < maximumCompte ;
+"
+/>
 
 </Slide>
 <Slide>
 
 ## Compréhension du résultat d'une jointure
 
-La construction d'une requête qui utilise une ou plusieurs jointures peut s'avérer délicate
+La construction d'une requête qui utilise une ou plusieurs jointures peut s'avérer délicate.
 
-Il importe donc de bien comprendre ce que représente le résultat d'une jointure
-
-</Slide>
-<Slide>
-
-* La question est la suivante : sachant que toute ligne d'une table représente une entité du domaine d'application (un client, un achat, un détail, etc.), quelles entités les lignes d'une jointure représentent-elles ?
-* Par exemple, chaque ligne produite par l'évaluation de la requête :
-* __SELECT__  C.NCLI , NOM, LOCALITE  __FROM__  CLIENT C, COMMANDE M  __WHERE__  M.NCLI = C.NCLI ;
-* représente-t-elle :
-  * 1. un client ?
-  * 2. un client qui a passé une ou plusieurs commandes ?
-  * 3. une commande ?
-* Réponse :  __des commandes__
+Il est important de bien comprendre ce que représente le résultat d'une jointure.
 
 </Slide>
 <Slide>
 
+La question est la suivante : sachant que toute ligne d'une table représente une entité du domaine d'application (un client, un achat, un détail, etc.), quelles entités les lignes d'une jointure représentent-elles ?
 
-* La règle relative à une jointure élémentaire fondée sur l'égalité identifiant / clé étrangère est simple
-* Soit une table  __TA__ , d'identifiant  __IA__ , et une table  __TB__  de clé étrangère  __RA__  obligatoire et référençant  __TA__ :
-  * __TA__  (IA, DA)
-  * __TB__  (IB, RA, DB)
-* Le résultat de la requête :
-* __SELECT__  *  __FROM__  TA, TB  __WHERE__  TA.IA = TB.RA ;
-* contient autant de lignes qu'il y en a dans la table TB. Autrement dit, chaque ligne du résultat d'une jointure représente une ligne de TB
-* En bref : le résultat d'une jointure représente des entités de la table contenant la clé étrangère
+Par exemple, chaque ligne produite par l'évaluation de la requête :
 
+```sql
+SELECT C.numero, C.nom, C.ville
+FROM Clients C, Commandes Co
+WHERE C.numero = Co.numeroClient ;
+```
 
+représente-t-elle :
 
-</Slide>
-<Slide>
+1. un client ?
+2. un client qui a passé une ou plusieurs commandes ?
+3. une commande ?
 
-
-Qu'en est il pour cette requête ?
-
-__SELECT__  COMMANDE.NCOM, DATECOM, NCLI __FROM__  COMMANDE, DETAIL __WHERE__  COMMANDE.NCOM = DETAIL.NCOM ;
-
-Réponse : les lignes sont celles de la table DETAIL
-
-
+Réponse : **des commandes**
 
 </Slide>
 <Slide>
 
+### Règle générale
 
-Ce que nous venons de discuter conduit à une autre règle : l'identifiant du résultat de la jointure
+La règle relative à une jointure élémentaire, fondée sur l'égalité identifiant / clé étrangère est simple :
 
-__SELECT__  * __FROM__  TA, TB __WHERE__  TA. IA = TB.RA ;
+:::tip[Règle]
+Soit :
 
-est constitué des colonnes de l'identifiant primaire de TB (soit IB)
+- une table `TA`, d'identifiant `IA`, et des colonnes `DA`
+- une table `TB`, d'identifiant `IB`, avec une colonne `RA` clé étrangère _obligatoire_ et référençant `TA`, et des colonnes `DB`
 
-Si l'identifiant primaire de TB n'est pas repris dans la clause SELECT, le résultat n'a pas d'identifiant:
+```ansi wrap
+[1mTA[0m ([4mIA[0m, DA)
+[1mTB[0m ([4mIB[0m, RA*, DB)
+```
 
-__SELECT__  LOCALITE, LIBELLE __FROM__  CLIENT CLI , COMMANDE COM, DETAIL D, PRODUIT P __WHERE__  CLI .NCLI = COM.NCLI __AND__  COM.NCOM D.NCOM __AND__  D.NPRO = P.NPRO ;
+Le résultat de la requête :
+
+```sql
+SELECT *
+FROM TA, TB
+WHERE TA.IA = TB.RA ;
+```
+
+contient autant de lignes qu'il y en a dans la table TB.
+
+Autrement dit, chaque ligne du résultat d'une jointure représente une ligne de TB
+:::
+
+En bref : le résultat d'une jointure représente des entités de la table **contenant la clé étrangère**
+
+</Slide>
+<Slide>
+
+##### Exemple :
+
+Soit la requête suivante :
+
+```sql
+SELECT Co.numero, Co.dateCommande, Co.numeroClient
+FROM Commandes Co, Details D
+WHERE Co.numero = D.numeroCommande ;
+```
+
+La clé étrangère de `Details` est `numeroCommande`, qui référence `Commandes`.
+
+Le résultat de cette requête représente donc des détails.
+
+</Slide>
+<Slide>
+
+## Identifiant de la jointure
+
+Ce que nous venons de discuter conduit à une autre règle : **l'identifiant du résultat de la jointure**
+
+```sql
+SELECT *
+FROM TA, TB
+WHERE TA.IA = TB.RA ;
+```
+
+est constitué des colonnes de l'identifiant primaire de `TB` (soit `IB`)
+
+Si l'identifiant primaire de `TB` n'est pas repris dans la sélection des colonnes, _le résultat n'a pas d'identifiant_.
+
+Exemple :
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Classes de comptes des clients"
+  showSQL="true"
+  query="
+SELECT C.ville, P.nom
+FROM Clients C, Commandes Co, Details D, Produits P
+WHERE C.numero = Co.numeroClient
+AND Co.numero = D.numeroCommande
+AND D.numeroProduit = P.numero ;
+"
+/>
+
+</Slide>
+<Slide>
+
+## Conclusion
+
+- La jointure est un opérateur fondamental en SQL, qui permet de naviguer parmi les données.
+- Les jointures permettent d'effectuer des calculs sur des quantités extraites de plusieurs tables.
+- Il est nécessaire de bien comprendre le fonctionnement des jointures pour écrire des requêtes correctes et efficaces.
+- Les jointures permettent d'exprimer des conditions d'association entre lignes.
+  - Les sous-requêtes permettent d'exprimer des conditions de non-association.
+- Il est important de bien comprendre ce que représente le résultat d'une jointure.
 
 </Slide>

@@ -102,6 +102,29 @@ foreach ($details as $detail) {
     $stmt->execute();
 }
 
+$classeCpt = [
+    ['10000', '32000', 'A'],
+    ['5000', '10000', 'B'],
+    ['2000', '5000', 'C'],
+    ['1000', '2000', 'D'],
+    ['500', '1000', 'F'],
+    ['0', '500', 'G'],
+    ['-500', '0', 'U'],
+    ['-1000', '-500', 'V'],
+    ['-2000', '-1000', 'W'],
+    ['-5000', '-2000', 'X'],
+    ['-10000', '-5000', 'Y'],
+    ['-32000', '-10000', 'Z'],
+];
+
+foreach ($classeCpt as $classe) {
+    $stmt = $pdo->prepare("INSERT INTO Classes_Comptes (minimumCompte, maximumCompte, codeCompte) VALUES (:minimumCompte, :maximumCompte, :codeCompte)");
+    $stmt->bindParam(":minimumCompte", $classe[0], PDO::PARAM_INT);
+    $stmt->bindParam(":maximumCompte", $classe[1], PDO::PARAM_INT);
+    $stmt->bindParam(":codeCompte", $classe[2], PDO::PARAM_STR);
+    $stmt->execute();
+}
+
 echo 'Données insérées avec succès' . "\n";
 
 ?>
