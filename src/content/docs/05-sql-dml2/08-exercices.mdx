@@ -102,7 +102,16 @@ Exprimer les requêtes suivantes en SQL :
   JOIN Commandes Co ON C.numero = Co.numeroClient
   JOIN Details D ON Co.numero = D.numeroCommande
   JOIN Produits P ON D.numeroProduit = P.numero
-  GROUP BY C.numero;
+  GROUP BY C.numero
+
+  UNION
+  
+  SELECT 
+    C.numero AS 'Client',
+    C.nom AS 'Nom',
+    0 AS 'Montant dû'
+  FROM Clients C
+  WHERE C.numero NOT IN (SELECT numeroClient FROM Commandes);
 `}
 />
 
