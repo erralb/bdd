@@ -2,7 +2,7 @@
 erDiagram
 
     PRODUIT {
-        int NPROO PK
+        int NPRO PK
         string LIBELLE
         float PRIX_U
         float POIDS_U

@@ -1,0 +1,126 @@
+---
+title: Opérateurs ensemblistes
+---
+
+import Table from "/src/components/TableSQLite.astro";
+import Slide from '/src/components/Slide.astro';
+
+<Slide title="Les opérateurs ensemblistes">
+
+Un ensemble est une collection d'éléments  **distincts**
+
+  * _Un ensemble de lignes ne peut contenir 2 lignes dont les attributs, considérés 2 à 2, ont la même valeur_
+
+
+Une collection de lignes dont les éléments ne sont pas distincts constitue un **multi-ensemble**
+
+  * Une requête dont la liste d'éléments de la clause `SELECT` **n'inclut pas** tous les éléments d'un identifiant renvoie un multi-ensemble
+  * Un multi-ensemble **peut se réduire** si nécessaire à un ensemble par le modifieur `DISTINCT`
+
+</Slide>
+<Slide>
+
+## UNION
+
+:::tip[&nbsp;]
+L'opérateur `UNION` produit une collection de lignes distinctes à partir d'un ensemble de **2 collections de lignes**
+:::
+
+Si une même ligne apparaît dans chacune des 2 collections de lignes en argument de l'opérateur `UNION`, cette ligne **n'apparaîtra qu'une seule fois** dans l'ensemble résultat
+
+_Remarque : Les arguments de l'opérateur UNION peuvent être des multi-ensembles, auxquels cas les doublons sont égalements éliminés_
+
+</Slide>
+<Slide>
+
+Soit les deux requêtes suivantes :
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  showSQL="true"
+  query="
+SELECT ville 
+FROM Clients 
+WHERE categorie = 'A1' ;
+"
+/>
+
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  showSQL="true"
+  query="
+SELECT ville 
+FROM Clients 
+WHERE compte < 0 ;
+"
+/>
+
+</Slide>
+<Slide>
+
+L'union de ces deux requêtes est la suivante :
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  showSQL="true"
+  query="
+SELECT ville 
+FROM Clients 
+WHERE categorie = 'A1'
+UNION
+SELECT ville 
+FROM Clients 
+WHERE compte < 0 ;
+"
+/>
+
+</Slide>
+<Slide>
+
+## UNION ALL
+
+Si l'on désire empêcher l'élimination des lignes en double, on utilisera l'opérateur `UNION ALL`
+
+Une même ligne qui apparaît n1 fois dans le premier membre et n2 fois dans le second apparaîtra n1 + n2 dans le résultat, comme le montre la requête suivante :
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients"
+  showSQL="true"
+  query="
+SELECT ville 
+FROM Clients 
+WHERE categorie = 'A1'
+UNION ALL
+SELECT ville 
+FROM Clients 
+WHERE compte < 0 ;
+"
+/>
+
+
+</Slide>
+<Slide>
+
+## INTERSECT et EXCEPT
+
+Les opérateurs d'intersection `INTERSECT` et de différence `EXCEPT` fonctionne de manière similaire à l'opérateur `UNION` :
+
+  * L'opérateur `INTERSECT` construit l'ensemble des éléments simultanément présents dans deux collections
+  * L'opérateur `EXCEPT` construit l'ensemble des éléments appartenant à la première collection mais pas à la seconde
+
+Remarque : Munis de la clause ALL, ces opérateurs préservent les lignes en doubles. Pour une même ligne respectivement en `n1` et `n2` exemplaires dans chaque argument :
+
+  * `INTERSECT ALL` produira  `min(n1, n2)`  exemplaires de cette ligne
+  * `EXCEPT ALL` produira `max(n1 - n2, 0)`  exemplaires de cette ligne
+
+Les opérateurs d'intersection et de différence entre deux ensembles de lignes _ne sont pas strictement indispensables_ dans la mesure ou ils peuvent être exprimés par des requête standards :
+
+  * L'**intersection** ensembliste de 2 tables est obtenue par leur **jointure**, car celle-ci reprend les éléments qui sont simultanément présents dans ces tables
+  * La **différence** ensembliste s'exprimera par le prédicat `NOT IN` dont la **sous-requête** définit les éléments de la seconde collection
+
+</Slide>

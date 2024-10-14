@@ -17,6 +17,9 @@ $clients = [
     ['4', 'Rey', 'Michel', '49, avenue de Adam', '38220', 'Vizille', NULL, 'B1', 3251 ],
     ['5', 'Weiss', 'Dominique', '98, boulevard Remy', '59000', 'Lille', NULL, 'B2', 0],
     ['6', 'Berlioz', 'Diane', '27 avenue de la Chartreuse', '75000', 'Paris', NULL, NULL, 123094 ],
+    ['7', 'Lefevre', 'Jean', '12, rue de la République', '69000', 'Lyon', NULL, 'C1', -1000],
+    ['9', 'Barda', 'Jérôme', '128 rue de la Paix', '75000', 'Paris', NULL, 'C1', -2000],
+    ['8', 'Jacques', 'Chaoui', '1240 rue des Ateliers', '75001', 'Paris', NULL, 'C1', -1750],
 ];
 
 foreach ($clients as $client) {
