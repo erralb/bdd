@@ -20,7 +20,7 @@ On a besoin de joindre les tables `Details` (pour la quantité et la commande), 
 <SQLiteQuery
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Montant détails du client 1"
- query="
+ query={`
     SELECT 
 
         D.numeroCommande AS 'Commande', 
@@ -34,7 +34,7 @@ On a besoin de joindre les tables `Details` (pour la quantité et la commande), 
     WHERE D.numeroProduit = P.numero
     AND D.numeroCommande = Co.numero
     AND Co.numeroClient = 1;
-"
+`}
 />
 
 Version avec `JOIN` :
@@ -64,12 +64,12 @@ On a besoin de joindre les tables `Details` (pour la quantité) et `Produits` (p
 <SQLiteQuery
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Casquettes"
- query="
+ query={`
     SELECT SUM(D.quantite * P.prix) AS 'Montant total'
     FROM Details D, Produits P
     WHERE D.numeroProduit = P.numero
     AND P.nom = 'Casquette';
-"
+`}
 />
 
 </details>

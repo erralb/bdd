@@ -27,7 +27,7 @@ Cette requête SQL sélectionne les valeurs `numero`, `nom`, `ville` des lignes 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT numero, nom, ville FROM Clients"
+  query={`SELECT numero, nom, ville FROM Clients`}
 />
 
 </Slide>
@@ -45,7 +45,7 @@ Résultat :
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT * FROM Clients"
+  query={`SELECT * FROM Clients`}
 />
 
 </Slide>
@@ -100,7 +100,7 @@ Cette requête SQL sélectionne les valeurs `numero`, `nom`, `ville` des lignes 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT numero, nom, ville FROM Clients WHERE ville = 'Paris' ;"
+  query={`SELECT numero, nom, ville FROM Clients WHERE ville = 'Paris' ;`}
 />
 
 </Slide>
@@ -127,7 +127,7 @@ WHERE ville = 'Paris' ;
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT ville FROM Clients WHERE ville = 'Paris' ;"
+  query={`SELECT ville FROM Clients WHERE ville = 'Paris' ;`}
 />
 </Slide>
 <Slide>
@@ -142,7 +142,7 @@ FROM Clients WHERE ville = 'Paris' ;
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT DISTINCT ville FROM Clients WHERE ville = 'Paris' ;"
+  query={`SELECT DISTINCT ville FROM Clients WHERE ville = 'Paris' ;`}
 />
 
 </Slide>
@@ -160,7 +160,7 @@ SELECT numeroClient FROM Commandes;
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes"
-  query="SELECT numeroClient FROM Commandes;"
+  query={`SELECT numeroClient FROM Commandes;`}
 />
 
 Le nombre d'éléments du résultat de cette requête n'est pas égal à celui des clients qui ont passé une commande. Les numéros clients sont dupliqués autant de fois qu'ils ont passé de commandes. Il faut donc mieux écrire :
@@ -176,7 +176,7 @@ SELECT DISTINCT numeroClient FROM Commandes;
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes"
-  query="SELECT DISTINCT numeroClient FROM Commandes;"
+  query={`SELECT DISTINCT numeroClient FROM Commandes;`}
 />
 
 </Slide>
@@ -197,7 +197,7 @@ SELECT numeroCommande, numeroProduit FROM Details;
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Details"
-  query="SELECT numeroCommande, numeroProduit FROM Details LIMIT 5;"
+  query={`SELECT numeroCommande, numeroProduit FROM Details LIMIT 5;`}
 />
 
 Ayant selectionné tous les composants de la clé primaire de la table `Details`, les lignes sont uniques.

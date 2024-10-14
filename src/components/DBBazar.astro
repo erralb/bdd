@@ -15,17 +15,17 @@ import Table from "./TableSQLite.astro";
   <Table
   sqliteDB="public/sample/bazar.sqlite"
   title="PRODUIT"
-  query="SELECT * FROM PRODUIT"
+  query={`SELECT * FROM PRODUIT`}
 />
 <Table
   sqliteDB="public/sample/bazar.sqlite"
   title="ACHAT"
-  query="SELECT * FROM ACHAT"
+  query={`SELECT * FROM ACHAT`}
 />
 <Table
   sqliteDB="public/sample/bazar.sqlite"
   title="VENTE"
-  query="SELECT * FROM VENTE"
+  query={`SELECT * FROM VENTE`}
 />
 
 </div>

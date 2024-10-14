@@ -2,7 +2,6 @@
 title: TD4 - SQL DML 2
 sidebar:
   label: TD4
-  hidden: true
 ---
 
 import Table from "/src/components/TableSQLite.astro";
@@ -44,10 +43,10 @@ import {Content as Personnes} from '/src/content/files/personnes-text.md'
 <Table
   sqliteDB="public/sample/personnes.sqlite"
   title="Personnes"
-  query="
+  query={`
 SELECT * 
 FROM Personnes
-"
+`}
 />
 
 </details>

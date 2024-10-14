@@ -1,23 +1,129 @@
 ---
 title: Exercices
-sidebar :
-  hidden: true
 ---
 
+import SQLiteQuery from "/src/components/SQLiteQuery.astro";
 
-# Exercice 1
+# Suite de [l'exercice 1](/bdd/05-sql-dml2/01-jointures/#exercice)
 
-* Exprimer les requêtes suivantes en SQL :
-  * 3. Afficher le total et la moyenne des comptes clients, ainsi que le nombre de clients, selon chacune des classifications suivantes : (1) par catégorie, (2) par localité, (3) par catégorie dans chaque localité
+3. Afficher le total et la moyenne des comptes clients, ainsi que le nombre de clients, selon chacune des classifications suivantes : 
 
+<details>
+<summary>1. par catégorie</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Moyenne et total des comptes clients par catégorie"
+ query={`
+    SELECT 
+        categorie, 
+        COUNT(*) AS 'Nombre de clients',
+        SUM(compte) AS 'Total des comptes',
+        AVG(compte) AS 'Moyenne des comptes'
+    FROM Clients
+    GROUP BY categorie;
+`}
+/>
+
+</details>
+<details>
+<summary>2. par ville</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Moyenne et total des comptes clients par ville"
+ query={`
+    SELECT 
+        categorie, 
+        COUNT(*) AS 'Nombre de clients',
+        SUM(compte) AS 'Total des comptes',
+        AVG(compte) AS 'Moyenne des comptes'
+    FROM Clients
+    GROUP BY ville;
+`}
+/>
+
+</details>
+
+<details>
+<summary>3. par catégorie dans chaque ville</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Moyenne et total des comptes clients par catégories et par ville"
+ query={`
+    SELECT 
+        categorie, 
+        COUNT(*) AS 'Nombre de clients',
+        SUM(compte) AS 'Total des comptes',
+        AVG(compte) AS 'Moyenne des comptes'
+    FROM Clients
+    GROUP BY ville, categorie;
+`}
+/>
+
+</details>
 
 ---
-
 
 # Exercice 2
 
-* Exprimer les requêtes suivantes en SQL :
-  * 1. Combien y a-t-il de commandes spécifiant un (ou plusieurs) produit(s) en acier ?
-  * 2. Calculer le montant dû par chaque client. Dans le calcul, on ne prendra en compte que le montant des commandes
-  * 3. Afficher pour chaque localité, les libellés des produits qui y sont commandés
+Exprimer les requêtes suivantes en SQL :
 
+<details>
+<summary>1. Combien y a-t-il de commandes spécifiant un (ou plusieurs) produit(s) dont le nom commence par la lettre `C` ?</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Commandes avec produits commençant par 'C'"
+ query={`
+ SELECT COUNT(*) AS 'Nombre de commandes'
+  FROM Commandes C
+  JOIN Details D ON C.numero = D.numeroCommande
+  JOIN Produits P ON D.numeroProduit = P.numero
+  WHERE P.nom LIKE 'C%';
+`}
+/>
+
+</details>
+
+<details>
+<summary>2. Calculer le montant dû par chaque client. _Dans le calcul, on ne prendra en compte que le montant des commandes_</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Montant dû par chaque client"
+ query={`
+ SELECT 
+    C.numero AS 'Client',
+    C.nom AS 'Nom',
+    SUM(D.quantite * P.prix) AS 'Montant dû'
+  FROM Clients C
+  JOIN Commandes Co ON C.numero = Co.numeroClient
+  JOIN Details D ON Co.numero = D.numeroCommande
+  JOIN Produits P ON D.numeroProduit = P.numero
+  GROUP BY C.numero;
+`}
+/>
+
+</details>
+
+<details>
+<summary>3. Afficher pour chaque ville, les noms des produits qui y sont commandés</summary>
+
+<SQLiteQuery
+ sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+ title="Produits commandés par ville"
+ query={`
+ SELECT 
+    C.ville AS 'Ville',
+    P.nom AS 'Produit'
+  FROM Clients C
+  JOIN Commandes Co ON C.numero = Co.numeroClient
+  JOIN Details D ON Co.numero = D.numeroCommande
+  JOIN Produits P ON D.numeroProduit = P.numero
+  GROUP BY C.ville, P.nom;
+`}
+/>
+
+</details>

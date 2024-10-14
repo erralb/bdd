@@ -35,9 +35,9 @@ SELECT SUM(stock * prix) AS 'Valeur du stock' FROM Produits;
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Produits"
- query="
+ query={`
 SELECT SUM(stock * prix) AS 'Valeur du stock' FROM Produits;
-"
+`}
 />
 
 Pour info : 
@@ -48,9 +48,9 @@ SELECT stock * prix AS 'Valeurs des stocks' FROM Produits;
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Produits"
- query="
+ query={`
 SELECT stock * prix AS 'Valeurs des stocks' FROM Produits;
-"
+`}
 />
 
 </Slide>
@@ -70,12 +70,12 @@ FROM Clients;
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
- query="
+ query={`
 SELECT AVG(Compte) AS 'Moyenne', 
     MAX(Compte) - MIN(Compte) AS 'Écart max', 
     COUNT(*) AS 'Nombre de clients'
 FROM Clients;
-"
+`}
 />
 
 </Slide>
@@ -97,9 +97,9 @@ SELECT COUNT( numeroClient ) FROM Commandes ;
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Produits"
- query="
+ query={`
 SELECT COUNT( numeroClient ) FROM Commandes ;
-"
+`}
 />
 
 Cette requête affiche le nombre de commandes, pas le nombre de clients ! Car : 
@@ -111,9 +111,9 @@ SELECT numeroClient FROM Commandes ;
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Produits"
- query="
+ query={`
 SELECT numeroClient FROM Commandes ;
-"
+`}
 />
 
 contient bien 7 lignes, mais répètent les numéros de clients.
@@ -127,9 +127,9 @@ SELECT COUNT( DISTINCT numeroClient ) FROM Commandes;
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Produits"
- query="
+ query={`
 SELECT COUNT( DISTINCT numeroClient ) FROM Commandes;
-"
+`}
 />
 
 </Slide>
@@ -153,11 +153,11 @@ WHERE ville = 'Rouen';
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Produits"
- query="
+ query={`
 SELECT COUNT (*) AS 'Nombre', 	SUM(compte) AS 'Somme', MAX (categorie) AS 'Max' 
 FROM Clients
 WHERE ville = 'Rouen';
-"
+`}
 />
 
 

@@ -78,9 +78,9 @@ SELECT * FROM Commandes WHERE strftime('%m', dateCommande) = '05';
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes"
-  query="
+  query={`
 SELECT * FROM Commandes WHERE strftime('%m', dateCommande) = '05';
-"
+`}
 />
 
 </Slide>
@@ -107,7 +107,7 @@ FROM Clients ;
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="
+  query={`
 SELECT numero, nom,
 CASE  SUBSTR(categorie, 1, 1)
   WHEN 'A' then 'bon'
@@ -117,7 +117,7 @@ CASE  SUBSTR(categorie, 1, 1)
 END AS 'catégorie',
 ville
 FROM Clients ;
-"
+`}
 />
 
 </Slide>

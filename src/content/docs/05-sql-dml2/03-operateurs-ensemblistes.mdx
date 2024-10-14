@@ -39,11 +39,11 @@ Soit les deux requêtes suivantes :
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
   showSQL="true"
-  query="
+  query={`
 SELECT ville 
 FROM Clients 
 WHERE categorie = 'A1' ;
-"
+`}
 />
 
 
@@ -51,11 +51,11 @@ WHERE categorie = 'A1' ;
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
   showSQL="true"
-  query="
+  query={`
 SELECT ville 
 FROM Clients 
 WHERE compte < 0 ;
-"
+`}
 />
 
 </Slide>
@@ -67,7 +67,7 @@ L'union de ces deux requêtes est la suivante :
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
   showSQL="true"
-  query="
+  query={`
 SELECT ville 
 FROM Clients 
 WHERE categorie = 'A1'
@@ -75,7 +75,7 @@ UNION
 SELECT ville 
 FROM Clients 
 WHERE compte < 0 ;
-"
+`}
 />
 
 </Slide>
@@ -91,7 +91,7 @@ Une même ligne qui apparaît n1 fois dans le premier membre et n2 fois dans le 
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
   showSQL="true"
-  query="
+  query={`
 SELECT ville 
 FROM Clients 
 WHERE categorie = 'A1'
@@ -99,7 +99,7 @@ UNION ALL
 SELECT ville 
 FROM Clients 
 WHERE compte < 0 ;
-"
+`}
 />
 
 

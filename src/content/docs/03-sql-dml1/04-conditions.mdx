@@ -31,7 +31,7 @@ WHERE telephone IS NULL;
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT  nom, prenom, telephone FROM Clients WHERE telephone IS NULL;"
+  query={`SELECT  nom, prenom, telephone FROM Clients WHERE telephone IS NULL;`}
 />
 
 </Slide>
@@ -50,7 +50,7 @@ WHERE telephone IS NOT NULL;
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT nom, prenom, telephone FROM Clients WHERE telephone IS NOT NULL;"
+  query={`SELECT nom, prenom, telephone FROM Clients WHERE telephone IS NOT NULL;`}
 />
 
 
@@ -71,7 +71,7 @@ WHERE ville IN ('Paris', 'Grenoble');
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT nom, prenom, ville FROM Clients WHERE ville IN ('Paris', 'Grenoble');"
+  query={`SELECT nom, prenom, ville FROM Clients WHERE ville IN ('Paris', 'Grenoble');`}
 />
 
 </Slide>
@@ -89,7 +89,7 @@ WHERE ville NOT IN ('Paris', 'Grenoble');
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT nom, prenom, ville FROM Clients WHERE ville NOT IN ('Paris', 'Grenoble');"
+  query={`SELECT nom, prenom, ville FROM Clients WHERE ville NOT IN ('Paris', 'Grenoble');`}
 />
 
 </Slide>
@@ -109,7 +109,7 @@ WHERE dateCommande BETWEEN '2024-01-01' AND '2024-04-01';
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes"
-  query="SELECT * FROM Commandes WHERE dateCommande BETWEEN '2024-01-01' AND '2024-04-01';"
+  query={`SELECT * FROM Commandes WHERE dateCommande BETWEEN '2024-01-01' AND '2024-04-01';`}
 />
 
 Alternativement, on peut écrire :
@@ -135,7 +135,7 @@ WHERE dateCommande NOT BETWEEN '2024-01-01' AND '2024-04-01';
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes"
-  query="SELECT * FROM Commandes WHERE dateCommande NOT BETWEEN '2024-01-01' AND '2024-04-01';"
+  query={`SELECT * FROM Commandes WHERE dateCommande NOT BETWEEN '2024-01-01' AND '2024-04-01';`}
 />
 
 </Slide>
@@ -155,7 +155,7 @@ WHERE ville LIKE '_eclercq';
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT * FROM Clients WHERE ville LIKE '_eclercq';"
+  query={`SELECT * FROM Clients WHERE ville LIKE '_eclercq';`}
 />
 
 Ici le `L` de `Leclercq` est remplacé par un caractère quelconque, en utilisant le masque `_`.
@@ -174,7 +174,7 @@ WHERE ville LIKE '%cq%';
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT * FROM Clients WHERE ville LIKE '%cq%';"
+  query={`SELECT * FROM Clients WHERE ville LIKE '%cq%';`}
 />
 
 La requête renvoie les lignes pour lesquelles la valeur de la colonne `ville` contient les lettres `cq`, en utilisant le masque `%`.
@@ -215,7 +215,7 @@ WHERE ville = 'Paris' AND categorie = 'C3';
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT * FROM Clients WHERE ville = 'Paris' AND categorie = 'C3'"
+  query={`SELECT * FROM Clients WHERE ville = 'Paris' AND categorie = 'C3'`}
 />
 
 Soit les expressions `P` et `Q` : 

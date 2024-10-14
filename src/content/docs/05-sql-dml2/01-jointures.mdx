@@ -26,7 +26,7 @@ Et la requête SQL suivante :
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes"
   showSQL="true"
-  query="
+  query={`
 SELECT 
 
   Co.numero AS nCom, Co.dateCommande, Co.numeroClient AS nCliCom, 
@@ -35,7 +35,7 @@ SELECT
 FROM  Commandes Co, Clients C
 
 WHERE Co.numeroClient = C.numero ;
-"
+`}
 />
 </div>
 
@@ -140,7 +140,7 @@ La même requête, mais cette fois-ci avec la syntaxe `JOIN` :
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Détails"
   showSQL="true"
-  query="
+  query={`
 SELECT 
 
 Co.numero AS 'Commande',
@@ -152,7 +152,7 @@ FROM Commandes Co
 JOIN Clients C ON Co.numeroClient = C.numero
 JOIN Details D ON Co.numero = D.numeroCommande
 JOIN Produits P ON D.numeroProduit = P.numero;
-"
+`}
 />
 </div>
 
@@ -197,7 +197,7 @@ Avec la syntaxe `JOIN` :
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Détails"
   showSQL="true"
-  query="
+  query={`
 SELECT 
   Co.numero AS nCom, Co.dateCommande, Co.numeroClient AS nCliCom, 
   C.numero AS nCli, C.nom
@@ -207,7 +207,7 @@ JOIN Clients C ON Co.numeroClient = C.numero
     
 WHERE C.categorie = 'A1'
 AND Co.dateCommande < '2024-09-27';
-"
+`}
 />
 </div>
 

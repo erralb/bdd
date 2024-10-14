@@ -16,11 +16,11 @@ Exprimer en SQL les requêtes suivantes :
 <SQLiteQuery
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
- query="
+ query={`
     SELECT c.numero, c.nom, c.ville
     FROM Clients c
     WHERE c.nom < c.ville
-"
+`}
 />
 
 </details>

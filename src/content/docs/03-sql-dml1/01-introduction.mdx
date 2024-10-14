@@ -72,7 +72,7 @@ import Table from "/src/components/TableSQLite.astro";
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
-  query="SELECT nom, prenom FROM Clients WHERE ville = 'Grenoble' OR ville = 'Lille'"
+  query={`SELECT nom, prenom FROM Clients WHERE ville = 'Grenoble' OR ville = 'Lille'`}
 />
 
 </Slide>

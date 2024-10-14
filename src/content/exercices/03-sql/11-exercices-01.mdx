@@ -16,9 +16,9 @@ Exprimer en SQL les requêtes suivantes :
 <SQLiteQuery
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
- query="
+ query={`
     SELECT DISTINCT ville FROM clients;
-"
+`}
 />
 
 </details>
@@ -29,11 +29,11 @@ Exprimer en SQL les requêtes suivantes :
 <SQLiteQuery
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
- query="
+ query={`
     SELECT numero, nom, ville
     FROM Clients
     WHERE categorie = 'B2' AND ville != 'Paris';
-"
+`}
 />
 
 </details>
@@ -44,11 +44,11 @@ Exprimer en SQL les requêtes suivantes :
 <SQLiteQuery
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
- query="
+ query={`
     SELECT numero, nom, compte
     FROM Clients
     WHERE ville IN ('Paris', 'Grenoble') AND compte > 0;
-"
+`}
 />
 </details>
 
@@ -59,11 +59,11 @@ Exprimer en SQL les requêtes suivantes :
 <SQLiteQuery
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
- query="
+ query={`
     SELECT DISTINCT categorie, ville
     FROM Clients
     WHERE ville = 'Paris';
-"
+`}
 />
 
 </details>

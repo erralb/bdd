@@ -139,12 +139,12 @@ Pour s'en assurer, comparons les résultats des deux requêtes :
       sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
       title="Commandes"
       showSQL="true"
-      query="
+      query={`
 SELECT numero
 FROM Commandes
 WHERE numero NOT IN ( SELECT numeroCommande 
 						          FROM Details WHERE numeroProduit = 1 ) ;
-"
+`}
     />
   </div>
   <div>
@@ -152,12 +152,12 @@ WHERE numero NOT IN ( SELECT numeroCommande
       sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
       title="Commandes"
       showSQL="true"
-      query="
+      query={`
 SELECT C.numero
 FROM Commandes C, Details D
 WHERE C.numero = D.numeroCommande
 AND D.numeroProduit != 1 ;
-"
+`}
     />
   </div>
 </div>
@@ -186,12 +186,12 @@ Par exemple, la requête suivant associe à chaque ligne de `Details` le montant
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes"
   showSQL="true"
-  query="
+  query={`
 SELECT D.numeroCommande, D.numeroProduit, D.quantite, D.quantite * P.prix AS 'Montant'
 FROM Details D, Produits P
 WHERE D.numeroProduit = P.numero
 AND D.numeroCommande = 1 ;
-"
+`}
 />
 
 </Slide>
@@ -203,12 +203,12 @@ La requête suivante, elle, établit le montant de la commande numéro 1 :
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes"
   showSQL="true"
-  query="
+  query={`
 SELECT D.numeroCommande, SUM(D.quantite * P.prix) AS 'Montant total'
 FROM Details D, Produits P
 WHERE D.numeroProduit = P.numero
 AND D.numeroCommande = 1 ;
-"
+`}
 />
 
 </Slide>
@@ -230,9 +230,9 @@ La table ci-dessous établit des intervalles successifs de valeurs de compte (mi
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Classes_Comptes"
-  query="
+  query={`
 SELECT * FROM Classes_Comptes ;
-"
+`}
 />
 
 </Slide>
@@ -246,12 +246,12 @@ La requête suivante permet de réaliser cette opération :
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Classes de comptes des clients"
   showSQL="true"
-  query="
+  query={`
   SELECT numero, nom, compte, codeCompte
   FROM Clients, Classes_Comptes
   WHERE compte >= minimumCompte
   AND compte < maximumCompte ;
-"
+`}
 />
 
 </Slide>
@@ -357,13 +357,13 @@ Exemple :
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Classes de comptes des clients"
   showSQL="true"
-  query="
+  query={`
 SELECT C.ville, P.nom
 FROM Clients C, Commandes Co, Details D, Produits P
 WHERE C.numero = Co.numeroClient
 AND Co.numero = D.numeroCommande
 AND D.numeroProduit = P.numero ;
-"
+`}
 />
 
 </Slide>

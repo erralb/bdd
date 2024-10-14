@@ -28,10 +28,10 @@ On pourrait dire que certains clients habitent la même ville, ou appartiennent 
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients"
   showSQL="true"
-  query="
+  query={`
 SELECT numero, nom, prenom, ville, categorie
 FROM Clients;
-"
+`}
 />
 
 :::tip[&nbsp;]
@@ -49,14 +49,14 @@ Par exemple, on souhaite obtenir le nombre de clients _par ville_, ainsi que la 
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Moyennes des clients par ville"
   showSQL="true"
-  query="
+  query={`
 SELECT 
     ville,
 		COUNT(*) AS 'Nombre de clients',
 		AVG(compte) AS 'Moyenne des comptes'
 FROM Clients
 GROUP BY ville ;
-"
+`}
 />
 
 </Slide>
@@ -74,7 +74,7 @@ Par exemple, si on reprend la requête précédente, on peut ajouter une conditi
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Moyennes des clients par ville qui ont au moins 3 clients"
   showSQL="true"
-  query="
+  query={`
 SELECT 
     ville,
 		COUNT(*) AS 'Nombre de clients',
@@ -82,7 +82,7 @@ SELECT
 FROM Clients
 GROUP BY ville
 HAVING COUNT(*) >= 3 ;
-"
+`}
 />
 
 :::note[Remarque]
@@ -106,11 +106,11 @@ Réalisons cette requête par étapes :
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes regroupées par client"
   showSQL="true"
-  query="
+  query={`
 SELECT numeroClient , COUNT(*)
 FROM Commandes
 GROUP BY numeroClient;
-"
+`}
 />
 
 </Slide>
@@ -122,12 +122,12 @@ GROUP BY numeroClient;
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes regroupées par client ayant au moins 2 commandes"
   showSQL="true"
-  query="
+  query={`
 SELECT numeroClient , COUNT(*)
 FROM Commandes
 GROUP BY numeroClient
 HAVING COUNT(*) >= 2;
-"
+`}
 />
 
 </Slide>
@@ -139,13 +139,13 @@ HAVING COUNT(*) >= 2;
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes regroupées par client ayant au moins 2 commandes du produit numéro 1"
   showSQL="true"
-  query="
+  query={`
 SELECT numeroClient , COUNT(*)
 FROM Commandes
 WHERE numero IN (SELECT numeroCommande FROM Details WHERE numeroProduit = 1 )
 GROUP BY numeroClient
 HAVING COUNT(*) >= 2;
-"
+`}
 />
 
 </Slide>
@@ -157,13 +157,13 @@ HAVING COUNT(*) >= 2;
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes regroupées par client ayant au moins 2 commandes du produit T-Shirt"
   showSQL="true"
-  query="
+  query={`
 SELECT numeroClient, COUNT(*)
 FROM Commandes
 WHERE numero IN (SELECT numeroCommande FROM Details, Produits P WHERE Details.numeroProduit = P.numero AND P.nom = 'T-shirt' )
 GROUP BY numeroClient
 HAVING COUNT(*) >= 2;
-"
+`}
 />
 
 </Slide>
@@ -177,7 +177,7 @@ On pourrait aussi formuler cette requête en utilisant des jointures explicites 
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes regroupées par client ayant au moins 2 commandes du produit T-Shirt"
   showSQL="true"
-  query="
+  query={`
 SELECT P.nom, numeroClient , COUNT(*)
 FROM Commandes C, Details D, Produits P
 WHERE C.numero = D.numeroCommande 
@@ -185,7 +185,7 @@ AND D.numeroProduit = P.numero
 AND P.nom = 'T-shirt'
 GROUP BY numeroClient
 HAVING COUNT(*) >= 2;
-"
+`}
 />
 
 </Slide>
@@ -197,7 +197,7 @@ Et pour terminer, une version avec la syntaxe `JOIN` :
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes regroupées par client ayant au moins 2 commandes du produit T-Shirt"
   showSQL="true"
-  query="
+  query={`
 SELECT numeroClient , COUNT(*)
 FROM Commandes C
 JOIN Details D ON C.numero = D.numeroCommande
@@ -205,7 +205,7 @@ JOIN Produits P ON D.numeroProduit = P.numero
 WHERE P.nom = 'T-shirt'
 GROUP BY numeroClient
 HAVING COUNT(*) >= 2;
-"
+`}
 />
 
 </Slide>
@@ -219,12 +219,12 @@ On souhaite obtenir la quantité totale commandée du produit `numéro 1`, toute
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Quantité totale commandée du produit numéro 1"
   showSQL="true"
-  query="
+  query={`
 SELECT numeroProduit, SUM(quantite)
 FROM Details
 WHERE numeroProduit = 1
 GROUP BY numeroProduit;
-"
+`}
 />
 
 </Slide>
@@ -238,7 +238,7 @@ Pour chaque client de `Lille`, donner le montant total de ses commandes
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Commandes de Lille"
   showSQL="true"
-  query="
+  query={`
 SELECT numeroClient, SUM(quantite * prix)
 FROM Commandes C, Details D, Produits P, Clients CL
 WHERE C.numero = D.numeroCommande
@@ -246,7 +246,7 @@ AND D.numeroProduit = P.numero
 AND C.numeroClient = CL.numero
 AND CL.ville = 'Lille'
 GROUP BY numeroClient;
-"
+`}
 />
 
 </Slide>
@@ -286,14 +286,14 @@ _Donner pour chaque ville le montant total commandé_
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Montant commandé par ville"
   showSQL="true"
-  query="
+  query={`
 SELECT ville, SUM(quantite * prix) AS 'montant'
 FROM Clients CL, Commandes C, Details D, Produits P
 WHERE CL.numero = C.numeroClient
 AND C.numero = D.numeroCommande
 AND D.numeroProduit = P.numero
 GROUP BY ville;
-"
+`}
 />
 
 _Donner pour chaque ville **et produit** le montant total commandé_
@@ -302,14 +302,14 @@ _Donner pour chaque ville **et produit** le montant total commandé_
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Montant commandé par ville et produit"
   showSQL="true"
-  query="
+  query={`
 SELECT ville, P.numero AS 'produit', SUM(quantite * prix) AS 'montant'
 FROM Clients CL, Commandes C, Details D, Produits P
 WHERE CL.numero = C.numeroClient
 AND C.numero = D.numeroCommande
 AND D.numeroProduit = P.numero
 GROUP BY ville, P.numero;
-"
+`}
 />
 
 </Slide>
@@ -339,11 +339,11 @@ _Donner la liste des clients en fonction de la première lettre de leur catégor
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Clients par catégorie"
   showSQL="true"
-  query="
+  query={`
 SELECT substr(categorie, 1, 1) AS 'Catégorie', COUNT(*) AS 'Nombre de clients'
 FROM Clients
 GROUP BY substr(categorie, 1, 1);
-"
+`}
 />
 
 </Slide>
@@ -353,80 +353,88 @@ _Regrouper les clients selon leurs valeurs de COMPTE par intervalle de 1.000_
 
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
-  title="Clients par intervalle de compte"
+  title="valeurs de COMPTE par intervalle de 1.000"
   showSQL="true"
-  query="
+  query={`
 SELECT 'de' , abs(compte/1000)*1000 AS MIN, 'à' , abs(compte/1000)*1000 + 999 AS MAX, COUNT(*) AS N
 FROM Clients
 GROUP BY abs(compte/1000);
-"
+`}
 />
 
+</Slide>
+<Slide>
 
+## Jointures
 
+L'extraction de données groupées est à définir **avec précaution avec des jointures**
+
+**Donner pour chaque ville, la somme des comptes des clients et le nombre de commandes.**
+
+On serait tenté d'écrire :
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="somme des comptes des clients et le nombre de commandes"
+  showSQL="true"
+  query={`
+SELECT ville, SUM(compte), COUNT(*)
+FROM Clients C, Commandes M
+WHERE C.numero = M.numeroClient
+GROUP BY ville;
+`}
+/>
+
+Ce résultat, en apparence correct, est pourtant erroné (indépendamment du fait que les clients sans commande ne sont pas repris) :
+
+* Le résultat de la jointure n'est pas des `clients` mais des `commandes`
+  * _Rappel : le résultat d'une jointure représente des entités de la table contenant la clé étrangère_
+* En particulier, le compte d'un client est compté autant de fois qu'il a passé une commande
+* Le calcul de la somme des comptes s'effectue donc sur des ensembles de `commandes` et non des `clients`
+* Pour répondre correctement à la question il faudra procéder en deux étapes
 
 </Slide>
 <Slide>
 
+## Omission
 
+Il est possible d'éviter la clause `GROUP BY` lorsque le concept latent dans une table est explicitement représenté par une autre table, et que le regroupement ne sert qu'à la sélection
 
-Syntaxe pour  __SQLite :__
+_Donner les produits dont plus de 2 unités ont été commandées en 2024_
 
-SELECT 'de' ,  __abs__ (COMPTE/1000)*1000 AS MIN,		'a' ,  __abs__ (COMPTE/1000)*1000 + 999 AS MAX,		COUNT(*) AS NFROM CLIENT CGROUP BY  __abs__  (COMPTE/1000) ;
-
-
-
-</Slide>
-<Slide>
-
-
-
-L'extraction de données groupées est à définir avec précaution avec des jointures
-
-Exemple : Donner pour chaque ville, la somme des comptes des clients et le nombre de commandes. On serait tenté d'écrire :
-
-__SELECT__  ville,  __SUM__ (COMPTE) ,  __COUNT__ (*) __FROM__  CLIENT C, COMMANDE M __WHERE__  C.NCLI = M.NCLI __GROUP__   __BY__  ville ;
-
-Ce qui donnerait :
-
-Ce résultat, en apparence correct, est pourtant erroné (indépendamment du fait que les clients sans commande ne sont pas repris)
-
-![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures19.png)
-
-
-
-</Slide>
-<Slide>
-
-
-
-![](CM4%20-%20Le%20langage%20SQL%20DML%20-%20Les%20Jointures20.png)
-
-* Le résultat de la jointure n'est pas des clients mais des commandes
-  * Rappel : le résultat d'une jointure représente des entités de la table contenant la clé étrangère
-* En particulier, le compte du client CS400 est comptabilisé 3 fois, pour un total de 1050 au lieu de 350
-* Le calcul de la somme des comptes s'effectue donc sur des ensembles de commandes et non des clients
-* Pour répondre correctement à la question il faut procéder en deux étapes
-
-
-
-</Slide>
-<Slide>
-
-
-
-Il est possible d'éviter la clause GROUP BY lorsque le concept latent dans une table est explicitement représenté par une autre table, et que le regroupement ne sert qu'à la sélection
-
-Exemple : Donner les produits dont plus de 500 unités ont été commandées en 2009
-
-__SELECT__  D.NPRO __FROM__  DETAIL D, COMMANDE M __WHERE__  C.NCOM = M.NCOM  __AND__  DATECOM  __LIKE__  '%2009' __GROUP BY__  D.NPRO  __HAVING__   __SUM__ (QCOM) > 500 ;
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients par intervalle de compte"
+  showSQL="true"
+  query={`
+SELECT numero, nom, stock
+FROM Produits
+WHERE numero IN (SELECT numeroProduit FROM Details WHERE quantite > 2)
+GROUP BY numero;
+`}
+/>
 
 est équivalente à
 
-__SELECT__  NPRO  __FROM__  PRODUIT P __WHERE__  (  __SELECT__  SUM(QCOM)  __FROM__  DETAIL		 __WHERE__  NPRO = P.NPRO  __AND__  NCOM  __IN__  			( __SELECT__  NCOM  __FROM__  COMMANDE  __WHERE__  DATECOM LIKE ' %2009 ' )
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Clients par intervalle de compte"
+  showSQL="true"
+  query={`
+SELECT numero, nom, stock
+FROM Produits
+WHERE numero IN (SELECT numeroProduit FROM Details WHERE quantite > 2);
+`}
+/>
 
-)  __>__  500 ;
+</Slide>
+<Slide>
 
+## Conclusion
 
+* Les regroupements de données permettent d'extraire des informations sur des concepts latents dans les tables.
+* Les clauses `GROUP BY` et `HAVING` permettent de réaliser ces regroupements.
+* Les jointures doivent être utilisées avec précaution dans les requêtes de regroupement.
+* Il est possible d'omettre la clause `GROUP BY` lorsque le concept latent est explicitement représenté par une autre table.
 
 </Slide>

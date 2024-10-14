@@ -38,9 +38,9 @@ SELECT * FROM Produits AS P WHERE EXISTS (
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Produits"
- query="
+ query={`
 SELECT * FROM Produits AS P WHERE EXISTS ( SELECT * FROM Details AS D WHERE D.numeroProduit = P.numero) ;
- "
+ `}
 />
 
 </Slide>
@@ -63,11 +63,11 @@ SELECT DISTINCT numeroCommande FROM Details WHERE quantite <= ALL (
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Commandes"
- query="
+ query={`
 SELECT DISTINCT numeroCommande FROM Details WHERE quantite <= ( 
   SELECT MIN(quantite) FROM Details WHERE numeroProduit = 1
 );
-"
+`}
 />
 
 La condition s'interprète : _la valeur de quantite (de la ligne de Details courante) est inférieure ou égale à chacun des éléments de la table Details relatifs au produit 1_
@@ -106,11 +106,11 @@ SELECT * FROM Details WHERE numeroProduit = 1 AND quantite > ANY (
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Details"
- query="
+ query={`
 SELECT * FROM Details WHERE numeroProduit = 1 AND quantite NOT IN (
   SELECT MIN(quantite) FROM Details WHERE numeroProduit = 1
 ) ;
-"
+`}
 />
 
 La condition s'interprète : _la valeur de `quantite` (de la ligne de `Details` courante) est supérieure à au moins un des éléments de la table `Details` relatifs au produit 1_

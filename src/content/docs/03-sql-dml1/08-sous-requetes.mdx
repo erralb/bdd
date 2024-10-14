@@ -36,9 +36,9 @@ SELECT numero FROM Clients WHERE ville = 'Grenoble' ;
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
- query="
+ query={`
 SELECT numero FROM Clients WHERE ville = 'Grenoble' ;
-"
+`}
 />
 
 2. Il est alors facile de retrouver les commandes des clients habitant à `Grenoble` :
@@ -50,9 +50,9 @@ SELECT * FROM Commandes WHERE numero IN (2);
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
- query="
+ query={`
 SELECT * FROM Commandes WHERE numero IN (2);
-"
+`}
 />
 
 Cette procédure n'est pas pratique... surtout si de nouveaux clients de `Grenoble` s'ajoutent à la base de données
@@ -71,11 +71,11 @@ SELECT * FROM Commandes WHERE numeroClient IN (
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
- query="
+ query={`
 SELECT * FROM Commandes WHERE numeroClient IN (
  SELECT numero FROM Clients WHERE ville = 'Grenoble'
 );
-"
+`}
 />
 
 </Slide>
@@ -99,11 +99,11 @@ SELECT * FROM Clients WHERE ville IN (
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
- query="
+ query={`
 SELECT * FROM Clients WHERE ville IN (
  SELECT ville FROM Clients WHERE numero = 3
 );
-"
+`}
 />
 
 </Slide>
@@ -122,11 +122,11 @@ SELECT * FROM Details WHERE numeroProduit = 1 AND quantite < (
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Commandes"
- query="
+ query={`
 SELECT * FROM Details WHERE numeroProduit = 1 AND quantite < (
  SELECT quantite FROM Details WHERE numeroCommande = 6
 );
-"
+`}
 />
 
 On peut s'assurer de la quantite de produit numéro 1 dans la commande numéro 6 en exécutant la requête :
@@ -140,9 +140,9 @@ WHERE numeroCommande = 6 AND numeroProduit = 1;
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Commandes"
- query="
+ query={`
   SELECT quantite FROM Details WHERE numeroCommande = 6 AND numeroProduit = 1;
- "
+ `}
 />
 
 </Slide>
@@ -189,11 +189,11 @@ SELECT nom FROM Clients WHERE compte = (
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Clients"
- query="
+ query={`
 SELECT nom FROM Clients WHERE compte = (
  SELECT MAX(compte) FROM Clients
 );
-"
+`}
 />
 
 </Slide>
@@ -214,11 +214,11 @@ SELECT * FROM Commandes WHERE (
 <Table
  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
  title="Commandes"
- query="
+ query={`
 SELECT * FROM Commandes WHERE (
  SELECT COUNT(*) FROM Details WHERE numeroCommande = Commandes.numero
 ) >= 3;
-"
+`}
 />
 
 </Slide>

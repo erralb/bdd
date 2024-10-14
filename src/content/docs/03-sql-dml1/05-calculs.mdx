@@ -18,7 +18,7 @@ SELECT * FROM Produits WHERE stock > 10 ;
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Produits"
-  query="SELECT * FROM Produits WHERE stock > 10 ;"
+  query={`SELECT * FROM Produits WHERE stock > 10 ;`}
 />
 
 </Slide>
@@ -35,7 +35,7 @@ WHERE stock > 10 ;
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Produits"
-  query="SELECT 'TVA de', numero, '=', 0.2 * prix * stock FROM Produits WHERE stock > 10 ;"
+  query={`SELECT 'TVA de', numero, '=', 0.2 * prix * stock FROM Produits WHERE stock > 10 ;`}
 />
 
 _Dans cet exemple, on calcule la TVA pour les produits dont le stock est supérieur à 10._
@@ -60,7 +60,7 @@ WHERE stock > 10 ;
 <Table
   sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
   title="Produits"
-  query="SELECT numero AS 'Produit', 0.2 * prix * stock AS 'TVA' FROM Produits WHERE stock > 10 ;"
+  query={`SELECT numero AS 'Produit', 0.2 * prix * stock AS 'TVA' FROM Produits WHERE stock > 10 ;`}
 />
 
 </Slide>

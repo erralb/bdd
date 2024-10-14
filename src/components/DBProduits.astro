@@ -19,13 +19,13 @@ import Table from "./TableSQLite.astro";
   <Table
   sqliteDB="public/sample/produits.sqlite"
   title="PRODUIT"
-  query="SELECT * FROM PRODUIT"
+  query={`SELECT * FROM PRODUIT`}
 />
 
 <Table
   sqliteDB="public/sample/produits.sqlite"
   title="COMPOSITION"
-  query="SELECT * FROM COMPOSITION"
+  query={`SELECT * FROM COMPOSITION`}
 />
 
 </div>
