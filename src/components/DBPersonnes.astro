@@ -1,0 +1,9 @@
+---
+import Table from "./TableSQLite.astro";
+---
+
+  <Table
+  sqliteDB="public/sample/personnes.sqlite"
+  title="Personnes"
+  query={`SELECT * FROM Personnes`}
+/>
