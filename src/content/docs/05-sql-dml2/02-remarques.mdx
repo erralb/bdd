@@ -39,7 +39,7 @@ La requête suivante, qui renvoie les _commandes_ passées par des _clients_ de 
 
 ```sql
 SELECT numero, dateCommande
-FROM  COMMANDE
+FROM  Commandes
 WHERE  numeroClient IN ( SELECT  numero FROM Clients WHERE ville='Grenoble' ) ;
 
 ```
@@ -48,7 +48,7 @@ peut s'écrire également sous la forme d'une jointure :
 
 ```sql
 SELECT numero, dateCommande
-FROM  COMMANDE C, CLIENTS CL
+FROM  Commandes C, Clients CL
 WHERE  C.numeroClient = CL.numero
 AND CL.ville='Grenoble' ;
 ```
@@ -57,8 +57,8 @@ Ou en utilisant la syntaxe `JOIN` :
 
 ```sql
 SELECT numero, dateCommande
-FROM  COMMANDE C
-JOIN CLIENTS CL ON C.numeroClient = CL.numero
+FROM  Commandes C
+JOIN Clients CL ON C.numeroClient = CL.numero
 WHERE CL.ville='Grenoble' ;
 ```
 
@@ -87,6 +87,7 @@ SELECT DISTINCT C.*
 FROM Commandes C, Details D1, Details D2
 WHERE C.numero = D1.numeroCommande
 AND D1.numeroProduit = 1
+AND D2.numeroProduit = 1
 AND D2.numeroCommande = 3
 AND D1.quantite < D2.quantite ;
 ```
