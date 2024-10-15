@@ -174,7 +174,7 @@ _Donner les informations relatives aux produits p4 ainsi que sa composition :_
   title="Composition"
   showSQL="true"
   query={`
-SELECT H.NPRO, H.LIBELLE , C.QTE, B.LIBELLE AS liebelleB
+SELECT H.NPRO, H.LIBELLE , C.QTE, B.LIBELLE AS libelleB
 FROM PRODUIT H, COMPOSITION C, PRODUIT B 
 WHERE C.COMPOSE = H.NPRO 
 AND C.COMPOSANT = B.NPRO 
