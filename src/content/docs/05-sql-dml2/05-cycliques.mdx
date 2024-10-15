@@ -59,7 +59,7 @@ _Donner, pour chaque personne `S` (pour subordonné) ayant un responsable `R`, l
   title="Personnes"
   showSQL="true"
   query={`
-SELECT S.numero, R.numero, R.nom
+SELECT S.numero AS numeroS, R.numero AS numeroR, R.nom AS nomR
 FROM Personnes S, Personnes R
 WHERE S.responsable = R.numero;
 `}
@@ -87,7 +87,7 @@ _Donner pour chaque personne dont le nom est `Dupont`, son numéro ainsi que le 
   title="Personnes"
   showSQL="true"
   query={`
-SELECT S.numero, S.nom, R.numero, R.nom 
+SELECT S.numero AS numeroS, S.nom AS nomS, R.numero AS numeroR, R.nom AS nomR
 FROM Personnes S, Personnes R 
 WHERE S.responsable = R.numero AND S.nom = 'Dupont'
 UNION
