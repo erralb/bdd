@@ -214,6 +214,42 @@ WHERE H.NPRO = 'p4' ;
 </Slide>
 <Slide>
 
+Un autre exemple, plus complexe :
+
+_Donner le prix et poids unitaires d’un produit fini ou semi-fini dont tous les composants ont un poids et un prix unitaires._
+
+<Table
+  sqliteDB="public/sample/produits.sqlite"
+  title="Produits"
+  showSQL="true"
+  query={`
+SELECT
+
+    PH.NPRO,
+    SUM(QTE*PB.PRIX_U),
+    SUM(QTE*PB.POIDS_U)
+
+FROM PRODUIT PH, COMPOSITION C, PRODUIT PB
+
+WHERE 
+    PH.NPRO = C.COMPOSE
+    AND C.COMPOSANT = PB.NPRO
+    AND NOT EXISTS (
+        SELECT * 
+        FROM COMPOSITION CC, PRODUIT BB
+        WHERE 
+            CC.COMPOSANT = BB.NPRO 
+            AND CC.COMPOSE = PH.NPRO
+            AND (BB.PRIX_U is null OR BB.POIDS_U is null)
+        )
+GROUP BY PH.NPRO
+;
+`}
+/>
+
+</Slide>
+<Slide>
+
 ## Conclusion
 
 * Les requêtes _cycliques_ ou _récursives_ sont des requêtes qui font référence d'une table à elle-même.
