@@ -171,10 +171,10 @@ _Donner les informations relatives aux produits p4 ainsi que sa composition :_
 
 <Table
   sqliteDB="public/sample/produits.sqlite"
-  title="Produits"
+  title="Composition"
   showSQL="true"
   query={`
-SELECT H.NPRO, H.LIBELLE , C.QTE, B.LIBELLE 
+SELECT H.NPRO, H.LIBELLE , C.QTE, B.LIBELLE AS liebelleB
 FROM PRODUIT H, COMPOSITION C, PRODUIT B 
 WHERE C.COMPOSE = H.NPRO 
 AND C.COMPOSANT = B.NPRO 
