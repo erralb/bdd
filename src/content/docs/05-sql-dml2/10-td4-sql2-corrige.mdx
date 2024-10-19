@@ -1,0 +1,684 @@
+---
+title: TD4 - SQL DML 2 - Corrigé
+sidebar:
+  label: TD4 - Corrigé
+---
+
+import Table from "/src/components/TableSQLite.astro";
+
+## Exercice 1
+
+Soit le schéma relationnel suivant :
+
+import { Content as ProduitsDB } from "/src/content/files/produits-text.md";
+
+<ProduitsDB />
+
+import DBproduit from "/src/components/DBProduits.astro";
+
+<details>
+    <summary>Données</summary>
+
+    <DBproduit />
+
+</details>
+
+**Exprimer en SQL les requêtes suivantes :**
+
+
+<details>
+  <summary>1. les matières premières (produits qui n’ont pas de composants) ;</summary>
+
+<Table
+  sqliteDB="public/sample/produits.sqlite"
+  title="Produits"
+  showSQL="true"
+  query={`
+SELECT * FROM PRODUIT
+WHERE NPRO 
+NOT IN ( SELECT COMPOSE FROM COMPOSITION);
+`}
+/>
+
+</details>
+
+<details>
+  <summary>2. les produits finis (qui n’entrent dans la composition d’aucun autre) ;</summary>
+
+<Table
+  sqliteDB="public/sample/produits.sqlite"
+  title="Produits"
+  showSQL="true"
+  query={`
+SELECT NPRO 
+FROM PRODUIT
+WHERE NPRO NOT IN (SELECT COMPOSANT FROM COMPOSITION) ;
+`}
+/>
+
+</details>
+
+<details>
+  <summary>3. les produits semi-finis (tous les autres) ;</summary>
+
+<Table
+  sqliteDB="public/sample/produits.sqlite"
+  title="Produits"
+  showSQL="true"
+  query={`
+SELECT NPRO 
+FROM PRODUIT
+WHERE NPRO IN (SELECT COMPOSE FROM COMPOSITION)
+AND NPRO IN (SELECT COMPOSANT FROM COMPOSITION) ;
+`}
+/>
+
+Alternative avec des jointures :
+
+<Table
+  sqliteDB="public/sample/produits.sqlite"
+  title="Produits"
+  showSQL="true"
+  query={`
+SELECT DISTINCT NPRO
+FROM PRODUIT P, COMPOSITION C1, COMPOSITION C2
+WHERE P.NPRO=C1.COMPOSE
+AND P.NPRO=C2.COMPOSANT;
+`}
+/>
+
+</details>
+
+<details>
+  <summary>4. le prix et poids unitaires d’un produit fini ou semi-fini dont tous les composants ont un poids et un prix unitaires.</summary>
+
+<Table
+  sqliteDB="public/sample/produits.sqlite"
+  title="Produits"
+  showSQL="true"
+  query={`
+SELECT
+
+    PH.NPRO,
+    SUM(QTE*PB.PRIX_U),
+    SUM(QTE*PB.POIDS_U)
+
+FROM PRODUIT PH, COMPOSITION C, PRODUIT PB
+
+WHERE 
+    PH.NPRO = C.COMPOSE
+    AND C.COMPOSANT = PB.NPRO
+    AND NOT EXISTS (
+        SELECT * 
+        FROM COMPOSITION CC, PRODUIT BB
+        WHERE 
+            CC.COMPOSANT = BB.NPRO 
+            AND CC.COMPOSE = PH.NPRO
+            AND (BB.PRIX_U is null OR BB.POIDS_U is null)
+        )
+GROUP BY PH.NPRO
+;
+`}
+/>
+
+</details>
+
+## Exercice 2
+
+Soit le schéma relationnel suivant :
+
+import {Content as Personnes} from '/src/content/files/personnes-text.md'
+
+<Personnes />
+
+<details>
+    <summary>Données</summary>
+<Table
+  sqliteDB="public/sample/personnes.sqlite"
+  title="Personnes"
+  query={`
+SELECT * 
+FROM Personnes
+`}
+/>
+
+</details>
+
+
+<details>
+  <summary>**Quels sont les personnes qui ont le même responsable que p4 ?**</summary>
+
+<Table
+  sqliteDB="public/sample/personnes.sqlite"
+  title="Personnes"
+  showSQL="true"
+  query={`
+SELECT * FROM Personnes
+WHERE responsable IN (SELECT responsable FROM Personnes WHERE numero = 'p4');
+`}
+/>
+
+
+Si on veut exclure la personne p4 du résultat :
+
+<Table
+  sqliteDB="public/sample/personnes.sqlite"
+  title="Personnes"
+  showSQL="true"
+  query={`
+SELECT * 
+FROM Personnes
+WHERE 
+responsable IN ( SELECT responsable  FROM Personnes WHERE numero = 'p4' ) 
+AND numero <> 'p4';
+`}
+/>
+
+Version alternative :
+
+<Table
+  sqliteDB="public/sample/personnes.sqlite"
+  title="Personnes"
+  showSQL="true"
+  query={`
+SELECT P2.*
+FROM Personnes P1, Personnes P2
+WHERE 
+    P1.responsable = P2.responsable
+    AND P1.numero = 'p4' 
+    AND P2.numero <>'p4';
+`}
+/>
+
+
+</details>
+
+## Exercice 3
+
+En reprendant le schéma relationnel de la base de données fil rouge :
+
+import { Content as TextDB } from "/src/content/files/ecommerce-fr-erd-v2-text.md";
+
+<TextDB />
+
+import DBecommerce2 from "/src/components/DBecommerce2.astro";
+
+<details>
+  <summary>Données de la base</summary>
+
+  <DBecommerce2 />
+</details>
+
+Répondez aux questions suivantes :
+
+
+
+<details>
+  <summary>1. Calculer le montant de chaque détail de commande du client numéro 1</summary>
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Montant de chaque détail de commande du client numéro 1"
+  showSQL="true"
+  query={`
+SELECT numeroProduit, quantite, prix, quantite*prix as montant
+FROM Clients C, Commandes CO, Details D, Produits P
+WHERE C.numero = CO.numeroClient
+AND CO.numero = D.numeroCommande
+AND D.numeroProduit = P.numero
+AND C.numero = 1;
+`}
+/>
+</details>
+
+2. Calculer le montant commandé des produits `Pantalon`
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Montant commandé des produits Pantalon"
+  showSQL="true"
+  query={`
+SELECT nom, SUM(quantite), prix, SUM(quantite*prix) as Montant
+FROM Details D, Produits P
+WHERE D.numeroProduit = P.numero
+AND P.nom LIKE 'Pantalon';
+`}
+/>
+
+3. Afficher le total et la moyenne des comptes des clients, ainsi que le nombre de clients, selon chacune des classifications suivantes :
+    
+    (a) par catégorie
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Total et la moyenne des comptes des clients par catégorie"
+  showSQL="true"
+  query={`
+SELECT categorie, SUM(compte), AVG(compte), COUNT(*)
+FROM Clients
+GROUP BY categorie;
+`}
+/>
+
+    (b) par ville
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Total et la moyenne des comptes des clients par ville"
+  showSQL="true"
+  query={`
+SELECT ville, SUM(compte), AVG(compte), COUNT(*)
+FROM Clients
+GROUP BY ville;
+`}
+/>
+    
+    (c) par catégorie dans chaque ville
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Total et la moyenne des comptes des clients par catégorie et par ville"
+  showSQL="true"
+  query={`
+SELECT categorie, ville, SUM(compte), AVG(compte), COUNT(*)
+FROM Clients
+GROUP BY categorie, ville;
+`}
+/>
+
+6. Combien y a-t-il de commandes spécifiant un (ou plusieurs) produit(s) `Casquette` ?
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Nombre de commandes spécifiant un (ou plusieurs) produit(s) Casquette"
+  showSQL="true"
+  query={`
+SELECT COUNT(DISTINCT numeroCommande)
+FROM Details D, Produits P
+WHERE D.numeroProduit = P.numero
+AND P.nom LIKE 'Casquette';
+`}
+/>
+
+7. Compléter le fragment suivant de manière à former une requête valide :
+
+```sql
+    SELECT categorie, numeroProduit, SUM(quantite*prix)
+    FROM ...
+```
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Produits commandés par catégories"
+  showSQL="true"
+  query={`
+SELECT categorie, numeroProduit, SUM(quantite*prix)
+FROM Details D, Produits P, Clients C, Commandes CO
+WHERE D.numeroProduit = P.numero
+AND C.numero = CO.numeroClient
+AND CO.numero = D.numeroCommande
+GROUP BY categorie, numeroProduit;
+`}
+/>
+
+8. Calculer le montant dû par chaque client. _Dans ce calcul, on ne prend en compte que le montant des commandes. Attention aux clients qui n’ont pas passé de commandes, ils devraient apparaître avec un montant nul._
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Montant dû par chaque client"
+  showSQL="true"
+  query={`
+SELECT C.numero, C.nom, SUM(quantite*prix) as Montant
+FROM Clients C
+LEFT JOIN Commandes CO ON C.numero = CO.numeroClient
+LEFT JOIN Details D ON CO.numero = D.numeroCommande
+LEFT JOIN Produits P ON D.numeroProduit = P.numero
+GROUP BY C.numero;
+`}
+/>
+
+Version alternative avec une `UNION` :
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Montant dû par chaque client"
+  showSQL="true"
+  query={`
+SELECT C.numero, C.nom, SUM(quantite*prix) as Montant
+FROM Clients C, Commandes CO, Details D, Produits P
+WHERE C.numero = CO.numeroClient
+AND CO.numero = D.numeroCommande
+AND D.numeroProduit = P.numero
+GROUP BY C.numero
+UNION
+SELECT C.numero, C.nom, 0 as Montant
+FROM Clients C
+WHERE C.numero NOT IN (SELECT numeroClient FROM Commandes);
+`}
+/>
+
+9. Calculer le montant dû par les clients de chaque ville. _Dans ce calcul, on ne prend en compte que le montant des commandes. Attention aux villes dans lesquelles aucun client n’a passé de commandes._
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Montant dû par les clients de chaque ville"
+  showSQL="true"
+  query={`
+SELECT C.ville, SUM(quantite*prix) as Montant
+FROM Clients C
+LEFT JOIN Commandes CO ON C.numero = CO.numeroClient
+LEFT JOIN Details D ON CO.numero = D.numeroCommande
+LEFT JOIN Produits P ON D.numeroProduit = P.numero
+GROUP BY C.ville;
+`}
+/>
+
+
+10. Calculer, par jour, le total des montants des commandes. _Suggestion : Regroupement par date_
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Total des montants des commandes par jour"
+  showSQL="true"
+  query={`
+SELECT dateCommande, SUM(quantite*prix) as Montant
+FROM Commandes CO, Details D, Produits P
+WHERE CO.numero = D.numeroCommande
+AND D.numeroProduit = P.numero
+GROUP BY dateCommande;
+`}
+/>
+
+11. On suppose que le concepteur de la base de données n’a pas trouvé utile d’imposer un identifiant primaire sur la table `Produits`
+    
+    Il se pourrait donc que plusieurs lignes de la table `Produits` aient la même valeur pour le _numéro_ de produit (ce qui déroge au principe d’unicité des bases de données relationnelles...)
+
+    (a) Ecrire une requête qui recherche les valeurs de `numero` présentes en plus d’un exemplaire.
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Recherche des doublons de numero de Produits"
+  showSQL="true"
+  query={`
+SELECT numero
+FROM Produits
+GROUP BY numero
+HAVING COUNT(numero) > 1;
+`}
+/>
+    
+
+    (b) Ecrire une requête qui indique combien de valeurs de `numero` sont présentes en plus d’un exemplaire.
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Combien de valeurs de `numero` sont présentes en plus d’un exemplaire"
+  showSQL="true"
+  query={`
+SELECT COUNT(numero)
+FROM (
+    SELECT numero
+    FROM Produits
+    GROUP BY numero
+    HAVING COUNT(numero) > 1
+);
+`}
+/>
+
+12. Afficher pour chaque ville, les noms des produits qui y sont commandés.
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Noms des produits commandés par ville"
+  showSQL="true"
+  query={`
+SELECT C.ville, P.nom
+FROM Clients C, Commandes CO, Details D, Produits P
+WHERE C.numero = CO.numeroClient
+AND CO.numero = D.numeroCommande
+AND D.numeroProduit = P.numero
+GROUP BY C.ville, P.nom;
+`}
+/>
+
+13. Afficher par ville, et pour chaque catégorie dans celle-ci, le total des montants des commandes.
+
+<Table
+  sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+  title="Total des montants des commandes par ville et par catégorie"
+  showSQL="true"
+  query={`
+SELECT C.ville, C.categorie, SUM(quantite*prix) as Montant
+FROM Clients C, Commandes CO, Details D, Produits P
+WHERE C.numero = CO.numeroClient
+AND CO.numero = D.numeroCommande
+AND D.numeroProduit = P.numero
+GROUP BY C.ville, C.categorie;
+`}
+/>
+
+14. Indiquer, pour chaque ville, les catégories de clients qui n’y sont pas représentées
+    _Suggestion: Construire l’ensemble de tous les couples (ville, categorie), possibles et en retirer ceux qui existent dans la base. Attention aux valeurs null, qui ne doivent pas être prises en compte._
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Catégories de clients non représentées par ville"
+    showSQL="true"
+    query={`
+SELECT C.ville, CC.categorie
+FROM Clients C, (SELECT DISTINCT categorie FROM Clients) CC
+WHERE (C.ville, CC.categorie) NOT IN (
+    SELECT ville, categorie
+    FROM Clients
+)
+ORDER BY C.ville;
+`}
+/>
+
+**Explications :**
+
+On commence par construire l'ensemble de tous les couples `(ville, categorie)` possibles :
+    - C'est un produit relationnel, car on sélectionne _2 tables sans condition de jointure_
+    - La première table est la table `Clients` renommée `C`
+    - La seconde table est une table temporaire, exprimée par la sous-requête `SELECT DISTINCT categorie FROM Clients`, qui renvoie les catégories distinctes de clients
+
+Enfin, on utilise une clause `WHERE` pour filtrer les couples `(C.ville, CC.categorie)` qui n'existent pas dans la table `Clients`
+
+
+
+15. Produire (à l’écran) une table de couples < X, Y > de clients tels que X et Y habitent dans la même ville. 
+    On évitera de renseigner < X,X >, mais aussi < Y,X > si < X,Y > est déjà repris.
+    
+    _Suggestion. Auto-jointure de CLIENT. On évitera les couples inverse en imposant un ordre sur les valeurs de NOM (p.ex. X < Y )._
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Couples de clients habitant dans la même ville"
+    showSQL="true"
+    query={`
+SELECT C1.nom AS C1, C2.nom AS C2
+FROM Clients C1, Clients C2
+WHERE C1.ville = C2.ville
+AND C1.nom < C2.nom;
+`}
+/>
+
+16. Afficher pour chaque client, le nombre de commandes, le nombre de produits commandés et le nombre de détails. 
+    On se limite aux clients qui ont passé au moins une commande. 
+    
+    _Suggestion : il s’agit d’une requête basée sur des groupements multi-niveaux._
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Nombre de commandes, produits commandés et détails par client"
+    showSQL="true"
+    query={`
+SELECT C.numero, C.nom, COUNT(DISTINCT CO.numero) as NbCommandes, COUNT(DISTINCT D.numeroProduit) as NbProduits, COUNT(*) as NbDetails
+FROM Clients C, Commandes CO, Details D
+WHERE C.numero = CO.numeroClient
+AND CO.numero = D.numeroCommande
+GROUP BY C.numero
+HAVING COUNT(DISTINCT CO.numero) > 0;
+`}
+/>
+
+18. Afficher, pour chaque ville et pour chaque catégorie :
+
+    (a) le nombre de commandes passées par les clients de cette ville et de cette catégorie
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Nombre de commandes, produits commandés et détails par client"
+    showSQL="true"
+    query={`
+SELECT C.ville, C.categorie, COUNT(DISTINCT CO.numero) as NbCommandes
+FROM Clients C, Commandes CO
+WHERE C.numero = CO.numeroClient
+GROUP BY C.ville, C.categorie;
+`}
+/>
+
+    (b) le montant total de ces commandes.
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Nombre de commandes, produits commandés et détails par client"
+    showSQL="true"
+    query={`
+SELECT C.ville, C.categorie, SUM(quantite*prix) as Montant
+FROM Clients C, Commandes CO, Details D, Produits P
+WHERE C.numero = CO.numeroClient
+AND CO.numero = D.numeroCommande
+AND D.numeroProduit = P.numero
+GROUP BY C.ville, C.categorie;
+`}
+/>
+
+19. Calculer le nombre moyen de produits par commande. De même le nombre moyen de commandes par client, par ville ou par catégorie.
+    
+    _Remarque: Il n’est pas possible de demander directement la moyenne d’une somme. Suggestion : Construction et interrogation d’une vue ou calcul de la moyenne dans le `FROM`._
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Nombre moyen de produits par commande"
+    showSQL="true"
+    query={`
+SELECT AVG(NbProduits)
+FROM (
+    SELECT CO.numero, COUNT(DISTINCT D.numeroProduit) as NbProduits
+    FROM Commandes CO, Details D
+    WHERE CO.numero = D.numeroCommande
+    GROUP BY CO.numero
+);
+`}
+/>
+
+20. Quel est, pour chaque ville, le nombre moyen de commandes par client.
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Nombre moyen de commandes par client par ville"
+    showSQL="true"
+    query={`
+SELECT T.ville, AVG(T.NbCommandes)
+FROM (
+    SELECT C.numero, C.ville, COUNT(DISTINCT CO.numero) as NbCommandes
+    FROM Clients C, Commandes CO
+    WHERE C.numero = CO.numeroClient
+    GROUP BY C.numero
+) as T
+GROUP BY T.ville;
+`}
+/>
+
+22. Ecrire une requête SQL qui donne, pour chaque produit, le nombre de produits qui ont été commandés le 30/06/2024.
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Nombre de produits commandés le 30/06/2024"
+    showSQL="true"
+    query={`
+SELECT numeroProduit, SUM(quantite) as NbProduits
+FROM Details D, Commandes CO
+WHERE D.numeroCommande = CO.numero
+AND CO.dateCommande = '2024-06-30'
+GROUP BY numeroProduit;
+`}
+/>
+
+23. Donner pour chaque ville dans laquelle se trouve au moins un client de catégorie `C1` la liste des produits `Pantalon` qu’on y a commandés.
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Produits Pantalon commandés par ville"
+    showSQL="true"
+    query={`
+SELECT C.ville, P.nom
+FROM Clients C, Commandes CO, Details D, Produits P
+WHERE C.numero = CO.numeroClient
+AND CO.numero = D.numeroCommande
+AND D.numeroProduit = P.numero
+AND C.categorie = 'C1'
+AND P.nom LIKE 'Pantalon'
+GROUP BY C.ville, P.nom;
+`}
+/>
+
+24. Donner pour chaque produit la liste des villes dans lesquelles ce produit est commandé en plus de 2 unités au total pour la ville.
+    _Suggestion : Un produit est intéressant si le nombre de villes dans lesquelles il est commandé est supérieur ou égal à 2._
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Villes où un produit est commandé en plus de 2 unités"
+    showSQL="true"
+    query={`
+SELECT P.nom, C.ville
+FROM Clients C, Commandes CO, Details D, Produits P
+WHERE C.numero = CO.numeroClient
+AND CO.numero = D.numeroCommande
+AND D.numeroProduit = P.numero
+GROUP BY P.nom, C.ville
+HAVING SUM(D.quantite) > 2;
+`}
+/>
+
+25. Afficher, pour chaque ville, les produits qu’on y commande et qui sont aussi commandés dans au moins une autre ville.
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Produits commandés dans au moins une autre ville"
+    showSQL="true"
+    query={`
+SELECT C.ville, P.nom
+FROM Clients C, Commandes CO, Details D, Produits P
+WHERE C.numero = CO.numeroClient
+AND CO.numero = D.numeroCommande
+AND D.numeroProduit = P.numero
+AND P.nom IN (
+    SELECT P2.nom
+    FROM Clients C2, Commandes CO2, Details D2, Produits P2
+    WHERE C2.numero = CO2.numeroClient
+    AND CO2.numero = D2.numeroCommande
+    AND D2.numeroProduit = P2.numero
+    AND C2.ville <> C.ville
+)
+GROUP BY C.ville, P.nom;
+`}
+/>
+
+
+27. Calculer, pour chaque ville, le nombre de catégories distinctes.
+
+<Table
+    sqliteDB="public/sample/ecommerce/ecommerce-fr-erd-v2.sqlite"
+    title="Nombre de catégories distinctes par ville"
+    showSQL="true"
+    query={`
+SELECT C.ville, COUNT(DISTINCT C.categorie) as NbCategories
+FROM Clients C, Commandes CO, Details D, Produits P
+WHERE C.numero = CO.numeroClient
+AND CO.numero = D.numeroCommande
+AND D.numeroProduit = P.numero
+GROUP BY C.ville;
+`}
+/>

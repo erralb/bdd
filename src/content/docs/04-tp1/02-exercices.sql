@@ -1,6 +1,9 @@
+-- Schéma de la base de données
 -- PRODUIT (NPRO, NOMP, QTP, COULEUR)
 -- VENTE (NVEN, NOMC, NPRV*, QTV, DATEV)
 -- ACHAT (NACH, NOMF, NPRA*, QTA, DATEA)
+
+
 -- 1. Donner les noms et couleurs de tous les produits
 -- PRODUIT [ NOMP, COULEUR ]
 SELECT
@@ -197,6 +200,8 @@ WHERE
 -- Deuxième sous-requête (corrélée à la première) :
 -- La deuxième sous-requête vérifie pour chaque produit (P.NPRO) s'il est présent dans les ventes du client en question (V2.NOMC = V1.NOMC et V2.NPRV = P.NPRO).
 -- Si ce produit n'a pas été acheté par le client, alors cette sous-requête retourne une ligne, ce qui fait que l'existence de ce produit non acheté est confirmée. S'il n'existe pas de produit non acheté, le client est inclus dans le résultat.
+
+
 -- 10. Donner les noms des fournisseurs qui fournissent tous les produits
 -- R1 = ACHAT [ NOMF, NPRA ]
 -- R2 = PRODUIT [ NPRO ]
@@ -232,6 +237,8 @@ WHERE
 -- Deuxième sous-requête (corrélée à la première) :
 -- La deuxième sous-requête vérifie pour chaque produit (P.NPRO) s'il est présent dans les achats du fournisseur en question (A2.NOMF = A1.NOMF et A2.NPRA = P.NPRO).
 -- Si ce produit n'a pas été acheté par le fournisseur, alors cette sous-requête retourne une ligne, ce qui fait que l'existence de ce produit non acheté est confirmée. S'il n'existe pas de produit non acheté, le fournisseur est inclus dans le résultat.
+
+
 -- 11. Donner, pour chaque couleur, le nombre de produits de cette couleur
 -- R1 = PRODUIT [ COULEUR ]
 -- R2 = PRODUIT (COULEUR = R1.COULEUR) [ COULEUR, COUNT(*) ]
