@@ -45,6 +45,10 @@ export default defineConfig({
 					label: 'Informations',
 					slug: '00-infos/01-intro',
 				},
+				// {
+				// 	label: 'Planning',
+				// 	// slug: '00-infos/Planning-2024-2025',
+				// },
 				{
 					label: '1 - Relationnelles & SQL',
 					// collapsed: true,
@@ -114,7 +118,7 @@ export default defineConfig({
 							},
 						},
 						{
-							label: '4. Travaux Pratiques 1',
+							label: '4. TP1 - Le bazar',
 							collapsed: true,
 							autogenerate: {
 								directory: '04-tp1'
@@ -125,6 +129,13 @@ export default defineConfig({
 							collapsed: true,
 							autogenerate: {
 								directory: '05-sql-dml2'
+							}
+						},
+						{
+							label: '6. TP2 - Les employés',
+							collapsed: true,
+							autogenerate: {
+								directory: '06-tp2'
 							}
 						},
 						// {
@@ -142,7 +153,7 @@ export default defineConfig({
 						// 	}
 						// },
 						{
-							label: 'Compilateurs SQL',
+							label: 'Bases de données',
 							collapsed: true,
 							autogenerate: {
 								directory: 'sql-compiler'
