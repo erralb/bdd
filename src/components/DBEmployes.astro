@@ -1,0 +1,26 @@
+---
+import Table from "./TableSQLite.astro";
+---
+
+<div class="tables-2-col">
+
+<Table
+  sqliteDB="public/sample/employes.sqlite"
+  title="DEPT"
+  query={`SELECT * FROM DEPT`}
+/>
+
+<Table
+  sqliteDB="public/sample/employes.sqlite"
+  title="SALGRADE"
+  query={`SELECT * FROM SALGRADE`}
+/>
+
+</div>
+
+
+<Table
+  sqliteDB="public/sample/employes.sqlite"
+  title="EMP"
+  query={`SELECT * FROM EMP`}
+/>

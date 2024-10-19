@@ -1,0 +1,65 @@
+---
+title: Les employés
+sidebar:
+    label: Exercice 1
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import Slide from '/src/components/Slide.astro';
+
+Soit le schéma relationnel suivant :
+
+import {Content as Employes} from '/src/content/files/employes-text.md'
+
+<Employes />
+
+
+<details>
+    <summary>Diagramme</summary>
+
+import {Content as EmployesERD} from '/src/content/files/employes-mermaid.md'
+
+<EmployesERD />
+
+</details>
+
+<details>
+    <summary>Données</summary>
+
+import DBEmployes from "/src/components/DBEmployes.astro";
+
+<DBEmployes />
+
+</details>
+
+Téléchargement de la base : [employes.sqlite](/bdd/sample/employes.sqlite)
+
+## Exercice 1 : Lecture de données
+
+Donner les lignes de données (aussi appelés n-uplets) répondant aux requêtes suivantes :
+
+_Pas de SQL ici, juste les résultats attendus. Cet exercice vous permet de naviguer dans les données pour mieux les comprendre._
+
+1. Donner le `nom` de tous les `employés`.
+
+2. Donner le `nom` et la `date` d'embauche des `employés` du département `20`.
+
+3. Donner tous les `salaires` perçus par les `employés` de l'entreprise.
+
+4. Donner le `nom` et le `numéro` du `département` des `employés` travaillant à `Dallas`.
+
+5. Donner le `nom` et le `salaire` des `employés` dont le `nom` commence par un `M` et dont le `salaire` est supérieur à `1290$`.
+
+6. Donner les `départements` employant des `CLERK`, `SALESMAN` et des `ANALYST`.
+
+7. Donner le `nom des chefs` dont les `employés` perçoivent des `commissions`.
+
+8. Donner le `nom` et le `salaire` des `employés` des `départements` de `Chicago` et `Dallas` dont le `salaire` est supérieur à `1000$`.
+
+9. Donner le `nom` des `employés` qui gagnent plus que leur `chef`.
+
+10. Donner la `hiérarchie` de l'entreprise
+
+11. Donner le `nombre` d'employés `par niveau` de hiérarchie.
+
+12. Donner la `moyenne` des `salaires` `par niveau` de hiérarchie.

@@ -1,0 +1,88 @@
+---
+title: Les employés - Exercice 3
+sidebar:
+    label: Exercice 3
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import Slide from '/src/components/Slide.astro';
+
+Soit le schéma relationnel suivant :
+
+import {Content as Employes} from '/src/content/files/employes-text.md'
+
+<Employes />
+
+
+<details>
+    <summary>Diagramme</summary>
+
+import {Content as EmployesERD} from '/src/content/files/employes-mermaid.md'
+
+<EmployesERD />
+
+</details>
+
+<details>
+    <summary>Données</summary>
+
+import DBEmployes from "/src/components/DBEmployes.astro";
+
+<DBEmployes />
+
+</details>
+
+Téléchargement de la base : [employes.sqlite](/bdd/sample/employes.sqlite)
+
+# Exercice 3 : Variantes des requêtes
+
+Pour chacune des requêtes de la partie 1, on vous demande de réaliser plusieurs variantes. 
+
+Les variantes à effectuer sont les suivantes :
+
+1. Donner le `nom` de tous les employés :
+
+   1. par `ordre alphabétique`
+   2. par `ordre alphabétique inverse`
+   3. en changeant le `nom` de la colonne `ENAME` par `NOM de L'EMPLOYÉ`
+
+2. Donner le `nom` et la `date` d'embauche des `employés` du département `20` :
+
+   1. par `ordre chronologique` (du plus ancien au plus récent).
+   2. par `ordre chronologique` (du plus récent au plus ancien).
+   3. en changeant le `format de la date` d'embauche en affichant que les années (Instruction à utiliser : [strftime](https://www.sqlite.org/lang_datefunc.html) ).
+
+3. Donner tous les `salaires` perçus par les employés de l'entreprise : 
+
+   1. par `ordre croissant` de `salaire`.  
+   2. par `ordre alphabétique` des `employés`.
+
+4. Donner le `nom` et le `numéro` du département des `employés` travaillant à `Dallas` :
+
+   1. en associant leur job par `ordre alphabétique`.  
+   2. en utilisant les commandes [upper](https://sql.sh/fonctions/upper) et [lower](https://sql.sh/fonctions/lower).
+
+5.  Donner le `nom` et le `salaire` des `employés` dont le `nom` commence par un `M` et dont le `salaire` est supérieur à `1290$` :
+
+   1. par `ordre alphabétique`.  
+   2. par `ordre de salaire décroissant`.  
+   3. une version où `seul le salaire` intervient (c.à.d sans comptabiliser les `commissions`)  
+   4. une version où le `salaire` et les `commissions` interviennent (c.à.d en comptabilisant les commissions)
+
+6. Donner les `départements` employant des `CLERK`, `SALESMAN` et des `ANALYST`
+
+   1. Pas d’alternative pour cette requête
+
+7. Donner le `nom des chefs` dont les `employés` perçoivent des `commissions` :
+
+   1. indiquer leur `nom` et leur `numéro` de département par `ordre croissant de département`.
+
+8. Donner le `nom` et le `salaire` des `employés` des départements de `Chicago` et `Dallas` dont le salaire est supérieur à `1000$` :
+
+   1. en prenant en compte le `salaire` et les `commissions` cumulés.  
+   2. en prenant en compte le `salaire` et les `commissions` cumulés par `ordre décroissant`, puis par `ordre alphabétique` des employés.
+
+9. Donner le `nom` des `employés` qui gagnent plus que leur chef :
+
+   1. indiquer leur `nom` et leur `revenu`, leur `service`, le `nom` et le `revenu` de leur chef.
+
