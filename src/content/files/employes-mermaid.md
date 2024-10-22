@@ -24,6 +24,7 @@ SALGRADE {
   float HISAL
 }
 
-EMP ||--o{ DEPT : "DEPTNO"
+EMP }o--|| EMP : "Manager"
+EMP ||--o{ DEPT : "Département"
 
 ```
