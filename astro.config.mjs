@@ -111,40 +111,40 @@ export default defineConfig({
 							]
 						},
 						{
-							label: '3. Les bases du SQL',
+							label: '3. SQL - Les bases',
 							collapsed: true,
 							autogenerate: {
-								directory: '03-sql-dml1'
+								directory: '03-sql1'
 							},
 						},
 						{
-							label: '4. TP1 - Le bazar',
+							label: '4. tp1 - Le bazar',
 							collapsed: true,
 							autogenerate: {
 								directory: '04-tp1'
 							}
 						},
 						{
-							label: '5. SQL Avancé',
+							label: '5. SQL - Avancé',
 							collapsed: true,
 							autogenerate: {
-								directory: '05-sql-dml2'
+								directory: '05-sql2'
 							}
 						},
 						{
-							label: '6. TP2 - Les employés',
+							label: '6. tp2 - Les employés',
 							collapsed: true,
 							autogenerate: {
 								directory: '06-tp2'
 							}
 						},
-						// {
-						// 	label: '5. Création de BDD',
-						// 	collapsed: true,
-						// 	autogenerate: {
-						// 		directory: '04-sql-ddl'
-						// 	}
-						// },
+						{
+							label: '7. SQL - Gestion des bases',
+							collapsed: true,
+							autogenerate: {
+								directory: '07-sql3'
+							}
+						},
 						// {
 						// 	label: '6. Triggers & Procédures',
 						// 	collapsed: true,

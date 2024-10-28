@@ -3,6 +3,22 @@
   --sl-text-5xl: 2rem;
 }
 
+.sidebar-content {
+  ul.top-level {
+    & > li {
+      details {
+        ul {
+          li {
+            span.large {
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .pageTitle {
   display: flex;
   align-items: center;
@@ -114,6 +130,7 @@
   details {
     margin: 2rem 0;
     align-self: flex-start;
+    max-width: 100%;
   }
 
   .masonry p {

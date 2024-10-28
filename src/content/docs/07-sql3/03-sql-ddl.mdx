@@ -1,0 +1,139 @@
+---
+title: Data Definition Language (DDL)
+description: Le langage de définition de données (DDL, pour Data Definition Language) est le sous-langage responsable de la définition de la manière dont les données sont structurées dans une base de données.
+sidebar:
+  label: DDL
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import Slide from "/src/components/Slide.astro";
+
+<Slide title="Data Definition Language (DDL)">
+
+**Data Definition Language (DDL)** - Le langage de définition de données est le sous-langage responsable de la définition de la manière dont les données sont structurées dans une base de données. En SQL, cela correspond à la manipulation des tables via `CREATE TABLE`, `ALTER TABLE` et `DROP TABLE`
+
+</Slide>
+<Slide>
+
+## Remarques
+
+On utilise souvent les interfaces graphiques pour générer le code SQL DDL.
+
+Cependant, il est très important de comprendre le fonctionnement du code DDL, puisque les interfaces graphiques ne font qu'offrir une interface pour générer ce code.
+
+Bien souvent les interfaces graphiques ne produisent pas le code DDL souhaité, et il faudra être en mesure d'évaluer le code généré et le corriger si nécessaire.
+
+Par ailleurs, le code DDL varie d'un SGBD à l'autre, et il est important de comprendre les spécificités de chaque SGBD pour écrire du code DDL compatible.
+
+</Slide>
+<Slide>
+
+## Que permet de faire le DDL ?
+
+- Créer et supprimer des schémas relationnels (des bases de données)
+- Créer, modifier et supprimer des tables et des colonnes
+- Ajouter ou supprimer des contraintes statiques et dynamiques sur les colonnes et les tables
+
+</Slide>
+<Slide>
+
+## Création d'un schéma relationnel
+
+Une base de données est définie par son schéma.
+
+SQL propose de créer ce schéma avant de définir ses composants :
+
+- Postgresql : `CREATE SCHEMA CLICOM;`
+- MySQL : `CREATE   DATABASE  CLICOM;`
+- SQLite : il faut créer un fichier, puis en ligne de commande : `sqlite3 mon_fichier.db`
+
+Cette instruction pourra être accompagnée de divers paramètres spécifiant notamment les conditions d'autorisation d'accès
+
+Les schémas sont rassemblés dans un catalogue, qui représente un ensemble de bases de données
+
+</Slide>
+<Slide>
+
+## Création de tables
+
+La syntaxe de base pour créer une table est la suivante :
+
+```sql
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+    column3 datatype,
+    ...
+);
+```
+
+- `table_name` : le nom de la table à créer
+- `column1, column2, column3, ...` : les noms des colonnes de la table
+- `datatype` : le type de données pour chaque colonne
+
+</Slide>
+<Slide>
+
+### Exemple
+
+```sql
+CREATE TABLE employees (
+  id INT,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  email VARCHAR(100)
+);
+```
+
+</Slide>
+<Slide>
+
+### Types de données
+
+Les types de données les plus courants pour les colonnes sont :
+
+- `INT` : entier
+- `VARCHAR(n)` : chaîne de caractères de longueur `n`
+- `TEXT` : chaîne de caractères de longueur variable
+- `DATE` : date
+- `TIME` : heure
+- `DATETIME` : date et heure
+- `BOOLEAN` : booléen
+- `DECIMAL(p, s)` : nombre décimal de précision `p` et de taille `s`
+
+Les types de données varient d'un SGBD à l'autre, et il est important de consulter la documentation du SGBD utilisé pour connaître les types de données disponibles.
+
+</Slide>
+<Slide>
+
+### Contraintes statiques
+
+Les contraintes permettent de définir des règles sur les données stockées dans une table.
+
+Les contraintes les plus courantes sont :
+
+- `PRIMARY KEY` : définit une colonne comme clé primaire
+- `FOREIGN KEY` et `REFERENCES` : définit une clé étrangère et la table de référence
+- `NOT NULL` : interdit les valeurs nulles
+- `UNIQUE` : interdit les doublons
+- `CHECK` : vérifie une condition
+- `DEFAULT` : définit une valeur par défaut
+- `AUTO_INCREMENT` : incrémente automatiquement la valeur. En général utilisé pour les clés primaires
+- `INDEX` : crée un index sur une colonne
+
+</Slide>
+<Slide>
+
+</Slide>
+<Slide>
+
+</Slide>
+<Slide>
+
+</Slide>
+<Slide>
+
+</Slide>
+<Slide>
+
+</Slide>

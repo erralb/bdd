@@ -1,0 +1,323 @@
+---
+title: Data Manipulation Language (DML)
+description: Le langage de manipulation de données (DML, pour Data Manipulation Language) est le sous-langage responsable de l'ajout, de la modification ou de la suppression de données d'une base de données.
+sidebar:
+  label: DML
+---
+
+import Slide from "/src/components/Slide.astro";
+
+<Slide title="Data Manipulation Language (DML)">
+
+**Data Manipulation Language (DML)** - Le langage de manipulation de données est le sous-langage responsable de l'ajout, de la modification ou de la suppression de données d'une base de données.
+
+En SQL, cela correspond aux instructions `INSERT`, `UPDATE` et `DELETE`
+
+</Slide>
+<Slide title="INSERT">
+
+## Insertion de données avec INSERT
+
+L'instruction `INSERT` permet d'ajouter une ou plusieurs lignes dans une table.
+
+Syntaxe :
+
+```sql
+INSERT INTO table_name (column1, column2, column3, ...)
+VALUES (value1, value2, value3, ...);
+```
+
+- `table_name` : le nom de la table dans laquelle ajouter les données
+- `column1, column2, column3, ...` : les noms des colonnes dans lesquelles ajouter les valeurs
+- `value1, value2, value3, ...` : les valeurs à ajouter dans les colonnes
+
+</Slide>
+<Slide title="INSERT">
+
+### Une ligne
+
+Soit une table `employees` avec les colonnes suivantes : `id`, `first_name`, `last_name`, `email`
+
+Pour ajouter un `employé` :
+
+```sql
+INSERT INTO employees (id, first_name, last_name, email)
+VALUES (1, 'John', 'Doe', 'john.doe@domain.com');
+```
+
+</Slide>
+<Slide title="INSERT">
+
+### Plusieurs lignes
+
+Pour ajouter plusieurs `employés` en une seule requête :
+
+```sql
+INSERT INTO employees (first_name, last_name, email)
+VALUES (1, 'John', 'Doe', 'john.doe@domain.com'),
+       (2, 'Jane', 'Smith', 'jane.smith@test.org'),
+       (3, 'Alice', 'Brown', 'alice.brown@malt.net');
+```
+
+</Slide>
+<Slide title="INSERT">
+
+### Toutes les colonnes
+
+Si ajoute des valeurs pour toutes les colonnes, on peut omettre les noms des colonnes :
+
+```sql
+INSERT INTO employees
+VALUES (1, 'John', 'Doe', 'john.doe@domain.com'),
+       (2, 'Jane', 'Smith', 'jane.smith@test.org'),
+       (3, 'Alice', 'Brown', 'alice.brown@malt.net');
+```
+
+</Slide>
+<Slide title="INSERT">
+
+### Depuis un SELECT
+
+On peut tout à fait insérer des données depuis une autre table en utilisant une requête `SELECT` :
+
+```sql
+INSERT INTO employees (first_name, last_name, email)
+SELECT fname, lname, mail
+FROM another_table
+WHERE condition;
+```
+
+</Slide>
+<Slide>
+
+## Mise à jour de données avec UPDATE
+
+L'instruction `UPDATE` permet de modifier les valeurs d'une ou plusieurs lignes dans une table.
+
+Syntaxe :
+
+```sql
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+```
+
+</Slide>
+<Slide title="UPDATE">
+
+### Une ligne
+
+Pour mettre à jour un `employé` :
+
+```sql
+UPDATE employees
+SET first_name = 'John2', last_name = 'Doe2', email = 'john2.doe@domain.com'
+WHERE id = 1;
+```
+
+</Slide>
+<Slide title="UPDATE">
+
+### Plusieurs lignes
+
+Pour mettre à jour plusieurs `employés` en une seule requête :
+
+```sql
+UPDATE employees
+SET first_name = 'John2', last_name = 'Doe2', email = 'john2.doe@domain.com'
+WHERE id IN (1, 2, 3);
+```
+
+</Slide>
+<Slide title="UPDATE">
+
+### Depuis un SELECT
+
+On peut tout à fait mettre à jour des données depuis une autre table en utilisant une requête `SELECT` :
+
+```sql
+UPDATE employees
+SET first_name = fname, last_name = lname, email = mail
+FROM another_table
+WHERE employees.id = another_table.id;
+```
+
+</Slide>
+<Slide title="DELETE">
+
+## Suppression de données avec DELETE
+
+L'instruction `DELETE` permet de supprimer une ou plusieurs lignes dans une table.
+
+Syntaxe :
+
+```sql
+DELETE FROM table_name
+WHERE condition;
+```
+
+</Slide>
+<Slide title="DELETE">
+
+### Une ligne
+
+Pour supprimer un `employé` :
+
+```sql
+DELETE FROM employees
+WHERE id = 1;
+```
+
+</Slide>
+<Slide title="DELETE">
+
+### Plusieurs lignes
+
+Pour supprimer plusieurs `employés` en une seule requête :
+
+```sql
+DELETE FROM employees
+WHERE id IN (1, 2, 3);
+```
+
+</Slide>
+<Slide title="DELETE">
+
+### Toutes les lignes
+
+Pour supprimer toutes les lignes d'une table :
+
+```sql
+DELETE FROM employees;
+```
+
+</Slide>
+<Slide title="DELETE">
+
+### Depuis un SELECT
+
+On peut tout à fait supprimer des données depuis une autre table en utilisant une requête `SELECT` :
+
+```sql
+DELETE FROM employees
+WHERE id IN (SELECT id FROM another_table WHERE condition);
+```
+
+</Slide>
+<Slide title="DELETE">
+
+### Attention avec DELETE
+
+:::danger[&nbsp;]
+La suppression de données est une opération dangereuse, car elle est irréversible.
+:::
+
+</Slide>
+<Slide>
+
+## Exercices
+
+Proposez des requêtes SQL pour :
+
+1. Ajouter un nouveau client dans la table `clients` de la base de données `Boutique` avec les informations suivantes : numero : `10` , nom : `Dupont` , prenom : `Jean` , rue : `6 Rue de la Paix` , ville : `Paris` , code_postal : `75002` , telephone : `01 23 45 67 89` , categorie : `C2` , compte : `1000.0`
+
+<details>
+<summary>Solution</summary>
+
+```sql
+INSERT INTO clients (numero, nom, prenom, rue, ville, code_postal, telephone, categorie, compte)
+VALUES (10, 'Dupont', 'Jean', '6 Rue de la Paix', 'Paris', '75002', '01 23 45 67 89', 'C2', 1000.0);
+```
+
+</details>
+
+</Slide>
+<Slide>
+
+2. Mettre à jour le client `Dupont` pour changer son nom en `Durand`
+
+<details>
+<summary>Solution</summary>
+
+```sql
+UPDATE clients
+SET nom = 'Durand'
+WHERE numero = 10;
+```
+
+</details>
+
+</Slide>
+<Slide>
+
+3. Supprimer le client `Durand`
+
+<details>
+<summary>Solution</summary>
+
+```sql
+DELETE FROM clients
+WHERE numero = 10;
+```
+
+version alternative :
+
+```sql
+DELETE FROM clients
+WHERE nom = 'Durand';
+```
+
+</details>
+
+</Slide>
+<Slide>
+
+4. Ajouter plusieurs produits dans la table `produits` de la base de données `Boutique` avec les informations suivantes :
+
+   - id : `6`, nom : `Téléviseur`, prix : `499.99`, stock : `10`
+   - id : `7`, nom : `Ordinateur`, prix : `799.99`, stock : `5`
+   - id : `8`, nom : `Smartphone`, prix : `299.99`, stock : `15`
+
+<details>
+<summary>Solution</summary>
+
+```sql
+INSERT INTO produits (id, nom, prix, stock)
+VALUES (6, 'Téléviseur', 499.99, 10),
+       (7, 'Ordinateur', 799.99, 5),
+       (8, 'Smartphone', 299.99, 15);
+```
+</details>
+
+</Slide>
+<Slide>
+
+5. Mettre à jour le produit `Téléviseur` pour changer son prix en `449.99`
+
+<details>
+<summary>Solution</summary>
+
+```sql
+UPDATE produits
+SET prix = 449.99
+WHERE nom = 'Téléviseur';
+```
+
+</details>
+
+</Slide>
+<Slide>
+
+6. Supprimer les produits `Ordinateur` et `Smartphone`
+
+<details>
+<summary>Solution</summary>
+
+```sql
+DELETE FROM produits
+WHERE nom IN ('Ordinateur', 'Smartphone');
+```
+
+</details>
+
+</Slide>
