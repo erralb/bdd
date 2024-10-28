@@ -219,13 +219,13 @@ La suppression de données est une opération dangereuse, car elle est irrévers
 
 Proposez des requêtes SQL pour :
 
-1. Ajouter un nouveau client dans la table `clients` de la base de données `Boutique` avec les informations suivantes : numero : `10` , nom : `Dupont` , prenom : `Jean` , rue : `6 Rue de la Paix` , ville : `Paris` , code_postal : `75002` , telephone : `01 23 45 67 89` , categorie : `C2` , compte : `1000.0`
+1. Ajouter un nouveau client dans la table `clients` de la base de données `Boutique` avec les informations suivantes : numero : `10` , nom : `Dupont` , prenom : `Jean` , rue : `6 Rue de la Paix` , ville : `Paris` , codePostal : `75002` , telephone : `01 23 45 67 89` , categorie : `C2` , compte : `1000.0`
 
 <details>
 <summary>Solution</summary>
 
 ```sql
-INSERT INTO clients (numero, nom, prenom, rue, ville, code_postal, telephone, categorie, compte)
+INSERT INTO clients (numero, nom, prenom, rue, ville, codePostal, telephone, categorie, compte)
 VALUES (10, 'Dupont', 'Jean', '6 Rue de la Paix', 'Paris', '75002', '01 23 45 67 89', 'C2', 1000.0);
 ```
 

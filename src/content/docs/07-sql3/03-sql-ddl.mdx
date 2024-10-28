@@ -95,13 +95,51 @@ Les types de données les plus courants pour les colonnes sont :
 - `INT` : entier
 - `VARCHAR(n)` : chaîne de caractères de longueur `n`
 - `TEXT` : chaîne de caractères de longueur variable
-- `DATE` : date
-- `TIME` : heure
+- `CHAR(n)` : chaîne de caractères de longueur fixe `n`
 - `DATETIME` : date et heure
 - `BOOLEAN` : booléen
+- `DATE` : date
+- `TIME` : heure
+- `FLOAT` : nombre à virgule flottante
 - `DECIMAL(p, s)` : nombre décimal de précision `p` et de taille `s`
+- `DOUBLE` : nombre à virgule flottante double précision
+- `BLOB` : données binaires
 
+:::note[Remarque]
 Les types de données varient d'un SGBD à l'autre, et il est important de consulter la documentation du SGBD utilisé pour connaître les types de données disponibles.
+:::
+
+</Slide>
+<Slide title="Types de données">
+
+#### Exemples
+
+```sql
+CREATE TABLE employees (
+  id INT,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  email VARCHAR(100)
+);
+```
+
+```sql
+CREATE TABLE products (
+  id INT,
+  name VARCHAR(100),
+  price DECIMAL(10, 2),
+  description TEXT
+);
+```
+
+```sql
+CREATE TABLE orders (
+  id INT,
+  order_date DATE,
+  total_amount DECIMAL(10, 2),
+  is_paid BOOLEAN
+);
+```
 
 </Slide>
 <Slide>
@@ -122,18 +160,170 @@ Les contraintes les plus courantes sont :
 - `INDEX` : crée un index sur une colonne
 
 </Slide>
-<Slide>
+<Slide title="Contraintes statiques">
+
+#### Exemples
+
+```sql
+CREATE TABLE customers (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE
+);
+```
+
+> La colonne `id` est définie comme clé primaire, et elle s'incrémentera automatiquement en démarrant à 1.
+> Les colonnes `first_name` et `last_name` ne peuvent pas être nulles.
+> La colonne `email` doit être unique.
+
+</Slide>
+<Slide title="Contraintes statiques">
+
+```sql
+CREATE TABLE products (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  pname VARCHAR(100) NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  pdescription TEXT
+);
+```
+
+> La colonne `price` doit contenir des valeurs décimales non nulles, avec une précision de 10 chiffres et 2 chiffres après la virgule.
+
+</Slide>
+<Slide title="Contraintes statiques">
+
+```sql
+CREATE TABLE orders (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  order_date DATE NOT NULL,
+  total_amount DECIMAL(10, 2) NOT NULL,
+  is_paid BOOLEAN DEFAULT FALSE,
+  customer_id INT,
+  FOREIGN KEY (customer_id) REFERENCES customers(id)
+);
+```
+
+> La colonne `is_paid` est définie par défaut à `FALSE`.
+> La colonne `customer_id` est une clé étrangère qui fait référence à la table `customers`.
+
+</Slide>
+<Slide title="Contraintes statiques">
+
+```sql
+CREATE TABLE order_items (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  order_id INT,
+  product_id INT,
+  quantity INT,
+  FOREIGN KEY (order_id) REFERENCES orders(id),
+  FOREIGN KEY (product_id) REFERENCES products(id)
+);
+```
+
+> Les colonnes `order_id` et `product_id` sont des clés étrangères qui font référence aux tables `orders` et `products`.
+
+</Slide>
+<Slide title="Contraintes statiques">
+
+```sql
+CREATE TABLE employees (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE,
+  salary DECIMAL(10, 2) CHECK (salary > 0)
+);
+```
+
+> La colonne `salary` doit contenir des valeurs décimales non nulles et supérieures à 0.
 
 </Slide>
 <Slide>
 
+## Modification de tables
+
+Il est possible de modifier une table existante en ajoutant, modifiant ou supprimant des colonnes.
+
+La syntaxe de base pour ajouter une colonne à une table est la suivante :
+
+```sql
+ALTER TABLE table_name
+ADD column_name datatype;
+```
+
 </Slide>
-<Slide>
+<Slide title="Modification de tables">
+
+### Exemples
+
+Ajout d'une colonne
+
+```sql
+ALTER TABLE employees
+ADD hire_date DATE;
+```
+
+Changement d'une colonne
+
+```sql
+ALTER TABLE employees
+MODIFY COLUMN hire_date DATETIME;
+```
+
+Suppression d'une colonne
+
+```sql
+ALTER TABLE employees
+DROP COLUMN hire_date;
+```
 
 </Slide>
 <Slide>
 
+## Suppression de tables
+
+La syntaxe pour supprimer une table est la suivante :
+
+```sql
+DROP TABLE table_name;
+```
+
+:::danger[Attention]
+La suppression d'une table est une opération irréversible. Toutes les données stockées dans la table seront définitivement perdues.
+:::
+
 </Slide>
 <Slide>
+
+## Exercices
+
+Proposez des requêtes SQL pour :
+
+- Créer une table `categories` avec les colonnes `numero` et `nom`
+  - Avec une contrainte `PRIMARY KEY` et `AUTO_INCREMENT` sur la colonne `numero`
+  - Avec une contrainte `NOT NULL` sur la colonne `nom`
+- Créer une table `produits_categories` avec les colonnes `produit_numero` et `category_numero`
+  - Avec des contraintes `FOREIGN KEY` sur les colonnes `produit_numero` et `category_numero`
+
+<details>
+<summary>Solution</summary>
+
+```sql
+CREATE TABLE categories (
+  numero INT PRIMARY KEY AUTO_INCREMENT,
+  nom VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE produits_categories (
+  produit_numero INT,
+  category_numero INT,
+  FOREIGN KEY (produit_numero) REFERENCES produits(numero),
+  FOREIGN KEY (category_numero) REFERENCES categories(numero)
+);
+```
+
+</details>
 
 </Slide>

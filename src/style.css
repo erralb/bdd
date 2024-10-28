@@ -84,10 +84,6 @@
     margin-top: 1.2rem;
   }
 
-  code {
-    /* font-size: 1.1rem; */
-  }
-
   .tables {
     display: flex;
     flex-wrap: wrap;
