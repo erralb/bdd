@@ -213,6 +213,16 @@
     text-wrap: wrap;
   }
 
+  .expressive-code {
+    figcaption.header {
+      display: none;
+    }
+
+    .ec-line {
+      text-wrap: auto;
+    }
+  }
+
   .page-break {
     page-break-before: always;
   }
