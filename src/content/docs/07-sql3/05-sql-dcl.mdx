@@ -1,0 +1,28 @@
+---
+title: Data Control Language (DCL)
+description: Le Data Control Language (DCL) 
+sidebar:
+  label: DCL
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import Slide from "/src/components/Slide.astro";
+
+<Slide title="Data Control Language (DCL)">
+
+* **Data Control Language (DCL)** - Le langage de contrôle des données est le sous-langage responsable des tâches administratives de contrôle de la base de données elle-même, notamment l'octroi et la révocation des autorisations de base de données pour les utilisateurs. En SQL, cela correspond aux commandes `GRANT`, `REVOKE` et `DENY`, entre autres.
+
+</Slide>
+
+GRANT is the SQL command responsible for granting permissions to a database user. If we wanted to grant the permission to query the Accounts table to a user named Mark, we’d do something like this:
+
+GRANT SELECT TO ‘mark’@’localhost’
+To explicitly deny the permission to query the table for a database user, use the DENY command as follows:
+
+DENY SELECT FROM ‘mark’@’localhost’
+Note that explicitly denying a permission prevents it from being granted in the future. If we simply want to reverse a GRANT or DENY command, we should use the REVOKE command:
+
+REVOKE SELECT FROM ‘mark’@’localhost’
+The above command reverses any particular GRANT and DENY permissions assigned to the user, essentially resetting them to their default state.
+
+Note that these commands differ greatly between SQL dialects, so the above examples are assuming you’re running Microsoft SQL Server. There are many more commands that deal with database administration, but these differ so much between platforms that it would be overwhelming to deal with them here. Consult your database documentation for more details.

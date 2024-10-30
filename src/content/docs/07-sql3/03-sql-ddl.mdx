@@ -150,14 +150,14 @@ Les contraintes permettent de définir des règles sur les données stockées da
 
 Les contraintes les plus courantes sont :
 
-- `PRIMARY KEY` : définit une colonne comme clé primaire
-- `FOREIGN KEY` et `REFERENCES` : définit une clé étrangère et la table de référence
+- `PRIMARY KEY` : définit une colonne ou plusieurs colonnes comme clé primaire
+- `FOREIGN KEY` et `REFERENCES` : définit une colonne comme clé étrangère et la table à laquelle elle fait référence
 - `NOT NULL` : interdit les valeurs nulles
 - `UNIQUE` : interdit les doublons
 - `CHECK` : vérifie une condition
 - `DEFAULT` : définit une valeur par défaut
-- `AUTO_INCREMENT` : incrémente automatiquement la valeur. En général utilisé pour les clés primaires
-- `INDEX` : crée un index sur une colonne
+- `AUTO_INCREMENT` : incrémente automatiquement la valeur - En général utilisé pour les clés primaires numériques entières
+- `INDEX` : crée un index sur une colonne. Les index permettent d'accélerer le résultat de requêtes sur des colonnes non identifiantes. Les clés primaires sont automatiquement indexées.
 
 </Slide>
 <Slide title="Contraintes statiques">
@@ -176,6 +176,19 @@ CREATE TABLE customers (
 > La colonne `id` est définie comme clé primaire, et elle s'incrémentera automatiquement en démarrant à 1.
 > Les colonnes `first_name` et `last_name` ne peuvent pas être nulles.
 > La colonne `email` doit être unique.
+
+</Slide>
+<Slide title="Contraintes statiques">
+
+```sql
+CREATE TABLE test (
+  col1 INT,
+  col2 VARCHAR(50),
+  PRIMARY KEY (col1, col2)
+);
+```
+
+> La combinaison des colonnes `col1` et `col2` est définie comme clé primaire.
 
 </Slide>
 <Slide title="Contraintes statiques">

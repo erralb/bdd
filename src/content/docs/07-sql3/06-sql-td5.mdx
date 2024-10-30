@@ -1,0 +1,89 @@
+---
+title: TD5 - DML, DDL, DCL
+description: Travaux dirigés sur les sous langages SQL Data Manipulation Language (DML), Data definition Language (DDL) et Data Control Language DCL
+sidebar:
+  label: TD5
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import Slide from "/src/components/Slide.astro";
+
+Les 3 premiers exercices se basent sur le schéma relationnel de la Boutique :
+
+import {Content as TextDB} from '../../files/ecommerce-fr-erd-v2-text.md'
+
+<TextDB />
+
+Vous pouvez télécharger une nouvelle copie de la base de données <a href="/bdd/sample/ecommerce/ecommerce-fr-erd-v2.sqlite" download>Boutique</a> si vous souhaitez faire des vérifications sur votre machine.
+
+Vous pouvez aussi travailler directement sur la [version en ligne de la base](/bdd/sql-compiler/01-ecommerce/), mais attention, les données ne sont pas persistantes et vous perdrez vos modifications si vous rafraichissez la page. 
+
+<Slide>
+
+## Exercice 1
+
+Rédiger le code SQL DDL pour effectuer les action suivantes :
+
+1. Création d'une nouvelle table `Details_Commandes` avec les spécifications suivantes :
+
+    1. La table `Details_Commandes` doit contenir les colonnes suivantes : `numeroCommande`, `numeroProduit`, `dateCommande`, `quantite`, `prixUnitaire`, `total`
+    2. Les colonnes doivent avoir le même type de données que dans les tables `Commandes` et `Details`, et la colonne `total` doit être de type _réel_
+    3. La clé primaire de la table est la paire des colonnes : `numeroCommande` et `numeroProduit`
+    4. Les colonnes `numeroCommande` et `numeroProduit` doivent être des clés étrangères vers leur table respective
+
+2. Importation des données : Rédiger une requête d'insertion de données utilisant une requête de sélection avec jointure pour remplir la table depuis les tables `Commandes` et `Details`
+
+3. Ajout d'une contrainte de type `CHECK` sur la colonne quantité pour vérifier que la quantité est toujours supérieure à `0`
+
+4. Il est possible de créer la table `Details_Commandes` directement depuis un `SELECT` à l'aide de `AS`. Produire une telle requête. _Attention: Les tables créées depuis un `SELECT` ne conserveront pas les contraintes référentielles, il faudra donc ajouter les contraintes par la suite avec `ALTER`._
+
+</Slide>
+
+<Slide>
+
+## Exercice 2
+
+Rédiger les requêtes SQL pour effectuer les actions suivantes sur la base de données de la `Boutique` :
+
+1. Ajouter une nouvelle colonne `poids` à la table `Produits` de type _réel_
+
+2. Ajouter une nouvelle table `Composition` avec les colonnes suivantes :
+
+    1. `numeroCompose` de type _entier_
+    2. `numeroComposant` de type _entier_
+    3. `quantite` de type _entier_
+    4. La clé primaire de la table est la paire des colonnes `numeroCompose` et `numeroComposant`
+    5. Les colonnes `numeroCompose` et `numeroComposant` doivent être des clés étrangères vers leur table respective `Produits`
+
+3. Proposer une requête pour insérer une ligne dans la table `Composition`
+
+4. Essayer de supprimer un produit référencé dans la table `Composition`. Modifier le comportement de la `Cascade` des tables de la base de données pour que les _références_ d'un `Produit` supprimé soit automatiquement supprimées.
+
+</Slide>
+
+<Slide>
+
+## Exercice 3
+
+1. Annuler les comptes négatifs de clients de catégorie `C1` (c.à.d mettre ces comptes clients à `0`)
+2. Supprimer les commandes de plus de 3 mois
+3. Ajouter une colonne `dateLivraison` à la table `Commandes` de type _datetime_
+4. Ajouter une contrainte de type `CHECK` sur la colonne `dateLivraison` pour vérifier que la date de livraison est toujours postérieure à la date de commande
+5. Mettre à jour les comptes des clients en déduisant le montant des commandes en cours. _Optionnellement, mettre à jour des quantités en stock des produits ; attention aux clients qui n’ont pas commandé._
+
+
+</Slide>
+
+<Slide>
+
+## Exercice 4 - DCL et MySQL
+
+En vous documentant sur internet si nécessaire, rédiger les requêtes SQL pour effectuer les actions suivantes :
+
+1. Créer un nouveau schéma (une nouvelle base de données) dans le SGBD [MySQL](https://www.mysql.com/)
+2. Créer une table avec 3 colonnes dans MySQL
+3. Création d'un nouvel utilisateur dans MySQL
+  1. Ajout des droits en `lecture` sur la table précédemment créée
+  2. Ajout des droits en `écriture` sur une colonne
+
+</Slide>

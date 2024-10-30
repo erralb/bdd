@@ -1,0 +1,53 @@
+---
+title: La cascade
+description: La définition du comportement des données référencées (clés primaires / clés étrangères) lors des suppressions peut être paramétré, en utilisant la notion de Cascade
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import Slide from "/src/components/Slide.astro";
+
+<Slide>
+
+## Le problème à travers un exemple
+
+Dans la base de données `Boutique` : 
+
+import {Content as TextDB} from '../../files/ecommerce-fr-erd-v2-text.md'
+
+<TextDB />
+
+Comment doit se comporter la base de données lorsque l'on supprime ou modifie un produit qui est référencé dans la table `Details` ?
+
+</Slide>
+<Slide>
+
+## 3 solutions possibles
+
+### Annulation de la suppression
+
+On refuse la suppression (comportement par défaut des SGBD-R) tant que des références à la clé primaire que l'on souhaite supprimer existent.
+
+</Slide>
+<Slide title="3 solutions possibles">
+
+### Mise à NULL des références
+
+Partout où des références à la clé primaire que l'on souhaite supprimer existent, on remplace la valeur par la valeur NULL
+
+_Pour fonctionner, il faudra cependant que les colonnes concernées acceptent les valeurs NULL_
+
+</Slide>
+<Slide title="3 solutions possibles">
+
+### Modification "en cascade"
+
+Partout où des références à la clé primaire que l'on souhaite supprimer existent, on supprime les lignes qui font références à la clé primaire.
+
+_Il faudra donc faire attention en utilisant ce comportement, car il peut impacter l'intégrité des données. (Par exemple, que se passe-t-il si on retire une ligne de détails d'une commandequi  a déjà été facturée?)_
+
+</Slide>
+<Slide>
+
+## Mise en oeuvre
+
+</Slide>
