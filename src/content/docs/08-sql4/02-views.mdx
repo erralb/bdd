@@ -1,0 +1,149 @@
+---
+title: Views (Vues)
+description: Les vues sont des requêtes SQL stockées qui peuvent être utilisées comme des tables
+sidebar:
+  label: Views
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import Slide from "/src/components/Slide.astro";
+
+<Slide>
+
+## Les vues
+
+Les vues sont des requêtes SQL stockées qui peuvent être utilisées comme des tables.
+
+Elles permettent de simplifier les requêtes complexes, de masquer la complexité des données et de sécuriser l'accès aux données.
+
+</Slide>
+
+<Slide>
+
+## Création d'une vue
+
+```sql
+CREATE VIEW nom_vue AS
+SELECT colonne1, colonne2, ...
+FROM table
+WHERE condition
+```
+
+</Slide>
+
+<Slide>
+
+## Exemple
+
+```sql
+CREATE VIEW vue_commandes AS
+SELECT numeroCommande, dateCommande, total
+FROM Commandes
+```
+
+</Slide>
+
+<Slide>
+
+## Utilisation d'une vue
+
+```sql
+SELECT *
+FROM nom_vue
+```
+
+</Slide>
+
+<Slide>
+
+## Exemple
+
+```sql
+SELECT *
+FROM vue_commandes
+```
+
+</Slide>
+
+<Slide>
+
+## Mise à jour d'une vue
+
+```sql
+CREATE OR REPLACE VIEW nom_vue AS
+SELECT colonne1, colonne2, ...
+FROM table
+WHERE condition
+```
+
+</Slide>
+
+<Slide>
+
+## Exemple
+
+```sql
+CREATE OR REPLACE VIEW vue_commandes AS
+SELECT numeroCommande, dateCommande, total
+FROM Commandes
+WHERE total > 100
+```
+
+</Slide>
+
+<Slide>
+
+## Suppression d'une vue
+
+```sql
+DROP VIEW nom_vue
+```
+
+</Slide>
+
+<Slide>
+
+## Exemple
+
+```sql
+DROP VIEW vue_commandes
+```
+
+</Slide>
+
+<Slide>
+
+## Avantages des vues
+
+- Simplification des requêtes complexes
+- Masquage de la complexité des données
+- Sécurisation de l'accès aux données
+
+</Slide>
+
+<Slide>
+
+## Limitations des vues
+
+- Les vues ne peuvent pas contenir de contraintes de clés étrangères
+- Les vues ne peuvent pas contenir de contraintes de vérification
+
+</Slide>
+
+<Slide>
+
+## Résumé
+
+- Les vues sont des requêtes SQL stockées qui peuvent être utilisées comme des tables
+- Les vues permettent de simplifier les requêtes complexes, de masquer la complexité des données et de sécuriser l'accès aux données
+- Les vues peuvent être créées, mises à jour et supprimées à l'aide des commandes `CREATE VIEW`, `CREATE OR REPLACE VIEW` et `DROP VIEW`
+
+</Slide>
+
+<Slide>
+
+## Exercice
+
+Créez une vue `vue_details` qui affiche les détails des commandes avec les colonnes suivantes : `numeroCommande`, `numeroProduit`, `quantite`, `prixUnitaire`, `total`
+
+</Slide>

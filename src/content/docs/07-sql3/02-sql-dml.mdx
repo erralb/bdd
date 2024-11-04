@@ -38,7 +38,7 @@ VALUES (value1, value2, value3, ...);
 
 Soit une table `employees` avec les colonnes suivantes : `id`, `first_name`, `last_name`, `email`
 
-Pour ajouter un `employé` :
+Pour ajouter un _employé_ :
 
 ```sql
 INSERT INTO employees (id, first_name, last_name, email)
@@ -50,10 +50,10 @@ VALUES (1, 'John', 'Doe', 'john.doe@domain.com');
 
 ### Plusieurs lignes
 
-Pour ajouter plusieurs `employés` en une seule requête :
+Pour ajouter plusieurs _employés_ en une seule requête :
 
 ```sql
-INSERT INTO employees (first_name, last_name, email)
+INSERT INTO employees (id, first_name, last_name, email)
 VALUES (1, 'John', 'Doe', 'john.doe@domain.com'),
        (2, 'Jane', 'Smith', 'jane.smith@test.org'),
        (3, 'Alice', 'Brown', 'alice.brown@malt.net');
@@ -64,7 +64,7 @@ VALUES (1, 'John', 'Doe', 'john.doe@domain.com'),
 
 ### Toutes les colonnes
 
-Si ajoute des valeurs pour toutes les colonnes, on peut omettre les noms des colonnes :
+Si on ajoute des valeurs pour toutes les colonnes, on peut omettre les noms des colonnes :
 
 ```sql
 INSERT INTO employees
@@ -78,13 +78,22 @@ VALUES (1, 'John', 'Doe', 'john.doe@domain.com'),
 
 ### Depuis un SELECT
 
-On peut tout à fait insérer des données depuis une autre table en utilisant une requête `SELECT` :
+On peut insérer des données depuis une autre table en utilisant une requête `SELECT` :
 
 ```sql
 INSERT INTO employees (first_name, last_name, email)
 SELECT fname, lname, mail
 FROM another_table
 WHERE condition;
+```
+
+#### Exemple
+
+```sql
+INSERT INTO employees (first_name, last_name, email)
+SELECT first_name, last_name, email
+FROM clients
+WHERE category = 'C1';
 ```
 
 </Slide>
@@ -107,7 +116,7 @@ WHERE condition;
 
 ### Une ligne
 
-Pour mettre à jour un `employé` :
+Pour mettre à jour un _employé_ :
 
 ```sql
 UPDATE employees
@@ -120,7 +129,7 @@ WHERE id = 1;
 
 ### Plusieurs lignes
 
-Pour mettre à jour plusieurs `employés` en une seule requête :
+Pour mettre à jour plusieurs _employés_ en une seule requête :
 
 ```sql
 UPDATE employees
@@ -161,7 +170,7 @@ WHERE condition;
 
 ### Une ligne
 
-Pour supprimer un `employé` :
+Pour supprimer un _employé_ :
 
 ```sql
 DELETE FROM employees
@@ -173,7 +182,7 @@ WHERE id = 1;
 
 ### Plusieurs lignes
 
-Pour supprimer plusieurs `employés` en une seule requête :
+Pour supprimer plusieurs _employés_ en une seule requête :
 
 ```sql
 DELETE FROM employees
@@ -196,7 +205,7 @@ DELETE FROM employees;
 
 ### Depuis un SELECT
 
-On peut tout à fait supprimer des données depuis une autre table en utilisant une requête `SELECT` :
+On peut supprimer des données depuis une autre table en utilisant une requête `SELECT` :
 
 ```sql
 DELETE FROM employees
@@ -209,7 +218,7 @@ WHERE id IN (SELECT id FROM another_table WHERE condition);
 ### Attention avec DELETE
 
 :::danger[&nbsp;]
-La suppression de données est une opération dangereuse, car elle est irréversible.
+La suppression de données est une opération dangereuse, car elle est **irréversible**.
 :::
 
 </Slide>

@@ -10,19 +10,36 @@ import Slide from "/src/components/Slide.astro";
 
 <Slide title="Data Control Language (DCL)">
 
-- Le langage de contrôle des données (Data Control Language - DCL) est le sous-langage responsable des tâches administratives de contrôle de la base de données elle-même.
-- Le DCL permet notamment l'octroi et la révocation des persmissions et autorisations de base de données pour les utilisateurs
-- En SQL, cela correspond aux commandes :
-  - `GRANT` : octroi de permissions. Par exemple, `GRANT SELECT ON uneTable TO unUtilsateur` permet à l'utilisateur `unUtilsateur` de lire la table `uneTable`
-  - `REVOKE` : révocation de permissions. Par exemple, `REVOKE SELECT ON uneTable FROM unUtilsateur` retire la permission de lire la table `uneTable` à l'utilisateur `unUtilsateur`
-  - `DENY` : refus de permissions. Par exemple, `DENY SELECT ON uneTable TO unUtilsateur` refuse la permission de lire la table `uneTable` à l'utilisateur `unUtilsateur`
+Le langage de contrôle des données (Data Control Language - DCL) est le sous-langage responsable des tâches administratives de contrôle de la base de données elle-même.
+
+Le DCL permet notamment l'octroi et la révocation des permissions et autorisations de base de données pour les utilisateurs
+
+En SQL, cela correspond aux commandes :
+
+- `CREATE USER` : création d'un nouvel utilisateur
+- `GRANT` : octroi de permissions. Par exemple, `GRANT SELECT ON uneTable TO unUtilsateur` permet à l'utilisateur `unUtilsateur` d'effectuer des `SELECT` sur la table `uneTable`
+- `REVOKE` : révocation de permissions. Par exemple, `REVOKE SELECT ON uneTable FROM unUtilsateur` retire la permission de lire la table `uneTable` à l'utilisateur `unUtilsateur`
+- `DENY` : refus de permissions. Par exemple, `DENY SELECT ON uneTable TO unUtilsateur` refuse la permission de lire la table `uneTable` à l'utilisateur `unUtilsateur`
+
+</Slide>
+<Slide>
+
+## CREATE USER
+
+`CREATE USER` est la commande SQL responsable de la création d'un nouvel utilisateur de base de données. Par exemple, pour créer un nouvel utilisateur nommé Mark, nous ferions quelque chose comme ceci :
+
+```sql
+CREATE USER 'mark'@'localhost' IDENTIFIED BY 'motDePasse'
+```
 
 </Slide>
 <Slide>
 
 ## GRANT
 
-`GRANT` est la commande SQL responsable de l'octroi de permissions à un utilisateur de base de données. Si nous voulions accorder la permission de consulter la table `Comptes` à un utilisateur nommé Mark, nous ferions quelque chose comme ceci :
+`GRANT` est la commande SQL responsable de l'octroi de permissions à un utilisateur de base de données.
+
+Si nous voulions accorder la permission de consulter la table `Comptes` à un utilisateur nommé Mark, nous ferions quelque chose comme ceci :
 
 ```sql
 GRANT SELECT
@@ -33,11 +50,26 @@ TO 'mark'@'localhost'
 </Slide>
 <Slide>
 
+### GRANT ALL PRIVILEGES
+
+Il est possible de donner toutes les permissions sur toutes les tables d'une base de données à un utilisateur.
+
+Par exemple, pour donner toutes les permissions sur la base de données `Boutique` à l'utilisateur `mark`, on peut faire :
+
+```sql
+GRANT ALL PRIVILEGES
+ON `Boutique`.*
+TO 'mark'@'localhost'
+```
+
+</Slide>
+<Slide>
+
 ## REVOKE
 
-`REVOKE` est la commande SQL responsable de la révocation de permissions à un utilisateur de base de données. 
+`REVOKE` est la commande SQL responsable de la révocation de permissions à un utilisateur de base de données.
 
-Si nous voulions retirer la permission de consulter la table `Comptes` à l'utilisateur Mark, nous ferions quelque chose comme ceci :
+Si nous voulions retirer la permission d'effectuer des `SELECT` sur la table `Comptes` à l'utilisateur _Mark_, nous ferions quelque chose comme ceci :
 
 ```sql
 REVOKE SELECT
@@ -50,9 +82,9 @@ FROM 'mark'@'localhost'
 
 ## DENY
 
-`DENY` est la commande SQL responsable du refus de permissions à un utilisateur de base de données. 
+`DENY` est la commande SQL responsable du refus de permissions à un utilisateur de base de données.
 
-Si nous voulions refuser la permission de consulter la table `Comptes` à l'utilisateur Mark, nous ferions quelque chose comme ceci :
+Si nous voulions refuser la permission de consulter la table `Comptes` à l'utilisateur _Mark_, nous ferions quelque chose comme ceci :
 
 ```sql
 DENY SELECT
@@ -67,5 +99,69 @@ TO 'mark'@'localhost'
 
 - `REVOKE` : révoque une permission précédemment accordée
 - `DENY` : refuse une permission, même si elle a été accordée précédemment
+
+</Slide>
+
+<Slide>
+
+## Permissions au niveau des colonnes
+
+Il est possible de donner des permissions au niveau des colonnes. Par exemple, pour donner la permission de lire la colonne `nom` de la table `Comptes` à l'utilisateur `mark`, on peut faire :
+
+```sql
+GRANT SELECT (nomColonne)
+ON `nomTable`
+TO 'nomUtilisateur'@'localhost'
+```
+
+</Slide>
+<Slide>
+
+## Permissions en lecture et écriture
+
+Il est possible de donner des permissions en lecture et écriture. Par exemple, pour donner la permission de lire et écrire sur la table `Comptes` à l'utilisateur `mark`, on peut faire :
+
+_Donner les permissions `SELECT`, `INSERT`, `UPDATE` et `DELETE` sur la table `Comptes` à l'utilisateur `mark` :_
+
+```sql
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON `Comptes`
+TO 'mark'@'localhost'
+```
+
+_Donner toutes les permissions sur la table `Comptes` à l'utilisateur `mark` :_
+
+```sql
+GRANT ALL PRIVILEGES
+ON `Comptes`
+TO 'mark'@'localhost'
+```
+
+_Retirer la permission de supprimer des lignes de la table `Comptes` à l'utilisateur `mark` :_
+
+```sql
+REVOKE DELETE
+ON `Comptes`
+FROM 'mark'@'localhost'
+```
+
+</Slide>
+<Slide>
+
+## Exercice
+
+1. Créer un nouvel utilisateur `mark` sur le serveur `localhost` avec le mot de passe `motDePasse`
+2. Donner la permission de lire la table `Clients` à l'utilisateur `mark`
+3. Donner la permission de lire et supprimer des lignes sur la table `Commandes` à l'utilisateur `mark`
+
+</Slide>
+<Slide>
+
+## Résumé
+
+- Le Data Control Language (DCL) est le sous-langage responsable des tâches administratives de contrôle de la base de données elle-même
+- Les commandes principales du DCL sont `GRANT`, `REVOKE` et `DENY`
+- Il est possible de donner des permissions au niveau des colonnes et des tables
+- Il est possible de donner des permissions en lecture et écriture
 
 </Slide>

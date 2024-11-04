@@ -15,41 +15,41 @@ import Slide from "/src/components/Slide.astro";
 </Slide>
 <Slide>
 
-## Remarques
+## Remarque
 
-On utilise souvent les interfaces graphiques pour générer le code SQL DDL.
+On utilise souvent les **interfaces graphiques** pour **générer le code** SQL DDL.
 
 Cependant, il est très important de comprendre le fonctionnement du code DDL, puisque les interfaces graphiques ne font qu'offrir une interface pour générer ce code.
 
-Bien souvent les interfaces graphiques ne produisent pas le code DDL souhaité, et il faudra être en mesure d'évaluer le code généré et le corriger si nécessaire.
+Bien souvent, les **interfaces graphiques ne produisent pas le code DDL souhaité...** et il faudra être en mesure d'évaluer le code généré et le corriger si nécessaire.
 
-Par ailleurs, le code DDL varie d'un SGBD à l'autre, et il est important de comprendre les spécificités de chaque SGBD pour écrire du code DDL compatible.
+Par ailleurs, le code **DDL varie d'un SGBD à l'autre**, et il est important de comprendre les spécificités de chaque SGBD pour écrire du code DDL compatible.
 
 </Slide>
 <Slide>
 
 ## Que permet de faire le DDL ?
 
-- Créer et supprimer des schémas relationnels (des bases de données)
+- Créer et supprimer des **schémas** **relationnels** (des bases de données)
 - Créer, modifier et supprimer des tables et des colonnes
-- Ajouter ou supprimer des contraintes statiques et dynamiques sur les colonnes et les tables
+- Ajouter ou supprimer des **contraintes** statiques et dynamiques sur les colonnes et les tables
 
 </Slide>
 <Slide>
 
 ## Création d'un schéma relationnel
 
-Une base de données est définie par son schéma.
+Une base de données est définie par son **schéma**.
 
-SQL propose de créer ce schéma avant de définir ses composants :
+La création d'un schéma varie d'un SGBD à l'autre, mais la syntaxe de base est la suivante :
 
 - Postgresql : `CREATE SCHEMA CLICOM;`
-- MySQL : `CREATE   DATABASE  CLICOM;`
+- MySQL, SQL Server, Oracle : `CREATE   DATABASE  CLICOM;`
 - SQLite : il faut créer un fichier, puis en ligne de commande : `sqlite3 mon_fichier.db`
 
 Cette instruction pourra être accompagnée de divers paramètres spécifiant notamment les conditions d'autorisation d'accès
 
-Les schémas sont rassemblés dans un catalogue, qui représente un ensemble de bases de données
+Les schémas sont rassemblés dans un **catalogue**, qui représente un ensemble de bases de données
 
 </Slide>
 <Slide>
@@ -157,7 +157,7 @@ Les contraintes les plus courantes sont :
 - `CHECK` : vérifie une condition
 - `DEFAULT` : définit une valeur par défaut
 - `AUTO_INCREMENT` : incrémente automatiquement la valeur - En général utilisé pour les clés primaires numériques entières
-- `INDEX` : crée un index sur une colonne. Les index permettent d'accélerer le résultat de requêtes sur des colonnes non identifiantes. Les clés primaires sont automatiquement indexées.
+- `INDEX` : crée un index sur une colonne. Les index permettent d'accélerer le résultat de requêtes sur des colonnes non identifiantes. _Les clés primaires sont automatiquement indexées._
 
 </Slide>
 <Slide title="Contraintes statiques">
@@ -310,7 +310,7 @@ La suppression d'une table est une opération irréversible. Toutes les données
 </Slide>
 <Slide>
 
-## Exercices
+## Exercice
 
 Proposez des requêtes SQL pour :
 

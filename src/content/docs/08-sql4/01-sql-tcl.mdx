@@ -1,0 +1,109 @@
+---
+title: Data Transaction Language (DTL)
+description: Le langage de transaction de données est le sous-langage responsable de la gestion des transactions dans une base de données.
+sidebar:
+  label: TCL
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import Slide from "/src/components/Slide.astro";
+
+<Slide title="Data Transaction Language (DTL)">
+
+Le langage de transaction de données est le sous-langage responsable de la gestion des transactions dans une base de données.
+
+</Slide>
+<Slide>
+
+## Les transactions
+
+Une transaction est une séquence d'opérations qui doit être exécutée dans son intégralité ou pas du tout.
+
+Les transactions sont utilisées pour garantir l'intégrité des données dans une base de données.
+
+</Slide>
+<Slide>
+
+## Les propriétés ACID
+
+Les transactions doivent respecter les propriétés ACID :
+
+- **Atomicité** : Une transaction est une opération unique qui doit être exécutée dans son intégralité ou pas du tout.
+- **Cohérence** : Une transaction doit laisser la base de données dans un état cohérent.
+- **Isolation** : Les transactions doivent être isolées les unes des autres.
+- **Durabilité** : Les modifications apportées par une transaction doivent être persistantes.
+
+</Slide>
+<Slide>
+
+## Les commandes TCL
+
+Les commandes TCL permettent de gérer les transactions dans une base de données.
+
+Les commandes les plus courantes sont :
+
+- `BEGIN TRANSACTION` : Démarre une transaction
+- `COMMIT` : Valide une transaction
+- `ROLLBACK` : Annule une transaction
+- `SAVEPOINT` : Crée un point de sauvegarde dans une transaction
+
+</Slide>
+
+<Slide>
+
+## Exemple
+
+```sql
+BEGIN TRANSACTION;
+
+UPDATE Comptes SET solde = solde - 100 WHERE id = 1;
+UPDATE Comptes SET solde = solde + 100 WHERE id = 2;
+
+COMMIT;
+```
+
+</Slide>
+<Slide>
+
+## Jalons (Savepoints)
+
+Les jalons (savepoints) permettent de créer des points de sauvegarde dans une transaction.
+
+Cela permet de revenir à un état antérieur de la transaction en cas d'erreur.
+
+</Slide>
+<Slide>
+
+## Exemple
+
+```sql
+
+BEGIN TRANSACTION;
+
+UPDATE Comptes SET solde = solde - 100 WHERE id = 1;
+
+SAVEPOINT point1;
+
+UPDATE Comptes SET solde = solde + 100 WHERE id = 2;
+
+ROLLBACK TO SAVEPOINT point1;
+
+COMMIT;
+
+```
+
+Ici, si la deuxième mise à jour échoue, on revient à l'état de la transaction avant la création du jalon `point1`.
+
+</Slide>
+
+<Slide>
+
+## Conclusion
+
+Le langage de transaction de données (TCL) permet de gérer les transactions dans une base de données.
+
+Les transactions sont utilisées pour garantir l'intégrité des données et respecter les propriétés ACID.
+
+Les commandes TCL les plus courantes sont `BEGIN TRANSACTION`, `COMMIT`, `ROLLBACK` et `SAVEPOINT`.
+
+</Slide>
