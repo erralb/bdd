@@ -1,6 +1,6 @@
 ---
 title: Data Control Language (DCL)
-description: Le Data Control Language (DCL) 
+description: Le Data Control Language (DCL)
 sidebar:
   label: DCL
 ---
@@ -10,19 +10,62 @@ import Slide from "/src/components/Slide.astro";
 
 <Slide title="Data Control Language (DCL)">
 
-* **Data Control Language (DCL)** - Le langage de contrôle des données est le sous-langage responsable des tâches administratives de contrôle de la base de données elle-même, notamment l'octroi et la révocation des autorisations de base de données pour les utilisateurs. En SQL, cela correspond aux commandes `GRANT`, `REVOKE` et `DENY`, entre autres.
+- Le langage de contrôle des données (Data Control Language - DCL) est le sous-langage responsable des tâches administratives de contrôle de la base de données elle-même.
+- Le DCL permet notamment l'octroi et la révocation des persmissions et autorisations de base de données pour les utilisateurs
+- En SQL, cela correspond aux commandes :
+  - `GRANT` : octroi de permissions. Par exemple, `GRANT SELECT ON uneTable TO unUtilsateur` permet à l'utilisateur `unUtilsateur` de lire la table `uneTable`
+  - `REVOKE` : révocation de permissions. Par exemple, `REVOKE SELECT ON uneTable FROM unUtilsateur` retire la permission de lire la table `uneTable` à l'utilisateur `unUtilsateur`
+  - `DENY` : refus de permissions. Par exemple, `DENY SELECT ON uneTable TO unUtilsateur` refuse la permission de lire la table `uneTable` à l'utilisateur `unUtilsateur`
 
 </Slide>
+<Slide>
 
-GRANT is the SQL command responsible for granting permissions to a database user. If we wanted to grant the permission to query the Accounts table to a user named Mark, we’d do something like this:
+## GRANT
 
-GRANT SELECT TO ‘mark’@’localhost’
-To explicitly deny the permission to query the table for a database user, use the DENY command as follows:
+`GRANT` est la commande SQL responsable de l'octroi de permissions à un utilisateur de base de données. Si nous voulions accorder la permission de consulter la table `Comptes` à un utilisateur nommé Mark, nous ferions quelque chose comme ceci :
 
-DENY SELECT FROM ‘mark’@’localhost’
-Note that explicitly denying a permission prevents it from being granted in the future. If we simply want to reverse a GRANT or DENY command, we should use the REVOKE command:
+```sql
+GRANT SELECT
+ON `Comptes`
+TO 'mark'@'localhost'
+```
 
-REVOKE SELECT FROM ‘mark’@’localhost’
-The above command reverses any particular GRANT and DENY permissions assigned to the user, essentially resetting them to their default state.
+</Slide>
+<Slide>
 
-Note that these commands differ greatly between SQL dialects, so the above examples are assuming you’re running Microsoft SQL Server. There are many more commands that deal with database administration, but these differ so much between platforms that it would be overwhelming to deal with them here. Consult your database documentation for more details.
+## REVOKE
+
+`REVOKE` est la commande SQL responsable de la révocation de permissions à un utilisateur de base de données. 
+
+Si nous voulions retirer la permission de consulter la table `Comptes` à l'utilisateur Mark, nous ferions quelque chose comme ceci :
+
+```sql
+REVOKE SELECT
+ON `Comptes`
+FROM 'mark'@'localhost'
+```
+
+</Slide>
+<Slide>
+
+## DENY
+
+`DENY` est la commande SQL responsable du refus de permissions à un utilisateur de base de données. 
+
+Si nous voulions refuser la permission de consulter la table `Comptes` à l'utilisateur Mark, nous ferions quelque chose comme ceci :
+
+```sql
+DENY SELECT
+ON `Comptes`
+TO 'mark'@'localhost'
+```
+
+</Slide>
+<Slide>
+
+## Différences entre REVOKE et DENY
+
+- `REVOKE` : révoque une permission précédemment accordée
+- `DENY` : refuse une permission, même si elle a été accordée précédemment
+
+</Slide>

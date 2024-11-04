@@ -10,27 +10,31 @@ import Slide from "/src/components/Slide.astro";
 
 ## Le problème à travers un exemple
 
-Dans la base de données `Boutique` : 
+Dans la base de données `Boutique` :
 
-import {Content as TextDB} from '../../files/ecommerce-fr-erd-v2-text.md'
+import { Content as TextDB } from "../../files/ecommerce-fr-erd-v2-text.md";
 
 <TextDB />
 
-Comment doit se comporter la base de données lorsque l'on supprime ou modifie un produit qui est référencé dans la table `Details` ?
+Comment doit se comporter la base de données lorsque l'on supprime ou modifie un _produit_ qui est référencé dans la table `Details` ?
+
+3 types de comportements sont possibles :
+
+- Blocage
+- Découplage
+- Propagation
 
 </Slide>
 <Slide>
 
-## 3 solutions possibles
-
-### Annulation de la suppression
+### Blocage : Annulation de la suppression
 
 On refuse la suppression (comportement par défaut des SGBD-R) tant que des références à la clé primaire que l'on souhaite supprimer existent.
 
 </Slide>
 <Slide title="3 solutions possibles">
 
-### Mise à NULL des références
+### Découplage : Mise à NULL des références
 
 Partout où des références à la clé primaire que l'on souhaite supprimer existent, on remplace la valeur par la valeur NULL
 
@@ -39,15 +43,176 @@ _Pour fonctionner, il faudra cependant que les colonnes concernées acceptent le
 </Slide>
 <Slide title="3 solutions possibles">
 
-### Modification "en cascade"
+### Propagation : Modification "en cascade"
 
 Partout où des références à la clé primaire que l'on souhaite supprimer existent, on supprime les lignes qui font références à la clé primaire.
 
-_Il faudra donc faire attention en utilisant ce comportement, car il peut impacter l'intégrité des données. (Par exemple, que se passe-t-il si on retire une ligne de détails d'une commandequi  a déjà été facturée?)_
+_Il faudra donc faire attention en utilisant ce comportement, car il peut impacter l'intégrité des données. (Par exemple, que se passe-t-il si on retire une ligne de détails d'une commande qui a déjà été facturée?)_
 
 </Slide>
 <Slide>
 
 ## Mise en oeuvre
+
+### ON DELETE CASCADE
+
+Pour définir le comportement des données référencées lors d'une suppression, on utilise la clause `ON DELETE` dans la définition de la clé étrangère.
+
+```sql
+CREATE TABLE Details (
+    numeroCommande INTEGER,
+    numeroProduit INTEGER,
+    quantite INTEGER,
+    prixUnitaire REAL,
+    total REAL,
+    PRIMARY KEY (numeroCommande, numeroProduit),
+    FOREIGN KEY (numeroCommande) REFERENCES Commandes(numeroCommande),
+    FOREIGN KEY (numeroProduit) REFERENCES Produits(numeroProduit) ON DELETE CASCADE
+);
+```
+
+</Slide>
+<Slide title="Mise en oeuvre">
+
+### ON DELETE SET NULL
+
+On peut définir une valeur NULL pour remplacer la valeur de la clé étrangère lors d'une suppression.
+
+```sql
+CREATE TABLE Details (
+    numeroCommande INTEGER,
+    numeroProduit INTEGER,
+    quantite INTEGER,
+    prixUnitaire REAL,
+    total REAL,
+    PRIMARY KEY (numeroCommande, numeroProduit),
+    FOREIGN KEY (numeroCommande) REFERENCES Commandes(numeroCommande),
+    FOREIGN KEY (numeroProduit) REFERENCES Produits(numeroProduit) ON DELETE SET NULL
+);
+```
+
+_Dans cet exemple, la suppression sera tout de même refusée, car la colonne `numeroProduit` n'accepte pas les valeurs NULL étant une partie de la clé primaire._
+
+Remarque : ce mode sera notamment utilisé pour les clés étrangères cycliques
+
+</Slide>
+<Slide title="Mise en oeuvre">
+
+### ON DELETE SET DEFAULT
+
+On peut définir une valeur par défaut pour remplacer la valeur de la clé étrangère lors d'une suppression.
+
+```sql
+CREATE TABLE Details (
+    numeroCommande INTEGER,
+    numeroProduit INTEGER DEFAULT 1,
+    quantite INTEGER,
+    prixUnitaire REAL,
+    total REAL,
+    PRIMARY KEY (numeroCommande, numeroProduit),
+    FOREIGN KEY (numeroCommande) REFERENCES Commandes(numeroCommande),
+    FOREIGN KEY (numeroProduit) REFERENCES Produits(numeroProduit) ON DELETE SET DEFAULT
+);
+```
+
+_Pour que cet exemple fonctionne, il faudrait créer un produit "par défaut" dans la table `Produits`, puis utiliser la valeur de la clé primaire de ce produit comme valeur par défaut pour la colonne `numeroProduit`._
+
+</Slide>
+<Slide title="Mise en oeuvre">
+
+### ON DELETE NO ACTION
+
+Il est également possible de définir le comportement des données référencées lors d'une suppression de la clé primaire.
+
+```sql
+CREATE TABLE Details (
+    numeroCommande INTEGER,
+    numeroProduit INTEGER,
+    quantite INTEGER,
+    prixUnitaire REAL,
+    total REAL,
+    PRIMARY KEY (numeroCommande, numeroProduit),
+    FOREIGN KEY (numeroCommande) REFERENCES Commandes(numeroCommande),
+    FOREIGN KEY (numeroProduit) REFERENCES Produits(numeroProduit) ON DELETE NO ACTION
+);
+```
+
+_Cet exemple peut fonctionner mais va créer un problème d'intégrité des données, car la table `Details` contiendra des références à des produits qui n'existent plus._
+
+</Slide>
+<Slide title="Mise en oeuvre">
+
+### ON UPDATE CASCADE
+
+Il est également possible de définir le comportement des données référencées lors d'une mise à jour de la clé primaire.
+
+```sql
+CREATE TABLE Produits (
+    numeroProduit INTEGER PRIMARY KEY,
+    nom TEXT,
+    prix REAL
+);
+
+CREATE TABLE Details (
+    numeroCommande INTEGER,
+    numeroProduit INTEGER,
+    quantite INTEGER,
+    prixUnitaire REAL,
+    total REAL,
+    PRIMARY KEY (numeroCommande, numeroProduit),
+    FOREIGN KEY (numeroCommande) REFERENCES Commandes(numeroCommande),
+    FOREIGN KEY (numeroProduit) REFERENCES Produits(numeroProduit) ON UPDATE CASCADE
+);
+```
+
+</Slide>
+<Slide>
+
+## Remarques
+
+Le mode d'une clé étrangère peut influencer celui d'une autre clé étrangère
+
+```sql
+create table Clients (  numero INT not null,
+                         … ,
+                        primary key (numero)
+                    );
+
+create table Commandes (    numero INT not null,
+                            numeroClient INT not null,
+                            … ,
+                            primary key (numero),
+                            foreign key (numeroClient) references Clients
+                            on delete cascade
+                        );
+
+create table Details (  numeroCommande INT not null,
+					    numeroProduit INT not null, 
+                        … ,
+                        primary key (numeroCommande, numeroProduit),
+                        foreign key (numeroCommande) references Commandes on delete no action
+                    );
+```
+
+- Lors de la suppression d'une ligne `Clients`, le SGBD tente de supprimer en cascade les lignes de `Commandes` qui en dépendent
+- Si une des lignes `Commandes` est associée à une ligne `Details`, sa suppression est refusée et donc la suppression de `Clients`
+- De ce schéma, on déduit qu'on ne peut supprimer un _client_ que s'il n'a aucune _commande_ qui possède des _détails_
+
+</Slide>
+<Slide>
+
+## Conclusion
+
+- La définition du comportement des données référencées (clés primaires / clés étrangères) lors des suppressions peut être paramétré, en utilisant la notion de Cascade
+- 3 types de comportements sont possibles : Blocage, Découplage, Propagation
+- La clause `ON DELETE` permet de définir le comportement des données référencées lors d'une suppression
+- La clause `ON UPDATE` permet de définir le comportement des données référencées lors d'une mise à jour
+
+</Slide>
+<Slide>
+
+## Exercice
+
+1. Modifier le code DDL de la base de données `Boutique` pour que la suppression d'un produit soit accepté uniquement si ce produit n'est pas référencé dans la table `Details`
 
 </Slide>
