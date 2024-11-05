@@ -118,7 +118,7 @@ WHERE condition;
 
 Pour mettre à jour un _employé_ :
 
-```sql
+```sql wrap
 UPDATE employees
 SET first_name = 'John2', last_name = 'Doe2', email = 'john2.doe@domain.com'
 WHERE id = 1;
@@ -131,7 +131,7 @@ WHERE id = 1;
 
 Pour mettre à jour plusieurs _employés_ en une seule requête :
 
-```sql
+```sql wrap
 UPDATE employees
 SET first_name = 'John2', last_name = 'Doe2', email = 'john2.doe@domain.com'
 WHERE id IN (1, 2, 3);
@@ -233,7 +233,7 @@ Proposez des requêtes SQL pour :
 <details>
 <summary>Solution</summary>
 
-```sql
+```sql wrap
 INSERT INTO clients (numero, nom, prenom, rue, ville, codePostal, telephone, categorie, compte)
 VALUES (10, 'Dupont', 'Jean', '6 Rue de la Paix', 'Paris', '75002', '01 23 45 67 89', 'C2', 1000.0);
 ```
