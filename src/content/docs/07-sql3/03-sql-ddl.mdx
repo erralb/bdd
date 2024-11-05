@@ -43,8 +43,8 @@ Une base de données est définie par son **schéma**.
 
 La création d'un schéma varie d'un SGBD à l'autre, mais la syntaxe de base est la suivante :
 
-- Postgresql : `CREATE SCHEMA CLICOM;`
-- MySQL, SQL Server, Oracle : `CREATE   DATABASE  CLICOM;`
+- Postgresql : `CREATE SCHEMA clicom;`
+- MySQL, SQL Server, Oracle : `CREATE DATABASE clicom;`
 - SQLite : il faut créer un fichier, puis en ligne de commande : `sqlite3 mon_fichier.db`
 
 Cette instruction pourra être accompagnée de divers paramètres spécifiant notamment les conditions d'autorisation d'accès
@@ -181,6 +181,19 @@ CREATE TABLE table_name (
 :::note[Remarque]
 Une clé étrangère comporte autant de colonnes que l'identifiant cible, et ses colonnes sont de même type
 :::
+
+```sql
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+    column3 datatype,
+    ...
+    FOREIGN KEY (column1) REFERENCES other_table(column_name)
+);
+```
+
+</Slide>
+<Slide title="Les clés étrangères">
 
 Si au moins une des colonnes est facultative, alors il est possible de préciser via la clause `MATCH`, la manière dont l'intégrité référentielle sera vérifiée en présence de valeurs `NULL`
 
