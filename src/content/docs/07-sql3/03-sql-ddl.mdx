@@ -148,12 +148,18 @@ CREATE TABLE orders (
 
 Les contraintes permettent de définir des règles sur les données stockées dans une table.
 
-Les contraintes les plus courantes sont :
+#### Les identifiants
 
-- `PRIMARY KEY` : définit une colonne ou plusieurs colonnes comme clé primaire
-- `FOREIGN KEY` et `REFERENCES` : définit une colonne comme clé étrangère et la table à laquelle elle fait référence
-- `NOT NULL` : interdit les valeurs nulles
+- `PRIMARY KEY` : définit une colonne ou plusieurs colonnes comme **clé primaire**
+- `FOREIGN KEY` et `REFERENCES` : définit une colonne comme **clé étrangère** et la table à laquelle elle fait **référence**
+
+Les autres identifiants sont déclarés via le prédicat `unique` :
+
 - `UNIQUE` : interdit les doublons
+
+#### Autres contraintes
+
+- `NOT NULL` : interdit les valeurs nulles
 - `CHECK` : vérifie une condition
 - `DEFAULT` : définit une valeur par défaut
 - `AUTO_INCREMENT` : incrémente automatiquement la valeur - En général utilisé pour les clés primaires numériques entières
