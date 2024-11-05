@@ -72,9 +72,9 @@ CREATE TABLE table_name (
 - `datatype` : le type de données pour chaque colonne
 
 </Slide>
-<Slide>
+<Slide title="Création de tables">
 
-### Exemple
+Exemple :
 
 ```sql
 CREATE TABLE employees (
@@ -144,21 +144,70 @@ CREATE TABLE orders (
 </Slide>
 <Slide>
 
-### Contraintes statiques
+### Les clés primaires
 
-Les contraintes permettent de définir des règles sur les données stockées dans une table.
+`PRIMARY KEY` : définit une colonne ou plusieurs colonnes comme **clé primaire**
 
-#### Les identifiants
+Déclaration sur une seule colonne :
 
-- `PRIMARY KEY` : définit une colonne ou plusieurs colonnes comme **clé primaire**
-- `FOREIGN KEY` et `REFERENCES` : définit une colonne comme **clé étrangère** et la table à laquelle elle fait **référence**
+```sql
+CREATE TABLE table_name (
+    column1 datatype PRIMARY KEY,
+    column2 datatype,
+    column3 datatype,
+    ...
+);
+```
 
-Les autres identifiants sont déclarés via le prédicat `unique` :
+Déclaration sur plusieurs colonnes :
 
-- `UNIQUE` : interdit les doublons
+```sql
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+    column3 datatype,
+    ...
+    PRIMARY KEY (column1, column2)
+);
+```
 
-#### Autres contraintes
+</Slide>
+<Slide>
 
+### Les clés étrangères
+
+`FOREIGN KEY` et `REFERENCES` : définit une colonne comme **clé étrangère** et la table à laquelle elle fait **référence**
+
+:::note[Remarque]
+Une clé étrangère comporte autant de colonnes que l'identifiant cible, et ses colonnes sont de même type
+:::
+
+Si au moins une des colonnes est facultative, alors il est possible de préciser via la clause `MATCH`, la manière dont l'intégrité référentielle sera vérifiée en présence de valeurs `NULL`
+
+1. `MATCH SIMPLE` : si toute les colonnes de la clé étrangère possèdent une valeur, la contrainte référentielle est évaluée, sinon elle est ignorée :
+
+```sql wrap
+FOREIGN KEY (numClient, numFournisseur) references ACHAT(numClient, numFournisseur) MATCH SIMPLE
+```
+
+2. `MATCH FULL` : si les colonnes sont toutes nulles, la contrainte est ignorée. Si elles sont toutes non nulles, elle est évaluée. Dans les autres cas, elle n'est pas satisfaite :
+
+```sql wrap
+FOREIGN KEY (numClient, numFournisseur) references ACHAT(numClient, numFournisseur) MATCH FULL
+```
+
+3. `MATCH PARTIAL` : la contrainte est évaluée pour les colonnes non nulles. La table cible doit contenir au moins une ligne dont l'identifiant comporte les valeurs non nulles de la clé étrangère :
+
+```sql wrap
+FOREIGN KEY (numClient, numFournisseur) references ACHAT(numClient, numFournisseur) MATCH PARTIAL
+```
+
+</Slide>
+<Slide>
+
+### Autres contraintes
+
+- `UNIQUE` : interdit les doublons. _Permet de créer des identifiants secondaires._
 - `NOT NULL` : interdit les valeurs nulles
 - `CHECK` : vérifie une condition
 - `DEFAULT` : définit une valeur par défaut
@@ -168,7 +217,7 @@ Les autres identifiants sont déclarés via le prédicat `unique` :
 </Slide>
 <Slide title="Contraintes statiques">
 
-#### Exemples
+### Exemples
 
 ```sql
 CREATE TABLE customers (
@@ -275,7 +324,7 @@ ADD column_name datatype;
 </Slide>
 <Slide title="Modification de tables">
 
-### Exemples
+Exemples :
 
 Ajout d'une colonne
 
