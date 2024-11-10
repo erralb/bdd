@@ -1,0 +1,284 @@
+---
+title: TD5 - DML, DDL, DCL - Corrigé
+description: Travaux dirigés sur les sous langages SQL Data Manipulation Language (DML), Data definition Language (DDL) et Data Control Language DCL
+sidebar:
+  label: TD5 - Corrigé
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import Slide from "/src/components/Slide.astro";
+
+Les 3 premiers exercices se basent sur le schéma relationnel de la Boutique :
+
+import {Content as TextDB} from '../../files/ecommerce-fr-erd-v2-text.md'
+
+<TextDB />
+
+Vous pouvez télécharger une nouvelle copie de la base de données <a href="/bdd/sample/ecommerce/ecommerce-fr-erd-v2.sqlite" download>Boutique</a> si vous souhaitez faire des vérifications sur votre machine.
+
+Vous pouvez aussi travailler directement sur la [version en ligne de la base](/bdd/sql-compiler/01-ecommerce/), mais attention, les données ne sont pas persistantes et vous perdrez vos modifications si vous rafraichissez la page. 
+
+<Slide>
+
+## Exercice 1
+
+Rédiger le code SQL DDL pour effectuer les action suivantes :
+
+1. Création d'une nouvelle table `Details_Commandes` avec les spécifications suivantes :
+
+    1. La table `Details_Commandes` doit contenir les colonnes suivantes : `numeroCommande`, `numeroProduit`, `dateCommande`, `quantite`, `prixUnitaire`, `total`
+    2. Les colonnes doivent avoir le même type de données que dans les tables `Commandes` et `Details`, et la colonne `total` doit être de type _réel_
+    3. La clé primaire de la table est la paire des colonnes : `numeroCommande` et `numeroProduit`
+    4. Les colonnes `numeroCommande` et `numeroProduit` doivent être des clés étrangères vers leur table respective
+
+**Solution :**
+
+```sql
+CREATE TABLE Details_Commandes (
+    numeroCommande INTEGER,
+    numeroProduit INTEGER,
+    dateCommande TEXT,
+    quantite INTEGER,
+    prixUnitaire REAL,
+    total REAL,
+    PRIMARY KEY (numeroCommande, numeroProduit),
+    FOREIGN KEY (numeroCommande) REFERENCES Commandes(numeroCommande),
+    FOREIGN KEY (numeroProduit) REFERENCES Details(numeroProduit)
+);
+```
+
+2. Importation des données : Rédiger une requête d'insertion de données utilisant une requête de sélection avec jointure pour remplir la table depuis les tables `Commandes` et `Details`
+
+**Solution :**
+
+```sql
+INSERT INTO Details_Commandes (numeroCommande, numeroProduit, dateCommande, quantite, prixUnitaire, total)
+SELECT c.numeroCommande, d.numeroProduit, c.dateCommande, d.quantite, d.prixUnitaire, d.quantite * d.prixUnitaire
+FROM Commandes c
+JOIN Details d ON c.numeroCommande = d.numeroCommande;
+```
+
+3. Ajout d'une contrainte de type `CHECK` sur la colonne quantité pour vérifier que la quantité est toujours supérieure à `0`
+
+**Solution :**
+
+Pour MySQL, PostgreSQL :
+
+```sql
+ALTER TABLE Details_Commandes
+ADD CONSTRAINT check_quantite CHECK (quantite > 0);
+```
+
+Pour SQLite, on ne peut pas altérer une table pour ajouter une contrainte (`CHECK` ou autre), il faut nécessairement recréer la table :
+
+```sql
+
+PRAGMA foreign_keys=off; -- On désactive les contraintes de clés étrangères
+BEGIN TRANSACTION; -- On commence une transaction
+
+ALTER TABLE Details RENAME TO Details_old; -- On renomme la table Details en Details_old
+
+-- On recrée la table Details avec la contrainte CHECK
+CREATE TABLE Details ( 
+    numeroCommande INT,
+    numeroProduit INT,
+    quantite INT CHECK (quantite > 0),
+    PRIMARY KEY (numeroCommande,numeroProduit),
+    FOREIGN KEY(numeroCommande) REFERENCES Commandes(numero),
+    FOREIGN KEY(numeroProduit) REFERENCES Produits(numero)
+);
+
+INSERT INTO Details SELECT * FROM Details_old; -- On copie les données de l'ancienne table
+
+DROP TABLE Details_old; -- On supprime l'ancienne table
+
+COMMIT; -- On valide la transaction
+PRAGMA foreign_keys=on; -- On réactive les contraintes de clés étrangères
+```
+
+4. Il est possible de créer la table `Details_Commandes` directement depuis un `SELECT` à l'aide de `AS`. Produire une telle requête. _Attention: Les tables créées depuis un `SELECT` ne conserveront pas les contraintes référentielles, il faudra donc ajouter les contraintes par la suite avec `ALTER`._
+
+**Solution :**
+
+```sql
+CREATE TABLE Details_Commandes AS
+SELECT c.numeroCommande, d.numeroProduit, c.dateCommande, d.quantite, d.prixUnitaire, d.quantite * d.prixUnitaire AS total
+FROM Commandes c
+JOIN Details d ON c.numeroCommande = d.numeroCommande;
+```
+
+</Slide>
+
+<Slide>
+
+## Exercice 2
+
+Rédiger les requêtes SQL pour effectuer les actions suivantes sur la base de données de la `Boutique` :
+
+1. Ajouter une nouvelle colonne `poids` à la table `Produits` de type _réel_
+
+**Solution :**
+
+```sql
+ALTER TABLE Produits
+ADD COLUMN poids REAL;
+```
+
+2. Ajouter une nouvelle table `Composition` avec les colonnes suivantes :
+
+    1. `numeroCompose` de type _entier_
+    2. `numeroComposant` de type _entier_
+    3. `quantite` de type _entier_
+    4. La clé primaire de la table est la paire des colonnes `numeroCompose` et `numeroComposant`
+    5. Les colonnes `numeroCompose` et `numeroComposant` doivent être des clés étrangères vers leur table respective `Produits`
+
+**Solution :**
+  
+```sql
+CREATE TABLE Composition (
+    numeroCompose INTEGER,
+    numeroComposant INTEGER,
+    quantite INTEGER,
+    PRIMARY KEY (numeroCompose, numeroComposant),
+    FOREIGN KEY (numeroCompose) REFERENCES Produits(numeroProduit),
+    FOREIGN KEY (numeroComposant) REFERENCES Produits(numeroProduit)
+);
+```
+
+3. Proposer une requête pour insérer une ligne dans la table `Composition`
+
+**Solution :**
+
+```sql
+INSERT INTO Composition (numeroCompose, numeroComposant, quantite)
+VALUES (1, 2, 3);
+```
+
+4. Essayer de supprimer un produit référencé dans la table `Composition`. Modifier le comportement de la `Cascade` des tables de la base de données pour que les _références_ d'un `Produit` supprimé soit automatiquement supprimées.
+
+**Solution :**
+
+```sql
+ALTER TABLE Composition
+ADD FOREIGN KEY (numeroCompose) REFERENCES Produits(numeroProduit) ON DELETE CASCADE,
+ADD FOREIGN KEY (numeroComposant) REFERENCES Produits(numeroProduit) ON DELETE CASCADE;
+```
+
+</Slide>
+
+<Slide>
+
+## Exercice 3
+
+1. Annuler les comptes négatifs de clients de catégorie `C1` (c.à.d mettre ces comptes clients à `0`)
+
+**Solution :**
+
+```sql
+UPDATE Clients
+SET compte = 0
+WHERE categorie = 'C1' AND compte < 0;
+```
+
+2. Supprimer les commandes de plus de 3 mois
+
+**Solution :**
+
+```sql
+DELETE FROM Commandes
+WHERE dateCommande < DATE('now', '-3 months');
+```
+
+3. Ajouter une colonne `dateLivraison` à la table `Commandes` de type _datetime_
+
+**Solution :**
+
+```sql
+ALTER TABLE Commandes
+ADD COLUMN dateLivraison TEXT;
+```
+
+4. Ajouter une contrainte de type `CHECK` sur la colonne `dateLivraison` pour vérifier que la date de livraison est toujours postérieure à la date de commande
+
+**Solution :**
+
+```sql
+ALTER TABLE Commandes
+ADD CONSTRAINT check_dateLivraison CHECK (dateLivraison > dateCommande);
+```
+
+5. Mettre à jour les comptes des clients en déduisant le montant des commandes en cours. _Optionnellement, mettre à jour des quantités en stock des produits ; attention aux clients qui n’ont pas commandé._
+
+**Solution :**
+
+```sql
+UPDATE Clients
+SET compte = compte - (
+    SELECT SUM(d.quantite * d.prixUnitaire)
+    FROM Details d
+    JOIN Commandes c ON d.numeroCommande = c.numeroCommande
+    WHERE c.numeroClient = Clients.numeroClient
+)
+WHERE EXISTS (
+    SELECT 1
+    FROM Commandes c
+    WHERE c.numeroClient = Clients.numeroClient
+);
+
+UPDATE Produits
+SET stock = stock - (
+    SELECT SUM(d.quantite)
+    FROM Details d
+    JOIN Commandes c ON d.numeroCommande = c.numeroCommande
+    WHERE d.numeroProduit = Produits.numeroProduit
+)
+WHERE EXISTS (
+    SELECT 1
+    FROM Details d
+    JOIN Commandes c ON d.numeroCommande = c.numeroCommande
+    WHERE d.numeroProduit = Produits.numeroProduit
+);
+```
+
+</Slide>
+
+<Slide>
+
+## Exercice 4 - DCL et MySQL
+
+En vous documentant sur internet si nécessaire, rédiger les requêtes SQL pour effectuer les actions suivantes :
+
+1. Créer un nouveau schéma (une nouvelle base de données) dans le SGBD [MySQL](https://www.mysql.com/)
+
+**Solution :**
+
+```sql
+CREATE DATABASE maBase;
+USE maBase;
+```
+
+2. Créer une table avec 3 colonnes dans MySQL
+
+**Solution :**
+
+```sql
+CREATE TABLE maTable (
+    id INT PRIMARY KEY,
+    nom VARCHAR(50),
+    age INT
+);
+```
+
+3. Création d'un nouvel utilisateur dans MySQL
+  1. Ajout des droits en `lecture` sur la table précédemment créée
+  2. Ajout des droits en `écriture` sur une colonne
+
+**Solution :**
+
+```sql
+CREATE USER 'monUtilisateur'@'localhost' IDENTIFIED BY 'monMotDePasse';
+GRANT SELECT ON maBase.maTable TO 'monUtilisateur'@'localhost';
+GRANT UPDATE(nom) ON maBase.maTable TO 'monUtilisateur'@'localhost';
+```
+
+</Slide>
