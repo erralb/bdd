@@ -6,11 +6,6 @@ export default defineConfig({
 	site: 'https://erralb.github.io/bdd',
 	base: '/bdd/',
 
-	// site: 'https://erralb.com/bdd',
-	// base: '/bdd/',
-
-	// site: import.meta.env.SITE,
-	// base: import.meta.env.BASE,
 	integrations: [
 		starlight({
 			title: 'Bases de données',
@@ -111,56 +106,56 @@ export default defineConfig({
 							]
 						},
 						{
-							label: '3. SQL - Les bases',
+							label: '3. Les bases du SQL',
 							collapsed: true,
 							autogenerate: {
 								directory: '03-sql1'
 							},
 						},
 						{
-							label: '4. tp1 - Le bazar',
+							label: '4. TP1 Le grand bazar',
 							collapsed: true,
 							autogenerate: {
 								directory: '04-tp1'
 							}
 						},
 						{
-							label: '5. SQL - Avancé',
+							label: '5. Les jointures SQL',
 							collapsed: true,
 							autogenerate: {
 								directory: '05-sql2'
 							}
 						},
 						{
-							label: '6. tp2 - Les employés',
+							label: '6. TP2 Les employés',
 							collapsed: true,
 							autogenerate: {
 								directory: '06-tp2'
 							}
 						},
 						{
-							label: '7. SQL - Gestion des bases',
+							label: '7. Gestion des bases',
 							collapsed: true,
 							autogenerate: {
 								directory: '07-sql3'
 							}
 						},
 						{
-							label: '8. tp3 - L\'agence de voyage',
+							label: '8. TP3 L\'agence de voyage',
 							collapsed: true,
 							autogenerate: {
 								directory: '08-tp3'
 							}
 						},
 						// {
-						// 	label: '9. SQL - Gestion avancée',
+						// 	label: '9. Gestion SQL avancée',
 						// 	collapsed: true,
 						// 	autogenerate: {
 						// 		directory: '09-sql4'
 						// 	}
 						// },
 						// {
-						// 	label: '9. Résumé',
+						// 	label: '9. Résumés',
 						// 	collapsed: true,
 						// 	autogenerate: {
 						// 		directory: '10-resume'
