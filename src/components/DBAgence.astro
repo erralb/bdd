@@ -1,0 +1,46 @@
+---
+import Table from "./TableSQLite.astro";
+---
+
+
+<div class="tables-columns">
+  
+  <Table
+    sqliteDB="public/sample/agence.sqlite"
+    title="RESERVATION"
+    query={`SELECT * FROM RESERVATION`}
+  />
+  
+  <Table
+    sqliteDB="public/sample/agence.sqlite"
+    title="CIRCUIT"
+    query={`SELECT * FROM CIRCUIT`}
+  />
+  
+  <Table
+    sqliteDB="public/sample/agence.sqlite"
+    title="PROGRAMMATION"
+    query={`SELECT * FROM PROGRAMMATION`}
+  />
+  
+  <Table
+    sqliteDB="public/sample/agence.sqlite"
+    title="ETAPE"
+    query={`SELECT * FROM ETAPE`}
+  />
+
+  <Table
+    sqliteDB="public/sample/agence.sqlite"
+    title="VILLE"
+    query={`SELECT * FROM VILLE`}
+  />
+  
+  <Table
+    sqliteDB="public/sample/agence.sqlite"
+    title="MONUMENT"
+    query={`SELECT * FROM MONUMENT`}
+  />
+  
+</div>
+  
+  

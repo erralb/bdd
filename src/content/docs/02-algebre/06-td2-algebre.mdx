@@ -1,75 +1,56 @@
 ---
-title: TD2
-description: Exercices d'algèbre relationelle
+title: TD2 - L'agence de voyages
+description: Exercices dirigés sur l'algèbre relationelle
+sidebar:
+    label: TD2
 ---
 
 ## 1. Description du problème
 
 Une agence de voyages veut informatiser la gestion des voyages qu'elle propose (itinéraires, monuments visités, réservations, etc.). 
 
-Une base de données doit être construite à partir du cahier des charges suivant : 
+La base de données de l'agence de voyages doit être construite à partir du cahier des charges suivant :
 
+- **Les circuits** : un circuit est identifié par un `numéro`, un `nombre d'étapes` et une `séquence d'étapes`.
 
-* **Les circuits** : un circuit est identifié par un numéro, un nombre d'étapes et une séquence d'étapes. Une étape se déroule pendant un nombre donné de jours, dans une ville donnée. Au cours de chaque étape, tous les monuments de la ville, lorsqu'il y en a, sont visités. Un même circuit ne repasse jamais plusieurs fois dans la même ville, mais il peut arriver que la ville de départ ou d'arrivée figure aussi parmi les villes étapes. Les villes sont identifiées par leurs noms. Les monuments sont identifiés par leurs noms dans la ville où ils sont situés. 
+    Une `étape` se déroule pendant un nombre donné de `jours`, dans une `ville` donnée. 
 
-    Un circuit peut être programmé plusieurs fois, à des dates différentes. A chacune de ces programmations, on associe un nombre de places. Deux programmations d'un même circuit peuvent avoir des nombres de places différents. Par contre, le prix d'un circuit est toujours le même quelle que soit sa date de programmation. La durée d'un circuit est égale à la somme des durées de chacune de ces étapes ; 
-* **Les réservations** : une réservation, identifiée par un numéro, est effectuée pour le compte d'un client (identifié par son nom) et concerne une programmation d'un circuit. Plusieurs places pour la même programmation du même circuit peuvent être réservées en une seule fois.
+    Au cours de chaque étape, tous les `monuments` de la ville, lorsqu'il y en a, sont visités. 
+    
+    Un même circuit ne repasse jamais plusieurs fois dans la même ville, mais il peut arriver que la `ville de départ` ou d'`arrivée` figure aussi parmi les villes étapes. 
+    
+    Les `villes` sont identifiées par leurs `noms`. 
+    
+    Les `monuments` sont identifiés par leurs `noms` dans la `ville` où ils sont situés.
+
+  Un circuit peut être `programmé` plusieurs fois, à des `dates` différentes. À chacune de ces `programmations`, on associe un `nombre de places`. Deux programmations d'un même circuit peuvent avoir des nombres de places différents. Par contre, le `prix` d'un circuit est toujours le même quelle que soit sa date de programmation. La `durée` d'un circuit est égale à la `somme des durées de chacune de ces étapes` ;
+
+- **Les réservations** : une réservation, identifiée par un `numéro`, est effectuée pour le compte d'un `client` (identifié par son nom) et concerne une `programmation` d'un `circuit`. 
+
+    Plusieurs `places` pour la même programmation du même circuit peuvent être `réservées` en une seule fois.
 
 ## 2. Schéma des tables
 
-Le schéma retenu pour la base de données est constitué des relations suivantes ; 
+Le schéma retenu pour la base de données est constitué des relations suivantes ;
 
 _Par convention, on <u>souligne</u> les clés primaires et on indique les clés étrangères avec un astérisque *_
 
-```ansi wrap
-VILLE ([4mNOMV[0m, PAYS)
-{(n, p) ∈ VILLE ↔ la ville dont le nom est n, est située dans la pays p}
+import {Content as Agence} from '/src/content/files/agence-text.md'
 
-MONUMENT ([4mNOMM[0m, NOMV*, PRIX)
-{(nm, nv, p) ∈ MONUMENT ↔ le monument de nom nm est situé dans la ville nv. La visite coûte p euros}
+<Agence />
 
-CIRCUIT ([4mNC[0m, NBETAPES, PRIX)
-{(nc, nb, p) ∈ CIRCUIT ↔ le circuit est identifié par le numéro nc. Il comprend nb étapes et vaut p euros}
 
-ETAPE (NOMV, [4mNC, NUMETAPE[0m, DUREE)
-{(nv, nc, nu, no, d) ∈ ETAPE ↔ la ville nv est la nu ième étape du circuit nc. L'étape dure d jours}
+Cette base de données peut être représentée par le diagramme entité-association suivant :
 
-PROGRAMMATION ([4mNC, DATE[0m, PLACES)
-{(nc, d, p) ∈ P ROGRAMMATION ↔ le circuit nc est programmé à la date d. P places sont disponibles}
+import {Content as AgenceERD} from '/src/content/files/agence-mermaid.md'
 
-RESERVATION (NC, NR, NOMC, PLACES, DATE)
-{(nc, nr, c, p, d) ∈ RESERVATION ↔ le client de nom c a réservé p places pour le circuit nc commençant à la date d. Sa réservation est identifiée par le numéro nr}
-```
-
-Les domaines associés aux différents attributs sont :
-
-```sql wrap
-domaine(NOMC) = {“Mila", “Nathalie", “John", etc.}
-domaine(NOMV) = {“Paris", “Londres", “Exeter", etc.}
-domaine(PAYS) = {“France", “Angleterre", “Irlande", etc.}
-domaine(NC) = domaine(NR) = domaine(PLACES) = domaine(PRIX) = domaine(NUMETAPE) = domaine(NBETAPES) = domaine(DUREE) = entiers ≥ 0
-domaine(DATE) = dates
-```
-
-Les contraintes d'intégrité référentielle () sont :
-
-```
-RESERVATION[NC, DATE] ⊂ PROGRAMMATION[NC, DATE]
-CIRCUIT[NC] = PROGRAMMATION[NC]
-CIRCUIT[NC] = ETAPE[NC]
-VILLE[NOMV] = ETAPE[NOMV]
-MONUMENT[NOMV] ⊂ VILLE[NOMV]
-```
-
-<div class="page-break"></div>
+<AgenceERD />
 
 ## 3. Données de la base de données
 
-![Tables 1, 2 et 3](06-td2-algebre-01-tables-123.png)
-![Tables 4, 5 et 6](06-td2-algebre-02-tables-456.png)
+import DBAgence from "/src/components/DBAgence.astro";
 
-<div class="page-break"></div>
-<div class="page-break"></div>
+<DBAgence />
 
 ## 4. Navigation dans la base de données
 

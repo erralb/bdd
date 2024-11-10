@@ -1,0 +1,27 @@
+---
+title: L'agence de voyages - Exercice 2
+sidebar:
+    label: Exercice 2
+---
+
+Téléchargement de la base : [agence.sqlite](/bdd/sample/agence.sqlite)
+
+<details>
+    <summary>Données</summary>
+
+import DBAgence from "/src/components/DBAgence.astro";
+
+<DBAgence />
+
+</details>
+
+## Modification de la base
+
+Rédiger les requêtes SQL correspondant aux modifications suivantes :
+
+1. Ajouter un circuit numéro `11` qui part de `Paris` le `2022-06-01` et qui passe par `Londres`, `Rome` et `Madrid` 
+2. Ajouter un client `Dupont` qui habite `Paris` et qui a un numéro de téléphone `01 23 45 67 89`
+3. Ajouter une réservation pour le client `Dupont` pour le circuit numéro `11`
+4. Supprimer le circuit numéro `11`
+5. Supprimer le client `Dupont`
+6. Supprimer toutes les réservations

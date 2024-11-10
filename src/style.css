@@ -1,5 +1,5 @@
 :root {
-  --sl-content-width: 50rem;
+  --sl-content-width: 60rem;
   --sl-text-5xl: 2rem;
 }
 
@@ -89,6 +89,11 @@
     gap: 10%;
     align-items: flex-start;
     max-width: 100%;
+  }
+
+  .tables-columns {
+    columns: 2;
+    gap: 40px;
   }
 
   .tables-3-col {

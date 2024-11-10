@@ -1,0 +1,35 @@
+---
+title: L'agence de voyages
+sidebar:
+    label: Introduction
+---
+
+:::note[Remarque]
+Ce TP reprend le sujet du [TD2](/bdd/02-algebre/06-td2-algebre).  Le [corrigé du TD2](/bdd/02-algebre/06-td2-algebre-corrige) est disponible pour vous aider.
+:::
+
+Le schéma relationnel de l'agence de voyage est le suivant :
+
+import {Content as Agence} from '/src/content/files/agence-text.md'
+
+<Agence />
+
+<details>
+    <summary>Diagramme</summary>
+
+import {Content as AgenceERD} from '/src/content/files/agence-mermaid.md'
+
+<AgenceERD />
+
+</details>
+
+<details>
+    <summary>Données</summary>
+
+import DBAgence from "/src/components/DBAgence.astro";
+
+<DBAgence />
+
+</details>
+
+Vous pouvez télécharger la base de données [agence.sqlite](/bdd/sample/agence.sqlite) pour travailler sur votre machine ou travailler directement sur la [version en ligne](/bdd/sql-compiler/06-agence/).

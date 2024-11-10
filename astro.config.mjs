@@ -145,11 +145,25 @@ export default defineConfig({
 								directory: '07-sql3'
 							}
 						},
+						{
+							label: '8. tp3 - L\'agence de voyage',
+							collapsed: true,
+							autogenerate: {
+								directory: '08-tp3'
+							}
+						},
 						// {
-						// 	label: '6. Triggers & Procédures',
+						// 	label: '9. SQL - Gestion avancée',
 						// 	collapsed: true,
 						// 	autogenerate: {
-						// 		directory: '04-sql-ddl'
+						// 		directory: '09-sql4'
+						// 	}
+						// },
+						// {
+						// 	label: '9. Résumé',
+						// 	collapsed: true,
+						// 	autogenerate: {
+						// 		directory: '10-resume'
 						// 	}
 						// },
 						{

@@ -1,0 +1,46 @@
+---
+title: L'agence de voyages - Exercice 3
+sidebar:
+    label: Exercice 3
+---
+
+Téléchargement de la base : [agence.sqlite](/bdd/sample/agence.sqlite)
+
+<details>
+    <summary>Données</summary>
+
+import DBAgence from "/src/components/DBAgence.astro";
+
+<DBAgence />
+
+</details>
+
+## La table EVENEMENT
+
+Rédiger le code SQL pour ajouter une table `EVENEMENT` avec les colonnes suivantes :
+
+- `ID` : identifiant de l'événement (clé primaire)
+- `NOM` : nom de l'événement
+- `DATE` : date de l'événement (date et heure)
+- `NOMV` : ville de l'événement (clé étrangère vers la table `VILLE`)
+
+Rédiger une requêtes SQL pour ajouter les données suivantes :
+
+1. Ajouter un événement `Fête de la musique` le `2025-06-21` à `Paris`
+2. Ajouter un événement `Fête nationale` le `2025-07-14` à `Paris`
+3. Ajouter un événement `Fête du travail` le `2025-05-01` à `Paris`
+4. Ajouter un événement `Fête de la musique` le `2025-06-21` à `Lyon`
+
+## La table CIRCUIT_EVENEMENT
+
+Rédiger le code SQL pour ajouter une table `CIRCUIT_EVENEMENT` avec les colonnes suivantes :
+
+- `CIRCUIT_ID` : identifiant du circuit (clé étrangère vers la table `CIRCUIT`)
+- `EVENEMENT_ID` : identifiant de l'événement (clé étrangère vers la table `EVENEMENT`)
+
+Rédiger une requête SQL pour ajouter les données suivantes :
+
+1. Associer l'événement `Fête de la musique` au circuit `1`
+2. Associer l'événement `Fête nationale` au circuit `2`
+3. Associer l'événement `Fête du travail` au circuit `3`
+4. Associer l'événement `Fête de la musique` au circuit `4`

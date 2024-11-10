@@ -1,0 +1,31 @@
+---
+title: L'agence de voyages - Exercice 1
+sidebar:
+    label: Exercice 1
+---
+
+Téléchargement de la base : [agence.sqlite](/bdd/sample/agence.sqlite)
+
+<details>
+    <summary>Données</summary>
+
+import DBAgence from "/src/components/DBAgence.astro";
+
+<DBAgence />
+
+</details>
+
+## Requêtes SQL
+
+Rédiger les requêtes SQL correspondant aux questions suivantes :
+
+1. Ville de départ du circuit 10 ?
+2. Noms des monuments visités par Mafalda ?
+3. Donner le numéro, les villes de départ et d'arrivée des circuits qui démarrent après une date donnée ;
+4. Donner les noms des clients qui ont réservé des circuits qui passent par un pays donné ;
+5. Donner le nom des clients qui ne visitent aucun monument ;
+6. Donner le numéro, le prix de base (i.e. ne tenant pas compte du prix des monuments visités), et la date de départ des circuits qui ont encore des places disponibles ;
+7. Donner le numéro et le prix de base des circuits qui n'ont aucune réservation ;
+8. Donner les noms des pays, des villes et des monuments visités par un client donné ;
+9. Donner la liste des numéros de circuits qui passent dans toutes les villes d'un pays donné
+10. Pour chaque circuit restant dans le même pays, donner le nom de ce pays et le numéro de circuit.
