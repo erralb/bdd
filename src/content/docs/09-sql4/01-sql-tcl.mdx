@@ -1,0 +1,140 @@
+---
+title: Data Transaction Language (DTL)
+description: Le langage de transaction de données est le sous-langage responsable de la gestion des transactions dans une base de données.
+sidebar:
+  label: TCL
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import Slide from "/src/components/Slide.astro";
+
+<Slide title="Data Transaction Language (DTL)">
+
+Le langage de transaction de données (DTL) est le sous-langage responsable de la gestion des transactions dans une base de données.
+
+:::tip[Définition]
+
+Une **transaction** est une **séquence d'opérations** qui doit être exécutée dans son **intégralité** ou pas du tout.
+
+Une **transaction** est un **ensemble de requêtes** qui sont exécutées par blocs.
+:::
+
+_Si une des requêtes du bloc échoue, on peut décider d'annuler tout le bloc de requêtes (ou de quand même valider les requêtes qui ont réussies)._
+
+Les transactions sont utilisées pour garantir l'intégrité des données lorsque l'on veut effectuer des modifications importantes.
+
+### Vocabulaire
+
+Lorsque l'on **valide** les requêtes d'une transaction, on dit aussi que l'on **commit** les changements.
+
+Lorsque l'on **annule** les requêtes d'une transaction, on dit aussi que l'on **rollback** les changements.
+
+### Auto-commit vs Transactions
+
+Le mode _autocommit_ est le mode par défaut dans la plupart des SGBD-R, **chaque requête** est exécutée comme une **transaction indépendante**.
+
+Le mode _autocommit_ implique que toute requête sans erreur sera exécutée et il ne sera pas possible de revenir en arrière
+
+_Il est tout de même possible de démarrer une transaction avec `START TRANSACTION;` ou `BEGIN;`_
+
+
+</Slide>
+<Slide>
+
+## ACID vs BASE
+
+**ACID** et **BASE** sont des **modèles de transactions** de base de données qui déterminent la manière dont une base de données organise et manipule les données. 
+
+Dans le contexte des bases de données, une transaction est toute opération que la base de données considère comme une seule unité de travail. 
+
+Une transaction doit être exécutée intégralement pour que la base de données reste cohérente. 
+
+Par exemple, lorsque vous transférez de l’argent d’un compte bancaire à un autre, l’argent doit quitter votre compte et doit être ajouté au compte tiers. Vous ne pouvez pas dire que la transaction est terminée sans que les deux étapes soient effectuées. 
+
+Les bases de données ACID donnent la priorité à la cohérence plutôt qu’à la disponibilité : l’ensemble de la transaction échoue si une erreur survient à n’importe quelle étape de la transaction. 
+
+En revanche, les bases de données BASE donnent la priorité à la disponibilité plutôt qu’à la cohérence. Au lieu de faire échouer la transaction, il est possible que les utilisateurs accèdent temporairement à des données incohérentes. La cohérence des données est atteinte, mais pas immédiatement.
+
+### Les propriétés ACID
+
+Les transactions doivent respecter les propriétés ACID :
+
+- **Atomicité** : Une transaction est une opération unique qui doit être exécutée dans son intégralité ou pas du tout.
+- **Cohérence** : Une transaction doit laisser la base de données dans un état cohérent.
+- **Isolation** : Les transactions doivent être isolées les unes des autres.
+- **Durabilité** : Les modifications apportées par une transaction doivent être persistantes.
+
+</Slide>
+<Slide>
+
+## Les commandes TCL
+
+Les commandes TCL permettent de gérer les transactions dans une base de données.
+
+Les commandes les plus courantes sont :
+
+- `BEGIN TRANSACTION` : Démarre une transaction
+- `COMMIT` : Valide une transaction
+- `ROLLBACK` : Annule une transaction
+- `SAVEPOINT` : Crée un point de sauvegarde dans une transaction
+
+</Slide>
+
+<Slide>
+
+## Exemple
+
+```sql
+BEGIN TRANSACTION;
+
+UPDATE Comptes SET solde = solde - 100 WHERE id = 1;
+UPDATE Comptes SET solde = solde + 100 WHERE id = 2;
+
+COMMIT;
+```
+
+</Slide>
+<Slide>
+
+## Jalons (Savepoints)
+
+Les jalons (savepoints) permettent de créer des points de sauvegarde dans une transaction.
+
+Cela permet de revenir à un état antérieur de la transaction en cas d'erreur.
+
+</Slide>
+<Slide>
+
+## Exemple
+
+```sql
+
+BEGIN TRANSACTION;
+
+UPDATE Comptes SET solde = solde - 100 WHERE id = 1;
+
+SAVEPOINT point1;
+
+UPDATE Comptes SET solde = solde + 100 WHERE id = 2;
+
+ROLLBACK TO SAVEPOINT point1;
+
+COMMIT;
+
+```
+
+Ici, si la deuxième mise à jour échoue, on revient à l'état de la transaction avant la création du jalon `point1`.
+
+</Slide>
+
+<Slide>
+
+## Conclusion
+
+Le langage de transaction de données (TCL) permet de gérer les transactions dans une base de données.
+
+Les transactions sont utilisées pour garantir l'intégrité des données et respecter les propriétés ACID.
+
+Les commandes TCL les plus courantes sont `BEGIN TRANSACTION`, `COMMIT`, `ROLLBACK` et `SAVEPOINT`.
+
+</Slide>
