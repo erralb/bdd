@@ -1,0 +1,117 @@
+---
+title: Algèbre relationnelle
+description: L'algèbre relationnelle est un langage formel permettant de manipuler des relations dans une base de données relationnelle.
+---
+
+import Table from '/src/components/Table.astro'
+
+## Équivalences entre Algèbre Relationnelle et SQL
+
+<Table
+  headers={["Algèbre Relationnelle", "SQL", "Description", "Remarque"]}
+  rows={[
+[
+"R[A]",
+`SELECT A 
+FROM R`,
+"Projection",
+""
+],
+
+[
+"R[*]",
+`SELECT * 
+FROM R`, 
+"Projection sur toutes les colonnes",
+""
+],
+
+[
+"R : C",
+`SELECT * 
+FROM R 
+WHERE C`,
+"Sélection", 
+""
+],
+
+[
+"R x S", 
+`SELECT * 
+FROM R, S`,
+"Produit cartésien", 
+""
+],
+
+[
+"R (P) * S", 
+`SELECT * 
+FROM R, S 
+WHERE P`, 
+"Jointure", 
+""],
+
+[
+"R ⨝ S", 
+`SELECT * 
+FROM R, S 
+WHERE R.A = S.A`, 
+"Jointure naturelle", 
+""],
+
+[
+"R ∪ S",
+`SELECT * FROM R 
+UNION 
+SELECT * FROM S`, 
+"Union", 
+""],
+
+[
+"R ∩ S",
+`SELECT * FROM R 
+INTERSECT 
+SELECT * FROM S`,
+"Intersection", 
+""
+],
+
+[
+"R - S",
+`SELECT * FROM R 
+MINUS 
+SELECT * FROM S`, 
+"Différence", 
+"Avec SQLite, MINUS est remplacé par le terme EXCEPT"
+],
+
+["R / S", `
+SELECT A FROM R
+MINUS
+(
+    SELECT A 
+    FROM R 
+    WHERE A, B IN (
+        SELECT R.A, S.B FROM R, S
+        MINUS
+        SELECT A, B FROM R
+    )
+)
+`, "Division",
+"Avec SQLite, MINUS est remplacé par le terme EXCEPT"
+],
+
+["R / S", `
+SELECT A FROM R, S
+WHERE R.B = S.B
+GROUP BY A
+HAVING COUNT(DISTINCT(R.B)) = (SELECT COUNT(DISTINCT B) FROM S)
+`, "Division", 
+"Une version alternative de la division : On compte le nombre de valeurs distinctes de B dans R et on vérifie qu'il est égal au nombre de valeurs distinctes de B dans S."
+],
+
+  ]}
+  rowsOptions={[{code: 'txt'}, {code: 'sql', class: 'min-w-350'}, false, false]}
+/>
+
+

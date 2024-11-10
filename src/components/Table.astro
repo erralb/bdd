@@ -3,11 +3,15 @@ export interface Props {
   title?: string;
   headers?: Array<string>;
   rows?: Array<Array<string>>;
+  rowsOptions?: Array<Object>;
   caption?: string;
   footer?: boolean;
 }
 
-const { title, headers, rows, caption, footer } = Astro.props;
+const { title, headers, rows, rowsOptions, caption, footer } = Astro.props;
+
+import { Code } from '@astrojs/starlight/components';
+
 ---
 
 <div class="flex">
@@ -25,8 +29,12 @@ const { title, headers, rows, caption, footer } = Astro.props;
       {
         rows?.map((value) => (
           <tr>
-            {value.map((cell) => (
-              <td>{cell}</td>
+            {value.map((cell, index) => (
+              <td class={rowsOptions && rowsOptions[index] && rowsOptions[index].class}>
+                {rowsOptions && rowsOptions[index]  && rowsOptions[index].code ? (
+                  <Code code={cell} lang={rowsOptions[index].code} wrap />
+                ) : cell}
+              </td>
             ))}
           </tr>
         ))
@@ -99,6 +107,19 @@ table.tableComponent {
 
   td {
     text-align: left !important;
+
+    &.min-w-300 {
+      min-width: 300px;
+    }
+
+
+    &.min-w-350 {
+      min-width: 350px;
+    }
+
+    &.min-w-400 {
+      min-width: 400px;
+    }
   }
 
   :is(th:first-child, td:first-child):not(:where(.not-content *)),
