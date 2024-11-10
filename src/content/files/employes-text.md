@@ -1,4 +1,4 @@
-```ansi wrap
+```ansi wrap frame="none"
 [1mEMP[0m ([4mEMPNO[0m, ENAME, JOB, MGR*, HIREDATE, SAL, COMM, DEPTNO*)
 [1mDEPT[0m ([4mDEPTNO[0m, DNAME, LOC)
 [1mSALGRADE[0m ([4mGRADE[0m, LOSAL, HISAL)

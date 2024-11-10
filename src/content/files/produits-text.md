@@ -1,4 +1,4 @@
-```ansi wrap
+```ansi wrap frame="none"
 [1mPRODUIT[0m ([4mNPRO[0m, LIBELLE, PRIX_U, POIDS_U)
 [1mCOMPOSITION[0m ([4mCOMPOSE, COMPOSANT[0m, QTE)
 ```
