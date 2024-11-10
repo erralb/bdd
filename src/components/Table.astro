@@ -30,9 +30,9 @@ import { Code } from '@astrojs/starlight/components';
         rows?.map((value) => (
           <tr>
             {value.map((cell, index) => (
-              <td class={rowsOptions && rowsOptions[index] && rowsOptions[index].class}>
-                {rowsOptions && rowsOptions[index]  && rowsOptions[index].code ? (
-                  <Code code={cell} lang={rowsOptions[index].code} wrap />
+              <td class={rowsOptions && rowsOptions[index] && 'class' in rowsOptions[index] ? rowsOptions[index].class as string : ''}>
+                {rowsOptions && rowsOptions[index] && 'code' in rowsOptions[index] ? (
+                  <Code code={cell} lang={rowsOptions[index].code as string } wrap />
                 ) : cell}
               </td>
             ))}
