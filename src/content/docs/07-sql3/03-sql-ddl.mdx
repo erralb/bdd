@@ -393,7 +393,7 @@ Proposez des requêtes SQL pour :
 
 ```sql
 CREATE TABLE categories (
-  numero INT PRIMARY KEY AUTO_INCREMENT,
+  numero INTEGER PRIMARY KEY AUTOINCREMENT,
   nom VARCHAR(50) NOT NULL
 );
 
@@ -401,7 +401,8 @@ CREATE TABLE produits_categories (
   produit_numero INT,
   category_numero INT,
   FOREIGN KEY (produit_numero) REFERENCES produits(numero),
-  FOREIGN KEY (category_numero) REFERENCES categories(numero)
+  FOREIGN KEY (category_numero) REFERENCES categories(numero),
+  PRIMARY KEY (produit_numero, category_numero)
 );
 ```
 
