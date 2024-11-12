@@ -13,13 +13,13 @@ import Slide from "/src/components/Slide.astro";
 On considère le schéma relationnel nommé `Bazar` défini par les trois relations suivantes, où les clés primaires sont <u>soulignées</u> et les clés étrangères sont indiquées avec un astérisque `*` :
 
 ```ansi wrap frame="none"
-PRODUIT ([4mNPRO[0m, NOMP, QTP, COULEUR)
+[1mPRODUITO[0m ([4mNPRO[0m, NOMP, QTP, COULEUR)
 ```
 
 La relation `PRODUIT` décrit chaque produit identifié par son numéro `NPRO`, son nom `NOMP`, sa quantité `QTP` disponible en stock et sa couleur `COULEUR`.
 
 ```ansi wrap frame="none"
-VENTE ([4mNVEN[0m, NOMC, NPRV*, QTV, DATEV)
+[1mVENTEO[0m ([4mNVEN[0m, NOMC, NPRV*, QTV, DATEV)
 ```
 
 La relation `VENTE` décrit toutes les ventes de produits réalisées.
@@ -27,7 +27,7 @@ La relation `VENTE` décrit toutes les ventes de produits réalisées.
 Pour chaque vente, identifiée par son numéro `NVEN`, on conserve le nom du client `NOMC` le numéro du produit vendu `NPRV`, la quantité `QTV` de produit vendu ainsi que la date `DATEV` de la vente.
 
 ```ansi wrap frame="none"
-ACHAT ([4mNACH[0m, NOMF, NPRA*, QTA, DATEA)
+[1mACHATO[0m ([4mNACH[0m, NOMF, NPRA*, QTA, DATEA)
 ```
 
 La relation `ACHAT` décrit les commandes de produits aux fournisseurs.

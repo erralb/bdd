@@ -1,16 +1,15 @@
 ---
-title: Data Transaction Language (DTL)
+title: Transaction Control Language (TCL)
 description: Le langage de transaction de données est le sous-langage responsable de la gestion des transactions dans une base de données.
 sidebar:
   label: TCL
 ---
 
-import { Tabs, TabItem } from "@astrojs/starlight/components";
 import Slide from "/src/components/Slide.astro";
 
-<Slide title="Data Transaction Language (DTL)">
+<Slide title="Transaction Control Language (TCL)">
 
-Le langage de transaction de données (DTL) est le sous-langage responsable de la gestion des transactions dans une base de données.
+Le langage de transaction de données (TCL) est le sous-langage responsable de la gestion des transactions dans une base de données.
 
 :::tip[Définition]
 
@@ -82,7 +81,7 @@ Les commandes les plus courantes sont :
 
 <Slide>
 
-## Exemple
+### Exemple
 
 ```sql
 BEGIN TRANSACTION;
@@ -96,7 +95,7 @@ COMMIT;
 </Slide>
 <Slide>
 
-## Jalons (Savepoints)
+### Jalons (Savepoints)
 
 Les jalons (savepoints) permettent de créer des points de sauvegarde dans une transaction.
 
@@ -105,7 +104,7 @@ Cela permet de revenir à un état antérieur de la transaction en cas d'erreur.
 </Slide>
 <Slide>
 
-## Exemple
+### Exemple
 
 ```sql
 

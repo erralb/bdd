@@ -2,3 +2,121 @@
 title: Algèbre relationnelle
 description: L'algèbre relationnelle est un langage formel permettant de manipuler des relations dans une base de données relationnelle.
 ---
+
+import Slide from "/src/components/Slide.astro";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
+<Slide title="Algèbre relationnelle">
+
+L'algèbre relationnelle est un langage formel permettant de manipuler des relations dans une base de données relationnelle.
+
+Elle est basée sur des opérations mathématiques et permet de réaliser des opérations telles que la sélection, la projection, la jointure, l'union, la différence, etc.
+
+Il existe 2 notations principales pour l'algèbre relationnelle : la notation mathématique et la notation textuelle.
+
+</Slide>
+
+<Slide>
+
+## Opérateurs
+
+### de l'algèbre relationnelle
+
+Les opérations de base de l'algèbre relationnelle sont les suivantes :
+
+- **Projection** (`π` ou `R[*]` ou `R[A]` ) : sélectionne les colonnes spécifiées
+- **Sélection** (`σ` ou `R:C` ) : sélectionne les lignes qui satisfont une condition
+- **Produit cartésien** (`×` ou `R1 × R2`) : combine toutes les lignes de deux relations
+- **Jointure** (`⋈` ou `R1 ⋈ R2` ou `R1 : (R1.A = R2.A) x R2`) : combine les lignes de deux relations en fonction d'une condition de jointure
+- **Union** (`∪` ou `R1 ∪ R2`) : retourne toutes les lignes de deux relations
+- **Intersection** (`∩` ou `R1 ∩ R2`) : retourne les lignes communes à deux relations
+- **Différence** (`-` ou `R1 - R2`) : retourne les lignes qui sont dans une relation mais pas dans l'autre
+- **Division** (`÷` ou `R1 ÷ R2` ou `R1 / R2`) : retourne les valeurs de l'attribut de R1 qui sont associées à toutes les valeurs de l'attribut de R2
+- **Renommage** (`ρ` ou `R[A1|A2]`) : renomme les attributs d'une relation
+
+</Slide>
+
+<Slide title="Opérateurs">
+
+### algébriques
+
+- **Comparaison** (`≠, <, >, ≤, ≥, =`) : compare les valeurs de deux relations dans une condition
+- **Négation** (`¬`) : retourne les lignes qui ne satisfont pas une condition
+- **Conjonction** (`∧` ou `AND`) : retourne les lignes qui satisfont deux conditions
+- **Disjonction** (`∨` ou `OR`) : retourne les lignes qui satisfont au moins une des conditions
+
+### supplémentaires
+
+Ces opérateurs ne font pas réellement partie de l'algèbre relationnelle, mais peuvent être utilisés dans les requêtes SQL :
+
+- **Agrégation** (`Γ` ou `COUNT`) : regroupe les lignes d'une relation et applique des fonctions d'agrégation
+- **Existence** (`EXISTS`) : vérifie si une relation contient des lignes
+- **Quantification** (`FORALL`) : vérifie si toutes les lignes d'une relation satisfont une condition
+- **Sous-requête** (`IN`) : utilise le résultat d'une requête comme condition
+
+</Slide>
+
+<Slide>
+
+## Exemple
+
+Soit les relations suivantes :
+
+```ansi wrap frame="none"
+[1mEmployes[0m ([4midEmploye[0m, nom, prenom, dateEmbauche, salaire)
+[1mDepartements[0m ([4midDepartement[0m, nomDepartement)
+[1mAffectations[0m ([4midEmploye, idDepartement[0m, dateDebut, dateFin)
+```
+
+</Slide>
+<Slide>
+
+##### 1. Sélectionner les employés qui gagnent plus de 3000€
+
+```
+σ salaire > 3000 (Employes)
+
+ou
+
+R = Employes : (salaire > 3000)
+```
+</Slide>
+<Slide title="Requêtes">
+
+##### 2. Sélectionner les employés du département 'Informatique'
+
+```
+σ nomDepartement = 'Informatique' (Employes ⋈ Affectations ⋈ Departements)
+
+ou
+
+R1 = Departements : (Departements.idDepartement = Affectations.idDepartement) x Affectations
+R2 = Employes : (Employes.idEmploye = Affectations.idEmploye) x R1
+R3 = R2 : (nomDepartement = 'Informatique')
+```
+</Slide>
+<Slide title="Requêtes">
+
+##### 3. Sélectionner les employés qui ne sont pas affectés à un département
+
+```
+π idEmploye (Employes) - π idEmploye (Affectations)
+
+ou
+
+R = Employes[idEmploye] - Affectations[idEmploye]
+```
+</Slide>
+<Slide title="Requêtes">
+
+##### 4. Sélectionner les employés qui sont affectés à tous les départements
+
+```
+π idEmploye (Employes) ÷ π idEmploye (Affectations)
+
+ou 
+
+R = Employes[idEmploye] ÷ Affectations[idEmploye]
+```
+
+</Slide>

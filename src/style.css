@@ -151,6 +151,21 @@
     }
   }
 
+  .tablist-wrapper {
+    ul[role=tablist]  {
+      border-bottom: none;
+
+      li {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  /* section[role=tabpanel] {
+    background-color: black;
+    padding: 10px;
+  } */
+
 }
 
 .presentation-slide.hide {
