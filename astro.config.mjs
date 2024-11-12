@@ -161,13 +161,13 @@ export default defineConfig({
 						// 		directory: '10-resume'
 						// 	}
 						// },
-						{
-							label: 'Bases de données',
-							collapsed: true,
-							autogenerate: {
-								directory: 'sql-compiler'
-							}
-						},
+						// {
+						// 	label: 'Bases de données',
+						// 	collapsed: true,
+						// 	autogenerate: {
+						// 		directory: 'sql-compiler'
+						// 	}
+						// },
 						// { slug: 'sql-compiler' },
 
 					]
