@@ -32,11 +32,11 @@ PROGRAMMATION {
 }
 
 RESERVATION {
-  NC int
-  NR int
+  NC int FK
+  NR int PK
   NOMC string
   PLACES int
-  DATE date
+  DATE date FK
 }
 
 MONUMENT }o--|| VILLE : "monument est situé dans ville"
