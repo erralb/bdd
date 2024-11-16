@@ -18,24 +18,25 @@ Une **transaction** est une **séquence d'opérations** qui doit être exécuté
 Une **transaction** est un **ensemble de requêtes** qui sont exécutées par blocs.
 :::
 
-_Si une des requêtes du bloc échoue, on peut décider d'annuler tout le bloc de requêtes (ou de quand même valider les requêtes qui ont réussies)._
+Si une des requêtes du bloc échoue, on peut décider d'annuler tout le bloc de requêtes (ou de quand même valider les requêtes qui ont réussies).
 
 Les transactions sont utilisées pour garantir l'intégrité des données lorsque l'on veut effectuer des modifications importantes.
 
-### Vocabulaire
+_Par exemple, lorsque vous transférez de l’argent d’un compte bancaire à un autre, l’argent doit quitter votre compte et doit être ajouté au compte tiers. Vous ne pouvez pas dire que la transaction est terminée sans que les deux étapes soient effectuées._
+
+## Vocabulaire
 
 Lorsque l'on **valide** les requêtes d'une transaction, on dit aussi que l'on **commit** les changements.
 
 Lorsque l'on **annule** les requêtes d'une transaction, on dit aussi que l'on **rollback** les changements.
 
-### Auto-commit vs Transactions
+## Auto-commit vs Transactions
 
 Le mode _autocommit_ est le mode par défaut dans la plupart des SGBD-R, **chaque requête** est exécutée comme une **transaction indépendante**.
 
 Le mode _autocommit_ implique que toute requête sans erreur sera exécutée et il ne sera pas possible de revenir en arrière
 
-_Il est tout de même possible de démarrer une transaction avec `START TRANSACTION;` ou `BEGIN;`_
-
+_Il est possible de démarrer une transaction contenant plusieurs requêtes avec les instructions `START TRANSACTION;` ou `BEGIN;`_
 
 </Slide>
 <Slide>
@@ -44,15 +45,16 @@ _Il est tout de même possible de démarrer une transaction avec `START TRANSACT
 
 **ACID** et **BASE** sont des **modèles de transactions** de base de données qui déterminent la manière dont une base de données organise et manipule les données. 
 
-Dans le contexte des bases de données, une transaction est toute opération que la base de données considère comme une seule unité de travail. 
+- **ACID** : Atomicité, Cohérence, Isolation, Durabilité : concerne plutot **les bases de données relationnelles**
+- **BASE** : Basically Available, Soft state, Eventually consistent : concerne plutot **les bases de données NoSQL**
 
-Une transaction doit être exécutée intégralement pour que la base de données reste cohérente. 
 
-Par exemple, lorsque vous transférez de l’argent d’un compte bancaire à un autre, l’argent doit quitter votre compte et doit être ajouté au compte tiers. Vous ne pouvez pas dire que la transaction est terminée sans que les deux étapes soient effectuées. 
+Les bases de données **ACID** donnent la priorité à la _cohérence_ plutôt qu’à la _disponibilité_ : l’ensemble de la transaction échoue si une erreur survient à n’importe quelle étape de la transaction. 
 
-Les bases de données ACID donnent la priorité à la cohérence plutôt qu’à la disponibilité : l’ensemble de la transaction échoue si une erreur survient à n’importe quelle étape de la transaction. 
+Ls bases de données **BASE** donnent la priorité à la _disponibilité_ plutôt qu’à la _cohérence_. Au lieu de faire échouer la transaction, il est possible que les utilisateurs accèdent temporairement à des données incohérentes. La cohérence des données sera éventuellement atteinte, mais pas immédiatement.
 
-En revanche, les bases de données BASE donnent la priorité à la disponibilité plutôt qu’à la cohérence. Au lieu de faire échouer la transaction, il est possible que les utilisateurs accèdent temporairement à des données incohérentes. La cohérence des données est atteinte, mais pas immédiatement.
+</Slide>
+<Slide>
 
 ### Les propriétés ACID
 
@@ -66,13 +68,13 @@ Les transactions doivent respecter les propriétés ACID :
 </Slide>
 <Slide>
 
-## Les commandes TCL
+## Les commandes du TCL 
 
-Les commandes TCL permettent de gérer les transactions dans une base de données.
+Les commandes TCL (Transaction Control Language) permettent de gérer les transactions dans une base de données.
 
 Les commandes les plus courantes sont :
 
-- `BEGIN TRANSACTION` : Démarre une transaction
+- `START TRANSACTION` : Démarre une transaction
 - `COMMIT` : Valide une transaction
 - `ROLLBACK` : Annule une transaction
 - `SAVEPOINT` : Crée un point de sauvegarde dans une transaction
@@ -81,7 +83,7 @@ Les commandes les plus courantes sont :
 
 <Slide>
 
-### Exemple
+### Exemple de transaction
 
 ```sql
 BEGIN TRANSACTION;
@@ -91,6 +93,8 @@ UPDATE Comptes SET solde = solde + 100 WHERE id = 2;
 
 COMMIT;
 ```
+
+_Dans cet exemple, si la deuxième mise à jour échoue, la transaction entière sera annulée et les données seront restaurées dans leur état initial._
 
 </Slide>
 <Slide>
@@ -104,7 +108,7 @@ Cela permet de revenir à un état antérieur de la transaction en cas d'erreur.
 </Slide>
 <Slide>
 
-### Exemple
+### Exemple de transaction avec jalon
 
 ```sql
 
@@ -122,7 +126,7 @@ COMMIT;
 
 ```
 
-Ici, si la deuxième mise à jour échoue, on revient à l'état de la transaction avant la création du jalon `point1`.
+_Dans cet exemple, si la deuxième mise à jour échoue, on revient à l'état de la transaction avant la création du jalon `point1`._
 
 </Slide>
 
@@ -134,6 +138,73 @@ Le langage de transaction de données (TCL) permet de gérer les transactions da
 
 Les transactions sont utilisées pour garantir l'intégrité des données et respecter les propriétés ACID.
 
-Les commandes TCL les plus courantes sont `BEGIN TRANSACTION`, `COMMIT`, `ROLLBACK` et `SAVEPOINT`.
+Les commandes TCL les plus courantes sont `START TRANSACTION`, `COMMIT`, `ROLLBACK` et `SAVEPOINT`.
+
+</Slide>
+
+<Slide>
+
+## Exercice
+
+Soit la table `Comptes` suivante :
+
+```sql
+CREATE TABLE Comptes (
+    id INT PRIMARY KEY,
+    solde INT NOT NULL DEFAULT 0 CHECK (solde >= 0)
+);
+
+INSERT INTO Comptes (id, solde) VALUES (1, 1000);
+INSERT INTO Comptes (id, solde) VALUES (2, 500);
+INSERT INTO Comptes (id, solde) VALUES (3, 100);
+INSERT INTO Comptes (id, solde) VALUES (4, 300);
+```
+
+Rédiger une transaction SQL avec un jalon entre les deux mises à jour suivantes :
+
+1. Rédiger une transaction SQL qui transfère 100€ du compte 1 au compte 2.
+2. Rédiger une transaction SQL qui transfère 150€ du compte 3 au compte 4.
+
+Quel sera le solde des comptes après l'exécution de la transaction ? Pourquoi ?
+
+<details>
+<summary>Solution</summary>
+
+```sql
+BEGIN TRANSACTION;
+
+UPDATE Comptes SET solde = solde - 100 WHERE id = 1;
+UPDATE Comptes SET solde = solde + 100 WHERE id = 2;
+
+SAVEPOINT point1;
+
+UPDATE Comptes SET solde = solde - 150 WHERE id = 3;
+UPDATE Comptes SET solde = solde + 150 WHERE id = 4;
+
+SAVEPOINT point2;
+
+COMMIT;
+```
+
+La table `Comptes` sera mise à jour comme suit :
+
+import Table from "/src/components/Table.astro";
+
+<Table
+  title="Comptes"
+  headers={["id", "solde"]}
+  rows={[
+    [1, 900],
+    [2, 600],
+    [3, 100],
+    [4, 300]
+  ]}
+/>
+
+
+La deuxième mise à jour va échouer et on reviendra à l'état de la transaction avant la création du jalon `point2` (soit au jalon `point1`).
+
+</details>
+
 
 </Slide>

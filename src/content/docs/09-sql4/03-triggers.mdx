@@ -1,0 +1,310 @@
+---
+title: Triggers (Déclencheurs)
+description: Les déclencheurs sont des procédures stockées qui sont automatiquement exécutées lorsqu'un événement spécifique se produit dans une base de données.
+sidebar:
+  label: Triggers
+---
+
+import Slide from "/src/components/Slide.astro";
+
+<Slide title="Déclencheurs (Triggers)">
+
+Les **triggers** sont des procédures stockées qui sont **automatiquement exécutées **lorsqu'un événement spécifique se produit dans une base de données.
+
+On peut les assimminer à des _observateurs_ qui réagissent à des événements spécifiques : **juste avant** ou **juste après** une _insertion_, une _mise à jour_ ou une _suppression_ de données.
+
+Les déclencheurs permettent de définir des **contraintes dynamiques**.
+
+</Slide>
+<Slide>
+
+## Utilisation des déclencheurs
+
+Les déclencheurs sont utilisés pour :
+
+- Vérifier l'intégrité des données
+- Mettre à jour des données dans une table en fonction des modifications apportées à une autre table
+- Auditer les modifications apportées aux données
+- Réagir à des événements spécifiques
+
+</Slide>
+<Slide>
+
+## Syntaxe
+
+```sql
+CREATE TRIGGER nom_declencheur
+BEFORE | AFTER | INSTEAD OF {INSERT | UPDATE | DELETE}
+ON nom_table
+FOR EACH ROW
+BEGIN
+    -- Instructions
+END;
+```
+
+- `BEFORE` : déclencheur exécuté avant l'événement
+- `AFTER` : déclencheur exécuté après l'événement
+- `INSTEAD OF` : déclencheur exécuté à la place de l'événement
+
+</Slide>
+<Slide>
+
+### Exemple
+
+Soit le schéma de base de données suivant :
+
+```sql
+CREATE TABLE Comptes (
+    id INT PRIMARY KEY,
+    solde INT NOT NULL DEFAULT 0 CHECK (solde >= 0)
+);
+
+CREATE TABLE Commandes (
+    id INT PRIMARY KEY,
+    id_compte INT,
+    montant INT NOT NULL,
+    FOREIGN KEY (id_compte) REFERENCES Comptes(id)
+);
+```
+
+On souhaite que le solde des comptes soit automatiquement mis à jour après chaque nouvelle commande.
+
+On va donc créer le trigger suivant :
+
+```sql
+CREATE TRIGGER maj_solde
+AFTER INSERT ON Commandes
+FOR EACH ROW
+BEGIN
+    UPDATE Comptes
+    SET solde = solde - NEW.montant
+    WHERE id = NEW.id_compte;
+END;
+```
+
+Version commentée :
+
+```sql
+CREATE TRIGGER maj_solde -- On créer un déclencheur nommé "maj_solde"
+AFTER INSERT ON Commandes -- Qui sera déclenché automatiquement après chaque insertion dans la table Commandes
+FOR EACH ROW -- Pour chaque nouvelle ligne insérée, execute le bloc d'instructions suivant
+BEGIN -- Début du bloc d'instructions
+    UPDATE Comptes -- Met à jour la table Comptes
+    SET solde = solde - NEW.montant -- Décrémente le solde du compte du montant de la commande
+    WHERE id = NEW.id_compte; -- Pour le compte associé à la commande
+END;
+```
+
+</Slide>
+<Slide>
+
+## Instructions NEW et OLD
+
+Dans un déclencheur, on peut utiliser les mots-clés `NEW` et `OLD` pour accéder aux valeurs des colonnes de la ligne insérée, mise à jour supprimée.
+
+- `NEW` : contient les nouvelles valeurs de la ligne
+- `OLD` : contient les anciennes valeurs de la ligne
+
+### Exemple avec NEW et une insertion
+
+Reprenons l'exemple du trigger précédent : 
+
+```sql
+CREATE TRIGGER maj_solde
+AFTER INSERT ON Commandes
+FOR EACH ROW
+BEGIN
+    UPDATE Comptes
+    SET solde = solde - NEW.montant
+    WHERE id = NEW.id_compte;
+END;
+```
+
+Si on ajoute maintenant une nouvelle commande : 
+
+```sql
+INSERT INTO Commandes (id, id_compte, montant) VALUES (1, 1, 100);
+```
+
+À l'execution de cette insertion :
+
+- le trigger va se déclencher automatiquement 
+- mettre à jour le solde du compte 1 en décrémentant de 100.
+
+Dans le code d'instructions du trigger :
+- `NEW.montant` fait référence à la valeur de la colonne `montant` de la nouvelle ligne insérée, soit ici la valeur 100.
+- `NEW.id_compte` fait référence à la valeur de la colonne `id_compte` de la nouvelle ligne insérée, soit ici la valeur 1.
+
+</Slide>
+<Slide>
+
+### Exemple avec OLD et une mise à jour
+
+On peut également utiliser le mot-clé `OLD` pour accéder aux anciennes valeurs des colonnes lors d'une mise à jour ou d'une suppression.
+
+On souhaite par exemple auditer les modifications apportées aux commandes, c.à.d enregistrer les anciennes et nouvelles valeurs du montant de la commande.
+
+```sql
+CREATE TRIGGER audit_commandes
+AFTER UPDATE ON Commandes
+FOR EACH ROW
+BEGIN
+    INSERT INTO Commandes_Audit (id_commande, montant_avant, montant_apres)
+    VALUES (OLD.id, OLD.montant, NEW.montant);
+END;
+```
+
+Dans cet exemple, le trigger `audit_commandes` va insérer une nouvelle ligne dans la table `Commandes_Audit` à chaque mise à jour d'une commande, contenant l'identifiant de la commande, le montant avant la mise à jour et le montant après la mise à jour.
+
+Exemple d'utilisation :
+
+```sql
+UPDATE Commandes SET montant = 200 WHERE id = 1;
+```
+
+À l'execution de cette mise à jour :
+
+- le trigger va se déclencher automatiquement
+- insérer une nouvelle ligne dans la table `Commandes_Audit` avec les valeurs suivantes : 
+  - `id_commande` : 1
+  - `montant_avant` : 100
+  - `montant_apres` : 200
+
+Dans le code d'instructions du trigger :
+- `OLD.id` fait référence à l'ancienne valeur de la colonne `id` de la ligne mise à jour, soit ici la valeur 1.
+- `OLD.montant` fait référence à l'ancienne valeur de la colonne `montant` de la ligne mise à jour, soit ici la valeur 100.
+- `NEW.montant` fait référence à la nouvelle valeur de la colonne `montant` de la ligne mise à jour, soit ici la valeur 200.
+
+</Slide>
+<Slide>
+
+### Exemple avec OLD et une suppression
+
+On peut également utiliser le mot-clé `OLD` pour accéder aux anciennes valeurs des colonnes lors d'une suppression.
+
+On souhaite par exemple auditer les suppressions de commandes, c.à.d enregistrer les valeurs des commandes supprimées.
+
+```sql
+CREATE TRIGGER audit_commandes
+AFTER DELETE ON Commandes
+FOR EACH ROW
+BEGIN
+    INSERT INTO Commandes_Audit (id_commande, montant_avant, montant_apres)
+    VALUES (OLD.id, OLD.montant, 0);
+END;
+```
+
+Dans cet exemple, le trigger `audit_commandes` va insérer une nouvelle ligne dans la table `Commandes_Audit` à chaque suppression d'une commande, contenant l'identifiant de la commande, le montant avant la suppression et 0 comme montant après la suppression.
+
+Exemple d'utilisation :
+
+```sql
+DELETE FROM Commandes WHERE id = 1;
+```
+
+À l'execution de cette suppression :
+
+- le trigger va se déclencher automatiquement
+- insérer une nouvelle ligne dans la table `Commandes_Audit` avec les valeurs suivantes : 
+  - `id_commande` : 1
+  - `montant_avant` : 100
+  - `montant_apres` : 0
+
+Dans le code d'instructions du trigger :
+
+- `OLD.id` fait référence à l'ancienne valeur de la colonne `id` de la ligne supprimée, soit ici la valeur 1.
+- `OLD.montant` fait référence à l'ancienne valeur de la colonne `montant` de la ligne supprimée, soit ici la valeur 100.
+
+</Slide>
+<Slide>
+
+## Suppression d'un déclencheur
+
+Pour supprimer un déclencheur, on utilise la commande `DROP TRIGGER` :
+
+```sql
+DROP TRIGGER nom_declencheur;
+```
+
+</Slide>
+<Slide>
+
+## Conclusion
+
+Les déclencheurs sont des procédures stockées qui sont automatiquement exécutées lorsqu'un événement spécifique se produit dans une base de données.
+
+Ils sont utilisés pour vérifier l'intégrité des données, mettre à jour des données en fonction des modifications apportées à une autre table, auditer les modifications apportées aux données et réagir à des événements spécifiques.
+
+</Slide>
+
+<Slide>
+
+## Exercice
+
+Soit le schéma de base de données suivant :
+
+```sql
+CREATE TABLE Comptes (
+    id INT PRIMARY KEY,
+    solde INT NOT NULL DEFAULT 0 CHECK (solde >= 0)
+);
+
+CREATE TABLE Commandes (
+    id INT PRIMARY KEY,
+    id_compte INT,
+    montant INT NOT NULL,
+    FOREIGN KEY (id_compte) REFERENCES Comptes(id)
+);
+```
+
+Créez un trigger nommé `annule_commande`, qui se déclenche à la suppression d'une commande et qui met à jour le solde du compte associé en remboursant le montant de la commande.
+
+<details>
+<summary>Solution</summary>
+
+```sql
+CREATE TRIGGER annule_commande
+AFTER DELETE ON Commandes
+FOR EACH ROW
+BEGIN
+    UPDATE Comptes
+    SET solde = solde + OLD.montant
+    WHERE id = OLD.id_compte;
+END;
+```
+
+</details>
+
+On ajoute une nouvelle table `Details` pour enregistrer les détails des commandes :
+
+```sql
+CREATE TABLE Details (
+    id INT PRIMARY KEY,
+    id_commande INT,
+    description TEXT,
+    FOREIGN KEY (id_commande) REFERENCES Commandes(id)
+);
+```
+
+Créez un trigger nommé `maj_montant_commande`, qui se déclenche à l'insertion d'un détail de commande et qui met à jour le montant de la commande en fonction des montants de tous les détails de la commande.
+
+_Aide : utilisez une requête `UPDATE` avec une sous-requête `SELECT SUM()`._
+
+<details>
+
+<summary>Solution</summary>
+
+```sql
+CREATE TRIGGER maj_montant_commande
+AFTER INSERT ON Details
+FOR EACH ROW
+BEGIN
+    UPDATE Commandes
+    SET montant = (SELECT SUM(montant) FROM Details WHERE id_commande = NEW.id_commande)
+    WHERE id = NEW.id_commande;
+END;
+```
+
+</details>
+
+</Slide>

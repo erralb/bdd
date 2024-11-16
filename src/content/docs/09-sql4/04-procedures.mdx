@@ -1,0 +1,327 @@
+---
+title: Procedures (Procédures)
+description: Les procédures stockées sont des blocs de code SQL qui peuvent être appelés et exécutés à partir d'autres parties de votre code SQL.
+sidebar:
+  label: Procedures
+---
+
+import Slide from "/src/components/Slide.astro";
+
+<Slide title="Procédures stockées (Procedures)">
+
+Les procédures stockées sont des blocs de code SQL qui peuvent être appelés et exécutés à partir d'autres parties de votre code SQL.
+
+Elles permettent de regrouper des instructions SQL en un seul bloc logique et de les exécuter à partir de n'importe où dans votre code.
+
+Les procédures stockées sont souvent utilisées pour effectuer des tâches répétitives, pour améliorer les performances et pour simplifier la maintenance du code.
+
+Elles s'apparentent aux fonctions dans les langages de programmation.
+
+
+</Slide>
+<Slide>
+
+## Procedures et SQLite
+
+:::danger[Pas de procédures stockées dans SQLite]
+SQLite étant un moteur de base de données léger, il ne prend pas en charge les procédures stockées pour des raisons de simplicité et de performances.
+
+Certains [plugins SQLite](https://github.com/nalgeon/sqlean) et l'utilisation de fonctions définies par l'utilisateur ([Application-Defined SQL Functions](https://www.sqlite.org/appfunc.html)) peuvent être utilisés pour simuler des procédures stockées.
+
+
+SQLite étant souvent encapsulé dans des applications, les procédures stockées sont généralement gérées par le code de l'application.
+:::
+
+Les procédures stockées sont cependant prises en charge par la plupart des autres moteurs de base de données, tels que MySQL, PostgreSQL, SQL Server, Oracle, etc.
+
+</Slide>
+<Slide>
+
+## Création d'une procédure
+
+```sql
+CREATE PROCEDURE nom_procedure()
+BEGIN
+    -- Instructions
+END;
+```
+
+</Slide>
+
+<Slide>
+
+### Exemple
+
+```sql
+CREATE PROCEDURE ajoute_100_aux_comptes()
+BEGIN
+    UPDATE Comptes
+    SET solde = solde + 100
+    WHERE id = 1;
+END;
+```
+
+</Slide>
+
+<Slide>
+
+## Paramètres
+
+Les procédures stockées peuvent accepter des paramètres en entrée et retourner des valeurs en sortie.
+
+```sql
+CREATE PROCEDURE nom_procedure( @param1 TYPE,  @param2 TYPE)
+BEGIN
+    -- Instructions
+END;
+```
+
+</Slide>
+<Slide>
+
+### Exemple
+
+```sql
+CREATE PROCEDURE maj_solde( @id_compte INT,  @montant INT)
+BEGIN
+    UPDATE Comptes
+    SET solde = solde +  @montant
+    WHERE id =  @id_compte;
+END;
+```
+
+</Slide>
+<Slide>
+
+### Paramètres de sortie
+
+Les procédures stockées peuvent également retourner des valeurs en sortie.
+
+Contrairement aux langages de programmation qui utilisent le mot-clé `return`, les procédures stockées utilisent le mot-clé `OUT` sur les paramètres de sortie.
+
+Après execution de la procédure, les valeurs des paramètres de sortie peuvent être récupérées.
+
+```sql
+CREATE PROCEDURE nom_procedure( @param1 TYPE, @param2 TYPE OUT)
+BEGIN
+    -- Instructions
+END;
+```
+
+</Slide>
+<Slide>
+
+#### Exemple
+
+```sql
+CREATE PROCEDURE solde_max( @max_solde INT OUT)
+BEGIN
+    SELECT MAX(solde) INTO  @max_solde
+    FROM Comptes;
+END;
+```
+
+</Slide>
+<Slide>
+
+## Variables locales
+
+Les procédures stockées peuvent déclarer des variables locales pour stocker des valeurs temporaires.
+
+```sql
+CREATE PROCEDURE nom_procedure()
+BEGIN
+    DECLARE nom_variable TYPE;
+    -- Instructions
+END;
+
+```
+
+#### Exemple
+    
+```sql
+CREATE PROCEDURE maj_solde( @id_compte INT,  @montant INT)
+BEGIN
+    DECLARE @solde_compte INT;
+    
+    SELECT solde INTO @solde_compte FROM Comptes WHERE id =  @id_compte;
+
+    UPDATE Comptes
+    SET solde = @solde_compte +  @montant
+    WHERE id =  @id_compte;
+END;
+```
+
+</Slide>
+<Slide>
+
+## Curseurs
+
+Les curseurs sont utilisés pour parcourir les résultats d'une requête SQL.
+
+Les curseurs sont souvent utilisés dans les procédures stockées pour traiter les résultats d'une requête ligne par ligne.
+
+```sql
+DECLARE nom_curseur CURSOR FOR SELECT colonne1, colonne2 FROM table;
+OPEN nom_curseur;
+FETCH nom_curseur INTO variable1, variable2;
+CLOSE nom_curseur;
+```
+
+#### Exemple
+
+```sql
+CREATE PROCEDURE affiche_comptes()
+BEGIN
+    DECLARE id_compte INT;
+    DECLARE solde_compte INT;
+    DECLARE cur CURSOR FOR SELECT id, solde FROM Comptes;
+    OPEN cur;
+    FETCH cur INTO id_compte, solde_compte;
+    WHILE @@FETCH_STATUS = 0 DO
+        SELECT id_compte, solde_compte;
+        FETCH cur INTO id_compte, solde_compte;
+    END WHILE;
+    CLOSE cur;
+END;
+```
+
+</Slide>
+<Slide>
+
+## Instruction CASE
+
+Les instructions `CASE` peuvent être utilisées dans les procédures stockées pour effectuer des opérations conditionnelles.
+
+```sql
+CASE
+    WHEN condition1 THEN instruction1
+    WHEN condition2 THEN instruction2
+    ELSE instruction3
+END CASE;
+```
+
+#### Exemple
+
+```sql
+CREATE PROCEDURE maj_solde( @id_compte INT,  @montant INT)
+BEGIN
+    DECLARE @solde_compte INT;
+    
+    SELECT solde INTO @solde_compte FROM Comptes WHERE id =  @id_compte;
+
+    UPDATE Comptes
+    SET solde = CASE
+        WHEN @solde_compte > 1000 THEN @solde_compte +  @montant
+        ELSE @solde_compte
+    END
+    WHERE id =  @id_compte;
+END;
+```
+
+</Slide>
+<Slide>
+
+## Instruction IF
+
+Les instructions `IF` peuvent être utilisées dans les procédures stockées pour effectuer des opérations conditionnelles.
+
+```sql
+IF condition THEN instruction1;
+ELSE instruction2;
+END IF;
+```
+
+#### Exemple
+
+```sql
+CREATE PROCEDURE maj_solde( @id_compte INT,  @montant INT)
+BEGIN
+    DECLARE @solde_compte INT;
+    
+    SELECT solde INTO @solde_compte FROM Comptes WHERE id =  @id_compte;
+
+    IF @solde_compte > 1000 THEN
+        UPDATE Comptes
+        SET solde = @solde_compte +  @montant
+        WHERE id =  @id_compte;
+    END IF;
+END;
+```
+
+
+</Slide>
+<Slide>
+
+## Appel d'une procédure
+
+```sql
+CALL nom_procedure();
+```
+
+</Slide>
+
+<Slide>
+
+#### Exemples
+
+```sql
+CALL maj_solde(1, 100);
+```
+
+En utilisant un paramètre de sortie :
+
+```sql
+CALL solde_max(@max);
+SELECT @max;
+```
+
+</Slide>
+<Slide>
+
+## Conclusion
+
+- Les procédures stockées permettent de regrouper des instructions SQL en un seul bloc logique
+- Elles peuvent ensuite être appelées directement depuis  le SGBD ou bien depuis une application
+- Elles permettent de simplifier la maintenance du code, d'améliorer les performances et de réduire la duplication du code.
+- Pour SQLite quqi ne supporte pas les procédures, il faudra définir les procédures dans le code de l'application
+
+</Slide>
+<Slide>
+
+## Exercice
+
+Créez une procédure stockée `bonus` qui :
+- augmente le solde des comptes de d'un pourcentage passé en paramètre, uniquement si le solde est supérieur au montant total de ses commandes
+- qui renvoie les identifiants des comptes mis à jour
+
+<details>
+<summary>Solution</summary>
+
+
+```sql
+CREATE PROCEDURE bonus( @pourcentage INT)
+BEGIN
+    DECLARE id_compte INT;
+    DECLARE solde_compte INT;
+    DECLARE total_commandes INT;
+    DECLARE bonus INT;
+    DECLARE cur CURSOR FOR SELECT id, solde FROM Comptes;
+    OPEN cur;
+    FETCH cur INTO id_compte, solde_compte;
+    WHILE @@FETCH_STATUS = 0 DO
+        SELECT SUM(montant) INTO total_commandes FROM Commandes WHERE id_compte = id_compte;
+        IF solde_compte > total_commandes THEN
+            SET bonus = solde_compte *  @pourcentage / 100;
+            UPDATE Comptes SET solde = solde + bonus WHERE id = id_compte;
+            SELECT id_compte;
+        END IF;
+        FETCH cur INTO id_compte, solde_compte;
+    END WHILE;
+    CLOSE cur;
+END;
+```
+
+</details>
+
+</Slide>

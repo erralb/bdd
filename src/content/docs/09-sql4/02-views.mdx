@@ -24,7 +24,7 @@ Elles permettent de simplifier les requêtes complexes, de masquer la complexit�
 ```sql
 CREATE VIEW nom_vue AS
 SELECT colonne1, colonne2, ...
-FROM table
+FROM nom_table
 WHERE condition
 ```
 
@@ -71,9 +71,13 @@ FROM vue_commandes
 ```sql
 CREATE OR REPLACE VIEW nom_vue AS
 SELECT colonne1, colonne2, ...
-FROM table
+FROM nom_table
 WHERE condition
 ```
+
+:::note[Remarque]
+SQLite ne supporte pas la commande `CREATE OR REPLACE VIEW`, il faut d'abord supprimer la vue puis la recréer.
+:::
 
 </Slide>
 
@@ -97,6 +101,11 @@ WHERE total > 100
 ```sql
 DROP VIEW nom_vue
 ```
+ou 
+
+```sql
+DROP VIEW IF EXISTS nom_vue;
+```
 
 </Slide>
 
@@ -105,37 +114,28 @@ DROP VIEW nom_vue
 ### Exemple
 
 ```sql
-DROP VIEW vue_commandes
+DROP VIEW IF EXISTS  vue_commandes
 ```
 
 </Slide>
-
 <Slide>
 
-## Avantages des vues
+## Conclusion
+
+- Les vues sont des requêtes SQL stockées qui peuvent être utilisées comme des tables
+- Les vues permettent de simplifier les requêtes complexes, de masquer la complexité des données et de sécuriser l'accès aux données
+- Les vues peuvent être créées, mises à jour et supprimées à l'aide des commandes `CREATE VIEW`, `CREATE OR REPLACE VIEW` et `DROP VIEW`
+
+### Avantages
 
 - Simplification des requêtes complexes
 - Masquage de la complexité des données
 - Sécurisation de l'accès aux données
 
-</Slide>
+### Limitations
 
-<Slide>
-
-## Limitations des vues
-
-- Les vues ne peuvent pas contenir de contraintes de clés étrangères
-- Les vues ne peuvent pas contenir de contraintes de vérification
-
-</Slide>
-
-<Slide>
-
-## Résumé
-
-- Les vues sont des requêtes SQL stockées qui peuvent être utilisées comme des tables
-- Les vues permettent de simplifier les requêtes complexes, de masquer la complexité des données et de sécuriser l'accès aux données
-- Les vues peuvent être créées, mises à jour et supprimées à l'aide des commandes `CREATE VIEW`, `CREATE OR REPLACE VIEW` et `DROP VIEW`
+- Les vues ne peuvent pas contenir de contraintes de clés étrangères, de contraintes de vérification ou de triggers
+- Etant une requête et pas une table à part entière, il n'est pas possible d'ajouter directement des données à une vue
 
 </Slide>
 
@@ -143,6 +143,15 @@ DROP VIEW vue_commandes
 
 ## Exercice
 
-Créez une vue `vue_details` qui affiche les détails des commandes avec les colonnes suivantes : `numeroCommande`, `numeroProduit`, `quantite`, `prixUnitaire`, `total`
+En utilisant la base de données de la `Boutique` :
+
+import {Content as TextDB} from '../../files/ecommerce-fr-erd-v2-text.md'
+
+<TextDB />
+
+Créez une vue `vue_details` qui : 
+
+- affiche les détails des commandes 
+- avec les colonnes suivantes : `numeroCommande`, `numeroProduit`, `quantite`, `prixUnitaire`, `total`
 
 </Slide>
