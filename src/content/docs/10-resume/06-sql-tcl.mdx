@@ -1,0 +1,44 @@
+---
+title: SQL Transaction Control Language (TCL) 
+description: Langage SQL et langage de contrôle de transactions
+sidebar:
+  label: TCL
+---
+
+import Slide from "/src/components/Slide.astro";
+
+<Slide>
+
+## Transactions
+
+```sql
+BEGIN TRANSACTION
+```
+
+```sql
+COMMIT
+```
+
+```sql
+ROLLBACK
+```
+
+</Slide>
+
+<Slide>
+
+## Sauvegarde et restauration
+
+```sql
+SAVEPOINT nom_savepoint
+```
+
+```sql
+ROLLBACK TO nom_savepoint
+```
+
+```sql
+RELEASE SAVEPOINT nom_savepoint
+```
+
+</Slide>

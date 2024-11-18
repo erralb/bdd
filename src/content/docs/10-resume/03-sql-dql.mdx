@@ -4,3 +4,135 @@ description: Langage SQL et langage de requête de données
 sidebar:
   label: DQL
 ---
+
+import Slide from "/src/components/Slide.astro";
+
+<Slide>
+
+## Sélections
+  
+```sql
+SELECT colonne1, colonne2, ...
+FROM table
+WHERE condition
+GROUP BY colonne
+HAVING condition
+ORDER BY colonne
+LIMIT n
+```
+
+</Slide>
+
+<Slide>
+
+## Sous-requêtes
+
+```sql
+SELECT colonne1, colonne2, ...
+FROM table
+WHERE colonne IN (SELECT colonne FROM table WHERE condition)
+```
+
+### EXISTS
+  
+```sql
+SELECT colonne1, colonne2, ...
+FROM table1
+WHERE EXISTS (SELECT colonne FROM table2 WHERE condition)
+```
+
+</Slide>
+
+<Slide>
+
+## Jointures
+
+```sql
+SELECT colonne1, colonne2, ...
+FROM table1
+JOIN table2 ON table1.colonne = table2.colonne
+```
+
+ou
+
+```sql
+SELECT colonne1, colonne2, ...
+FROM table1, table2
+WHERE table1.colonne = table2.colonne
+```
+
+</Slide>
+
+<Slide>
+
+## Auto-jointures
+
+Aussi appelées jointures cycliques ou jointures de soi-même
+
+Soit la table `Employes` :
+
+```sql
+CREATE TABLE Employes (
+    idEmploye INT PRIMARY KEY,
+    nomEmploye TEXT,
+    idSuperviseur INT,
+    FOREIGN KEY (idSuperviseur) REFERENCES Employes(idEmploye)
+);
+```
+
+Pour obtenir le nom de l'employé et le nom de son superviseur :
+
+```sql
+SELECT e1.nomEmploye AS 'employe', e2.nomEmploye AS 'superviseur'
+FROM Employes e1
+JOIN Employes e2 ON e1.idSuperviseur = e2.idEmploye
+```
+
+ou
+
+```sql
+SELECT e1.nomEmploye AS 'employe', e2.nomEmploye AS 'superviseur'
+FROM Employes e1, Employes e2
+WHERE e1.idSuperviseur = e2.idEmploye
+```
+
+</Slide>
+
+<Slide>
+
+## Agrégations
+
+```sql
+SELECT fonction(colonne)
+FROM table
+GROUP BY colonne
+HAVING condition
+```
+
+Fonctions agrégatives : `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`
+
+</Slide>
+
+<Slide>
+
+## Unions et intersections
+
+```sql
+SELECT colonne1, colonne2, ...
+FROM table1
+UNION
+SELECT colonne1, colonne2, ...
+FROM table2
+```
+
+ou
+
+```sql
+SELECT colonne1, colonne2, ...
+FROM table1
+INTERSECT
+SELECT colonne1, colonne2, ...
+FROM table2
+```
+
+</Slide>

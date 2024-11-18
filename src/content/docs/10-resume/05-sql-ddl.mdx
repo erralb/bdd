@@ -4,3 +4,155 @@ description: Langage SQL et langage de définition de données
 sidebar:
   label: DDL
 ---
+
+import Slide from "/src/components/Slide.astro";
+
+<Slide>
+
+## Définitions
+
+```sql
+CREATE DATABASE nom_base
+```
+
+```sql
+DROP DATABASE nom_base
+```
+
+```sql
+CREATE TABLE nom_table (
+  colonne1 type1,
+  colonne2 type2,
+  ...
+)
+```
+
+```sql
+ALETER TABLE nom_table ADD colonne type
+```
+
+```sql
+DROP TABLE nom_table
+```
+
+</Slide>
+<Slide>
+
+## Clés et contraintes
+
+```sql
+CREATE TABLE nom_table (
+  id INT PRIMARY KEY,
+  nom VARCHAR(50) NOT NULL,
+  prenom VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE,
+  CONSTRAINT nom_table_nom_check CHECK (nom <> 'toto')
+)
+```
+
+```sql
+ALTER TABLE nom_table ADD FOREIGN KEY (id) REFERENCES autre_table(id)
+```
+
+</Slide>
+<Slide>
+
+## Création depuis un SELECT
+
+```sql
+CREATE TABLE nom_table AS
+SELECT colonne1, colonne2, ...
+FROM autre_table
+WHERE condition
+```
+
+</Slide>
+<Slide>
+
+## Types de données
+
+- `INT` : entier
+- `FLOAT` : nombre à virgule flottante
+- `CHAR(n)` : chaîne de caractères de longueur fixe
+- `VARCHAR(n)` : chaîne de caractères de longueur variable
+- `DATE` : date
+- `TIME` : heure
+- `DATETIME` : date et heure
+- `BOOLEAN` : booléen
+- `ENUM('valeur1', 'valeur2', ...)` : liste de valeurs
+- `SET('valeur1', 'valeur2', ...)` : ensemble de valeurs
+- `BLOB` : données binaires
+- `TEXT` : texte
+- `JSON` : données JSON
+- `XML` : données XML
+- etc.
+
+</Slide>
+
+
+<Slide>
+
+## Views (Vues)
+
+```sql
+CREATE VIEW nom_vue AS
+SELECT colonne1, colonne2, ...
+FROM table
+WHERE condition
+```
+
+```sql
+DROP VIEW nom_vue
+```
+
+</Slide>
+
+<Slide>
+
+## Delimiters (Délimiteurs)
+
+```sql
+DELIMITER //
+```
+
+```sql
+DELIMITER ;
+```
+
+</Slide>
+
+<Slide>
+
+## Triggers (Déclencheurs)
+
+```sql
+CREATE TRIGGER nom_trigger
+BEFORE INSERT ON table
+FOR EACH ROW
+BEGIN
+  ...
+END
+```
+
+```sql
+DROP TRIGGER nom_trigger
+```
+
+</Slide>
+
+<Slide>
+
+## Procedures
+
+```sql
+CREATE PROCEDURE nom_procedure( IN param1 type1,  OUT param2 type2, INOUT param3 type3, ... )
+BEGIN
+  ...
+END
+```
+
+```sql
+DROP PROCEDURE nom_procedure
+```
+
+</Slide>

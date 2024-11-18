@@ -1,11 +1,12 @@
 ---
-title: Résumé des concepts
-description: Résumé des concepts abordés dans ce chapitre
+title: Concepts et Normalisation
+description: Concepts de base de la normalisation des bases de données
 sidebar:
-  label: Concepts
+  label: Normalisation
 ---
 
 import Slide from "/src/components/Slide.astro";
+import Table from "/src/components/Table.astro";
 
 <Slide title="Résumé des concepts">
 
@@ -51,9 +52,138 @@ Dans le [premier chapitre du cours](/bdd/01-concepts/01-introduction/), nous avo
 
 ## Formes normales
 
-- La 1NF garantit que chaque cellule contient une seule valeur
-- La 2NF garantit que chaque colonne dépend de la clé primaire
-- La 3NF garantit que chaque colonne dépend uniquement de la clé primaire
+:::tip[Définition]
+Les formes normales sont des **règles** qui permettent de définir des **étapes de normalisation** pour **garantir l'intégrité** des données et éviter les anomalies
+:::
+
+</Slide>
+
+<Slide>
+
+### 1ère forme normale (1FN ou 1NF)
+
+:::tip[Définition]
+Une relation est dite de **première forme normale**, si et seulement si :
+* elle admet **une clé** (ou un ensemble de clés)
+* tout attribut contient une **valeur atomique**
+* tous les attributs sont **non répétitifs**
+* tous les attributs sont **constants dans le temps**
+:::
+
+#### Exemple de non-respect de la 1FN
+
+<Table
+    title="Produits"
+    caption="Exemple de table non normalisée 1FN"
+    headers={['IDProduit', 'Description', 'Fournisseurs']}
+    rows={[
+        ['1', 'Téléviseur', 'Sony, Sharp, LG'],
+        ['2', 'Chaîne Hifi', 'Philips, Sony']
+    ]}
+/>
+
+* La colonne _Fournisseurs_ est répétitive (elle contient plusieurs valeurs)
+    * Il faudrait décomposer la colonne _Fournisseurs_ en une **table** _Fournisseur_
+
+</Slide>
+
+<Slide title="Formes normales">
+
+### 2ème forme normale (2FN ou 2NF)
+
+:::tip[Définition]
+Une relation est en deuxième forme normale (2FN ou 2NF) ssi :
+* Elle est en première forme normale
+* Tout **attribut non clé** ne dépend pas d'une **partie de clé**
+:::
+
+Autrement dit, tous les attributs non-identifiants sont totalement dépendants fonctionnellement de la totalité de l'identifiant (et donc de la clé primaire au niveau tabulaire)
+
+La 2NF garantit que chaque colonne dépend de la clé primaires#### Exemples de non-respect de la 2FN
+
+##### Règle : Tout attribut non clé **ne dépend pas d'une partie de clé**
+
+<div class="thead-pk-1 thead-pk-2">
+<Table
+    title="DetailsCommandes"
+    headers={['numeroCommande', 'numeroProduit', 'descriptionProduit']}
+    rows={[
+        ['1', '1', 'Téléviseur'],
+        ['2', '2', 'Chaîne Hifi'],
+        ['3', '1', 'Téléviseur']
+    ]}
+    caption="Exemple de table non normalisée 2FN"
+/>
+</div>
+
+* Dans cet exemple :
+    * L'identifiant de la table est _(numeroCommande, numeroProduit)_
+    * On peut déduire qu'il existe une dépendance fonctionnelle entre _numeroProduit_ et _descriptionProduit_
+        * **numeroProduit → descriptionProduit**
+    * La table n'est pas en 2FN car _descriptionProduit_ dépend d'une partie de la clé
+
+:::note[Pour régler ce problème il faudrait décomposer la table en deux tables distinctes]
+<br/>
+* **Commande**(<u>numeroCommande, numeroProduit*</u>)
+* **Produit**(<u>numeroProduit</u>, descriptionProduit)
+:::
+
+#### Schématique du non-respect de la 2FN
+
+![Non-respect de la 2FN](../01-concepts/07-normalisation-01-Relation-Non-Respect-2FN.svg)
+
+> Si un attribut ne fait pas partie de la clé, il ne doit pas dépendre fonctionnellement d'une partie de la clé
+
+</Slide>
+
+<Slide>
+
+### 3ème forme normale (3FN ou 3NF)
+:::tip[Définition]
+Une relation est en troisième forme ssi :
+* Elle est en deuxième forme normale
+* Tout attribut n'appartenant pas à un identifiant ne dépend pas d'un attribut non identifiant
+:::
+
+</Slide>
+<Slide>
+
+#### Exemples de non-respect de la 3FN
+
+<div class="thead-pk-1">
+<Table
+    title="Commandes"
+    headers={['numeroCommande', 'numeroClient', 'nomClient']}
+    rows={[
+        ['1', '1', 'Dupont'],
+        ['2', '1', 'Dupont'],
+        ['3', '2', 'Durand']
+    ]}
+    caption="Exemple de table non normalisée 3FN"
+/>
+</div>
+
+* Dans cet exemple :
+    * L'identifiant de la table est _numeroCommande_
+    * On peut déduire qu'il existe une dépendance fonctionnelle entre _numeroClient_ et _nomClient_
+        * **numeroClient → nomClient**
+    * La table n'est pas en 3FN car _nomClient_ dépend d'un attribut non-clé ( _numeroClient_ ne fait pas partie de la clé)
+
+
+:::note[Pour régler ce problème il faudrait décomposer la table en deux tables distinctes]
+<br/>
+* **Commande**(<u>numeroCommande</u>, numeroClient*)
+* **Client**(<u>numeroClient</u>, nomClient)
+:::
+
+</Slide>
+<Slide>
+
+#### Schématique du non-respect de la 3FN
+
+![Non-respect de la 3FN](../01-concepts/07-normalisation-02-Relation-Non-Respect-3FN.svg)
+
+> Si un attribut ne fait pas partie de la clé, il ne doit pas dépendre fonctionnellement d'un autre attribut non-clé
 
 </Slide>
 
@@ -63,5 +193,20 @@ Dans le [premier chapitre du cours](/bdd/01-concepts/01-introduction/), nous avo
 
 - La décomposition consiste à diviser une table en plusieurs tables normalisées
 - Elle permet d'éliminer la redondance des données et de prévenir les anomalies
+
+
+![Décomposition d'une table](../01-concepts/06-redondance-01-decomposition.png)
+
+* Soit une table `R` possédant 3 attributs `A`, `B` et `C`
+
+* Il existe une dépendance fonctionnelle entre `B` et `C` (Si on connait `B`, alors on connait nécessairement `C`)
+    * On doit donc **extraire la colonne `C`** de la table `R` pour éviter la redondance interne
+    * La colonne **`B` doit être présente dans les 2 tables** pour pouvoir reconstruire l'information
+    
+* On peut aussi remarquer dans cet exemple que :
+    * `B` sera une **clé étrangère** dans la table `R`
+    * `B` sera une **clé primaire** dans la table `S`
+
+> Il peut exister plusieurs dépendances fonctionnelles au sein d'une même table. <br/> Il faudra alors décomposer autant de fois que nécessaire pour éviter la redondance.
 
 </Slide>

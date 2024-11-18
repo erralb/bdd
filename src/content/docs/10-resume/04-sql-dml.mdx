@@ -4,3 +4,50 @@ description: Langage SQL et langage de manipulation de données
 sidebar:
   label: DML
 ---
+
+import Slide from "/src/components/Slide.astro";
+
+<Slide>
+
+## INSERT
+
+```sql
+
+INSERT INTO table (colonne1, colonne2, ...)
+VALUES (valeur1, valeur2, ...)
+
+```
+
+### From a SELECT
+  
+```sql
+INSERT INTO table (colonne1, colonne2, ...)
+SELECT colonne1, colonne2, ...
+FROM table
+WHERE condition
+```
+
+</Slide>
+
+<Slide>
+
+## UPDATE
+  
+```sql
+UPDATE table
+SET colonne1 = valeur1, colonne2 = valeur2, ...
+WHERE condition
+```
+
+</Slide>
+
+<Slide>
+
+## DELETE
+
+```sql
+DELETE FROM table
+WHERE condition
+```
+
+</Slide>
