@@ -147,18 +147,25 @@ export default defineConfig({
 								directory: '08-tp3'
 							}
 						},
+						{
+							label: '9. Gestion SQL avancée',
+							collapsed: true,
+							autogenerate: {
+								directory: '09-sql4'
+							}
+						},
 						// {
-						// 	label: '9. Gestion SQL avancée',
-						// 	collapsed: true,
-						// 	autogenerate: {
-						// 		directory: '09-sql4'
-						// 	}
-						// },
-						// {
-						// 	label: '9. Résumés',
+						// 	label: '10. Résumés',
 						// 	collapsed: true,
 						// 	autogenerate: {
 						// 		directory: '10-resume'
+						// 	}
+						// },
+						// {
+						// 	label: '11. Projet - La clinique',
+						// 	collapsed: true,
+						// 	autogenerate: {
+						// 		directory: '11-tp4'
 						// 	}
 						// },
 						{
