@@ -143,15 +143,27 @@ DROP VIEW IF EXISTS  vue_commandes
 
 ## Exercice
 
-En utilisant la base de données de la `Boutique` :
+Créez une vue `vue_details` dans la base de données `Boutique` qui : 
+
+- affiche les détails des commandes 
+- avec les colonnes suivantes : `numeroCommande`, `numeroProduit`, `quantite`, `prixUnitaire`, `total`
+
+Rappel de la base de données `Boutique` :
 
 import {Content as TextDB} from '../../files/ecommerce-fr-erd-v2-text.md'
 
 <TextDB />
 
-Créez une vue `vue_details` qui : 
+<details>
+<summary>Solution</summary>
 
-- affiche les détails des commandes 
-- avec les colonnes suivantes : `numeroCommande`, `numeroProduit`, `quantite`, `prixUnitaire`, `total`
+```sql
+CREATE VIEW vue_details AS
+SELECT numeroCommande, numeroProduit, quantite, prixUnitaire, quantite * prixUnitaire AS total
+FROM Details D, Produits P
+WHERE D.numeroProduit = P.numeroProduit;
+```
+
+</details>
 
 </Slide>

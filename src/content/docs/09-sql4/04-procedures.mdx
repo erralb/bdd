@@ -6,6 +6,7 @@ sidebar:
 ---
 
 import Slide from "/src/components/Slide.astro";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
 
 <Slide title="Procédures stockées (Procedures)">
 
@@ -17,7 +18,6 @@ Les procédures stockées sont souvent utilisées pour effectuer des tâches ré
 
 Elles s'apparentent aux fonctions dans les langages de programmation.
 
-
 </Slide>
 <Slide>
 
@@ -28,22 +28,29 @@ SQLite étant un moteur de base de données léger, il ne prend pas en charge le
 
 Certains [plugins SQLite](https://github.com/nalgeon/sqlean) et l'utilisation de fonctions définies par l'utilisateur ([Application-Defined SQL Functions](https://www.sqlite.org/appfunc.html)) peuvent être utilisés pour simuler des procédures stockées.
 
-
 SQLite étant souvent encapsulé dans des applications, les procédures stockées sont généralement gérées par le code de l'application.
 :::
 
 Les procédures stockées sont cependant prises en charge par la plupart des autres moteurs de base de données, tels que MySQL, PostgreSQL, SQL Server, Oracle, etc.
+
+Les exemples présentés ont été vérifié avec MySQL 9 et supérieur. Il faudra peut-être adapter les exemples pour d'autres moteurs de base de données.
+
+Si vous voulez tester les exemples, vous pouvez [installer MySQL sur votre machine](https://dev.mysql.com/downloads/installer/) ou utiliser un service en ligne comme [db-fiddle](https://www.db-fiddle.com/).
 
 </Slide>
 <Slide>
 
 ## Création d'une procédure
 
+Comme pour les triggers, on changer le délimiteur pour définir une procédure stockée.
+
 ```sql
-CREATE PROCEDURE nom_procedure()
+DELIMITER //
+CREATE PROCEDURE nom_procedure( param1 TYPE, param2 TYPE)
 BEGIN
     -- Instructions
-END;
+END//
+DELIMITER ;
 ```
 
 </Slide>
@@ -53,12 +60,27 @@ END;
 ### Exemple
 
 ```sql
+DELIMITER //
 CREATE PROCEDURE ajoute_100_aux_comptes()
 BEGIN
     UPDATE Comptes
     SET solde = solde + 100
     WHERE id = 1;
-END;
+END//
+DELIMITER ;
+```
+
+Version commentée
+
+```sql
+DELIMITER // -- On change le délimiteur
+CREATE PROCEDURE ajoute_100_aux_comptes() -- Nom de la procédure
+BEGIN -- Début du bloc
+    UPDATE Comptes -- Instruction SQL
+    SET solde = solde + 100
+    WHERE id = 1;
+END// -- Fin du bloc
+DELIMITER ; -- On rétablit le délimiteur par défaut
 ```
 
 </Slide>
@@ -70,7 +92,7 @@ END;
 Les procédures stockées peuvent accepter des paramètres en entrée et retourner des valeurs en sortie.
 
 ```sql
-CREATE PROCEDURE nom_procedure( @param1 TYPE,  @param2 TYPE)
+CREATE PROCEDURE nom_procedure( IN _param1 TYPE, OUT _param2 TYPE, INOUT _param3 TYPE)
 BEGIN
     -- Instructions
 END;
@@ -82,12 +104,14 @@ END;
 ### Exemple
 
 ```sql
-CREATE PROCEDURE maj_solde( @id_compte INT,  @montant INT)
+DELIMITER //
+CREATE PROCEDURE maj_solde( IN _id_compte INT, IN _montant INT)
 BEGIN
     UPDATE Comptes
-    SET solde = solde +  @montant
-    WHERE id =  @id_compte;
-END;
+    SET solde = solde + _montant
+    WHERE id =  _id_compte;
+END//
+DELIMITER ;
 ```
 
 </Slide>
@@ -102,7 +126,7 @@ Contrairement aux langages de programmation qui utilisent le mot-clé `return`, 
 Après execution de la procédure, les valeurs des paramètres de sortie peuvent être récupérées.
 
 ```sql
-CREATE PROCEDURE nom_procedure( @param1 TYPE, @param2 TYPE OUT)
+CREATE PROCEDURE nom_procedure( INOUT _param1 TYPE, OUT _param2 TYPE)
 BEGIN
     -- Instructions
 END;
@@ -114,17 +138,25 @@ END;
 #### Exemple
 
 ```sql
-CREATE PROCEDURE solde_max( @max_solde INT OUT)
+DELIMITER //
+CREATE PROCEDURE solde_max( OUT _max_solde INT )
 BEGIN
-    SELECT MAX(solde) INTO  @max_solde
+    SELECT MAX(solde) INTO  _max_solde
     FROM Comptes;
-END;
+END//
+DELIMITER ;
+
+CALL solde_max(@_max_solde); -- Appel de la procédure
+
+SELECT @_max_solde; -- Affichage de la valeur de sortie
 ```
 
 </Slide>
 <Slide>
 
-## Variables locales
+## "Programmation" dans les procédures
+
+### Variables locales
 
 Les procédures stockées peuvent déclarer des variables locales pour stocker des valeurs temporaires.
 
@@ -138,24 +170,27 @@ END;
 ```
 
 #### Exemple
-    
+
 ```sql
-CREATE PROCEDURE maj_solde( @id_compte INT,  @montant INT)
+DROP PROCEDURE IF EXISTS maj_solde;
+DELIMITER //
+CREATE PROCEDURE maj_solde( IN _id_compte INT, IN  _montant INT)
 BEGIN
-    DECLARE @solde_compte INT;
-    
-    SELECT solde INTO @solde_compte FROM Comptes WHERE id =  @id_compte;
+    DECLARE _solde_compte INT;
+
+    SELECT solde INTO _solde_compte FROM Comptes WHERE id =  _id_compte;
 
     UPDATE Comptes
-    SET solde = @solde_compte +  @montant
-    WHERE id =  @id_compte;
-END;
+    SET solde = _solde_compte +  _montant
+    WHERE id =  _id_compte;
+END//
+DELIMITER ;
 ```
 
 </Slide>
-<Slide>
+<Slide title="Programmation">
 
-## Curseurs
+### Curseurs
 
 Les curseurs sont utilisés pour parcourir les résultats d'une requête SQL.
 
@@ -171,6 +206,7 @@ CLOSE nom_curseur;
 #### Exemple
 
 ```sql
+DELIMITER //
 CREATE PROCEDURE affiche_comptes()
 BEGIN
     DECLARE id_compte INT;
@@ -178,18 +214,22 @@ BEGIN
     DECLARE cur CURSOR FOR SELECT id, solde FROM Comptes;
     OPEN cur;
     FETCH cur INTO id_compte, solde_compte;
-    WHILE @@FETCH_STATUS = 0 DO
+    WHILE @FETCH_STATUS = 0 DO
         SELECT id_compte, solde_compte;
         FETCH cur INTO id_compte, solde_compte;
+        -- Ici on pourra executer des instructions qui utilisent les valeurs des colonnes
     END WHILE;
     CLOSE cur;
-END;
+END//
+DELIMITER ;
+
+CALL affiche_comptes();
 ```
 
 </Slide>
-<Slide>
+<Slide title="Programmation">
 
-## Instruction CASE
+### Instruction CASE
 
 Les instructions `CASE` peuvent être utilisées dans les procédures stockées pour effectuer des opérations conditionnelles.
 
@@ -204,25 +244,28 @@ END CASE;
 #### Exemple
 
 ```sql
-CREATE PROCEDURE maj_solde( @id_compte INT,  @montant INT)
+DROP PROCEDURE IF EXISTS maj_solde;
+DELIMITER //
+CREATE PROCEDURE maj_solde( IN _id_compte INT, IN  _montant INT)
 BEGIN
-    DECLARE @solde_compte INT;
-    
-    SELECT solde INTO @solde_compte FROM Comptes WHERE id =  @id_compte;
+    DECLARE _solde_compte INT;
+
+    SELECT solde INTO _solde_compte FROM Comptes WHERE id =  _id_compte;
 
     UPDATE Comptes
     SET solde = CASE
-        WHEN @solde_compte > 1000 THEN @solde_compte +  @montant
-        ELSE @solde_compte
+        WHEN _solde_compte > 1000 THEN _solde_compte +  _montant
+        ELSE _solde_compte
     END
-    WHERE id =  @id_compte;
-END;
+    WHERE id =  _id_compte;
+END//
+DELIMITER ;
 ```
 
 </Slide>
-<Slide>
+<Slide title="Programmation">
 
-## Instruction IF
+### Instruction IF
 
 Les instructions `IF` peuvent être utilisées dans les procédures stockées pour effectuer des opérations conditionnelles.
 
@@ -235,20 +278,22 @@ END IF;
 #### Exemple
 
 ```sql
-CREATE PROCEDURE maj_solde( @id_compte INT,  @montant INT)
+DROP PROCEDURE IF EXISTS maj_solde;
+DELIMITER //
+CREATE PROCEDURE maj_solde( _id_compte INT,  _montant INT)
 BEGIN
-    DECLARE @solde_compte INT;
-    
-    SELECT solde INTO @solde_compte FROM Comptes WHERE id =  @id_compte;
+    DECLARE _solde_compte INT;
 
-    IF @solde_compte > 1000 THEN
+    SELECT solde INTO _solde_compte FROM Comptes WHERE id =  _id_compte;
+
+    IF _solde_compte > 1000 THEN
         UPDATE Comptes
-        SET solde = @solde_compte +  @montant
-        WHERE id =  @id_compte;
+        SET solde = _solde_compte +  _montant
+        WHERE id =  _id_compte;
     END IF;
-END;
+END//
+DELIMITER ;
 ```
-
 
 </Slide>
 <Slide>
@@ -272,9 +317,221 @@ CALL maj_solde(1, 100);
 En utilisant un paramètre de sortie :
 
 ```sql
-CALL solde_max(@max);
-SELECT @max;
+CALL solde_max(@_max);
+SELECT @_max;
 ```
+
+:::note[Remarque]
+Lors de l'appel d'une procédure stockée, les paramètres de sortie doivent être précédés du caractère `@`.
+:::
+
+</Slide>
+<Slide>
+
+## Suppression d'une procédure
+
+```sql
+DROP PROCEDURE IF EXISTS nom_procedure;
+```
+
+</Slide>
+<Slide>
+
+## Procédures et Javascript
+
+Certains SGBD comme MySQL supporte désormais le langage [Javascript pour écrire des procédures stockées](https://dev.mysql.com/doc/refman/9.1/en/stored-routines-js.html).
+
+```sql
+CREATE PROCEDURE maj_solde( _id_compte INT,  _montant INT)
+LANGUAGE JAVASCRIPT AS $$
+    let solde_compte = 0;
+    let query = `SELECT solde FROM Comptes WHERE id = ${_id_compte}`;
+    let result = mysql.query(query);
+    if (result.length > 0) {
+        solde_compte = result[0].solde;
+    }
+    let new_solde = solde_compte + _montant;
+    query = `UPDATE Comptes SET solde = ${new_solde} WHERE id = ${_id_compte}`;
+    mysql.query(query);
+$$;
+```
+
+</Slide>
+<Slide>
+
+## Procédures et langages de programmation
+
+### Appel de procédures dans une application
+
+Voici quelques exemples d'appels de procédures stockées dans différentes langages de programmation.
+
+<Tabs>
+
+<TabItem label="PHP">
+
+```php
+<?php
+$pdo = new PDO('mysql:host=localhost;dbname;', 'user', 'password'); // Connexion à la base de données
+$stmt = $pdo->prepare("CALL maj_solde(1, 100)"); // Préparation de la requête SQL
+$stmt->execute(); // Execution de la procédure
+?>
+```
+</TabItem>
+
+<TabItem label="Python">
+```python
+import mysql.connector 
+mydb = mysql.connector.connect(host="localhost", user="user", password="password", database="db" )
+mycursor = mydb.cursor()
+mycursor.callproc('maj_solde', (1, 100))
+mydb.commit()
+```
+</TabItem>
+
+<TabItem label="NodeJS">
+```js
+const mysql = require('mysql');
+const connection = mysql.createConnection({ host: 'localhost', user: 'user', password: 'password', database: 'db' });
+connection.connect();
+connection.query('CALL maj_solde(1, 100)', function (error, results, fields) {
+    if (error) throw error;
+    console.log('Solde mis à jour');
+});
+connection.end();
+```
+
+</TabItem>
+
+<TabItem label="Java">
+
+```java
+import java.sql.*;
+public class Main {
+    public static void main(String[] args) {
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/db", "user", "password");
+            CallableStatement cstmt = conn.prepareCall("{call maj_solde(?, ?)}");
+            cstmt.setInt(1, 1);
+            cstmt.setInt(2, 100);
+            cstmt.execute();
+            System.out.println("Solde mis à jour");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+</Slide>
+<Slide>
+
+### Procédure et SQLite
+
+SQLite ne supporte pas les procédures stockées, il faudra définir les procédures dans le code de l'application.
+
+<Tabs>
+
+<TabItem label="PHP">
+
+```php
+<?php
+$GLOBALS["pdo"] = new PDO('sqlite:ma_base.db'); // Connexion à la base de données
+
+function maj_solde($id_compte, $montant) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT solde FROM Comptes WHERE id = ?");
+    $stmt->execute([$id_compte]);
+    $solde = $stmt->fetchColumn();
+    $new_solde = $solde + $montant;
+    $stmt = $pdo->prepare("UPDATE Comptes SET solde = ? WHERE id = ?");
+    $stmt->execute([$new_solde, $id_compte]);
+}
+
+maj_solde(1, 100);
+?>
+```
+</TabItem>
+
+<TabItem label="Python">
+```python
+import sqlite3
+
+function maj_solde(id_compte, montant):
+    conn = sqlite3.connect('ma_base.db')
+    cur = conn.cursor()
+    cur.execute("SELECT solde FROM Comptes WHERE id = ?", (id_compte,))
+    solde = cur.fetchone()[0]
+    new_solde = solde + montant
+    cur.execute("UPDATE Comptes SET solde = ? WHERE id = ?", (new_solde, id_compte))
+    conn.commit()
+
+maj_solde(1, 100)
+```
+</TabItem>
+
+<TabItem label="NodeJS">
+```js
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('ma_base.db');
+
+function maj_solde(id_compte, montant) {
+    db.serialize(() => {
+        db.get("SELECT solde FROM Comptes WHERE id = ?", [id_compte], (err, row) => {
+            if (err) {
+                console.error(err.message);
+            }
+            let solde = row.solde;
+            let new_solde = solde + montant;
+            db.run("UPDATE Comptes SET solde = ? WHERE id = ?", [new_solde, id_compte], (err) => {
+                if (err) {
+                    console.error(err.message);
+                }
+                console.log(`Solde mis à jour`);
+            });
+        });
+    });
+}
+
+maj_solde(1, 100);
+```
+
+</TabItem>
+
+<TabItem label="Java">
+
+```java
+import java.sql.*;
+
+public class Main {
+
+    public void maj_solde(int id_compte, int montant) {
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:ma_base.db");
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT solde FROM Comptes WHERE id = 1");
+            int solde = rs.getInt("solde");
+            int new_solde = solde + 100;
+            stmt.executeUpdate("UPDATE Comptes SET solde = " + new_solde + " WHERE id = 1");
+            System.out.println("Solde mis à jour");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        Main main = new Main();
+        main.maj_solde(1, 100);
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
 
 </Slide>
 <Slide>
@@ -282,7 +539,7 @@ SELECT @max;
 ## Conclusion
 
 - Les procédures stockées permettent de regrouper des instructions SQL en un seul bloc logique
-- Elles peuvent ensuite être appelées directement depuis  le SGBD ou bien depuis une application
+- Elles peuvent ensuite être appelées directement depuis le SGBD ou bien depuis une application
 - Elles permettent de simplifier la maintenance du code, d'améliorer les performances et de réduire la duplication du code.
 - Pour SQLite quqi ne supporte pas les procédures, il faudra définir les procédures dans le code de l'application
 
@@ -292,33 +549,33 @@ SELECT @max;
 ## Exercice
 
 Créez une procédure stockée `bonus` qui :
+
 - augmente le solde des comptes de d'un pourcentage passé en paramètre, uniquement si le solde est supérieur au montant total de ses commandes
 - qui renvoie les identifiants des comptes mis à jour
 
 <details>
 <summary>Solution</summary>
 
-
 ```sql
-CREATE PROCEDURE bonus( @pourcentage INT)
+CREATE PROCEDURE bonus( _pourcentage INT)
 BEGIN
-    DECLARE id_compte INT;
-    DECLARE solde_compte INT;
-    DECLARE total_commandes INT;
-    DECLARE bonus INT;
-    DECLARE cur CURSOR FOR SELECT id, solde FROM Comptes;
-    OPEN cur;
-    FETCH cur INTO id_compte, solde_compte;
+    DECLARE _id_compte INT;
+    DECLARE _solde_compte INT;
+    DECLARE _total_commandes INT;
+    DECLARE _bonus INT;
+    DECLARE _cur CURSOR FOR SELECT id, solde FROM Comptes;
+    OPEN _cur;
+    FETCH _cur INTO _id_compte, _solde_compte;
     WHILE @@FETCH_STATUS = 0 DO
-        SELECT SUM(montant) INTO total_commandes FROM Commandes WHERE id_compte = id_compte;
-        IF solde_compte > total_commandes THEN
-            SET bonus = solde_compte *  @pourcentage / 100;
-            UPDATE Comptes SET solde = solde + bonus WHERE id = id_compte;
-            SELECT id_compte;
+        SELECT SUM(montant) INTO _total_commandes FROM Commandes WHERE id_compte = _id_compte;
+        IF _solde_compte > _total_commandes THEN
+            SET _bonus = _solde_compte *  _pourcentage / 100;
+            UPDATE Comptes SET solde = solde + _bonus WHERE id = _id_compte;
+            SELECT _id_compte;
         END IF;
-        FETCH cur INTO id_compte, solde_compte;
+        FETCH _cur INTO    id_compte, _solde_compte;
     END WHILE;
-    CLOSE cur;
+    CLOSE _cur;
 END;
 ```
 

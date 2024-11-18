@@ -24,6 +24,9 @@ Les transactions sont utilisées pour garantir l'intégrité des données lorsqu
 
 _Par exemple, lorsque vous transférez de l’argent d’un compte bancaire à un autre, l’argent doit quitter votre compte et doit être ajouté au compte tiers. Vous ne pouvez pas dire que la transaction est terminée sans que les deux étapes soient effectuées._
 
+</Slide>
+<Slide>
+
 ## Vocabulaire
 
 Lorsque l'on **valide** les requêtes d'une transaction, on dit aussi que l'on **commit** les changements.
@@ -162,8 +165,8 @@ INSERT INTO Comptes (id, solde) VALUES (4, 300);
 
 Rédiger une transaction SQL avec un jalon entre les deux mises à jour suivantes :
 
-1. Rédiger une transaction SQL qui transfère 100€ du compte 1 au compte 2.
-2. Rédiger une transaction SQL qui transfère 150€ du compte 3 au compte 4.
+1. Transfert de 100€ du compte 1 au compte 2.
+2. Transfert de 150€ du compte 3 au compte 4.
 
 Quel sera le solde des comptes après l'exécution de la transaction ? Pourquoi ?
 

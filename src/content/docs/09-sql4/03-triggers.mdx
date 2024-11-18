@@ -9,9 +9,10 @@ import Slide from "/src/components/Slide.astro";
 
 <Slide title="Déclencheurs (Triggers)">
 
-Les **triggers** sont des procédures stockées qui sont **automatiquement exécutées **lorsqu'un événement spécifique se produit dans une base de données.
+Les **triggers** sont des instructions SQL stockées qui sont **automatiquement exécutées** lorsqu'un événement spécifique se produit dans une base de données.
 
-On peut les assimminer à des _observateurs_ qui réagissent à des événements spécifiques : **juste avant** ou **juste après** une _insertion_, une _mise à jour_ ou une _suppression_ de données.
+On peut les assimmiler à des _observateurs_ qui réagissent à des événements spécifiques : 
+- **juste avant** ou **juste après** une _insertion_, une _mise à jour_ ou une _suppression_ de données.
 
 Les déclencheurs permettent de définir des **contraintes dynamiques**.
 
@@ -39,12 +40,41 @@ ON nom_table
 FOR EACH ROW
 BEGIN
     -- Instructions
-END;
+END//
 ```
 
 - `BEFORE` : déclencheur exécuté avant l'événement
 - `AFTER` : déclencheur exécuté après l'événement
 - `INSTEAD OF` : déclencheur exécuté à la place de l'événement
+
+</Slide>
+<Slide>
+
+### DELIMITER
+
+Avant de présenter un exemple de trigger, il est important de noter que MySQL utilise le point-virgule (`;`) pour terminer les instructions SQL.
+
+Le point-virgule permet donc de distinguer, ou de **délimiter** les instructions SQL.
+
+On dit donc que le point-virgule est le **délimiteur** par défaut des instructions SQL. 
+
+> Se pose alors le problème du _bloc d'instructions_ des triggers qui contiennent aussi des points-virgules.
+> Comment savoir si un point-virgule termine une instruction SQL ou un bloc d'instructions du Trigger ?
+
+Pour adresser ce problème, on peut utiliser le mot-clé `DELIMITER` pour changer le délimiteur temporairement.
+
+```sql wrap
+DELIMITER // -- On change le délimiteur par défaut ";" par //
+-- On peut utiliser n'importe quel caractère qui n'est pas utilisé dans le code SQL
+CREATE TRIGGER nom_declencheur
+AFTER INSERT ON nom_table
+FOR EACH ROW
+BEGIN
+  SELECT * FROM nom_table; -- ici le point-virgule ne termine pas l'instruction,
+  -- SQL comprend que le bloc d'instructions et donc le Trigger n'est pas terminé
+END// -- On termine le code du trigger avec le nouveau délimiteur
+DELIMITER ; -- On rétablit le délimiteur par défaut
+```
 
 </Slide>
 <Slide>
@@ -72,6 +102,7 @@ On souhaite que le solde des comptes soit automatiquement mis à jour après cha
 On va donc créer le trigger suivant :
 
 ```sql
+DELIMITER // 
 CREATE TRIGGER maj_solde
 AFTER INSERT ON Commandes
 FOR EACH ROW
@@ -79,12 +110,14 @@ BEGIN
     UPDATE Comptes
     SET solde = solde - NEW.montant
     WHERE id = NEW.id_compte;
-END;
+END//
+DELIMITER ;
 ```
 
 Version commentée :
 
 ```sql
+DELIMITER // -- On change le délimiteur par défaut ";" par //
 CREATE TRIGGER maj_solde -- On créer un déclencheur nommé "maj_solde"
 AFTER INSERT ON Commandes -- Qui sera déclenché automatiquement après chaque insertion dans la table Commandes
 FOR EACH ROW -- Pour chaque nouvelle ligne insérée, execute le bloc d'instructions suivant
@@ -92,7 +125,8 @@ BEGIN -- Début du bloc d'instructions
     UPDATE Comptes -- Met à jour la table Comptes
     SET solde = solde - NEW.montant -- Décrémente le solde du compte du montant de la commande
     WHERE id = NEW.id_compte; -- Pour le compte associé à la commande
-END;
+END//
+DELIMITER ; -- On rétablit le délimiteur par défaut
 ```
 
 </Slide>
@@ -110,6 +144,7 @@ Dans un déclencheur, on peut utiliser les mots-clés `NEW` et `OLD` pour accéd
 Reprenons l'exemple du trigger précédent : 
 
 ```sql
+DELIMITER // 
 CREATE TRIGGER maj_solde
 AFTER INSERT ON Commandes
 FOR EACH ROW
@@ -117,7 +152,8 @@ BEGIN
     UPDATE Comptes
     SET solde = solde - NEW.montant
     WHERE id = NEW.id_compte;
-END;
+END//
+DELIMITER ;
 ```
 
 Si on ajoute maintenant une nouvelle commande : 
@@ -145,13 +181,15 @@ On peut également utiliser le mot-clé `OLD` pour accéder aux anciennes valeur
 On souhaite par exemple auditer les modifications apportées aux commandes, c.à.d enregistrer les anciennes et nouvelles valeurs du montant de la commande.
 
 ```sql
+DELIMITER // 
 CREATE TRIGGER audit_commandes
 AFTER UPDATE ON Commandes
 FOR EACH ROW
 BEGIN
     INSERT INTO Commandes_Audit (id_commande, montant_avant, montant_apres)
     VALUES (OLD.id, OLD.montant, NEW.montant);
-END;
+END//
+DELIMITER ;
 ```
 
 Dans cet exemple, le trigger `audit_commandes` va insérer une nouvelle ligne dans la table `Commandes_Audit` à chaque mise à jour d'une commande, contenant l'identifiant de la commande, le montant avant la mise à jour et le montant après la mise à jour.
@@ -185,13 +223,15 @@ On peut également utiliser le mot-clé `OLD` pour accéder aux anciennes valeur
 On souhaite par exemple auditer les suppressions de commandes, c.à.d enregistrer les valeurs des commandes supprimées.
 
 ```sql
+DELIMITER // 
 CREATE TRIGGER audit_commandes
 AFTER DELETE ON Commandes
 FOR EACH ROW
 BEGIN
     INSERT INTO Commandes_Audit (id_commande, montant_avant, montant_apres)
     VALUES (OLD.id, OLD.montant, 0);
-END;
+END//
+DELIMITER ;
 ```
 
 Dans cet exemple, le trigger `audit_commandes` va insérer une nouvelle ligne dans la table `Commandes_Audit` à chaque suppression d'une commande, contenant l'identifiant de la commande, le montant avant la suppression et 0 comme montant après la suppression.
@@ -263,6 +303,7 @@ Créez un trigger nommé `annule_commande`, qui se déclenche à la suppression 
 <summary>Solution</summary>
 
 ```sql
+DELIMITER // 
 CREATE TRIGGER annule_commande
 AFTER DELETE ON Commandes
 FOR EACH ROW
@@ -270,7 +311,8 @@ BEGIN
     UPDATE Comptes
     SET solde = solde + OLD.montant
     WHERE id = OLD.id_compte;
-END;
+END//
+DELIMITER ;
 ```
 
 </details>
@@ -295,6 +337,7 @@ _Aide : utilisez une requête `UPDATE` avec une sous-requête `SELECT SUM()`._
 <summary>Solution</summary>
 
 ```sql
+DELIMITER // 
 CREATE TRIGGER maj_montant_commande
 AFTER INSERT ON Details
 FOR EACH ROW
@@ -302,7 +345,8 @@ BEGIN
     UPDATE Commandes
     SET montant = (SELECT SUM(montant) FROM Details WHERE id_commande = NEW.id_commande)
     WHERE id = NEW.id_commande;
-END;
+END//
+DELIMITER ;
 ```
 
 </details>
