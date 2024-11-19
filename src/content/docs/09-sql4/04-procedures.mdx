@@ -169,6 +169,12 @@ END;
 
 ```
 
+:::danger[Pas de support des variables dans SQLite]
+SQLite ne supporte pas les variables locales dans les procédures stockées.
+
+On pourra créer des tables temporaires pour stocker des valeurs temporaires et donc simuler des variables locales.
+:::
+
 #### Exemple
 
 ```sql
