@@ -44,13 +44,17 @@ END//
 ```
 
 - BEFORE | AFTER | INSTEAD OF : détermine le moment où le déclencheur est exécuté
-- INSERT | UPDATE | DELETE : détermine l'événement qui déclenche le trigger
+- INSERT | UPDATE | DELETE : détermine l'événement qui déclenche le triggerf
 - FOR EACH ROW | FOR EACH STATEMENT : détermine si le trigger est exécuté pour chaque ligne ou pour chaque instruction
 
 </Slide>
 <Slide>
 
 ### DELIMITER
+
+:::not[Remarque]
+Avec SQLite, il n'y a pas besoin de changer le délimiteur pour les triggers oun les procédures. SQLite détecte automatiquement le début et la fin des instructions.
+:::
 
 Avant de présenter un exemple de trigger, il est important de noter que MySQL utilise le point-virgule (`;`) pour terminer les instructions SQL.
 
