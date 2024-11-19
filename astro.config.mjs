@@ -161,13 +161,13 @@ export default defineConfig({
 								directory: '10-resume'
 							}
 						},
-						// {
-						// 	label: '11. Projet - La clinique',
-						// 	collapsed: true,
-						// 	autogenerate: {
-						// 		directory: '11-tp4'
-						// 	}
-						// },
+						{
+							label: '11. Projet - La clinique',
+							collapsed: true,
+							autogenerate: {
+								directory: '11-tp4'
+							}
+						},
 						{
 							label: 'Bases de données',
 							collapsed: true,
