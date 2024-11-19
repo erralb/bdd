@@ -35,17 +35,17 @@ Les déclencheurs sont utilisés pour :
 
 ```sql
 CREATE TRIGGER nom_declencheur
-BEFORE | AFTER | INSTEADOF INSERT | UPDATE | DELETE
+{ BEFORE | AFTER | INSTEAD } OF { INSERT | UPDATE | DELETE }
 ON nom_table
-FOR EACH ROW | FOR EACH STATEMENT
+{ FOR EACH ROW | FOR EACH STATEMENT }
 BEGIN
     -- Instructions
 END//
 ```
 
-- { BEFORE | AFTER | INSTEAD OF} : détermine le moment où le déclencheur est exécuté
-- { INSERT | UPDATE | DELETE } : détermine l'événement qui déclenche le trigger
-- { FOR EACH ROW | FOR EACH STATEMENT } : détermine si le trigger est exécuté pour chaque ligne ou pour chaque instruction
+- BEFORE | AFTER | INSTEAD OF : détermine le moment où le déclencheur est exécuté
+- INSERT | UPDATE | DELETE : détermine l'événement qui déclenche le trigger
+- FOR EACH ROW | FOR EACH STATEMENT : détermine si le trigger est exécuté pour chaque ligne ou pour chaque instruction
 
 </Slide>
 <Slide>
