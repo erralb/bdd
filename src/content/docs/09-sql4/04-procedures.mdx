@@ -16,7 +16,7 @@ Elles permettent de regrouper des instructions SQL en un seul bloc logique et de
 
 Les procédures stockées sont souvent utilisées pour effectuer des tâches répétitives, pour améliorer les performances et pour simplifier la maintenance du code.
 
-Elles s'apparentent aux fonctions dans les langages de programmation.
+Elles s'apparentent aux **fonctions dans les langages de programmation**.
 
 </Slide>
 <Slide>
@@ -29,20 +29,22 @@ SQLite étant un moteur de base de données léger, il ne prend pas en charge le
 Certains [plugins SQLite](https://github.com/nalgeon/sqlean) et l'utilisation de fonctions définies par l'utilisateur ([Application-Defined SQL Functions](https://www.sqlite.org/appfunc.html)) peuvent être utilisés pour simuler des procédures stockées.
 
 SQLite étant souvent encapsulé dans des applications, les procédures stockées sont généralement gérées par le code de l'application.
+
+Il est sinon tout à fait possible de remplacer les procédures par des transactions.
 :::
 
 Les procédures stockées sont cependant prises en charge par la plupart des autres moteurs de base de données, tels que MySQL, PostgreSQL, SQL Server, Oracle, etc.
 
 Les exemples présentés ont été vérifié avec MySQL 9 et supérieur. Il faudra peut-être adapter les exemples pour d'autres moteurs de base de données.
 
-Si vous voulez tester les exemples, vous pouvez [installer MySQL sur votre machine](https://dev.mysql.com/downloads/installer/) ou utiliser un service en ligne comme [db-fiddle](https://www.db-fiddle.com/).
+Si vous voulez tester les exemples de procédures, vous pouvez [installer MySQL sur votre machine](https://dev.mysql.com/downloads/installer/) ou utiliser un service en ligne comme [db-fiddle](https://www.db-fiddle.com/).
 
 </Slide>
 <Slide>
 
 ## Création d'une procédure
 
-Comme pour les triggers, on changer le délimiteur pour définir une procédure stockée.
+Comme pour les triggers, on change le délimiteur pour définir une procédure stockée.
 
 ```sql
 DELIMITER //
@@ -81,6 +83,16 @@ BEGIN -- Début du bloc
     WHERE id = 1;
 END// -- Fin du bloc
 DELIMITER ; -- On rétablit le délimiteur par défaut
+```
+
+Version transaction pour SQLite :
+
+```sql
+BEGIN;
+UPDATE Comptes
+SET solde = solde + 100
+WHERE id = 1;
+COMMIT;
 ```
 
 </Slide>
@@ -572,7 +584,7 @@ BEGIN
     DECLARE _cur CURSOR FOR SELECT id, solde FROM Comptes;
     OPEN _cur;
     FETCH _cur INTO _id_compte, _solde_compte;
-    WHILE @@FETCH_STATUS = 0 DO
+    WHILE @FETCH_STATUS = 0 DO
         SELECT SUM(montant) INTO _total_commandes FROM Commandes WHERE id_compte = _id_compte;
         IF _solde_compte > _total_commandes THEN
             SET _bonus = _solde_compte *  _pourcentage / 100;

@@ -37,15 +37,15 @@ Les déclencheurs sont utilisés pour :
 CREATE TRIGGER nom_declencheur
 BEFORE | AFTER | INSTEAD OF {INSERT | UPDATE | DELETE}
 ON nom_table
-FOR EACH ROW
+{ FOR EACH ROW | FOR EACH STATEMENT }
 BEGIN
     -- Instructions
 END//
 ```
 
-- `BEFORE` : déclencheur exécuté avant l'événement
-- `AFTER` : déclencheur exécuté après l'événement
-- `INSTEAD OF` : déclencheur exécuté à la place de l'événement
+- { BEFORE | AFTER | INSTEAD OF} : détermine le moment où le déclencheur est exécuté
+- { INSERT | UPDATE | DELETE } : détermine l'événement qui déclenche le trigger
+- { FOR EACH ROW | FOR EACH STATEMENT } : détermine si le trigger est exécuté pour chaque ligne ou pour chaque instruction
 
 </Slide>
 <Slide>
@@ -64,11 +64,10 @@ On dit donc que le point-virgule est le **délimiteur** par défaut des instruct
 Pour adresser ce problème, on peut utiliser le mot-clé `DELIMITER` pour changer le délimiteur temporairement.
 
 ```sql wrap
-DELIMITER // -- On change le délimiteur par défaut ";" par //
+DELIMITER // -- On change le délimiteur par défaut ";" par "//"
 -- On peut utiliser n'importe quel caractère qui n'est pas utilisé dans le code SQL
 CREATE TRIGGER nom_declencheur
 AFTER INSERT ON nom_table
-FOR EACH ROW
 BEGIN
   SELECT * FROM nom_table; -- ici le point-virgule ne termine pas l'instruction,
   -- SQL comprend que le bloc d'instructions et donc le Trigger n'est pas terminé
@@ -97,7 +96,7 @@ CREATE TABLE Commandes (
 );
 ```
 
-On souhaite que le solde des comptes soit automatiquement mis à jour après chaque nouvelle commande.
+On souhaite que le solde des comptes soit automatiquement mis à jour après chaque nouvelle commande en décrémentant le solde par le montant de la commande.
 
 On va donc créer le trigger suivant :
 
@@ -105,7 +104,6 @@ On va donc créer le trigger suivant :
 DELIMITER // 
 CREATE TRIGGER maj_solde
 AFTER INSERT ON Commandes
-FOR EACH ROW
 BEGIN
     UPDATE Comptes
     SET solde = solde - NEW.montant

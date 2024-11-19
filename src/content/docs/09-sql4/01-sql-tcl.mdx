@@ -39,7 +39,7 @@ Le mode _autocommit_ est le mode par défaut dans la plupart des SGBD-R, **chaqu
 
 Le mode _autocommit_ implique que toute requête sans erreur sera exécutée et il ne sera pas possible de revenir en arrière
 
-_Il est possible de démarrer une transaction contenant plusieurs requêtes avec les instructions `START TRANSACTION;` ou `BEGIN;`_
+Il est tout de même possible de démarrer une transaction contenant plusieurs requêtes lorsque le SGBD est configuré en mode _autocommit_ avec les instructions `START TRANSACTION;` ou `BEGIN;`
 
 </Slide>
 <Slide>
@@ -54,7 +54,8 @@ _Il est possible de démarrer une transaction contenant plusieurs requêtes avec
 
 Les bases de données **ACID** donnent la priorité à la _cohérence_ plutôt qu’à la _disponibilité_ : l’ensemble de la transaction échoue si une erreur survient à n’importe quelle étape de la transaction. 
 
-Ls bases de données **BASE** donnent la priorité à la _disponibilité_ plutôt qu’à la _cohérence_. Au lieu de faire échouer la transaction, il est possible que les utilisateurs accèdent temporairement à des données incohérentes. La cohérence des données sera éventuellement atteinte, mais pas immédiatement.
+Les bases de données **BASE** donnent la priorité à la _disponibilité_ plutôt qu’à la _cohérence_. Au lieu de faire échouer la transaction, il est possible que les utilisateurs accèdent temporairement à des données incohérentes. 
+_La cohérence des données sera éventuellement atteinte, mais pas immédiatement._
 
 </Slide>
 <Slide>
@@ -77,7 +78,7 @@ Les commandes TCL (Transaction Control Language) permettent de gérer les transa
 
 Les commandes les plus courantes sont :
 
-- `START TRANSACTION` : Démarre une transaction
+- `START TRANSACTION` ou `BEGIN` : Démarre une transaction
 - `COMMIT` : Valide une transaction
 - `ROLLBACK` : Annule une transaction
 - `SAVEPOINT` : Crée un point de sauvegarde dans une transaction
