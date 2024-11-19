@@ -35,9 +35,9 @@ Les déclencheurs sont utilisés pour :
 
 ```sql
 CREATE TRIGGER nom_declencheur
-BEFORE | AFTER | INSTEAD OF {INSERT | UPDATE | DELETE}
+BEFORE | AFTER | INSTEADOF INSERT | UPDATE | DELETE
 ON nom_table
-{FOR EACH ROW | FOR EACH STATEMENT}
+FOR EACH ROW | FOR EACH STATEMENT
 BEGIN
     -- Instructions
 END//
