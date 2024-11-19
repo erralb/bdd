@@ -154,13 +154,13 @@ export default defineConfig({
 								directory: '09-sql4'
 							}
 						},
-						// {
-						// 	label: '10. Résumés',
-						// 	collapsed: true,
-						// 	autogenerate: {
-						// 		directory: '10-resume'
-						// 	}
-						// },
+						{
+							label: '10. Résumés',
+							collapsed: true,
+							autogenerate: {
+								directory: '10-resume'
+							}
+						},
 						// {
 						// 	label: '11. Projet - La clinique',
 						// 	collapsed: true,
