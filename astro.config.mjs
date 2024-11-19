@@ -40,6 +40,10 @@ export default defineConfig({
 					label: 'Informations',
 					slug: '00-infos/01-intro',
 				},
+				{
+					label: 'Feedback 2024',
+					slug: '00-infos/02-feedback-2024',
+				},
 				// {
 				// 	label: 'Planning',
 				// 	// slug: '00-infos/Planning-2024-2025',
