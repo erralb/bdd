@@ -33,7 +33,7 @@ export default defineConfig({
 				// }
 			},
 			social: {
-				github: 'https://github.com/erralb/bdd'
+				// github: 'https://github.com/erralb/bdd'
 			},
 			sidebar: [
 				{
