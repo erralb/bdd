@@ -321,6 +321,7 @@ On ajoute une nouvelle table `Details` pour enregistrer les détails des command
 CREATE TABLE Details (
     id INT PRIMARY KEY,
     id_commande INT,
+    montant INT NOT NULL,
     description TEXT,
     FOREIGN KEY (id_commande) REFERENCES Commandes(id)
 );
