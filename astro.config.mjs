@@ -12,7 +12,7 @@ export default defineConfig({
 			logo: {
 				src: './src/assets/logo.svg',
 			},
-			favicon: './src/assets/logo.svg',
+			favicon: '/bdd/logo.svg',
 			customCss: [
 				'./src/style.css',
 			],
