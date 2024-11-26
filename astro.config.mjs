@@ -224,7 +224,12 @@ export default defineConfig({
 				// 	autogenerate: {
 				// 		directory: '09-nosql'
 				// 	}
-				// }
+				// },
+
+				{
+					label: 'Ressources supplémentaires',
+					slug: '00-infos/03-ressources',
+				},
 			]
 		}),
 	],
